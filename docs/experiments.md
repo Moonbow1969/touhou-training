@@ -34,6 +34,8 @@ python -m scripts.pretrain_policy --data replays/data/paired-expanded --out runs
 
 To measure a short-horizon world checkpoint on native rollouts, supply `--world-shadow` to `scripts.evaluate_boss_aim`. The report logs coarse occupancy AP near the actual future player for exact four-frame transitions. Keep the world checkpoint’s metrics sidecar alongside the weights.
 
+World-model training can use `--patience 5` with a maximum epoch budget. With this flag it selects the best mean validation near-player occupancy AP across forecast horizons and records the per-horizon scores in `epochs.jsonl`. It reports the selected epoch and the actual epochs completed. With patience disabled the terminal epoch supplies the checkpoint.
+
 To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Practice Start and launch the recorded evaluator. `--prepared` adopts the active stage on its first trial, so the report includes the actual starting frame.
 
 ```powershell

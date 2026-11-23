@@ -75,6 +75,15 @@ class WorldModel(nn.Module):
         return residual + 4 * grid[:, 1] - 2, self.player(features)
 
 
+def near_player_region(displacement, radius):
+    cells = np.floor(displacement * (32 / CELL) + GRID / 2)
+    in_view = np.all((cells >= 0) & (cells < GRID), axis=1)
+    indices = np.arange(GRID)
+    x_near = np.abs(indices[None, :] - cells[:, 0:1]) <= radius
+    y_near = np.abs(indices[None, :] - cells[:, 1:2]) <= radius
+    return in_view, in_view[:, None, None] & x_near[:, None] & y_near[:, :, None]
+
+
 def evaluate(model, data, device, near_player_cells=0):
     predictions, offsets = [], []
     with torch.inference_mode():
@@ -94,12 +103,7 @@ def evaluate(model, data, device, near_player_cells=0):
         'stationary_player_mae_game_units': round(float(displacement.abs().mean() * 32), 3),
     }
     if near_player_cells:
-        cells = np.floor(displacement.numpy() * (32 / CELL) + GRID / 2)
-        in_view = np.all((cells >= 0) & (cells < GRID), axis=1)
-        indices = np.arange(GRID)
-        x_near = np.abs(indices[None, :] - cells[:, 0:1]) <= near_player_cells
-        y_near = np.abs(indices[None, :] - cells[:, 1:2]) <= near_player_cells
-        region = in_view[:, None, None] & x_near[:, None] & y_near[:, :, None]
+        in_view, region = near_player_region(displacement.numpy(), near_player_cells)
         local_truth = target.numpy()[region]
         report['near_player_pairs'] = int(in_view.sum())
         report['near_player_positive_cells'] = int(local_truth.sum())
@@ -116,6 +120,22 @@ def average_precision(truth, scores):
     true_positives = np.cumsum(truth[order], dtype=np.int64)[threshold_ends]
     precision = true_positives / (threshold_ends + 1)
     return float(precision @ np.diff(true_positives, prepend=0) / true_positives[-1])
+
+
+@torch.inference_mode()
+def validation_near_player_ap(model, loaders, device, radius):
+    scores = {}
+    for horizon, loader in loaders.items():
+        truth, predictions = [], []
+        for grid, condition, target, displacement in loader:
+            occupancy_logits, _ = model(grid.to(device), condition.to(device))
+            _, region = near_player_region(displacement.numpy(), radius)
+            truth.append(target.numpy()[region])
+            predictions.append(occupancy_logits.cpu().numpy()[region])
+        labels = np.concatenate(truth)
+        if labels.any():
+            scores[horizon] = average_precision(labels, np.concatenate(predictions))
+    return scores
 
 
 def near_player_loss(loss_grid, displacement, radius):
@@ -138,11 +158,15 @@ def main():
     parser.add_argument('--shards-per-block', type=int, default=12)
     parser.add_argument('--near-player-loss-weight', type=float, default=0.)
     parser.add_argument('--near-player-cells', type=int, default=3)
+    parser.add_argument('--patience', type=int, default=0,
+                        help='Select by mean validation AP across horizons and stop after this many stalled epochs.')
     args = parser.parse_args()
     if min(args.shards_per_block, args.epochs, args.width) < 1:
         parser.error('Epochs, width and shards per block must be positive.')
     if not 0 <= args.near_player_loss_weight < float('inf') or not 0 <= args.near_player_cells < GRID:
         parser.error('The local loss weight must be finite and the neighborhood must fit the grid.')
+    if args.patience < 0:
+        parser.error('Patience must be nonnegative.')
     torch.manual_seed(79)
     torch.set_num_threads(1)
     shards = [(path, json.loads(path.read_text(encoding='utf-8'))) for path in sorted(args.data.glob('*.json'))]
@@ -159,9 +183,23 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=8e-4)
     positive_weight = torch.tensor(8.0, device=args.device)
     rng = np.random.default_rng(79)
+    validation_groups = list(examples(val)) if args.patience else None
+    loaders = {}
+    if validation_groups is not None:
+        generator = torch.Generator().manual_seed(79)
+        for horizon in HORIZONS:
+            groups = [data for _, span, data in validation_groups if span == horizon]
+            if groups:
+                loaders[horizon] = DataLoader(ConcatDataset(groups), batch_size=128, generator=generator)
+        if not loaders:
+            raise ValueError('Validation stages contain no exact frame transitions.')
     args.out.mkdir(parents=True, exist_ok=False)
+    checkpoint = args.out / 'world.pt'
     history = []
-    for epoch in range(args.epochs):
+    best_epoch = 0
+    best_ap = -1.
+    for epoch in range(1, args.epochs + 1):
+        model.train()
         seen = 0
         loss_total = torch.zeros((), device=args.device)
         order = rng.permutation(len(train)) if len(train) > args.shards_per_block else range(len(train))
@@ -188,23 +226,41 @@ def main():
                 loss_total += loss.detach() * len(batch[0])
         if not seen:
             raise ValueError('Training stages contain no exact frame transitions.')
-        entry = {'epoch': epoch + 1, 'transitions': seen, 'train_loss': loss_total.item() / seen}
+        entry = {'epoch': epoch, 'transitions': seen, 'train_loss': loss_total.item() / seen}
+        if loaders:
+            model.eval()
+            scores = validation_near_player_ap(model, loaders, args.device, args.near_player_cells)
+            if not scores:
+                raise ValueError('Validation requires at least one occupied near-player target cell.')
+            mean_ap = sum(scores.values()) / len(scores)
+            entry.update(validation_near_player_ap=scores, validation_mean_near_player_ap=mean_ap)
+            if mean_ap > best_ap:
+                best_ap, best_epoch = mean_ap, epoch
+                torch.save(model.state_dict(), checkpoint)
         history.append(entry)
         with (args.out / 'epochs.jsonl').open('a', encoding='utf-8') as stream:
             stream.write(json.dumps(entry) + '\n')
         print(json.dumps(entry), flush=True)
+        if loaders and epoch - best_epoch >= args.patience:
+            break
+    if loaders:
+        model.load_state_dict(torch.load(checkpoint, map_location=args.device, weights_only=True))
+    else:
+        best_epoch = len(history)
+        torch.save(model.state_dict(), checkpoint)
+    model.eval()
     validation = [dict(replay=meta['name'], title=meta['title'], stage=meta['stage'], horizon_frames=horizon,
-                       **evaluate(model, data, args.device)) for meta, horizon, data in examples(val)]
+                       **evaluate(model, data, args.device, args.near_player_cells if loaders else 0))
+                  for meta, horizon, data in (validation_groups if validation_groups is not None else examples(val))]
     if not validation:
         raise ValueError('Validation stages contain no exact frame transitions.')
     report = {
         'config': {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
         'parameters': sum(p.numel() for p in model.parameters()), 'width': args.width,
-        'epochs': args.epochs, 'training_pairs': seen,
+        'epochs': len(history), 'selected_epoch': best_epoch, 'training_pairs': seen,
         'training_titles': sorted({meta['title'] for _, meta in train}),
         'validation': validation, 'history': history,
     }
-    torch.save(model.state_dict(), args.out / 'world.pt')
     (args.out / 'metrics.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report), flush=True)
 

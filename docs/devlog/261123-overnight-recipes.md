@@ -100,3 +100,21 @@ Separate passive recordings preserved 2,214 Stage 5 and 3,519 Stage 6 state and 
 ## Fully balancing title weights
 
 With the expanded training corpus fixed, increased `--title-balance` from 0.5 to 1.0. Direction-change accuracy improved at each seed, from 27.51%, 32.26%, and 22.79% to 31.05%, 32.55%, and 26.85%. Mean direction-change accuracy moved from 27.52% to 30.15%. Mean overall direction accuracy moved from 63.90% to 64.18%. These measurements use the same reserved TH17 Normal experts on 51,421 paired decisions. The seed-61 checkpoint is the candidate for a matched native story trial.
+
+## Selecting the world checkpoint by forecast quality
+
+Kept the expanded 432,456-transition dataset, optimizer and loss fixed. Used the mean of the three validation near-player occupancy AP values to select weights. With a 32-epoch budget and patience five, the best checkpoint was epoch 5 and training stopped at epoch 10. The held-out replays used the same neighborhood and aggregation as the earlier 20-epoch comparison.
+
+| Horizon | Held-out pairs | Expanded epoch 20 AP | Expanded selected AP |
+| --- | ---: | ---: | ---: |
+| 4 frames | 51,078 | 0.949 | 0.960 |
+| 12 frames | 50,884 | 0.835 | 0.854 |
+| 24 frames | 50,657 | 0.641 | 0.646 |
+
+The selected checkpoint recovers the short-horizon accuracy of the original 370,330-transition model. Its held-out player displacement error changed from 1.716 to 1.671 units at four frames, from 2.734 to 2.795 at 12 frames, and from 4.098 to 4.487 at 24 frames. The selection criterion is occupancy AP. The native one-credit comparisons keep the earlier world checkpoint in shadow mode.
+
+## Checking native motion against the saved replay
+
+Fit the timestamp offset on the first half of the captured moving windows. The archived replay matched every sampled input in the held-out 592 Stage 5 windows and 894 Stage 6 windows at that offset. Reconstructing player motion from the exported replay inputs gave the same displacement errors as using the live input words. Shifting the input windows by one or two frames reduced alignment in both stages.
+
+On the full native examples, the fixed-kinematics predictor averaged 0.587 and 1.731 game units of error on moving Stage 5 and Stage 6 windows. The selected world model's displacement head averaged 1.698 and 2.766 units. A 20-epoch residual predictor trained on 20,075 TH14 expert windows selected its initial zero correction on the separate 2,258-window validation split. Keep analytic player kinematics for the controller. The late-stage motion errors persisted when reconstructing the captured trajectories from the archived replay inputs.
