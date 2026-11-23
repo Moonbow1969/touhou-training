@@ -22,6 +22,10 @@ Use `replays.snapshot` to freeze existing and newly aligned shard directories in
 
 For native PPO, supply `--analytic-control` to compare the frozen imitation head, the trained PPO head, and rule-based selection. `--body-risk` and `--laser-risk` apply consistently to all arms. Use `--resume-ppo` with a saved training checkpoint to continue a run after an interruption. `--initial-temperature` applies only at initialization and rescales the final actor layer for exploration.
 
+Use `--evaluation-aim` to apply geometric aiming to each arm after training, and `--evaluation-reference` to include a previous PPO checkpoint. The selected rank of the foreground original game must match `--difficulty` if it is changed from Normal.
+
+For SFT use `--patience 6` with a maximum epoch budget to stop after six rounds without an improvement in validation loss. The policy checkpoint is always the selected validation epoch. Preserve replay and player splits while fitting and selecting weights.
+
 To measure a short-horizon world checkpoint on native rollouts, supply `--world-shadow` to `scripts.evaluate_boss_aim`. The report logs coarse occupancy AP near the actual future player for exact four-frame transitions. Keep the world checkpoint’s metrics sidecar alongside the weights.
 
 To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Practice Start and launch the recorded evaluator. `--prepared` adopts the active stage on its first trial, so the report includes the actual starting frame.

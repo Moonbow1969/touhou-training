@@ -291,6 +291,8 @@ def main():
     parser.add_argument("--data", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--epochs", type=int, default=12)
+    parser.add_argument("--patience", type=int, default=0,
+                        help="Stop after this many epochs without better validation loss. Zero disables early stopping.")
     parser.add_argument("--hidden", type=int, default=128)
     parser.add_argument("--batch-size", type=int, default=128)
     parser.add_argument("--title-balance", type=float, default=0.0,
@@ -325,6 +327,8 @@ def main():
         parser.error("Retaining the most recent positions requires explicitly requested longer spans.")
     if min(args.epochs, args.hidden, args.batch_size, args.shards_per_block) < 1:
         parser.error("Epochs, hidden width, batch size and shards per block must be positive.")
+    if args.patience < 0:
+        parser.error("Early-stopping patience cannot be negative.")
     if not 0 <= args.title_balance <= 1:
         parser.error("Title balance must be between zero and one.")
     if not 1 <= args.moving_transition_weight < float("inf"):
@@ -411,6 +415,10 @@ def main():
         if best is None or entry["val_loss"] < best["val_loss"]:
             best = dict(entry, per_replay=per_replay)
             torch.save(policy.state_dict(), args.out / "policy.pt")
+        if args.patience and epoch - best["epoch"] >= args.patience:
+            print(json.dumps({"early_stop_epoch": epoch, "best_epoch": best["epoch"],
+                              "patience": args.patience}), flush=True)
+            break
     report = {
         "config": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
         "parameters": sum(parameter.numel() for parameter in policy.parameters()),
@@ -430,6 +438,7 @@ def main():
         "player_balance": args.player_balance,
         "training_player_loss_weights": {f"{title}/{player}": weight for (title, player), weight in player_weights.items()},
         "validation_samples": sum(row["samples"] for row in validation_replays),
+        "epochs_requested": args.epochs, "epochs_completed": len(history),
         "majority_baseline": baseline, "best": best, "epochs": history,
     }
     (args.out / "metrics.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

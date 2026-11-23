@@ -12,6 +12,7 @@ import torch
 
 from scripts.evaluate_boss_aim import aim_features
 from scripts.evaluate_stage_policies import read_policy, stage_action
+from scripts.pretrain_policy import LEVELS
 from scripts.probe_stage_risk import player_radius
 from scripts.stage_policy import NormalStageOne, StageProgress, run_episode
 from scripts.record_run import write_json
@@ -80,6 +81,7 @@ def main():
     parser.add_argument('--base', required=True, type=Path)
     parser.add_argument('--head', required=True, type=Path)
     parser.add_argument('--out', required=True, type=Path)
+    parser.add_argument('--difficulty', choices=LEVELS[:4], default='Normal')
     parser.add_argument('--steps', type=int, default=1024)
     parser.add_argument('--limit', type=int, default=1500)
     parser.add_argument('--evaluation-limit', type=int, help='Use a separate decision bound during native evaluation.')
@@ -108,7 +110,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=False)
     stage = NormalStageOne(Path(__file__).resolve().parents[2] / 'parakit', args.limit,
                            max_misses=1, motion_history=True, focus_wait=args.focus_wait,
-                           history_frames=max(base.motion_spans or (12,)))
+                           history_frames=max(base.motion_spans or (12,)), difficulty=LEVELS.index(args.difficulty))
     try:
         env = DodgeEnv(stage, base, args.risk_weight, args.body_risk, args.laser_risk)
         if args.resume_ppo:
@@ -153,6 +155,7 @@ def main():
         results = {label: [] for label, _ in arms}
         report = {
             'base': str(args.base), 'head': str(args.head), 'limit': args.limit, 'seed': args.seed,
+            'difficulty': args.difficulty,
             'evaluation_limit': args.evaluation_limit or args.limit, 'body_risk': args.body_risk,
             'evaluation_max_misses': args.evaluation_max_misses, 'evaluation_aim': args.evaluation_aim,
             'evaluation_reference': str(args.evaluation_reference) if args.evaluation_reference else None,

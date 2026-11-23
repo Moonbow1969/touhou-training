@@ -9,6 +9,7 @@ import torch
 from torch import nn
 
 from scripts.evaluate_stage_policies import read_policy, stage_action
+from scripts.pretrain_policy import LEVELS
 from scripts.probe_stage_risk import player_radius
 from scripts.record_run import write_json
 from scripts.stage_policy import NormalStageOne
@@ -190,6 +191,7 @@ def main():
     dodge_options.add_argument('--ppo', type=Path)
     dodge_options.add_argument('--analytic-dodge', action='store_true', help='Use explicit clearance instead of a PPO head.')
     parser.add_argument('--out', required=True, type=Path)
+    parser.add_argument('--difficulty', choices=LEVELS[:4], default='Normal')
     parser.add_argument('--blocks', type=int, default=2)
     parser.add_argument('--limit', type=int, default=3200)
     parser.add_argument('--candidate-first', action='store_true')
@@ -234,7 +236,8 @@ def main():
                            limit=args.limit, max_misses=args.max_misses, motion_history=True,
                            history_frames=max(base.motion_spans or (12,)),
                            first_stage=args.first_stage, last_stage=args.last_stage, prepared=args.prepared,
-                           stage_practice=args.stage_practice, focus_wait=args.focus_wait)
+                           stage_practice=args.stage_practice, focus_wait=args.focus_wait,
+                           difficulty=LEVELS.index(args.difficulty))
     dodge_name = 'ppo_dodge' if head is not None else 'analytic_dodge'
     candidate_name = f'{dodge_name}_with_learned_aim' if student is not None else f'{dodge_name}_with_aim'
     control_name = f'{dodge_name}_with_aim' if args.teacher_control else dodge_name
@@ -242,6 +245,7 @@ def main():
     report = {'base': str(args.base), 'ppo': str(args.ppo) if args.ppo else None, 'limit': args.limit,
               'student': str(args.student) if args.student else None,
               'blocks': args.blocks, 'max_misses': args.max_misses,
+              'difficulty': args.difficulty,
               'first_stage': args.first_stage, 'last_stage': args.last_stage, 'prepared': args.prepared,
               'stage_practice': args.stage_practice, 'focus_wait_seconds': args.focus_wait,
               'body_risk': args.body_risk, 'laser_risk': args.laser_risk,

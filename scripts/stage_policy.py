@@ -11,7 +11,7 @@ from stable_baselines3.common.callbacks import BaseCallback
 import torch
 
 from environment.structured import StateReader, load_parakit_offsets
-from scripts.pretrain_policy import (MOTION_INTERVALS, action_space, append_motion_history,
+from scripts.pretrain_policy import (LEVELS, MOTION_INTERVALS, action_space, append_motion_history,
                                     condition_context, network_kwargs, observation_space)
 
 
@@ -27,7 +27,7 @@ def action_keys(action):
 
 class NormalStageOne(gym.Env):
     def __init__(self, parakit_path, limit=3000, max_misses=1, motion_history=False, history_frames=12,
-                 last_stage=1, first_stage=1, prepared=False, stage_practice=False, focus_wait=0):
+                 last_stage=1, first_stage=1, prepared=False, stage_practice=False, focus_wait=0, difficulty=1):
         from environment import interface as game
 
         self.game = game
@@ -40,6 +40,7 @@ class NormalStageOne(gym.Env):
         self.max_misses = max_misses
         self.first_stage = first_stage
         self.last_stage = last_stage
+        self.difficulty = difficulty
         self.prepared = prepared
         self.stage_practice = stage_practice
         self.focus_wait = focus_wait
@@ -48,7 +49,7 @@ class NormalStageOne(gym.Env):
         self.completed = []
         game._get_focus()
         if game.read_game_val("game_state") != 2:
-            raise RuntimeError("Start a TH14 Normal game before running this command.")
+            raise RuntimeError(f"Start a TH14 {LEVELS[self.difficulty]} game before running this command.")
         self.freeze()
         try:
             self.snapshot = self.reader.snapshot()
@@ -65,9 +66,9 @@ class NormalStageOne(gym.Env):
         offsets = self.reader.offsets.environment
         character = self.reader.read_uint(offsets.character, relative=True)
         subshot = self.reader.read_uint(offsets.subshot, relative=True)
-        if ((self.snapshot.difficulty, character, subshot) != (1, 0, 0)
+        if ((self.snapshot.difficulty, character, subshot) != (self.difficulty, 0, 0)
                 or require_start_stage and self.snapshot.stage != self.first_stage):
-            raise RuntimeError(f"Expected TH14 Normal Stage {self.first_stage} with Reimu A.")
+            raise RuntimeError(f"Expected TH14 {LEVELS[self.difficulty]} Stage {self.first_stage} with Reimu A.")
 
     def current_stage(self):
         return self.reader.read_uint(self.reader.offsets.environment.stage, relative=True)
@@ -122,7 +123,7 @@ class NormalStageOne(gym.Env):
         }
 
     def current_context(self):
-        return condition_context(self.snapshot.observation["context"], 1, "ReimuA")
+        return condition_context(self.snapshot.observation["context"], self.difficulty, "ReimuA")
 
     def remember(self):
         if self.motion_history:

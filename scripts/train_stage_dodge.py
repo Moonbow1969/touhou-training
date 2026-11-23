@@ -9,7 +9,7 @@ from torch.nn import functional as F
 from torch.utils.data import DataLoader, TensorDataset
 
 from scripts.evaluate_stage_policies import read_policy
-from scripts.pretrain_policy import batch_block, index_split, predict_heads, read_shard
+from scripts.pretrain_policy import append_motion_history, batch_block, condition_context, index_split, predict_heads, read_shard
 from scripts.stage_risk import action_clearances, suggest_dodge
 
 
@@ -79,6 +79,20 @@ def demonstrated_corrections(path):
     return result
 
 
+def native_examples(paths, policy):
+    result = []
+    for path in paths:
+        with np.load(path) as data:
+            context = append_motion_history(condition_context(data['context'], 1, 'ReimuA'), data['stage_frame'])
+            proposals = policy.predict({'bullets': data['bullets'], 'context': context}, deterministic=True)[0]
+            clearances = data['action_clearances'].min(axis=1)
+        for proposal, clearance in zip(proposals, clearances):
+            target, _, _ = suggest_dodge(proposal, clearance)
+            result.append((candidate_features(proposal, clearance), 9 * target[1] + target[0],
+                           bool((target[:2] != proposal[:2]).any())))
+    return result
+
+
 def dataset(rows):
     return TensorDataset(*(torch.from_numpy(np.stack(field)) for field in zip(*rows)))
 
@@ -92,6 +106,21 @@ def clearance_targets(features, labels, mixture):
     return (1 - mixture) * hard + mixture * alternative
 
 
+@torch.inference_mode()
+def metrics(model, examples, mixture):
+    inputs, labels, changed = examples
+    predictions = model(inputs)
+    correct = predictions.argmax(1) == labels
+    targets = clearance_targets(inputs, labels, mixture) if mixture else labels
+    distribution = torch.distributions.Categorical(logits=predictions)
+    return {'decisions': len(labels), 'corrections': int(changed.sum()),
+            'validation_loss': float(F.cross_entropy(predictions, targets)),
+            'all_accuracy': float(correct.float().mean()),
+            'mean_entropy': float(distribution.entropy().mean()),
+            'negative_clearance_probability': float((distribution.probs * (inputs[..., 0] < 0)).sum(1).mean()),
+            'correction_accuracy': float(correct[changed].float().mean()) if changed.any() else None}
+
+
 def main():
     parser = argparse.ArgumentParser(description='Train a neural action selector from replay and closed-loop dodge corrections.')
     parser.add_argument('--base', type=Path, required=True)
@@ -101,20 +130,27 @@ def main():
     parser.add_argument('--epochs', type=int, default=30)
     parser.add_argument('--clearance-mixture', type=float, default=0.,
                         help='Preserve probability on nearly as safe candidate actions.')
+    parser.add_argument('--native-train', type=Path, nargs='+', default=[])
+    parser.add_argument('--native-test', type=Path, nargs='+', default=[])
     args = parser.parse_args()
     if args.epochs < 1 or not 0 <= args.clearance_mixture <= 1:
         parser.error('Epochs must be positive and the clearance mixture must be between zero and one.')
+    if {path.resolve() for path in args.native_train} & {path.resolve() for path in args.native_test}:
+        parser.error('Use separate native captures for training and testing.')
     torch.manual_seed(203)
     torch.set_num_threads(1)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     rng = np.random.default_rng(203)
     base = read_policy(args.base, device, motion_history=True)
+    if (args.native_train or args.native_test) and (base.stage_clock or base.motion_spans):
+        parser.error('Native capture training currently expects the immediate-history TH14 Reimu A base.')
     replay_train = examples(sample_states(args.data, 'train', 4500, rng, base, device), rng)
     corrections = demonstrated_corrections(args.corrections)
+    capture_train = native_examples(args.native_train, base)
     replay_validation = examples(sample_states(args.data, 'validation', 700, rng, base, device), rng)
-    train = dataset(replay_train + corrections * 12)
+    train = dataset(replay_train + corrections * 12 + capture_train)
     validation = dataset(replay_validation)
-    inputs, labels, changed = (t.to(device) for t in validation.tensors)
+    validation_data = tuple(t.to(device) for t in validation.tensors)
     model = DodgeHead().to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002)
     args.out.mkdir(parents=True, exist_ok=False)
@@ -131,24 +167,20 @@ def main():
             loss.backward()
             optimizer.step()
         model.eval()
-        with torch.inference_mode():
-            predictions = model(inputs)
-            correct = predictions.argmax(dim=1) == labels
-            validation_targets = clearance_targets(inputs, labels, args.clearance_mixture) if args.clearance_mixture else labels
-            val_loss = float(F.cross_entropy(predictions, validation_targets))
-            distribution = torch.distributions.Categorical(logits=predictions)
-            unsafe_probability = float((distribution.probs * (inputs[..., 0] < 0)).sum(1).mean())
-        row = {'epoch': epoch, 'validation_loss': val_loss, 'all_accuracy': float(correct.float().mean()),
-               'mean_entropy': float(distribution.entropy().mean()), 'negative_clearance_probability': unsafe_probability,
-               'correction_accuracy': float(correct[changed].float().mean()) if changed.any() else None}
+        row = {'epoch': epoch, **metrics(model, validation_data, args.clearance_mixture)}
         epochs.append(row)
-        if val_loss < best:
-            best = val_loss
+        if row['validation_loss'] < best:
+            best = row['validation_loss']
             torch.save(model.state_dict(), args.out / 'head.pt')
     report = {'replay_training_decisions': len(replay_train), 'on_policy_corrections': len(corrections),
               'clearance_mixture': args.clearance_mixture,
-              'validation_decisions': len(validation), 'validation_corrections': int(changed.sum()),
+              'native_training_decisions': len(capture_train),
+              'validation_decisions': len(validation), 'validation_corrections': int(validation_data[2].sum()),
               'best': min(epochs, key=lambda row: row['validation_loss']), 'epochs': epochs}
+    if args.native_test:
+        holdout = dataset(native_examples(args.native_test, base))
+        model.load_state_dict(torch.load(args.out / 'head.pt', map_location=device, weights_only=True))
+        report['native_test'] = metrics(model, tuple(t.to(device) for t in holdout.tensors), args.clearance_mixture)
     (args.out / 'metrics.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print({key: value for key, value in report.items() if key != 'epochs'}, flush=True)
 

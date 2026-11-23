@@ -62,3 +62,25 @@ The expanded and balanced recipe improved direction-change accuracy at each of t
 Measured constant-direction kinematics directly from paired training replays. TH17 Marisa Wolf moved at about 5.0 units per native frame unfocused, compared with 4.5 for the other observed profiles. Each tested profile measured about 2.0 while focused.
 
 Added weight 0.3 on predicted collision probability when the replay action was geometrically safe and at least one alternative action was unsafe. In the seed-61 ablation, both checkpoints selected 16 predicted collisions among the same 3,437 eligible test decisions. Direction-change accuracy moved from 27.51% to 27.32%. Keep the regularized checkpoint experimental.
+
+## Native baseline with matched geometry
+
+Completed 8,192 native TH14 Stage 1 PPO steps and 128 optimizer epochs across the interrupted job and its checkpoint continuation. All three controllers reached the same 9,618-frame cutoff without a miss in all three trials. Median displayed score gains were 228,210 for the frozen imitation head, 198,110 for PPO, and 234,100 for rule-based selection. The test stopped before a clear in all nine episodes, so the survival endpoint could not distinguish the arms.
+
+The next native comparison trains the soft-clearance initialization for the same 8,192 steps. Its evaluation applies a common aiming policy to every arm, includes the first PPO checkpoint as a frozen reference, and allows two misses and 3,300 decisions so it can measure stage-clear outcomes.
+
+## Additional on-policy checks
+
+Evaluated the frozen SFT checkpoints on 2,725 states recorded during native TH14 Stage 4 controller runs. The expanded balanced checkpoint chose actions with negative geometric margin in 72 states, compared with 77 for the earlier stage-clock checkpoint. Applying the same rule left nine negative margins for each candidate and for the older deployed SFT. The balanced candidate fired in 91.73% of states with a positive boss HP observation, compared with 98.27% for the deployed base. Keep the native base fixed for the PPO comparison and the story pilot.
+
+Adding 641 captured controller states to the soft-clearance imitation recipe preserved nearly identical entropy and negative-margin probability on a separate 2,084-state practice recording. Corrective action agreement changed from 111/128 to 110/128. The additional capture stays experimental.
+
+## Progression benchmark and early stopping
+
+The soft-clearance PPO recipe completed the same 8,192 native steps as the reference. With common geometric boss aim, the soft imitation head, soft PPO head, geometric selector, and earlier PPO each cleared Stage 1 in both native trials, with no lives lost. This benchmark shows the common controller can combine survival and boss damage. It did not demonstrate a progression advantage for PPO at this stage.
+
+At seed 61, the balanced SFT run trained for 60 epochs selected the same epoch-2 checkpoint as the 20-epoch run, with identical SHA-256. Validation loss moved from 1.279 at selection to 2.026 at epoch 60. A new run with patience six stopped at epoch 8 and produced the same selected checkpoint. Replaying the stopping rule on the three balanced histories would have stopped at epochs 8, 10, and 9 while preserving their selected checkpoints. The latter two stop times are retrospective.
+
+## Additional data for the world model
+
+Adding the new replay raised the world-model training set from 370,330 to 432,456 exact transitions across the three forecast horizons. With the original architecture, objective and 20 epochs, held-out near-player occupancy AP moved from 0.959, 0.851, and 0.646 to 0.949, 0.835, and 0.641 at 4, 12, and 24 frames. The story pilot retains the earlier checkpoint for short-horizon shadow evaluation.

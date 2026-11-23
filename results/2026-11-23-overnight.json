@@ -145,5 +145,111 @@
       "risky_state_negative_clearance_probability": 0.001028830069117248,
       "deterministic_directions_unchanged": true
     }
+  },
+  "native_th14_p1": {
+    "rollout_steps": 8192,
+    "optimizer_epochs": 128,
+    "evaluation_decisions": 2400,
+    "arms": {
+      "imitation": {
+        "trials": 3,
+        "score_median_display": 228210,
+        "no_miss_at_cutoff": 3,
+        "stage_clears": 0
+      },
+      "ppo": {
+        "trials": 3,
+        "score_median_display": 198110,
+        "no_miss_at_cutoff": 3,
+        "stage_clears": 0
+      },
+      "analytic": {
+        "trials": 3,
+        "score_median_display": 234100,
+        "no_miss_at_cutoff": 3,
+        "stage_clears": 0
+      }
+    }
+  },
+  "native_th14_p2": {
+    "rollout_steps": 8192,
+    "evaluation_arm_count": 4,
+    "aim": "geometric_all_arms",
+    "arms": {
+      "imitation": {
+        "trials": 2,
+        "clears": 2,
+        "misses": 0,
+        "bombs_used": 0,
+        "score_median_display": 11289875.0,
+        "stage_frame_median": 9746.5
+      },
+      "ppo": {
+        "trials": 2,
+        "clears": 2,
+        "misses": 0,
+        "bombs_used": 0,
+        "score_median_display": 11140810.0,
+        "stage_frame_median": 9791.0
+      },
+      "analytic": {
+        "trials": 2,
+        "clears": 2,
+        "misses": 0,
+        "bombs_used": 0,
+        "score_median_display": 11254325.0,
+        "stage_frame_median": 9651.0
+      },
+      "reference_ppo": {
+        "trials": 2,
+        "clears": 2,
+        "misses": 0,
+        "bombs_used": 0,
+        "score_median_display": 11136660.0,
+        "stage_frame_median": 9929.0
+      }
+    }
+  },
+  "early_stopping_seed61": {
+    "overnight-expanded-balanced-61": {
+      "epochs_completed": 20,
+      "selected_epoch": 2,
+      "selected_loss": 1.2789198106716346,
+      "final_validation_loss": 1.5398495380895918,
+      "checkpoint_sha256": "b12c12b2c5780610c3ac3bc91a7f53ff1ec229bef3e0ec68144a2126e947cc42"
+    },
+    "overnight-expanded-balanced-60epochs": {
+      "epochs_completed": 60,
+      "selected_epoch": 2,
+      "selected_loss": 1.2789198106716346,
+      "final_validation_loss": 2.0258669254967625,
+      "checkpoint_sha256": "b12c12b2c5780610c3ac3bc91a7f53ff1ec229bef3e0ec68144a2126e947cc42"
+    },
+    "overnight-balanced-early-stop-61": {
+      "epochs_completed": 8,
+      "selected_epoch": 2,
+      "selected_loss": 1.2789198106716346,
+      "final_validation_loss": 1.3653961952764624,
+      "checkpoint_sha256": "b12c12b2c5780610c3ac3bc91a7f53ff1ec229bef3e0ec68144a2126e947cc42"
+    }
+  },
+  "expanded_world_ablation": {
+    "original_training_transitions": 370330,
+    "expanded_training_transitions": 432456,
+    "epochs": 20,
+    "near_player_ap": {
+      "4": {
+        "previous": 0.9586854516621638,
+        "expanded": 0.9487402560789382
+      },
+      "12": {
+        "previous": 0.8506446171684617,
+        "expanded": 0.8354236085999527
+      },
+      "24": {
+        "previous": 0.6461762953394862,
+        "expanded": 0.6407028042250881
+      }
+    }
   }
 }

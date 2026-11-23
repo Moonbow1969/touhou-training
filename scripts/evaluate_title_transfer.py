@@ -18,7 +18,7 @@ from environment.structured import StateReader
 from replays.collect_stage import ReplayProcess
 from replays.observe_native import game_step
 from scripts.evaluate_stage_policies import read_policy
-from scripts.pretrain_policy import append_motion_history, append_stage_context, condition_context
+from scripts.pretrain_policy import LEVELS, append_motion_history, append_stage_context, condition_context
 from scripts.record_run import write_json
 from scripts.stage_policy import action_keys
 from scripts.stage_risk import action_clearances, body_clearances, suggest_dodge
@@ -46,12 +46,12 @@ def play(args, game, report, policy, dodge):
     try:
         marker = game_step(game, reader)
         if (marker is None or marker[0] != 1 or not 0 < marker[1] <= args.start_by_frame or not foreground(game.pid)):
-            raise RuntimeError(f'Prepare foreground TH{args.title} Normal Stage 1 before starting the evaluator.')
+            raise RuntimeError(f'Prepare foreground TH{args.title} {args.difficulty} Stage 1 before evaluation.')
         character = reader.read_uint(identities.character, relative=True)
         rank = reader.read_uint(identities.difficulty, relative=True)
         pointdevice = args.title == 15 and reader.read_uint(game.offsets.game_specific['modeflags'], relative=True) & 256
-        if character != 0 or rank != 1 or pointdevice:
-            raise RuntimeError('Expected Normal with Reimu. Select Legacy Mode in TH15.')
+        if character != 0 or rank != LEVELS.index(args.difficulty) or pointdevice:
+            raise RuntimeError(f'Expected {args.difficulty} with Reimu. Select Legacy Mode in TH15.')
         subshot = reader.read_uint(identities.subshot, relative=True)
         shot = 'Reimu' if args.title == 15 else f'Reimu{game.offsets.associations.subshots[subshot]}'
         report['shot'] = shot
@@ -157,6 +157,7 @@ def play(args, game, report, policy, dodge):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--title', type=int, choices=(15, 17), required=True)
+    parser.add_argument('--difficulty', choices=LEVELS[:4], default='Normal')
     parser.add_argument('--base', type=Path, help='Frozen motion-history SFT checkpoint. Omit for stationary shooting.')
     dodge_options = parser.add_mutually_exclusive_group()
     dodge_options.add_argument('--ppo', type=Path, help='Frozen projectile-dodge head trained on another title.')
@@ -194,7 +195,8 @@ def main():
     strategy = ('sft_ppo_dodge' if dodge is not None else 'sft_analytic_dodge' if args.analytic_dodge
                 else 'frozen_sft' if policy is not None else 'stationary_shoot')
     mode = ' Legacy Mode' if args.title == 15 else ''
-    report = {'task': f'TH{args.title}{mode} Normal Reimu Stage 1', 'title': args.title,
+    report = {'task': f'TH{args.title}{mode} {args.difficulty} Reimu Stage 1', 'title': args.title,
+              'difficulty': args.difficulty,
               'strategy': strategy,
               'checkpoint': str(args.base) if args.base else None, 'configured_ticks_per_step': 4,
               'dodge_checkpoint': str(args.ppo) if args.ppo else None, 'body_risk': args.body_risk,
