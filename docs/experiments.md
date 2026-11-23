@@ -93,3 +93,7 @@ Run `scripts.train_distributed_native_ppo` with one learner and one actor beside
 ## Fangame coverage
 
 Track the Fantastic Danmaku Festival trilogy, Touhou Kikamu and Abyss Soul Lotus as separate titles. Freeze the train/test split before admitting game data or comparing policies. [Steam builds, replay intake and title splits](fangame-coverage.md)
+
+## State-conditioned SFT and pure PPO
+
+The next native benchmark starts from an SFT checkpoint trained on complete, aligned TH14 credits. See the [capture queue, SFT diagnostics, capacity ablations and promotion gates](sft-to-ppo-pipeline.md).

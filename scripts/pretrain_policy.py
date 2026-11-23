@@ -98,8 +98,13 @@ def movement_direction(keys):
     return (dy + 1) * 3 + dx + 1
 
 
-def movement_distribution(chunks):
-    return (movement_direction(chunks)[..., None] == np.arange(9)).mean(axis=1, dtype=np.float32)
+def movement_distribution(chunks, first_tick_weight=0.):
+    directions = movement_direction(chunks)
+    target = (directions[..., None] == np.arange(9)).mean(axis=1, dtype=np.float32)
+    if first_tick_weight:
+        target *= 1. - first_tick_weight
+        target[np.arange(len(target)), directions[:, 0]] += first_tick_weight
+    return target
 
 
 def label_actions(chunks):
@@ -128,7 +133,7 @@ def index_split(directory, split):
 
 
 def read_shard(shard, motion_history=False, soft_movement=False, motion_spans=None, retain_recent_motion=False,
-               stage_clock=False):
+               stage_clock=False, first_tick_weight=0.):
     path, meta = shard
     with np.load(path) as data:
         chunks = data["expert_action_chunk"]
@@ -143,7 +148,7 @@ def read_shard(shard, motion_history=False, soft_movement=False, motion_spans=No
             if stage_clock:
                 context = append_stage_context(context, frames, meta["stage"])
         fields = data["bullets"], context, labels
-        return (*fields, movement_distribution(chunks)) if soft_movement else fields
+        return (*fields, movement_distribution(chunks, first_tick_weight)) if soft_movement else fields
 
 
 def batch_block(arrays, batch_size, device, order):
@@ -154,13 +159,14 @@ def batch_block(arrays, batch_size, device, order):
 
 def training_batches(shards, block_size, batch_size, device, rng, title_weights, motion_history=False,
                      soft_movement=False, motion_spans=None, retain_recent_motion=False, player_weights=None,
-                     stage_clock=False):
+                     stage_clock=False, first_tick_weight=0.):
     order = rng.permutation(len(shards))
     for start in range(0, len(shards), block_size):
         block = []
         for index in order[start:start + block_size]:
             shard = shards[index]
-            fields = read_shard(shard, motion_history, soft_movement, motion_spans, retain_recent_motion, stage_clock)
+            fields = read_shard(shard, motion_history, soft_movement, motion_spans, retain_recent_motion,
+                                stage_clock, first_tick_weight)
             meta = shard[1]
             player_weight = player_weights[(meta["title"], meta["player_group"])] if player_weights is not None else 1.
             weight = np.full(len(fields[2]), title_weights[meta["title"]] * player_weight, dtype=np.float32)
@@ -258,6 +264,10 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
     predicted_moving_total = 0
     moving_true_positive = 0
     loss = 0.0
+    head_nll = np.zeros(len(ACTION_WIDTHS), dtype=np.float64)
+    predicted_buttons = np.zeros(len(ACTION_WIDTHS) - 1, dtype=np.int64)
+    actual_buttons = predicted_buttons.copy()
+    true_positive_buttons = predicted_buttons.copy()
     per_replay = {}
     for shard in shards:
         data = read_shard(shard, motion_history, motion_spans=motion_spans,
@@ -271,7 +281,9 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
                                    *(head.argmax(1) for head in buttons)), dim=1)
             predicted.append(decoded.cpu().numpy())
             for index, head in enumerate(logits):
-                loss += functional.cross_entropy(head, truth[:, index], reduction="sum").item()
+                nll = functional.cross_entropy(head, truth[:, index], reduction="sum").item()
+                loss += nll
+                head_nll[index] += nll
         predicted = np.concatenate(predicted)
         correct = predicted == labels
         baseline = labels == majority
@@ -281,6 +293,9 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
         predicted_moving_total += int(predicted_moving.sum())
         moving_true_positive += int((moving & predicted_moving).sum())
         correct_moving += int(correct[moving, 0].sum())
+        predicted_buttons += predicted[:, 1:].sum(axis=0)
+        actual_buttons += labels[:, 1:].sum(axis=0)
+        true_positive_buttons += (predicted[:, 1:] & labels[:, 1:]).sum(axis=0)
         per_replay[shard[0].stem] = {
             "accuracy": dict(zip(ACTION_NAMES, correct.mean(axis=0).tolist())),
             "majority_baseline": dict(zip(ACTION_NAMES, baseline.mean(axis=0).tolist())),
@@ -291,6 +306,11 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
         baseline_total += baseline.sum(axis=0)
         sample_total += len(labels)
     metrics = {"val_loss": loss / sample_total,
+               "validation_nll_by_head": dict(zip(ACTION_NAMES, head_nll / sample_total)),
+               "validation_positive_buttons": {
+                   name: {"observed": int(actual), "predicted": int(predicted), "true_positive": int(hit)}
+                   for name, actual, predicted, hit in zip(ACTION_NAMES[1:], actual_buttons, predicted_buttons,
+                                                           true_positive_buttons)},
                "accuracy": dict(zip(ACTION_NAMES, correct_total / sample_total)),
                "predicted_moving_fraction": predicted_moving_total / sample_total,
                "moving_precision": moving_true_positive / predicted_moving_total if predicted_moving_total else None,
@@ -319,6 +339,8 @@ def main():
     parser.add_argument("--stage-clock", action="store_true")
     parser.add_argument("--encoder", choices=("pool", "attention"), default="pool")
     parser.add_argument("--soft-movement", action="store_true")
+    parser.add_argument("--first-tick-weight", type=float, default=0.,
+                        help="Weight of the first native input in the four-tick soft movement target.")
     parser.add_argument("--factorized-movement", action="store_true",
                         help="Train separate movement intent and conditional direction losses.")
     parser.add_argument("--geometry-loss-weight", type=float, default=0.,
@@ -334,6 +356,8 @@ def main():
     parser.add_argument("--anchor-movement", type=float, default=0.,
                         help="KL weight for retaining movement predictions from the initial checkpoint.")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--button-class-balance", type=float, default=0.5,
+                        help="Inverse-frequency exponent for focus, shoot and bomb labels.")
     parser.add_argument("--seed", type=int, default=61)
     args = parser.parse_args()
     if not 0 <= args.player_balance <= 1:
@@ -357,6 +381,10 @@ def main():
         parser.error("Use a finite nonnegative anchor weight and supply its initial checkpoint.")
     if not 0 <= args.title_balance <= 1:
         parser.error("Title balance must be between zero and one.")
+    if not 0 <= args.button_class_balance <= 1:
+        parser.error("Button class balance must be between zero and one.")
+    if not 0 <= args.first_tick_weight <= 1 or args.first_tick_weight and not args.soft_movement:
+        parser.error("First-tick weights must be between zero and one and require soft movement labels.")
     if not 1 <= args.moving_transition_weight < float("inf"):
         parser.error("Moving transition weight must be finite and at least one.")
     if args.moving_transition_weight != 1 and not args.motion_history:
@@ -389,6 +417,9 @@ def main():
     counts = label_counts(train)
     majority = np.asarray([count.argmax() for count in counts])
     weights = [torch.from_numpy(np.maximum(count, 1).astype(np.float32)).rsqrt().to(device) for count in counts]
+    if args.button_class_balance != 0.5:
+        weights[1:] = [torch.from_numpy(np.maximum(count, 1).astype(np.float32)).to(device)
+                        .pow(-args.button_class_balance) for count in counts[1:]]
     history = []
     best = None
     initial_validation = None
@@ -404,10 +435,12 @@ def main():
     for epoch in range(1, args.epochs + 1):
         policy.train()
         geometry_totals = torch.zeros(2, device=device)
+        train_objective = torch.zeros((), device=device)
+        train_examples = 0
         for bullets, context, truth, *extra, title_weight in training_batches(
                 train, args.shards_per_block, args.batch_size, device, rng, title_weights,
                 args.motion_history, args.soft_movement, args.motion_spans, args.retain_recent_motion,
-                player_weights, args.stage_clock):
+                player_weights, args.stage_clock, args.first_tick_weight):
             if args.mirror_probability:
                 mirrored = torch.rand(len(truth), device=device) < args.mirror_probability
                 mirror_batch(bullets, context, truth, extra[0] if args.soft_movement else None, mirrored, motion_fields)
@@ -447,10 +480,13 @@ def main():
             loss.backward()
             torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0)
             policy.optimizer.step()
+            train_objective += loss.detach() * len(truth)
+            train_examples += len(truth)
         metrics, baseline, per_replay = validate(policy, val, majority, args.batch_size * 2, device,
                                                  args.motion_history, args.motion_spans, args.retain_recent_motion,
                                                  args.stage_clock)
-        entry = {"epoch": epoch, **metrics}
+        entry = {"epoch": epoch, "train_examples": train_examples,
+                 "train_weighted_objective": (train_objective / train_examples).item(), **metrics}
         if args.geometry_loss_weight:
             mass_sum, risky_examples = geometry_totals.tolist()
             entry.update(geometry_eligible_decisions=int(risky_examples),
@@ -481,6 +517,7 @@ def main():
         "moving_transition_weight": args.moving_transition_weight,
         "training_replays": training_replays, "validation_replays": validation_replays,
         "training_samples_by_title": population,
+        "training_action_counts": {name: count.tolist() for name, count in zip(ACTION_NAMES, counts)},
         "training_title_loss_weights": title_weights,
         "player_balance": args.player_balance,
         "training_player_loss_weights": {f"{title}/{player}": weight for (title, player), weight in player_weights.items()},

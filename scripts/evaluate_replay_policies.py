@@ -93,6 +93,8 @@ def evaluate(shards, policies, device, geometry_eval=False):
 def main():
     parser = argparse.ArgumentParser(description='Compare motion policies on identical held-out replay labels.')
     parser.add_argument('--data', type=Path, required=True)
+    parser.add_argument('--test-data', type=Path,
+                        help='Read test shards from a separate directory and verify player exclusion for every model.')
     parser.add_argument('--reference', type=Path, required=True)
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--additional', nargs=2, action='append', metavar=('NAME', 'CHECKPOINT'), default=[])
@@ -117,6 +119,21 @@ def main():
             rows = metrics.get(key)
             if not rows or any(row['title'] == args.holdout_title for row in rows):
                 parser.error(f'{key} must document a split that excludes the held-out title.')
+    test_shards = index_split(args.test_data or args.data, 'test')
+    if args.test_data is not None:
+        test_players = {meta['player_group'] for _, meta in test_shards}
+        test_replays = {meta['replay'] for _, meta in test_shards}
+        for label, checkpoint in choices:
+            manifest = checkpoint.with_name('metrics.json')
+            if not manifest.is_file():
+                parser.error(f'{label} requires metrics.json to verify the independent test split.')
+            metrics = json.loads(manifest.read_text(encoding='utf-8'))
+            for split in ('training_replays', 'validation_replays'):
+                if not metrics.get(split) or any(
+                        (row.get('player_group') or row.get('player', '').casefold()) in test_players
+                        or row['replay'] in test_replays
+                        for row in metrics[split]):
+                    parser.error(f'{label} does not exclude the independent test group from {split}.')
     policies = {}
     for label, path in choices:
         policy = read_policy(path, device, motion_history=True)
@@ -128,10 +145,11 @@ def main():
                            'retain_recent_motion': policies[label][2],
                            'stage_clock': policies[label][0].stage_clock} for label, path in choices},
         'holdout_title': args.holdout_title,
-        **{split: evaluate([shard for shard in index_split(args.data, split)
+        'independent_test_data': str(args.test_data) if args.test_data is not None else None,
+        **{split: evaluate([shard for shard in shards
                             if args.holdout_title is None or shard[1]['title'] == args.holdout_title], policies, device,
                            args.geometry_eval)
-           for split in ('validation', 'test')},
+           for split, shards in (('validation', index_split(args.data, 'validation')), ('test', test_shards))},
     }
     args.out.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({split: report[split]['summary']['overall'] for split in ('validation', 'test')}),
