@@ -121,7 +121,7 @@ _process_handle = ctypes.windll.kernel32.OpenProcess(
 
 
 def suspend_game_process():
-    ctypes.windll.kernel32.DebugActiveProcess(_game_pid)
+    return bool(ctypes.windll.kernel32.DebugActiveProcess(_game_pid))
 
 
 def resume_game_process():
@@ -218,24 +218,41 @@ def _sleep(k: int = 0):
     resume_game_process()  # to prevent forever loop
     if k < 0:
         raise ValueError("k should be non positive")
-    t0 = _time()
-    while _time() < t0 + k:
-        pass
+    start = _time()
+    if start is None:
+        raise RuntimeError("Could not read TH14's clock.")
+    deadline = time.monotonic() + max(5.0, k / 60 + 2.0)
+    while True:
+        current = _time()
+        if current is None:
+            raise RuntimeError("TH14's clock became unreadable.")
+        if current >= start + k:
+            return
+        if time.monotonic() >= deadline:
+            raise TimeoutError("TH14's clock stopped advancing.")
 
 
 def _press_and_release(key):
+    require_game_focus()
     keyboard.press(key)
-    _sleep(1)
+    _sleep(4)
     keyboard.release(key)
-    _sleep(1)
+    _sleep(3)
 
 
 def _get_focus():
     _game_window.activate()
     time.sleep(0.2)
+    require_game_focus()
+
+
+def require_game_focus():
+    if ctypes.windll.user32.GetForegroundWindow() != _game_window._hWnd:
+        raise RuntimeError("TH14 lost keyboard focus. No game action was sent.")
 
 
 def _resume_shooting():
+    require_game_focus()
     keyboard.release("z")
     _sleep(1)
     keyboard.press("z")
@@ -259,6 +276,7 @@ def init():
     _press_and_release("esc")
 
     # now the cursor is at the last line in the menu
+    _press_and_release("down")
     _press_and_release("down")
     _press_and_release("down")
     _press_and_release("down")
@@ -355,6 +373,7 @@ def act(move: int, slow: int, k: int = 1) -> None:
     """
     if k < 1:
         raise ValueError(f"Invalid k {k}, should be positive")
+    require_game_focus()
     t0 = _time()
     keyboard.press("z")
     _maintain_keyboard_move(move)
@@ -406,16 +425,41 @@ def release_all_keys() -> None:
     keyboard.release("ctrl")
 
 
+def _spell_result_selection() -> int | None:
+    # The selected row in the three-entry Spell Practice result menu is red.
+    frame = capture_frame().convert("RGB")
+    counts = []
+    for y in (258, 292, 329):
+        row = frame.crop((65, y, 145, y + 18))
+        counts.append(sum(r >= 95 and r > g + 20 and r > b + 20 for r, g, b in row.getdata()))
+    selected = counts.index(max(counts))
+    return selected if counts[selected] - sorted(counts)[-2] >= 40 else None
+
+
+def _select_spell_result_item(item: int):
+    current = _spell_result_selection()
+    for _ in range(8):
+        if current is not None:
+            break
+        _sleep(30)
+        current = _spell_result_selection()
+    if current is None:
+        raise RuntimeError("Could not identify the highlighted Spell Practice result row.")
+    for _ in range((item - current) % 3):
+        _press_and_release("down")
+        _sleep(12)
+    if _spell_result_selection() != item:
+        raise RuntimeError("The requested Spell Practice result row was not selected.")
+    _press_and_release("z")
+
+
 def reset_from_end_of_run() -> None:
     """
     Reset when the game is cleared or all lives are lost.
     """
     release_all_keys()
-    _press_and_release("esc")
-    _sleep(30)
-    _press_and_release("up")
-    _sleep(30)
-    _press_and_release("z")
+    _sleep(90)
+    _select_spell_result_item(2)
     _sleep(30)
     count = 0
     max_retry = 60

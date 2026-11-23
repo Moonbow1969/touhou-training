@@ -1,0 +1,370 @@
+import argparse
+from collections import Counter
+import json
+from pathlib import Path
+
+import gymnasium as gym
+import numpy as np
+from stable_baselines3.common.policies import MultiInputActorCriticPolicy
+import torch
+from torch.nn import functional
+
+from scripts.train_spell_qr import AttentiveThreatEncoder, ThreatEncoder
+
+
+ACTION_WIDTHS = (9, 2, 2, 2)
+ACTION_NAMES = ("movement", "focus", "shoot", "bomb")
+LEVELS = ("Easy", "Normal", "Hard", "Lunatic", "Extra")
+CHARACTERS = ("Reimu", "Marisa", "Sakuya", "Sanae", "Youmu", "Cirno", "Aya")
+CONFIGS = ("A", "B", "Spring", "Summer", "Autumn", "Winter", "Wolf", "Otter", "Eagle")
+CONTEXT_SIZE = 10 + 1 + len(CHARACTERS) + len(CONFIGS)
+MOTION_INTERVALS = 3
+STAGE_CONTEXT_SIZE = 3
+
+
+def network_kwargs(hidden, encoder="pool"):
+    return {"features_extractor_class": AttentiveThreatEncoder if encoder == "attention" else ThreatEncoder,
+            "net_arch": {"pi": [hidden, hidden], "vf": [hidden, hidden]}}
+
+
+def observation_space(motion_history=False, retain_recent_motion=False, stage_clock=False):
+    context_size = CONTEXT_SIZE + 3 * MOTION_INTERVALS * (int(motion_history) + int(retain_recent_motion))
+    context_size += int(stage_clock) * STAGE_CONTEXT_SIZE
+    return gym.spaces.Dict({
+        "bullets": gym.spaces.Box(-1, 1, (96, 7), dtype=np.float32),
+        "context": gym.spaces.Box(-1, 1, (context_size,), dtype=np.float32),
+    })
+
+
+def action_space():
+    return gym.spaces.MultiDiscrete(ACTION_WIDTHS)
+
+
+def condition_context(context, difficulty, shot):
+    shot = shot.replace(" ", "")
+    character = next((name for name in CHARACTERS if shot.startswith(name)), "")
+    config = shot.removeprefix(character)
+    extras = np.asarray([difficulty / 4] + [name == character for name in CHARACTERS]
+                        + [name == config for name in CONFIGS], dtype=np.float32)
+    extras = np.broadcast_to(extras, (*context.shape[:-1], len(extras)))
+    return np.concatenate((context, extras), axis=-1)
+
+
+def append_stage_context(context, frames, stage):
+    seconds = np.asarray(frames, dtype=np.float32) / 60
+    fields = np.stack((np.full_like(seconds, stage / 7), (seconds / 240).clip(0, 1),
+                       (np.log1p(seconds) / 6).clip(0, 1)), axis=-1)
+    return np.concatenate((context, fields.astype(context.dtype, copy=False)), axis=-1)
+
+
+def append_motion_history(context, frames, spans=None, retain_recent_motion=False):
+    if spans is not None:
+        if retain_recent_motion:
+            context = append_motion_history(context, frames)
+        return append_multiscale_motion(context, frames, spans)
+    elapsed = np.diff(frames)
+    uninterrupted = (elapsed > 0) & (elapsed <= 6) & (np.diff(context[:, 3]) == 0)
+    displacement = np.diff(context[:, :2], axis=0) * np.array([192, 448], dtype=np.float32)
+    velocity = displacement / (8 * elapsed.clip(min=1)[:, None])
+    intervals = np.zeros((len(context), 3), dtype=np.float32)
+    intervals[1:, :2] = np.where(uninterrupted[:, None], velocity.clip(-1, 1), 0)
+    intervals[1:, 2] = uninterrupted
+    history = np.zeros((len(context), 3 * MOTION_INTERVALS), dtype=np.float32)
+    for lag in range(min(MOTION_INTERVALS, len(context))):
+        history[lag:, 3 * lag : 3 * (lag + 1)] = intervals[:len(context) - lag]
+    return np.concatenate((context, history), axis=-1)
+
+
+def append_multiscale_motion(context, frames, spans):
+    scale = np.array([192, 448], dtype=np.float32)
+    history = np.zeros((len(context), 3 * len(spans)), dtype=np.float32)
+    for index, span in enumerate(spans):
+        previous = np.searchsorted(frames, frames - span, side="right") - 1
+        starts = previous.clip(min=0)
+        elapsed = frames - frames[starts]
+        valid = (previous >= 0) & (elapsed <= span + 3) & (context[:, 3] == context[starts, 3])
+        displacement = (context[:, :2] - context[starts, :2]) * scale
+        velocity = displacement / (8 * elapsed.clip(min=1)[:, None])
+        history[:, index * 3:index * 3 + 2] = np.where(valid[:, None], velocity.clip(-1, 1), 0)
+        history[:, index * 3 + 2] = valid
+    return np.concatenate((context, history), axis=-1)
+
+
+def movement_direction(keys):
+    dx = ((keys & 128) != 0).astype(np.int64) - ((keys & 64) != 0)
+    dy = ((keys & 32) != 0).astype(np.int64) - ((keys & 16) != 0)
+    return (dy + 1) * 3 + dx + 1
+
+
+def movement_distribution(chunks):
+    return (movement_direction(chunks)[..., None] == np.arange(9)).mean(axis=1, dtype=np.float32)
+
+
+def label_actions(chunks):
+    # Pick the most common direction/focus/shoot combination over a decision window.
+    keys = chunks & 0xF9
+    counts = (keys[:, :, None] == keys[:, None, :]).sum(axis=-1)
+    primary = keys[np.arange(len(keys)), counts.argmax(axis=1)]
+    return np.stack((movement_direction(primary), (primary & 8) != 0, (primary & 1) != 0,
+                     ((chunks & 2) != 0).any(axis=1)), axis=-1).astype(np.int64)
+
+
+def index_split(directory, split):
+    shards = []
+    for path in sorted(directory.glob("*.json")):
+        entry = json.loads(path.read_text(encoding="utf-8"))
+        if entry["split"] != split:
+            continue
+        shards.append((path.with_suffix(".npz"), {
+            "title": entry["title"], "replay": entry["name"], "stage": entry["stage"],
+            "player": entry["player"], "player_group": entry.get("player_group", entry["player"].casefold()),
+            "difficulty": entry["difficulty"], "shot": entry["shot"], "samples": entry["pairs"],
+        }))
+    if not shards:
+        raise ValueError(f"No paired complete replay stages for split {split}.")
+    return shards
+
+
+def read_shard(shard, motion_history=False, soft_movement=False, motion_spans=None, retain_recent_motion=False,
+               stage_clock=False):
+    path, meta = shard
+    with np.load(path) as data:
+        chunks = data["expert_action_chunk"]
+        labels = label_actions(chunks)
+        if len(labels) != meta["samples"]:
+            raise ValueError(f"Metadata size does not match {path.name}.")
+        context = condition_context(data["context"], LEVELS.index(meta["difficulty"]), meta["shot"])
+        if motion_history or stage_clock:
+            frames = data["stage_frame"]
+            if motion_history:
+                context = append_motion_history(context, frames, motion_spans, retain_recent_motion)
+            if stage_clock:
+                context = append_stage_context(context, frames, meta["stage"])
+        fields = data["bullets"], context, labels
+        return (*fields, movement_distribution(chunks)) if soft_movement else fields
+
+
+def batch_block(arrays, batch_size, device, order):
+    for start in range(0, len(order), batch_size):
+        indices = order[start:start + batch_size]
+        yield tuple(torch.from_numpy(field[indices]).to(device) for field in arrays)
+
+
+def training_batches(shards, block_size, batch_size, device, rng, title_weights, motion_history=False,
+                     soft_movement=False, motion_spans=None, retain_recent_motion=False, player_weights=None,
+                     stage_clock=False):
+    order = rng.permutation(len(shards))
+    for start in range(0, len(shards), block_size):
+        block = []
+        for index in order[start:start + block_size]:
+            shard = shards[index]
+            fields = read_shard(shard, motion_history, soft_movement, motion_spans, retain_recent_motion, stage_clock)
+            meta = shard[1]
+            player_weight = player_weights[(meta["title"], meta["player_group"])] if player_weights is not None else 1.
+            weight = np.full(len(fields[2]), title_weights[meta["title"]] * player_weight, dtype=np.float32)
+            block.append((*fields, weight))
+        fields = tuple(np.concatenate(items) for items in zip(*block))
+        yield from batch_block(fields, batch_size, device, rng.permutation(len(fields[2])))
+
+
+def label_counts(shards):
+    counts = [np.zeros(width, dtype=np.int64) for width in ACTION_WIDTHS]
+    for path, _ in shards:
+        with np.load(path) as data:
+            labels = label_actions(data["expert_action_chunk"])
+        for index, values in enumerate(counts):
+            values += np.bincount(labels[:, index], minlength=len(values))
+    return counts
+
+
+def weights_by_player(replays, strength):
+    counts = Counter()
+    for replay in replays:
+        counts[replay["title"], replay["player_group"]] += replay["samples"]
+    weighted_totals = Counter()
+    totals = Counter()
+    for (title, _), samples in counts.items():
+        totals[title] += samples
+        weighted_totals[title] += samples ** (1 - strength)
+    return {(title, player): samples ** -strength * totals[title] / weighted_totals[title]
+            for (title, player), samples in counts.items()}
+
+
+def predict_heads(policy, bullets, context):
+    features = policy.extract_features({"bullets": bullets, "context": context})
+    latent = policy.mlp_extractor.forward_actor(features)
+    return policy.action_net(latent).split(ACTION_WIDTHS, dim=-1)
+
+
+@torch.inference_mode()
+def validate(policy, shards, majority, batch_size, device, motion_history=False, motion_spans=None,
+             retain_recent_motion=False, stage_clock=False):
+    policy.eval()
+    correct_total = np.zeros(len(ACTION_WIDTHS), dtype=np.int64)
+    baseline_total = correct_total.copy()
+    sample_total = 0
+    moving_total = 0
+    correct_moving = 0
+    loss = 0.0
+    per_replay = {}
+    for shard in shards:
+        data = read_shard(shard, motion_history, motion_spans=motion_spans,
+                          retain_recent_motion=retain_recent_motion, stage_clock=stage_clock)
+        labels = data[2]
+        predicted = []
+        for bullets, context, truth in batch_block(data, batch_size, device, np.arange(len(labels))):
+            logits = predict_heads(policy, bullets, context)
+            predicted.append(torch.stack([head.argmax(dim=1) for head in logits], dim=1).cpu().numpy())
+            for index, head in enumerate(logits):
+                loss += functional.cross_entropy(head, truth[:, index], reduction="sum").item()
+        predicted = np.concatenate(predicted)
+        correct = predicted == labels
+        baseline = labels == majority
+        moving = labels[:, 0] != 4
+        moving_total += int(moving.sum())
+        correct_moving += int(correct[moving, 0].sum())
+        per_replay[shard[0].stem] = {
+            "accuracy": dict(zip(ACTION_NAMES, correct.mean(axis=0).tolist())),
+            "majority_baseline": dict(zip(ACTION_NAMES, baseline.mean(axis=0).tolist())),
+            "movement_accuracy_on_moving_frames": float(correct[moving, 0].mean()) if moving.any() else None,
+            "predicted_moving_fraction": float((predicted[:, 0] != 4).mean()),
+        }
+        correct_total += correct.sum(axis=0)
+        baseline_total += baseline.sum(axis=0)
+        sample_total += len(labels)
+    metrics = {"val_loss": loss / sample_total,
+               "accuracy": dict(zip(ACTION_NAMES, correct_total / sample_total)),
+               "active_direction_accuracy": correct_moving / moving_total if moving_total else None}
+    return metrics, dict(zip(ACTION_NAMES, baseline_total / sample_total)), per_replay
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Behavioral cloning from aligned native game replays.")
+    parser.add_argument("--data", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--epochs", type=int, default=12)
+    parser.add_argument("--hidden", type=int, default=128)
+    parser.add_argument("--batch-size", type=int, default=128)
+    parser.add_argument("--title-balance", type=float, default=0.0,
+                        help="Exponent for inverse-frequency title weights, from 0 to 1.")
+    parser.add_argument("--shards-per-block", type=int, default=12)
+    parser.add_argument("--player-balance", type=float, default=0.0,
+                        help="Equalize replay contributors within each title. Use 0 for sample weighting and 1 for equal players.")
+    parser.add_argument("--motion-history", action="store_true")
+    parser.add_argument("--motion-spans", nargs=MOTION_INTERVALS, type=int, metavar="FRAMES")
+    parser.add_argument("--retain-recent-motion", action="store_true")
+    parser.add_argument("--stage-clock", action="store_true")
+    parser.add_argument("--encoder", choices=("pool", "attention"), default="pool")
+    parser.add_argument("--soft-movement", action="store_true")
+    parser.add_argument("--moving-transition-weight", type=float, default=1.0,
+                        help="Extra direction loss weight when the expert starts moving or turns.")
+    parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
+    parser.add_argument("--device", default="cuda")
+    parser.add_argument("--seed", type=int, default=61)
+    args = parser.parse_args()
+    if not 0 <= args.player_balance <= 1:
+        parser.error("Player balance must be between zero and one.")
+    if args.motion_spans and (not args.motion_history or args.motion_spans != sorted(set(args.motion_spans))
+                             or not 4 <= args.motion_spans[0] <= args.motion_spans[-1] <= 120):
+        parser.error("Motion spans require motion history and three distinct increasing spans from 4 to 120 frames.")
+    if args.retain_recent_motion and not args.motion_spans:
+        parser.error("Retaining the most recent positions requires explicitly requested longer spans.")
+    if min(args.epochs, args.hidden, args.batch_size, args.shards_per_block) < 1:
+        parser.error("Epochs, hidden width, batch size and shards per block must be positive.")
+    if not 0 <= args.title_balance <= 1:
+        parser.error("Title balance must be between zero and one.")
+    if not 1 <= args.moving_transition_weight < float("inf"):
+        parser.error("Moving transition weight must be finite and at least one.")
+    if args.moving_transition_weight != 1 and not args.motion_history:
+        parser.error("Moving transition weights require motion history.")
+    torch.manual_seed(args.seed)
+    torch.set_num_threads(1)
+    train = index_split(args.data, "train")
+    val = index_split(args.data, "validation")
+    training_replays = [meta for _, meta in train]
+    validation_replays = [meta for _, meta in val]
+    if {row["player_group"] for row in training_replays} & {
+            row["player_group"] for row in validation_replays}:
+        raise RuntimeError("Player overlap between training and validation.")
+    args.out.mkdir(parents=True, exist_ok=False)
+    population = Counter()
+    for row in training_replays:
+        population[row["title"]] += row["samples"]
+    title_weights = {title: (max(population.values()) / count) ** args.title_balance
+                     for title, count in population.items()}
+    player_weights = weights_by_player(training_replays, args.player_balance)
+    rng = np.random.default_rng(args.seed)
+    device = torch.device(args.device)
+    policy = MultiInputActorCriticPolicy(observation_space(args.motion_history, args.retain_recent_motion, args.stage_clock),
+                                        action_space(),
+                                        lambda _: 3e-4, **network_kwargs(args.hidden, args.encoder)).to(device)
+    if args.resume:
+        policy.load_state_dict(torch.load(args.resume, map_location=device, weights_only=True))
+    counts = label_counts(train)
+    majority = np.asarray([count.argmax() for count in counts])
+    weights = [torch.from_numpy(np.maximum(count, 1).astype(np.float32)).rsqrt().to(device) for count in counts]
+    history = []
+    best = None
+    for epoch in range(1, args.epochs + 1):
+        policy.train()
+        for bullets, context, truth, *extra, title_weight in training_batches(
+                train, args.shards_per_block, args.batch_size, device, rng, title_weights,
+                args.motion_history, args.soft_movement, args.motion_spans, args.retain_recent_motion,
+                player_weights, args.stage_clock):
+            logits = predict_heads(policy, bullets, context)
+            direction_weight = title_weight
+            if args.moving_transition_weight != 1:
+                motion = context[:, CONTEXT_SIZE : CONTEXT_SIZE + 3]
+                axes = motion[:, :2].sign() * (motion[:, :2].abs() >= 0.01)
+                previous_direction = (axes[:, 1] + 1) * 3 + axes[:, 0] + 1
+                changed = (motion[:, 2] > 0) & (truth[:, 0] != 4) & (truth[:, 0] != previous_direction)
+                direction_weight = title_weight * (1 + (args.moving_transition_weight - 1) * changed)
+            loss = 0.0
+            for index, head in enumerate(logits):
+                if index == 0 and args.soft_movement:
+                    target_weights = extra[0] * weights[index] * direction_weight[:, None]
+                    loss -= (functional.log_softmax(head, dim=-1) * target_weights).sum() / target_weights.sum()
+                    continue
+                target = truth[:, index]
+                sample_weight = (direction_weight if index == 0 else title_weight) * weights[index][target]
+                losses = functional.cross_entropy(head, target, reduction="none")
+                loss += (losses * sample_weight).sum() / sample_weight.sum()
+            policy.optimizer.zero_grad(set_to_none=True)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0)
+            policy.optimizer.step()
+        metrics, baseline, per_replay = validate(policy, val, majority, args.batch_size * 2, device,
+                                                 args.motion_history, args.motion_spans, args.retain_recent_motion,
+                                                 args.stage_clock)
+        entry = {"epoch": epoch, **metrics}
+        print(json.dumps(entry), flush=True)
+        with (args.out / "epochs.jsonl").open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(entry) + "\n")
+        history.append(entry)
+        if best is None or entry["val_loss"] < best["val_loss"]:
+            best = dict(entry, per_replay=per_replay)
+            torch.save(policy.state_dict(), args.out / "policy.pt")
+    report = {
+        "config": {key: str(value) if isinstance(value, Path) else value for key, value in vars(args).items()},
+        "parameters": sum(parameter.numel() for parameter in policy.parameters()),
+        "hidden": args.hidden,
+        "motion_history": args.motion_history,
+        "motion_spans": args.motion_spans,
+        "retain_recent_motion": args.retain_recent_motion,
+        "stage_clock": args.stage_clock,
+        "encoder": args.encoder,
+        "soft_movement": args.soft_movement,
+        "moving_transition_weight": args.moving_transition_weight,
+        "training_replays": training_replays, "validation_replays": validation_replays,
+        "training_samples_by_title": population,
+        "training_title_loss_weights": title_weights,
+        "player_balance": args.player_balance,
+        "training_player_loss_weights": {f"{title}/{player}": weight for (title, player), weight in player_weights.items()},
+        "validation_samples": sum(row["samples"] for row in validation_replays),
+        "majority_baseline": baseline, "best": best, "epochs": history,
+    }
+    (args.out / "metrics.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,7 +1,8 @@
-name: Formatting Check
+name: Python Checks
 
 on:
   pull_request:
+  push:
 
 jobs:
   ruff:
@@ -9,3 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/ruff-action@v1
+        with:
+          args: check --select E4,E7,E9,F

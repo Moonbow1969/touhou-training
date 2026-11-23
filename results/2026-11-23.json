@@ -1,0 +1,157 @@
+{
+  "date": "2026-11-23",
+  "native_task": {
+    "game": "TH14 1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "native_frames_per_decision": 4
+  },
+  "dataset": {
+    "complete_action_replays": 2000,
+    "native_input_frames": 209326603,
+    "train_four_frame_raw_windows": 45498703,
+    "train_paired_decisions_latest": 126781,
+    "train_paired_stages_latest": 32,
+    "train_paired_titles_latest": [
+      13,
+      14,
+      17
+    ]
+  },
+  "sft_stage1": {
+    "stationary": {
+      "trials": 3,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 486,
+      "median_furthest_frame": 486
+    },
+    "original_soft_sft": {
+      "trials": 3,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 506,
+      "median_furthest_frame": 506
+    },
+    "turn_weight2_sft": {
+      "trials": 3,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 418,
+      "median_furthest_frame": 418
+    }
+  },
+  "ppo_vs_imitation_stage1": {
+    "imitation": {
+      "n": 3,
+      "median_furthest_frame": 3470,
+      "first_miss_frames": [
+        2266,
+        3470,
+        4762
+      ],
+      "stage_clears": 0,
+      "no_miss_at_cutoff": 0
+    },
+    "ppo": {
+      "n": 3,
+      "median_furthest_frame": 3626,
+      "first_miss_frames": [
+        4790,
+        3626,
+        2818
+      ],
+      "stage_clears": 0,
+      "no_miss_at_cutoff": 0
+    }
+  },
+  "boss_alignment_stage1": {
+    "ppo_dodge": {
+      "trials": 2,
+      "clears": 0,
+      "damage_per_vulnerable_second": 119.13699232742108,
+      "mean_horizontal_offsets": [
+        181.93036024223926,
+        148.32796728189058
+      ]
+    },
+    "ppo_dodge_with_aim": {
+      "trials": 2,
+      "clears": 1,
+      "damage_per_vulnerable_second": 505.94786863755536,
+      "mean_horizontal_offsets": [
+        11.054739792294438,
+        4.4047985941560395
+      ]
+    }
+  },
+  "world_model_offline": {
+    "split": "test",
+    "control_use": false,
+    "horizons": {
+      "4": {
+        "original": {
+          "pairs": 51078,
+          "player_mae_game_units": 4.16577226986178,
+          "learned_stage_ap_weighted_by_pairs": 0.9251585653314538,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.8746975429734913,
+          "near_learned_stage_ap_weighted_by_pairs": 0.9554188828849994,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.9149229120169153
+        },
+        "corrected_data": {
+          "pairs": 51078,
+          "player_mae_game_units": 4.465723383844317,
+          "learned_stage_ap_weighted_by_pairs": 0.9286674967696465,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.8746975429734913,
+          "near_learned_stage_ap_weighted_by_pairs": 0.9586854516621638,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.9149229120169153
+        }
+      },
+      "12": {
+        "original": {
+          "pairs": 50884,
+          "player_mae_game_units": 5.489788165238582,
+          "learned_stage_ap_weighted_by_pairs": 0.7643955938998508,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.6599666083641222,
+          "near_learned_stage_ap_weighted_by_pairs": 0.8398152484081441,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.7608656178759532
+        },
+        "corrected_data": {
+          "pairs": 50884,
+          "player_mae_game_units": 5.124419326310824,
+          "learned_stage_ap_weighted_by_pairs": 0.7777401619369547,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.6599666083641222,
+          "near_learned_stage_ap_weighted_by_pairs": 0.8506446171684617,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.7608656178759532
+        }
+      },
+      "24": {
+        "original": {
+          "pairs": 50657,
+          "player_mae_game_units": 6.976029334544091,
+          "learned_stage_ap_weighted_by_pairs": 0.5330398997177095,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.41927391278599213,
+          "near_learned_stage_ap_weighted_by_pairs": 0.609880797516615,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.5385181232942353
+        },
+        "corrected_data": {
+          "pairs": 50657,
+          "player_mae_game_units": 5.936319027972442,
+          "learned_stage_ap_weighted_by_pairs": 0.5569127425627257,
+          "constant_velocity_stage_ap_weighted_by_pairs": 0.41927391278599213,
+          "near_learned_stage_ap_weighted_by_pairs": 0.6461762953394862,
+          "near_constant_velocity_stage_ap_weighted_by_pairs": 0.5385181232942353
+        }
+      }
+    }
+  },
+  "longest_one_credit": {
+    "native_stage": 4,
+    "stage_frame": 23694,
+    "stages_cleared": 3,
+    "misses": 1,
+    "bombs_used": 7,
+    "ending_observed": false,
+    "outcome": "controller_exit"
+  }
+}
