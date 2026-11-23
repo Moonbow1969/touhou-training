@@ -44,6 +44,8 @@ At the stock 60 Hz cap, the Python controller can yield briefly between native-c
 
 The 0.25 ms interval reduced controller stepping CPU by 93.7% in this probe. The game's real-time cap still dictates wall time. `scripts.train_full_policy --clock-poll-ms 0.25` opts into yielding and records the interval and native delta histogram. The benchmark measures the Python process, with game rendering and multi-instance capacity left for a separate original-build trial. [CPU and per-rotation timing](../results/2026-11-23-distributed-rollouts/th14-stock-clock-controller-cpu.json)
 
+A separate 1,024-decision PPO smoke using that flag finished four PPO updates and saved a checkpoint. The full rollout controller, including policy inference, took 1.59 CPU seconds per 256 decisions. There were 1,023 four-frame decisions and one five-frame decision. This run checks the training path on a single original instance. [PPO rollout timing and frame deltas](../results/2026-11-23-th14-full-policy/ppo-stock-clock-poll-1024-smoke.json)
+
 The Windows probe reads the active limiter. The 120 Hz wrapper applies the setting temporarily to the verified Steam executable in Fast input mode and restores its original limiter afterward. Start Normal Reimu A Stage 1 before comparing the two caps.
 
 ```powershell
