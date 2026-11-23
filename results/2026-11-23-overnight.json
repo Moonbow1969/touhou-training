@@ -251,5 +251,227 @@
         "expanded": 0.6407028042250881
       }
     }
+  },
+  "mirroring_ablation": {
+    "mirror_probability": 0.5,
+    "runs": [
+      {
+        "seed": 61,
+        "baseline_turn_accuracy": 0.2750616567532279,
+        "mirrored_turn_accuracy": 0.2825330044973161,
+        "geometric_test": {
+          "original": {
+            "predicted_collisions": 16,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.004655222577829503
+          },
+          "corrected_data": {
+            "predicted_collisions": 16,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.004655222577829503
+          }
+        }
+      },
+      {
+        "seed": 97,
+        "baseline_turn_accuracy": 0.3226461627738285,
+        "mirrored_turn_accuracy": 0.23008849557522124,
+        "geometric_test": {
+          "original": {
+            "predicted_collisions": 15,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.0043642711667151585
+          },
+          "corrected_data": {
+            "predicted_collisions": 15,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.0043642711667151585
+          }
+        }
+      },
+      {
+        "seed": 137,
+        "baseline_turn_accuracy": 0.22791237487305963,
+        "mirrored_turn_accuracy": 0.22435804439286233,
+        "geometric_test": {
+          "original": {
+            "predicted_collisions": 15,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.0043642711667151585
+          },
+          "corrected_data": {
+            "predicted_collisions": 14,
+            "eligible_decisions": 3437,
+            "predicted_collision_fraction": 0.004073319755600814
+          }
+        }
+      }
+    ],
+    "mean_baseline_turn_accuracy": 0.2752067314667054,
+    "mean_mirrored_turn_accuracy": 0.24565984815513323
+  },
+  "native_th14_story": {
+    "title": 14,
+    "game_version": "1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "trials": 1,
+    "run": "20261123T113237Z-overnight-th14-analytic-story-e2c63234",
+    "native_verification_run": "20261123T115847Z-overnight-th14-raw-result-cac06ce9",
+    "controller": [
+      "motion-history SFT",
+      "analytic dodge",
+      "masked learned aim",
+      "emergency bomb"
+    ],
+    "display_score": 296778700,
+    "native_game_screen": 15,
+    "native_continues": 0,
+    "observed_utc": "2026-11-23T12:01:28.768075+00:00",
+    "start_frame": 11,
+    "native_stage": 6,
+    "stage_frame": 25785,
+    "stages_cleared": 6,
+    "steps": 25702,
+    "outcome": "story_clear",
+    "misses": 6,
+    "bombs_used": 23,
+    "lives_remaining": 0,
+    "bombs_remaining": 3,
+    "aim_interventions": 2721,
+    "emergency_bomb_commands": 23,
+    "world_shadow": {
+      "horizon_frames": 4,
+      "samples": 2960,
+      "impact_samples": 23,
+      "occupied_cells": 2112,
+      "ballistic_ap": 0.9362379673345076,
+      "learned_ap": 0.974528503994242
+    },
+    "hit_states": {
+      "total": 29,
+      "above_four_unit_margin": 25,
+      "negative_margin": 1
+    },
+    "native_replay": {
+      "sha256": "f3f4124b50e1820b7d4774f116480dffd97a2721ef103ba2c3faeb19a00b35fb",
+      "bytes": 89723,
+      "recorded_frames_by_stage": {
+        "1": 9947,
+        "2": 13219,
+        "3": 14608,
+        "4": 20356,
+        "5": 19331,
+        "6": 26056
+      }
+    }
+  },
+  "late_stage_diagnostics": {
+    "captures": [
+      {
+        "title": 14,
+        "stage": 5,
+        "pairs": 2214,
+        "source": "native-live-policy",
+        "native_profile": {
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0
+        },
+        "stride": 4,
+        "first_frame": 8904,
+        "last_frame": 17900,
+        "risk_channels": [
+          "projectile",
+          "enemy_body",
+          "straight_laser"
+        ],
+        "movement_alignment": {
+          "transitions": 2204,
+          "moving_transitions": 1184,
+          "within_half_unit": 0.9305807622504537,
+          "moving_within_half_unit": 0.8902027027027027,
+          "median_error": 7.62939453125e-06,
+          "p95_error": 1.6875
+        }
+      },
+      {
+        "title": 14,
+        "stage": 6,
+        "pairs": 3519,
+        "source": "native-live-policy",
+        "native_profile": {
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0
+        },
+        "stride": 4,
+        "first_frame": 9368,
+        "last_frame": 23764,
+        "risk_channels": [
+          "projectile",
+          "enemy_body",
+          "straight_laser"
+        ],
+        "movement_alignment": {
+          "transitions": 3474,
+          "moving_transitions": 1788,
+          "within_half_unit": 0.8598157743235464,
+          "moving_within_half_unit": 0.7444071588366891,
+          "median_error": 7.62939453125e-06,
+          "p95_error": 6.871489334109203
+        }
+      }
+    ],
+    "laser_inventory": {
+      "unstable_reads": 5,
+      "stages": {
+        "5": {
+          "frames": 1321,
+          "frames_with_type": {},
+          "max_active_by_type": {}
+        },
+        "6": {
+          "frames": 260,
+          "frames_with_type": {},
+          "max_active_by_type": {}
+        }
+      }
+    }
+  },
+  "full_title_balance_ablation": {
+    "reference_title_balance": 0.5,
+    "candidate_title_balance": 1.0,
+    "epochs": 20,
+    "test_decisions": 51421,
+    "seeds": [
+      {
+        "seed": 61,
+        "half_balance_turn_accuracy": 0.2750616567532279,
+        "equal_title_turn_accuracy": 0.3105324241984622,
+        "half_balance_movement_accuracy": 0.6442115089165905,
+        "equal_title_movement_accuracy": 0.6478092608078412
+      },
+      {
+        "seed": 97,
+        "half_balance_turn_accuracy": 0.3226461627738285,
+        "equal_title_turn_accuracy": 0.32554765704337735,
+        "half_balance_movement_accuracy": 0.6307928667276016,
+        "equal_title_movement_accuracy": 0.6321541782540208
+      },
+      {
+        "seed": 137,
+        "half_balance_turn_accuracy": 0.22791237487305963,
+        "equal_title_turn_accuracy": 0.26846075729000435,
+        "half_balance_movement_accuracy": 0.6420723050893604,
+        "equal_title_movement_accuracy": 0.6454755839054083
+      }
+    ],
+    "means": {
+      "half_balance_turn_accuracy": 0.2752067314667054,
+      "equal_title_turn_accuracy": 0.30151361284394795,
+      "half_balance_movement_accuracy": 0.6390255602445175,
+      "equal_title_movement_accuracy": 0.6418130076557568
+    }
   }
 }

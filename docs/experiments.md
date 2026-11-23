@@ -26,12 +26,24 @@ Use `--evaluation-aim` to apply geometric aiming to each arm after training, and
 
 For SFT use `--patience 6` with a maximum epoch budget to stop after six rounds without an improvement in validation loss. The policy checkpoint is always the selected validation epoch. Preserve replay and player splits while fitting and selecting weights.
 
+The expanded SFT comparison kept four-frame decision targets, recent motion history, and stage-clock context. It used a pooled projectile encoder, hidden width 512, batch size 256, and seeds 61, 97, and 137. The 20-epoch matched comparison leaves early stopping disabled, while the follow-up stopping experiment uses the same seed and switches on `--patience 6`. Set `--title-balance 0.5` to reproduce the inverse-square-root title weighting.
+
+```powershell
+python -m scripts.pretrain_policy --data replays/data/paired-expanded --out runs/sft-balanced-61 --seed 61 --epochs 20 --hidden 512 --batch-size 256 --motion-history --stage-clock --soft-movement --title-balance 0.5
+```
+
 To measure a short-horizon world checkpoint on native rollouts, supply `--world-shadow` to `scripts.evaluate_boss_aim`. The report logs coarse occupancy AP near the actual future player for exact four-frame transitions. Keep the world checkpoint’s metrics sidecar alongside the weights.
 
 To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Practice Start and launch the recorded evaluator. `--prepared` adopts the active stage on its first trial, so the report includes the actual starting frame.
 
 ```powershell
 python -m scripts.record_run --name th14-stage4-practice --kind evaluation --input models-local --artifact runs/stage4-practice.json --note 'TH14 1.00b, Normal, Reimu A, Stage 4 Practice' -- python -m scripts.evaluate_boss_aim --base models-local/sft/policy.pt --ppo models-local/ppo/ppo.zip --student models-local/aim/aim.pt --first-stage 4 --last-stage 4 --prepared --stage-practice --candidate-only --blocks 1 --body-risk --laser-risk --emergency-bomb --out runs/stage4-practice.json
+```
+
+For a single-credit story test, select Start and use Reimu A with the same rank as the command. The native evaluator restarts once before recording, then plays the six-stage story without issuing a Continue. The story run used the frozen motion-history SFT base, the masked aiming checkpoint, and the four-frame world checkpoint for prediction telemetry.
+
+```powershell
+python -m scripts.record_run --name th14-story --kind evaluation --input models-local --artifact runs/th14-story.json --note 'TH14 1.00b, Normal, Reimu A, six-stage story' -- python -m scripts.evaluate_boss_aim --base models-local/sft/policy.pt --analytic-dodge --student models-local/aim/aim.pt --body-risk --laser-risk --emergency-bomb --world-shadow models-local/world/world.pt --max-misses 12 --last-stage 6 --blocks 1 --limit 30000 --candidate-only --out runs/th14-story.json
 ```
 
 On a shared Windows desktop, enable `--focus-wait` for native TH14 trials. The controller preserves a paused process while the game is in the background. Foreground input remains exclusive to the active game.

@@ -84,3 +84,19 @@ At seed 61, the balanced SFT run trained for 60 epochs selected the same epoch-2
 ## Additional data for the world model
 
 Adding the new replay raised the world-model training set from 370,330 to 432,456 exact transitions across the three forecast horizons. With the original architecture, objective and 20 epochs, held-out near-player occupancy AP moved from 0.959, 0.851, and 0.646 to 0.949, 0.835, and 0.641 at 4, 12, and 24 frames. The story pilot retains the earlier checkpoint for short-horizon shadow evaluation.
+
+## Horizontal data augmentation
+
+Mirrored half of the training examples, including projectile positions and horizontal velocities, player and boss coordinates, motion history, and the directional labels. The three seeds produced 28.25%, 23.01%, and 22.44% direction-change accuracy on the same held-out replays, a 24.57% mean compared with 27.52% without mirroring. The flag remains off by default.
+
+## First native one-credit clear
+
+Run `20261123T113237Z-overnight-th14-analytic-story-e2c63234` cleared all six stages of TH14 1.00b Normal with Reimu A. The original executable entered Ending/Credits with zero continues. It recorded a displayed score of **296,778,700**, six misses and 23 bombs over 25,702 decisions. The previous full-story benchmark reached Stage 4. This is one completed story trial with the frozen motion-history SFT base, geometric dodge, masked learned boss aim and emergency bombing.
+
+The original four-frame world checkpoint scored 0.975 near-player occupancy AP against 0.936 for ballistic extrapolation on 2,960 exact on-policy transitions. The checkpoint observed the run in shadow mode throughout. Of 29 logged entries into the native hit state, the action geometry assigned a margin above four units to 25 and a negative margin to one. These entries include deathbomb opportunities, so they differ from the six lives lost. The samples show a clearance calibration gap without identifying the cause.
+
+Separate passive recordings preserved 2,214 Stage 5 and 3,519 Stage 6 state and input windows for diagnosis. Among adjacent moving transitions included in the alignment audit, 89.02% and 74.44% respectively reproduced the observed displacement within half a unit. These captures are controller trajectories. The laser inventory saw no active laser entries across 1,321 sampled Stage 5 frames and 260 sampled Stage 6 frames early in the inventory window.
+
+## Fully balancing title weights
+
+With the expanded training corpus fixed, increased `--title-balance` from 0.5 to 1.0. Direction-change accuracy improved at each seed, from 27.51%, 32.26%, and 22.79% to 31.05%, 32.55%, and 26.85%. Mean direction-change accuracy moved from 27.52% to 30.15%. Mean overall direction accuracy moved from 63.90% to 64.18%. These measurements use the same reserved TH17 Normal experts on 51,421 paired decisions. The seed-61 checkpoint is the candidate for a matched native story trial.

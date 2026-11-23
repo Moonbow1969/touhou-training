@@ -223,6 +223,18 @@ def factorized_movement_loss(logits, targets, sample_weights, class_weights):
     return gate_loss + direction_loss / weighted_targets.sum().clamp_min(1e-8)
 
 
+def mirror_batch(bullets, context, actions, movement_targets, rows, motion_fields):
+    mapping = actions.new_tensor((2, 1, 0, 5, 4, 3, 8, 7, 6))
+    bullets[rows, :, 0] *= -1
+    bullets[rows, :, 2] *= -1
+    context[rows, 0] *= -1
+    context[rows, 6] *= -1
+    context[rows, CONTEXT_SIZE:CONTEXT_SIZE + motion_fields:3] *= -1
+    actions[rows, 0] = mapping[actions[rows, 0]]
+    if movement_targets is not None:
+        movement_targets[rows] = movement_targets[rows][:, mapping]
+
+
 class MovementPolicy(MultiInputActorCriticPolicy):
     factorized_movement = False
 
@@ -310,6 +322,8 @@ def main():
                         help="Train separate movement intent and conditional direction losses.")
     parser.add_argument("--geometry-loss-weight", type=float, default=0.,
                         help="Penalize probability on predicted collisions when the demonstration is geometrically safe.")
+    parser.add_argument("--mirror-probability", type=float, default=0.,
+                        help="Probability of reflecting each training observation and direction horizontally.")
     parser.add_argument("--moving-transition-weight", type=float, default=1.0,
                         help="Extra direction loss weight when the expert starts moving or turns.")
     parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
@@ -320,6 +334,8 @@ def main():
         parser.error("Player balance must be between zero and one.")
     if not 0 <= args.geometry_loss_weight < float("inf"):
         parser.error("Geometry loss weight must be finite and nonnegative.")
+    if not 0 <= args.mirror_probability <= 1:
+        parser.error("Mirror probability must be between zero and one.")
     if args.motion_spans and (not args.motion_history or args.motion_spans != sorted(set(args.motion_spans))
                              or not 4 <= args.motion_spans[0] <= args.motion_spans[-1] <= 120):
         parser.error("Motion spans require motion history and three distinct increasing spans from 4 to 120 frames.")
@@ -363,6 +379,7 @@ def main():
     weights = [torch.from_numpy(np.maximum(count, 1).astype(np.float32)).rsqrt().to(device) for count in counts]
     history = []
     best = None
+    motion_fields = 3 * MOTION_INTERVALS * (int(args.motion_history) + int(args.retain_recent_motion))
     for epoch in range(1, args.epochs + 1):
         policy.train()
         geometry_totals = torch.zeros(2, device=device)
@@ -370,6 +387,9 @@ def main():
                 train, args.shards_per_block, args.batch_size, device, rng, title_weights,
                 args.motion_history, args.soft_movement, args.motion_spans, args.retain_recent_motion,
                 player_weights, args.stage_clock):
+            if args.mirror_probability:
+                mirrored = torch.rand(len(truth), device=device) < args.mirror_probability
+                mirror_batch(bullets, context, truth, extra[0] if args.soft_movement else None, mirrored, motion_fields)
             logits = predict_heads(policy, bullets, context)
             direction_weight = title_weight
             if args.moving_transition_weight != 1:
