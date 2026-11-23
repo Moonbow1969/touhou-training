@@ -20,6 +20,8 @@ SFT and world-model jobs write `epochs.jsonl` after every epoch. PPO writes Stab
 
 Use `replays.snapshot` to freeze existing and newly aligned shard directories into a new versioned directory. It checks sample counts, duplicate replay stages, and player split consistency. The adjacent manifest hashes the copied data. Keep world-model snapshots under the same replay data directory as the source action caches.
 
+During a native replay capture, `--progress-every` controls interim logging of the current stage frame and sampled states. A stage enters the paired dataset only after it meets the alignment and coverage checks. When continuing a replay from a later selected stage, use `--all-stages --from-stage` with that stage number.
+
 For native PPO, supply `--analytic-control` to compare the frozen imitation head, the trained PPO head, and rule-based selection. `--body-risk` and `--laser-risk` apply consistently to all arms. Use `--resume-ppo` with a saved training checkpoint to continue a run after an interruption. `--initial-temperature` applies only at initialization and rescales the final actor layer for exploration.
 
 Use `--evaluation-aim` to apply geometric aiming to each arm after training, and `--evaluation-reference` to include a previous PPO checkpoint. The selected rank of the foreground original game must match `--difficulty` if it is changed from Normal.

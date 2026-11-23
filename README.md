@@ -4,7 +4,7 @@ Open research for training agents across the original Touhou Project games. The 
 
 ## Current result
 
-The TH14 1.00b Normal Reimu A controller cleared all six stages on one credit, scoring 296,778,700 with six misses and 23 bombs. The original executable reached its ending screen with zero continues. The controller combined a supervised base policy, geometric dodging, learned boss aim, and emergency bombing. The world model scored forecasts in shadow mode. Separate native PPO comparisons measured Stage 1 performance.
+Two TH14 1.00b Normal Reimu A story trials cleared all six stages with zero continues. The first scored 296,778,700 with six misses and 23 bombs. Replacing the base SFT checkpoint with the expanded, title-balanced policy scored 253,575,700 with five misses and 22 bombs. Both runs used geometric dodging, learned boss aim, and emergency bombing. The world model scored forecasts in shadow mode. Separate native PPO comparisons measured Stage 1 performance.
 
 - [Initial benchmark and devlog](docs/devlog/261123-initial-benchmark.md)
 - [Late-stage practice and title transfer](docs/devlog/261123-transfer-and-late-stages.md)

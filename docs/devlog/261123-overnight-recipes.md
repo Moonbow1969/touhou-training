@@ -134,3 +134,18 @@ A separate passive probe found the player position stable across repeated reads 
 ## Repeating title balance with TH17 excluded
 
 Repeated the balance comparison across three matched seeds with TH17 excluded from both training and model selection. Both arms used the same 47,117 TH13/14 training decisions and 2,288 TH14 validation decisions. The test reused the 51,421 TH17 Normal decisions. Under full title balance, mean direction-change accuracy moved from 32.99% to 33.08%. Overall direction accuracy moved from 57.38% to 57.15%. The small average change varied in sign across seeds. There is no consistent improvement on the unseen title in this comparison.
+
+## Native story with the expanded SFT policy
+
+Run `20261123T120553Z-overnight-th14-title-equal-story-d39cd57a` replaced the base checkpoint with the seed-61 policy trained on 147,560 decisions with full title balance. It used the same TH14 build, Normal rank, Reimu A shot, geometric dodge, masked aim, emergency bomb logic and shadow world checkpoint as the first one-credit clear. The native restart was uncontrolled in its exact timing. The first controlled frame was 11 in the original run and 18 in the follow-up.
+
+| Story trial | Stages cleared | Continues | Misses | Bombs used | Displayed score | Decisions |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Original motion-history SFT | 6 | 0 | 6 | 23 | 296,778,700 | 25,702 |
+| Expanded, fully title-balanced SFT | 6 | 0 | 5 | 22 | 253,575,700 | 26,359 |
+
+The original executable entered Ending/Credits in both trials. The updated checkpoint used one fewer miss and one fewer bomb and recorded a lower score. Firing during vulnerable boss frames changed from 92.92% to 91.09%. On 3,047 exact four-frame transitions from the follow-up, the shadow world model scored 0.967 near-player occupancy AP against 0.930 for ballistic extrapolation. Each configuration has one complete trial, so the comparison establishes that each can clear on one credit.
+
+## Native launch and capture follow-up
+
+Closed both completed game sessions and retried TH16 through its official Steam launch. The game exited before gameplay and Windows logged an access violation in the game executable. Launching the installed executable and testing its default configuration also exited before gameplay. Restored the two original configuration files with matching SHA-256 hashes. The executable produced no paired TH16 data in these attempts. The exclusive TH13 Steam launch entered its Replay menu successfully.
