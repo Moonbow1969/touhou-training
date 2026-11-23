@@ -1,0 +1,289 @@
+{
+  "environment": "CartPole-v1",
+  "host_labels": [
+    "steamdeck",
+    "entropy",
+    "accelerator"
+  ],
+  "local_demo": false,
+  "shared_seed": 61,
+  "warm_steps": 1024,
+  "branch_steps": 4096,
+  "learner_numpy_version": "1.26.4",
+  "learner_torch_version": "2.5.1+cu124",
+  "hyperparameters": {
+    "n_steps": 128,
+    "batch_size": 64,
+    "n_epochs": 4,
+    "learning_rate": 0.0003,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "policy_kwargs": {
+      "net_arch": {
+        "pi": [
+          32,
+          32
+        ],
+        "vf": [
+          32,
+          32
+        ]
+      }
+    }
+  },
+  "status": "complete",
+  "parent_sha256": "3b8d03c0dbb2945f125d5b976b9b3d354bdcb7d0f5156cd562ea28f22ba6d078",
+  "branches": {
+    "steamdeck": {
+      "parent_sha256": "3b8d03c0dbb2945f125d5b976b9b3d354bdcb7d0f5156cd562ea28f22ba6d078",
+      "checkpoint_sha256": "06bdbc635ec3313481ad1b360e6329f664863f71cfa68da10afdc90f69d3c6c0",
+      "numpy_version": "2.5.5",
+      "torch_version": "2.5.1+cpu",
+      "steps": 4096,
+      "seconds": 3.5315394419999393,
+      "steps_per_second": 1159.834136718689,
+      "seed": 62
+    },
+    "entropy": {
+      "parent_sha256": "3b8d03c0dbb2945f125d5b976b9b3d354bdcb7d0f5156cd562ea28f22ba6d078",
+      "checkpoint_sha256": "4d16ad2f815908e794d7feaf7c96ad28d8b60c03c494d5e8ccfa15fca88fcd10",
+      "numpy_version": "2.5.5",
+      "torch_version": "2.5.1+cpu",
+      "steps": 4096,
+      "seconds": 2.6779335914179683,
+      "steps_per_second": 1529.537555795461,
+      "seed": 63
+    },
+    "accelerator": {
+      "parent_sha256": "3b8d03c0dbb2945f125d5b976b9b3d354bdcb7d0f5156cd562ea28f22ba6d078",
+      "checkpoint_sha256": "c6316ebdf3efcc752df7875068e81ed7acc21767d6450ed3523edec697564e7a",
+      "numpy_version": "2.5.5",
+      "torch_version": "2.5.1+cpu",
+      "steps": 4096,
+      "seconds": 0.9170972416177392,
+      "steps_per_second": 4466.265750374243,
+      "seed": 64
+    }
+  },
+  "branch_wall_seconds": 9.369816099992022,
+  "total_post_parent_steps": 12288,
+  "synchronous": {
+    "steps": 12288,
+    "seconds": 127.7834386001341,
+    "steps_per_second": 96.16269631350416,
+    "seed": 61,
+    "startup_seconds": 3.5411427000071853
+  },
+  "serial": {
+    "steps": 12288,
+    "seconds": 4.5006069000810385,
+    "steps_per_second": 2730.29844036784,
+    "seed": 61
+  },
+  "evaluation_seeds": [
+    31001,
+    31002,
+    31003,
+    31004,
+    31005,
+    31006,
+    31007,
+    31008,
+    31009,
+    31010,
+    31011,
+    31012,
+    31013,
+    31014,
+    31015,
+    31016,
+    31017,
+    31018,
+    31019,
+    31020
+  ],
+  "models": {
+    "parent": {
+      "mean_return": 91.5,
+      "median_return": 84.5,
+      "returns": [
+        79.0,
+        84.0,
+        81.0,
+        138.0,
+        90.0,
+        68.0,
+        63.0,
+        91.0,
+        75.0,
+        85.0,
+        71.0,
+        69.0,
+        147.0,
+        107.0,
+        88.0,
+        134.0,
+        79.0,
+        108.0,
+        75.0,
+        98.0
+      ]
+    },
+    "merged": {
+      "mean_return": 176.1,
+      "median_return": 155.5,
+      "returns": [
+        78.0,
+        95.0,
+        292.0,
+        272.0,
+        220.0,
+        144.0,
+        196.0,
+        131.0,
+        86.0,
+        254.0,
+        203.0,
+        449.0,
+        111.0,
+        85.0,
+        189.0,
+        96.0,
+        219.0,
+        112.0,
+        123.0,
+        167.0
+      ]
+    },
+    "synchronous": {
+      "mean_return": 341.15,
+      "median_return": 356.5,
+      "returns": [
+        473.0,
+        500.0,
+        215.0,
+        500.0,
+        361.0,
+        217.0,
+        215.0,
+        482.0,
+        419.0,
+        272.0,
+        403.0,
+        206.0,
+        390.0,
+        248.0,
+        202.0,
+        352.0,
+        500.0,
+        420.0,
+        200.0,
+        248.0
+      ]
+    },
+    "serial": {
+      "mean_return": 422.9,
+      "median_return": 456.5,
+      "returns": [
+        420.0,
+        407.0,
+        367.0,
+        472.0,
+        447.0,
+        264.0,
+        253.0,
+        500.0,
+        500.0,
+        500.0,
+        466.0,
+        287.0,
+        500.0,
+        384.0,
+        500.0,
+        500.0,
+        500.0,
+        500.0,
+        270.0,
+        421.0
+      ]
+    },
+    "branch-steamdeck": {
+      "mean_return": 89.35,
+      "median_return": 82.0,
+      "returns": [
+        56.0,
+        68.0,
+        156.0,
+        84.0,
+        85.0,
+        88.0,
+        107.0,
+        73.0,
+        60.0,
+        80.0,
+        96.0,
+        113.0,
+        80.0,
+        62.0,
+        86.0,
+        70.0,
+        91.0,
+        71.0,
+        187.0,
+        74.0
+      ]
+    },
+    "branch-entropy": {
+      "mean_return": 225.95,
+      "median_return": 230.5,
+      "returns": [
+        111.0,
+        133.0,
+        340.0,
+        313.0,
+        252.0,
+        212.0,
+        246.0,
+        175.0,
+        122.0,
+        347.0,
+        237.0,
+        271.0,
+        228.0,
+        141.0,
+        233.0,
+        134.0,
+        341.0,
+        158.0,
+        158.0,
+        367.0
+      ]
+    },
+    "branch-accelerator": {
+      "mean_return": 141.35,
+      "median_return": 129.5,
+      "returns": [
+        97.0,
+        105.0,
+        116.0,
+        196.0,
+        137.0,
+        98.0,
+        82.0,
+        192.0,
+        90.0,
+        190.0,
+        186.0,
+        92.0,
+        222.0,
+        135.0,
+        245.0,
+        163.0,
+        157.0,
+        124.0,
+        87.0,
+        113.0
+      ]
+    }
+  }
+}

@@ -42,6 +42,12 @@ python -m replays.collect_stage <replay-file>.rpy --manifest replays/data/expand
 
 The repository includes the acquisition and alignment code. Local game files, downloaded replay files, paired states, model checkpoints, and raw logs are stored outside Git. The benchmark release includes aggregated metrics and protocol details.
 
+## Research resources
+
+- [Papers and project references](docs/resources.md)
+- [Distributed native rollouts and PPO engineering](docs/distributed-rollouts.md)
+- [Linux and SteamOS trial worker setup](tools/rollout-worker-probe/README.md)
+
 ## Credits
 
 Based on [Tianxiu (Tyson) Zhou’s `th14-rl`](https://github.com/choutianxius/th14-rl) at `6de2bc04d2cef164e70e0c9e75e2517f9d337c1e`. The original MIT license and Git history are retained. Native structured observations use offsets from [Guy-L’s ParaKit](https://github.com/Guy-L/parakit). The replay corpus uses the Royalflare mirror maintained by [Maribel Hearn](https://maribelhearn.com/royalflare/).

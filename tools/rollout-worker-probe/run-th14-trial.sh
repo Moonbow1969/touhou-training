@@ -1,10 +1,11 @@
 #!/bin/sh
 set -eu
-case "${1:-}" in Left|Right) direction=$1 ;; *) exit 2 ;; esac
+case "${1:-}" in Left|Right|serve) mode=$1 ;; *) exit 2 ;; esac
 
 mkdir -p /tmp/game
 cd /tmp/game
 cp /input/game/th14.exe /input/game/th14tr.dat /input/game/thbgm_tr.dat .
+printf '%s  %s\n' '6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48' th14.exe | sha256sum -c >&2
 
 export DISPLAY=:66 WINEDLLOVERRIDES=mscoree,mshtml= LP_NUM_THREADS=2
 export PULSE_SERVER=unix:/tmp/toho-pulse.sock
@@ -20,9 +21,9 @@ for attempt in 1 2 3 4 5 6 7 8 9 10; do
     sleep .3
 done
 xdpyinfo >/dev/null
-pactl list short sinks
+pactl list short sinks >&2
 timeout 40 wineboot --init
-wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /t REG_SZ /d pulse /f
+wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /t REG_SZ /d pulse /f >&2
 wine ./th14.exe > /capture/game-stdout.log 2>&1 &
 
 dialog=$(timeout 20 xdotool search --sync --onlyvisible --name . | tail -1)
@@ -30,19 +31,23 @@ test -n "$dialog"
 xdotool mousemove --window "$dialog" 20 34 click 1 mousemove --window "$dialog" 101 144 click 1
 game=$(timeout 20 xdotool search --sync --onlyvisible --name 'Double Dealing Character. ver 0.01b' | tail -1)
 test -n "$game"
-xdotool getwindowname "$game"
+xdotool getwindowname "$game" >&2
 xdotool windowfocus --sync "$game"
+if test "$mode" = serve; then
+    if wine /probe/trial-clock.exe; then exit; fi
+    scrot --overwrite /capture/failed.png
+    exit 1
+fi
 sleep 5
-
 for key in z z z z; do
     xdotool keydown "$key"
     sleep .075
     xdotool keyup "$key"
-    sleep 1
+    sleep 1.3
 done
 sleep 1.5
-xdotool keydown "$direction"
+xdotool keydown "$mode"
 sleep 1.3
-xdotool keyup "$direction"
+xdotool keyup "$mode"
 scrot --overwrite /capture/game.png
-printf 'Captured the trial with %s input.\n' "$direction"
+printf 'Captured the trial with %s input.\n' "$mode"

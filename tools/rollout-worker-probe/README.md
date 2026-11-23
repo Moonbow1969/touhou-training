@@ -31,3 +31,17 @@ wait "$first" && wait "$second"
 ```
 
 The captures demonstrate game launch and input isolation. Use the full Steam 1.00b build with its matching telemetry to benchmark online sample throughput.
+
+## Frame-stepped trial worker
+
+Pass `serve` to the same image in an interactive stdin pipe. It emits JSON for the original Stage 1 observation at startup, then accepts `S MASK` for a four-tick action, `R` for a native Retry, and `Q` to close. The seven mask bits are Left, Right, Up, Down, Focus, Shoot and Bomb, from least to most significant. The observer records original ticks, stage frame, lives, player position and up to 96 nearby projectiles.
+
+Use a private JSON file that maps each worker name to the argument array of its `ssh -T` command. The SSH command runs `docker run -i` or rootless `podman run -i` with an independent capture directory and the same read-only trial mount. Start several in parallel with the benchmark command.
+
+```sh
+python -m scripts.benchmark_trial_workers \
+  --workers local-workers.json --episodes 6 --decisions 128 \
+  --out runs/th14-trial-workers.json
+```
+
+Each worker keeps its own X display, Wine prefix and audio sink. The worker checks the trial executable hash before reading memory. Keep the Steam 1.00b offset table and benchmarks separate.
