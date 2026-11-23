@@ -4,7 +4,8 @@ case "${1:-}" in Left|Right|serve) mode=$1 ;; *) exit 2 ;; esac
 
 mkdir -p /tmp/game
 cd /tmp/game
-cp /input/game/th14.exe /input/game/th14tr.dat /input/game/thbgm_tr.dat .
+cp /input/game/th14.exe .
+ln -s /input/game/th14tr.dat /input/game/thbgm_tr.dat .
 printf '%s  %s\n' '6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48' th14.exe | sha256sum -c >&2
 
 export DISPLAY=:66 WINEDLLOVERRIDES=mscoree,mshtml= LP_NUM_THREADS=2

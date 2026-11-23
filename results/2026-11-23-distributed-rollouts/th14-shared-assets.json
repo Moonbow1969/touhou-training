@@ -1,0 +1,71 @@
+{
+  "game": "TH14 0.01b",
+  "task": "Normal Stage 1",
+  "test": "Read-only shared DAT assets and native two-episode validation",
+  "launcher_sha256": "35c312e29c85640ef17d501f1a6bd57293d7312328bb0a065808431eaad24c79",
+  "trial_clock_sha256": "161f6a937dc975b63764e180aaa883be51d00d05591dce1292304bb9feed001e",
+  "storage": {
+    "asset_mount_read_only": true,
+    "copied_executable_bytes": 879104,
+    "data_files": {
+      "th14tr.dat": {
+        "target_bytes": 40893943,
+        "link_allocated_bytes": 0,
+        "copied_allocated_bytes": 40894464
+      },
+      "thbgm_tr.dat": {
+        "target_bytes": 140962192,
+        "link_allocated_bytes": 0,
+        "copied_allocated_bytes": 140963840
+      }
+    },
+    "data_file_logical_bytes_avoided_per_worker": 181856135,
+    "game_directory_allocated_bytes_with_copies": 182743040,
+    "game_directory_allocated_bytes_with_links": 884736,
+    "measured_allocated_bytes_saved_per_worker": 181858304,
+    "comparison": "Same image and mount, previous copy operation in a separate ephemeral container before game launch."
+  },
+  "native_benchmark": {
+    "game": "TH14 0.01b",
+    "task": "Normal Stage 1",
+    "requested_frames_per_decision": 4,
+    "episode_quotas": {
+      "replica-1": 2
+    },
+    "decisions_per_episode": 128,
+    "parallel_seconds": 22.830072700046003,
+    "aggregate_decisions_per_second": 11.213280104862923,
+    "status": "complete",
+    "workers": {
+      "replica-1": {
+        "decisions": 256,
+        "episodes": 2,
+        "elapsed_seconds": 22.830072700046003,
+        "startup_seconds": 20.1138922998216,
+        "initial_stage_frame": 6,
+        "decisions_per_second": 11.213280104862923,
+        "step_latency": {
+          "p50_ms": 52.61,
+          "p95_ms": 246.05
+        },
+        "reset_seconds": [
+          2.4540928001515567
+        ],
+        "reset_frames": [
+          6
+        ],
+        "global_tick_deltas": {
+          "4": 256
+        },
+        "stage_frame_deltas": {
+          "4": 256
+        },
+        "horizontal_commands": 208,
+        "horizontal_responses": 208,
+        "max_projectile_count": 4,
+        "observed_movement_and_projectiles": true
+      }
+    },
+    "errors": {}
+  }
+}

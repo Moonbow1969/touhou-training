@@ -3,9 +3,9 @@
 import argparse
 import ctypes
 from functools import partial
-from hashlib import file_digest
 import json
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from time import perf_counter
 
 import gymnasium as gym
@@ -16,6 +16,8 @@ from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.logger import configure
 import torch
 
+from scripts.checkpoint_storage import (DEFAULT_BUDGET_MIB, DEFAULT_RESERVE_MIB, MIB,
+                                        CheckpointStorageError, CheckpointStore, compatibility, digest, read_resume)
 from scripts.evaluate_boss_aim import AimHead, trial
 from scripts.evaluate_stage_policies import policy_observation, read_policy
 from scripts.pretrain_policy import ACTION_NAMES, ACTION_WIDTHS, MovementPolicy, network_kwargs
@@ -32,15 +34,18 @@ REWARDS = {
 }
 
 
-def digest(path):
-    with path.open("rb") as stream:
-        return file_digest(stream, "sha256").hexdigest()
-
-
 def publish_json(path, value):
-    temporary = path.with_suffix(".tmp")
-    temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + "\n", encoding="utf-8")
-    temporary.replace(path)
+    temporary = None
+    try:
+        with NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, prefix=".report-",
+                                suffix=".tmp", delete=False) as stream:
+            temporary = Path(stream.name)
+            json.dump(value, stream, indent=2, allow_nan=False)
+            stream.write("\n")
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 class SurvivalRollout(gym.Wrapper):
@@ -87,9 +92,10 @@ class SurvivalRollout(gym.Wrapper):
 
 
 class RolloutLog(BaseCallback):
-    def __init__(self, report, out, env):
+    def __init__(self, report, out, env, storage):
         super().__init__()
         self.report, self.out, self.env = report, out, env
+        self.storage = storage
         self.started = perf_counter()
         self.rollout_started = self.started
         self.rollout_finished = None
@@ -115,11 +121,14 @@ class RolloutLog(BaseCallback):
     def save_checkpoint(self):
         if self.report.get("checkpoint_steps") == self.num_timesteps:
             return
-        checkpoint = self.out / "policy.zip"
-        temporary = self.out / "policy.tmp.zip"
-        self.model.save(temporary)
-        temporary.replace(checkpoint)
-        self.report["checkpoints"]["ppo_sha256"] = digest(checkpoint)
+        records = self.storage.save(self.model.save, {
+            "steps": self.num_timesteps,
+            "compatibility": compatibility(self.report),
+            "warm_start_actor_exact": self.report["warm_start_actor_exact"],
+            "resume_checkpoint_sha256": self.report["checkpoints"].get("resume_sha256"),
+        })
+        self.report["checkpoint_storage"].update(records)
+        self.report["checkpoints"]["ppo_sha256"] = records["current"]["sha256"]
         self.report["checkpoint_steps"] = self.num_timesteps
         publish_json(self.out / "report.json", self.report)
 
@@ -215,6 +224,10 @@ def main():
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
     parser.add_argument("--focus-wait", type=int, default=30)
+    parser.add_argument("--checkpoint-budget-mib", type=int, default=DEFAULT_BUDGET_MIB,
+                        help="Per-run budget including the current, previous, and staged checkpoint archives.")
+    parser.add_argument("--min-free-disk-mib", type=int, default=DEFAULT_RESERVE_MIB,
+                        help="Free-space reserve on the checkpoint output volume before each save.")
     args = parser.parse_args()
     if args.steps < 0 or args.steps % UPDATE_STEPS or not (0 < args.train_limit <= args.eval_limit):
         parser.error(f"Steps must be a multiple of {UPDATE_STEPS}, and 0 < train limit <= eval limit.")
@@ -222,6 +235,12 @@ def main():
         parser.error("Request training, evaluation of a saved checkpoint, or both.")
     if len(set(args.eval_arms)) != len(args.eval_arms):
         parser.error("Each evaluation arm may be requested once.")
+    try:
+        storage = CheckpointStore(args.out, args.checkpoint_budget_mib * MIB, args.min_free_disk_mib * MIB)
+        if args.steps:
+            storage.remaining()
+    except (CheckpointStorageError, OSError, ValueError) as error:
+        parser.error(str(error))
     args.out.mkdir(parents=True, exist_ok=False)
     torch.set_num_threads(1)
     base = read_policy(args.base, "cpu", motion_history=True)
@@ -235,6 +254,8 @@ def main():
                  "first_stage": 1, "last_stage": 1, "first_miss_ends_trial": True, "frames_per_action": 4,
                  "train_limit": args.train_limit, "eval_limit": args.eval_limit},
         "checkpoints": {"base_sha256": digest(args.base), "aim_sha256": digest(args.aim)},
+        "checkpoint_storage": {"budget_bytes": storage.budget_bytes, "reserve_bytes": storage.reserve_bytes,
+                               "current": None, "previous": None},
         "runtime": {"runner_sha256": digest(Path(__file__)),
                     "parakit_offsets_sha256": digest(args.parakit / "offsets.py"),
                     "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu"},
@@ -247,15 +268,13 @@ def main():
                                       "automatic_bomb": arm == "hybrid"} for arm in CONTROLLERS},
         "controllers": {arm: [] for arm in CONTROLLERS}, "updates": [], "status": "started",
     }
+    warm_exact = True
     if args.resume:
-        prior = json.loads(args.resume.with_name("report.json").read_text(encoding="utf-8"))
-        if (prior["checkpoints"]["base_sha256"] != report["checkpoints"]["base_sha256"]
-                or prior["task"]["train_limit"] != args.train_limit or prior["seed"] != args.seed
-                or prior["ppo_hyperparameters"] != PPO_SETTINGS
-                or prior["reward"] != REWARDS[args.reward]
-                or digest(args.resume) != prior["checkpoints"].get("ppo_sha256")):
-            parser.error("The resume checkpoint, SFT parent, training task, or settings do not match.")
-        report["checkpoints"]["resume_sha256"] = prior["checkpoints"]["ppo_sha256"]
+        try:
+            fingerprint, warm_exact, evidence = read_resume(args.resume, compatibility(report))
+        except (CheckpointStorageError, KeyError, OSError, TypeError, ValueError) as error:
+            parser.error(f"Cannot resume from {args.resume.name}: {error}")
+        report["checkpoints"].update(resume_sha256=fingerprint, resume_evidence=evidence)
     report_path = args.out / "report.json"
     publish_json(report_path, report)
     stage = None
@@ -268,10 +287,11 @@ def main():
         env = SurvivalRollout(stage, base, args.reward)
         model = PPO.load(args.resume, env=env, device="cpu") if args.resume else warm_start(base, env, args.seed)
         report["starting_steps"] = model.num_timesteps
-        report["warm_start_actor_exact"] = not args.resume or prior["warm_start_actor_exact"]
+        report["warm_start_actor_exact"] = warm_exact
         if args.steps:
             model.set_logger(configure(str(args.out), ["csv"]))
-            model.learn(args.steps, callback=RolloutLog(report, args.out, env), reset_num_timesteps=not args.resume)
+            model.learn(args.steps, callback=RolloutLog(report, args.out, env, storage),
+                        reset_num_timesteps=not args.resume)
         report["trained_steps"] = model.num_timesteps
         report["actor_head_weight_delta_l2"] = {
             name: float(torch.linalg.vector_norm(delta))
@@ -303,6 +323,8 @@ def main():
     except BaseException as error:
         report["status"] = "interrupted"
         report["error_type"] = type(error).__name__
+        if isinstance(error, CheckpointStorageError):
+            report["checkpoint_storage"]["error"] = str(error)
         raise
     finally:
         try:

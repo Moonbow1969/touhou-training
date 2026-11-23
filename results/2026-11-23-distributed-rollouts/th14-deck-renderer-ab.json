@@ -30,7 +30,9 @@
   "actual_game_backend_attempts": {
     "embedded_rootless_xwayland": "TH14 loaded hardware DXVK but repeatedly sized the swapchain to 1x1 and did not reach Stage 1.",
     "separate_rootful_xwayland_initial": "TH14 used a stable 640x480 hardware swapchain and visibly reached Normal Weapon Select.",
-    "separate_rootful_xwayland_adjusted_startup": "Two more confirmation taps reached Stage 1; measured run passed the full short action, frame, and Retry checks."
+    "separate_rootful_xwayland_adjusted_startup": "Two more confirmation taps reached Stage 1; measured run passed the full short action, frame, and Retry checks.",
+    "native_v5_installed_repeat": "Worker response timed out on a measured request after startup.",
+    "native_v6_installed_validation": "Clock-driven menu completed the same 2x128-decision trace without extra launcher taps."
   },
   "wine_d3d_xvfb_llvmpipe": {
     "decisions": 256,
@@ -89,8 +91,36 @@
   "candidate_relative_throughput": 1.7691801966367062,
   "matched_action_frame_trace_passed": true,
   "limitations": [
-    "One 256-decision run per backend. This is a short fixed-trace environment benchmark, not policy return or replay parity.",
+    "One complete 256-decision v5 run per backend and one 256-decision v6 GPU validation. These are fixed-trace environment benchmarks, with no policy return or replay parity measurement.",
     "The renderer, display backend, and startup confirm count differ together. The measured improvement belongs to the tested combination.",
     "The two startup instances reached the active stage at different times, and observed projectile counts may therefore differ."
-  ]
+  ],
+  "native_v6_gpu_validation": {
+    "decisions": 256,
+    "episodes": 2,
+    "elapsed_seconds": 21.322270200122148,
+    "startup_seconds": 31.645883100107312,
+    "initial_stage_frame": 6,
+    "decisions_per_second": 12.00622624126269,
+    "step_latency": {
+      "p50_ms": 81.65,
+      "p95_ms": 102.55
+    },
+    "reset_seconds": [
+      1.1340332000982016
+    ],
+    "reset_frames": [
+      6
+    ],
+    "global_tick_deltas": {
+      "4": 256
+    },
+    "stage_frame_deltas": {
+      "4": 256
+    },
+    "horizontal_commands": 208,
+    "horizontal_responses": 208,
+    "max_projectile_count": 6,
+    "observed_movement_and_projectiles": true
+  }
 }

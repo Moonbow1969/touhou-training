@@ -45,3 +45,7 @@ python -m scripts.benchmark_trial_workers \
 ```
 
 Each worker keeps its own X display, Wine prefix and audio sink. The worker checks the trial executable hash before reading memory. Keep the Steam 1.00b offset table and benchmarks separate.
+
+For a heterogeneous pool, pass `--worker-episodes WORKER=COUNT` for each faster or slower worker that needs a different number of episodes. The output records each worker's cold startup, first stage frame, step latency, clock deltas and Retry frames. A run with a failed worker keeps the other workers' rows and leaves the aggregate rate empty.
+
+The [Steam Deck DXVK setup](steamdeck-dxvk.md) uses an isolated hardware-rendered virtual display. Keep the software renderer available when qualifying the DXVK path or investigating a display failure.

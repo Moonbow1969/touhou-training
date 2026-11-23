@@ -2,7 +2,7 @@
 
 import argparse
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextlib import ExitStack
 import json
 from pathlib import Path
@@ -77,6 +77,7 @@ def benchmark(worker, episodes, decisions, barrier):
     except BaseException:
         barrier.abort()
         raise
+    initial_frame = state["frame"]
     startup = perf_counter() - warmup
     barrier.wait(timeout=100)
     started = perf_counter()
@@ -113,7 +114,8 @@ def benchmark(worker, episodes, decisions, barrier):
     elapsed = perf_counter() - started
     return {
         "decisions": len(step_times), "episodes": episodes, "elapsed_seconds": elapsed,
-        "startup_seconds": startup, "decisions_per_second": len(step_times) / elapsed,
+        "startup_seconds": startup, "initial_stage_frame": initial_frame,
+        "decisions_per_second": len(step_times) / elapsed,
         "step_latency": rates(step_times), "reset_seconds": reset_times, "reset_frames": reset_frames,
         "global_tick_deltas": dict(sorted(tick_deltas.items())),
         "stage_frame_deltas": dict(sorted(stage_deltas.items())),
@@ -144,20 +146,31 @@ def main():
         quotas[label] = int(count)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     barrier = Barrier(len(commands))
+    rows, errors = {}, {}
     with ExitStack() as stack:
         workers = {label: stack.enter_context(TrialWorker(command)) for label, command in commands.items()}
         with ThreadPoolExecutor(max_workers=len(workers)) as pool:
-            tasks = {label: pool.submit(benchmark, worker, quotas[label], args.decisions, barrier)
+            tasks = {pool.submit(benchmark, worker, quotas[label], args.decisions, barrier): label
                      for label, worker in workers.items()}
-            rows = {label: task.result() for label, task in tasks.items()}
-    wall_time = max(row["elapsed_seconds"] for row in rows.values())
+            for task in as_completed(tasks):
+                label = tasks[task]
+                try:
+                    rows[label] = task.result()
+                except Exception as error:
+                    errors[label] = {"type": type(error).__name__, "message": str(error)}
+                    print(f"{label}: {type(error).__name__}: {error}", flush=True)
+    wall_time = max((row["elapsed_seconds"] for row in rows.values()), default=0)
+    total_decisions = sum(row["decisions"] for row in rows.values())
     report = {"game": "TH14 0.01b", "task": "Normal Stage 1", "requested_frames_per_decision": 4,
               "episode_quotas": quotas, "decisions_per_episode": args.decisions,
-              "parallel_seconds": wall_time,
-              "aggregate_decisions_per_second": sum(row["decisions"] for row in rows.values()) / wall_time,
-              "workers": rows}
+              "parallel_seconds": wall_time if not errors else None,
+              "aggregate_decisions_per_second": total_decisions / wall_time if not errors else None,
+              "status": "incomplete" if errors else "complete",
+              "workers": {label: rows[label] for label in commands if label in rows}, "errors": errors}
     args.out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
+    if errors:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

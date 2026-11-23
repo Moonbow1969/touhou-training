@@ -1,0 +1,23 @@
+# Compute placement for native RL, SFT and world models
+
+Choose the learner device from measured wall time and peak memory. A larger GPU is useful when it lets the learner keep up with sampling or when it makes the target experiment fit.
+
+## Current roles
+
+| Resource | Use first | Escalation or admission check |
+| --- | --- | --- |
+| Gamer RTX 4070 | Smoke tests, small SFT and world-model ablations, one to three seeds, and single-machine learner profiling. Keep game collection in isolated WSL or on the other hosts. | Confirm peak VRAM and throughput with the real observation shape, precision, sequence length and batch size. The observed card had 12,282 MiB total and 5,409 MiB in use. |
+| Momentum RTX 5090 | Medium and large offline SFT, learned projectile dynamics and world-model runs, or a wider online learner once updates become material. Two CPU-only native trial workers already ran at 37.28 decisions/s. | Four CUDA AdamW updates passed on the installed Blackwell-enabled Torch runtime. The smoke observed 4,575 MiB free. Check occupancy again before a larger job, and install the task's project dependencies in its own environment. [Momentum CUDA smoke](../results/2026-11-23-distributed-rollouts/momentum-gpu-smoke.json), [Momentum native workers](../results/2026-11-23-distributed-rollouts/th14-two-momentum.json), [PyTorch Blackwell support](https://pytorch.org/blog/pytorch-2-7/) |
+| serv11 H100 GPU 1 | The largest world-model or policy pretraining run, longer sequences, sustained multi-seed batches, or a learner that materially stalls the rollout pool on Momentum. | The 80 GB card had 29,865 MiB free at the latest check. Launch against the observed or allocated memory, and profile the same work against Momentum before moving a job purely for speed. [NVIDIA H100](https://www.nvidia.com/en-us/data-center/h100/) |
+| Native worker hosts | Isolated TH14 game processes, structured observations, CPU actor inference and rollout fragments. | Compare same-build game timing, input response, resets and end-to-end rate. A cheap policy can use CPU even on a GPU-capable worker. [Native rollout measurements](distributed-rollouts.md#native-scaling-measurements) |
+
+The existing 8,192-step full-policy continuation spent about 268 of 291 seconds in native stepping. The seven-worker trial held about 103 decisions/s. At that observed rate, collecting a 768-decision round would take approximately 7.5 seconds if the full-version pool sustains the same rate. Start small online updates on CPU and measure the complete cycle before requesting a larger GPU. The trial rate is an engineering measurement on TH14 0.01b. [Full-game PPO timing](../results/2026-11-23-th14-full-policy/survival-8192-train.json), [Seven-worker trace](../results/2026-11-23-distributed-rollouts/th14-five-hosts-seven-workers.json)
+
+## Choose the device from a short profile
+
+1. Run the real model and sampler for at least ten warmup updates and twenty measured updates. Record accepted decisions/s, policy inference time, collection time, inter-round wait, optimizer time, checkpoint time, peak reserved GPU memory and bytes sent or written. Record samples/s and validation cadence for offline runs.
+2. As an initial sizing rule, leave about 20% headroom relative to observed free VRAM and treat a learner consuming under 15% of online wall time as a low priority for GPU escalation. Move small jobs to the 4070 when the profile shows a useful end-to-end gain.
+3. Move an offline experiment to Momentum if it misses the local iteration budget or cannot fit its validated batch or sequence length. For online PPO, move the learner if update and synchronization consume roughly 25% of wall time over several rounds, or if workers repeatedly wait for the next policy. Compare the same batch, rollout horizon, precision and checkpoint cadence on both devices.
+4. Use the H100 when the actual job will not fit in Momentum's available memory, when the same workload shows a meaningful end-to-end gain there, or when the scale of independent seeds justifies a separate scheduled queue. Validate an identical small job first and record the measured reason for placement.
+
+Keep optimizer state on the learner. Send a verified actor snapshot only when the policy version changes. Place each immutable dataset shard once per training host. Use checksums and dataset manifests to reuse existing shards across seeds, and reserve disk before downloads, cache builds, or checkpoint writes. This keeps transfers and storage predictable when scaling from the 4070 to Momentum or the H100. [Transport and artifact limits](distributed-rollouts.md#wire-format-and-recovery)

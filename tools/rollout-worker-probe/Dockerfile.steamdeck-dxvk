@@ -1,0 +1,20 @@
+ARG BASE_IMAGE=localhost/toho-trial:native-v6
+FROM ${BASE_IMAGE}
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl vulkan-tools \
+       mesa-vulkan-drivers mesa-vulkan-drivers:i386 libvulkan1:i386 \
+    && cd /tmp \
+    && apt-get download vulkan-tools:i386 \
+    && dpkg-deb -x vulkan-tools_*_i386.deb /opt/vulkan32 \
+    && rm vulkan-tools_*_i386.deb \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl --fail --show-error --silent --location \
+      https://github.com/doitsujin/dxvk/releases/download/v2.3.1/dxvk-2.3.1.tar.gz \
+      -o /tmp/dxvk-2.3.1.tar.gz \
+    && printf '%s  %s\n' c51416d873ced17a6a52d1fb288f887148e9ab7841f25233b6aae24853956d2c \
+       /tmp/dxvk-2.3.1.tar.gz | sha256sum -c - \
+    && mkdir -p /opt/dxvk \
+    && tar -xzf /tmp/dxvk-2.3.1.tar.gz -C /opt/dxvk --strip-components=1 dxvk-2.3.1/x32/d3d9.dll \
+    && rm /tmp/dxvk-2.3.1.tar.gz

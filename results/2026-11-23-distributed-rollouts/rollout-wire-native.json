@@ -1,0 +1,89 @@
+{
+  "game": "TH14 0.01b",
+  "decisions": 256,
+  "context_width": 39,
+  "opening_max_projectiles": 5,
+  "opening_mean_projectiles": 1.1953125,
+  "scope": "Real early-stage observations, zero placeholder value/reward columns, and synthetic dense stress data.",
+  "software": {
+    "pyzmq": "27.3.0",
+    "libzmq": "4.3.5"
+  },
+  "cases": {
+    "native_opening": {
+      "raw": {
+        "bytes": 734570,
+        "encode": {
+          "p50_ms": 0.66,
+          "p95_ms": 0.78
+        },
+        "decode": {
+          "p50_ms": 0.48,
+          "p95_ms": 0.74
+        },
+        "loopback_validated_ack": {
+          "p50_ms": 1.25,
+          "p95_ms": 2.06
+        }
+      },
+      "zstd_level_1": {
+        "bytes": 4748,
+        "encode": {
+          "p50_ms": 0.84,
+          "p95_ms": 1.0
+        },
+        "decode": {
+          "p50_ms": 0.63,
+          "p95_ms": 0.7
+        },
+        "loopback_validated_ack": {
+          "p50_ms": 0.87,
+          "p95_ms": 1.05
+        }
+      }
+    },
+    "synthetic_dense": {
+      "raw": {
+        "bytes": 734570,
+        "encode": {
+          "p50_ms": 0.69,
+          "p95_ms": 0.89
+        },
+        "decode": {
+          "p50_ms": 0.48,
+          "p95_ms": 0.68
+        },
+        "loopback_validated_ack": {
+          "p50_ms": 1.11,
+          "p95_ms": 1.38
+        }
+      },
+      "zstd_level_1": {
+        "bytes": 564754,
+        "encode": {
+          "p50_ms": 2.54,
+          "p95_ms": 2.7
+        },
+        "decode": {
+          "p50_ms": 1.22,
+          "p95_ms": 1.42
+        },
+        "loopback_validated_ack": {
+          "p50_ms": 1.79,
+          "p95_ms": 2.0
+        }
+      }
+    }
+  },
+  "spool": {
+    "durable_put": {
+      "p50_ms": 1.88,
+      "p95_ms": 3.33
+    },
+    "samples": 20,
+    "sender_cap_test": "passed",
+    "ack_replay_test": "passed",
+    "identity_conflict_test": "passed",
+    "stale_policy_test": "passed"
+  }
+}

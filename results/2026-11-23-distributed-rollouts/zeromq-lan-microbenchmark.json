@@ -1,0 +1,730 @@
+{
+  "status": "complete",
+  "transport": "ZeroMQ TCP DEALER to ROUTER using MessagePack header and raw or zstd payload frame, with small ACK",
+  "source_data": {
+    "description": "Contiguous 256-step native TH14 capture arrays, used as transport bytes.",
+    "raw_arrays": [
+      "stage_frame",
+      "bullets",
+      "context",
+      "expert_action_chunk",
+      "action_clearances"
+    ],
+    "candidate_fragments": 22,
+    "selected_capture": "overnight-stage6-onpolicy",
+    "selected_first_decision_index": 1024,
+    "raw_bytes": 756736,
+    "fragment_sha256": "a553720200e0da5fde741f3734c7aca49b7626ddc2c57fde097437cb9f010234",
+    "zstd_level1_bytes_p10": 135825.8,
+    "zstd_level1_bytes_p90": 257899.50000000003,
+    "chosen_zstd_level1_bytes": 200678,
+    "smaller_payloads": "byte slices from the representative fragment"
+  },
+  "cases": {
+    "windows_localhost": [
+      {
+        "payload": "1KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 1024,
+        "elapsed_seconds": 0.0303909,
+        "acks_per_second": 8423.574162002442,
+        "application_mib_per_second": 8.22614664258051,
+        "wire_payload_mib_per_second": 8.22614664258051,
+        "ack_latency_ms": {
+          "p50": 0.10885,
+          "p95": 0.173975,
+          "p99": 0.22771499999999992
+        },
+        "sender_encode_ms": {
+          "p50": 0.0002,
+          "p95": 0.0003
+        }
+      },
+      {
+        "payload": "1KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 507,
+        "elapsed_seconds": 0.03346,
+        "acks_per_second": 7650.926479378363,
+        "application_mib_per_second": 7.471607890017933,
+        "wire_payload_mib_per_second": 3.6993214846084883,
+        "ack_latency_ms": {
+          "p50": 0.1156,
+          "p95": 0.197475,
+          "p99": 0.24206999999999992
+        },
+        "sender_encode_ms": {
+          "p50": 0.006,
+          "p95": 0.010225
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 65536,
+        "elapsed_seconds": 0.0273348,
+        "acks_per_second": 4682.675563750238,
+        "application_mib_per_second": 292.6672227343899,
+        "wire_payload_mib_per_second": 292.6672227343899,
+        "ack_latency_ms": {
+          "p50": 0.13905,
+          "p95": 0.21989499999999992,
+          "p99": 0.28747500000000015
+        },
+        "sender_encode_ms": {
+          "p50": 0.0001,
+          "p95": 0.0003
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 22828,
+        "elapsed_seconds": 0.038297,
+        "acks_per_second": 3342.2983523513594,
+        "application_mib_per_second": 208.89364702195996,
+        "wire_payload_mib_per_second": 72.76343039272007,
+        "ack_latency_ms": {
+          "p50": 0.26455,
+          "p95": 0.4362249999999999,
+          "p99": 0.7147500000000008
+        },
+        "sender_encode_ms": {
+          "p50": 0.0953,
+          "p95": 0.12603
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.1793462,
+        "acks_per_second": 535.2775804561234,
+        "application_mib_per_second": 386.2989569893312,
+        "wire_payload_mib_per_second": 386.2989569893312,
+        "ack_latency_ms": {
+          "p50": 0.60135,
+          "p95": 11.553475,
+          "p99": 23.735505
+        },
+        "sender_encode_ms": {
+          "p50": 0.0002,
+          "p95": 0.0005
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.1599175,
+        "acks_per_second": 600.3095346037801,
+        "application_mib_per_second": 433.23119733612646,
+        "wire_payload_mib_per_second": 114.88811186334361,
+        "ack_latency_ms": {
+          "p50": 1.6308,
+          "p95": 2.028825,
+          "p99": 2.3087199999999997
+        },
+        "sender_encode_ms": {
+          "p50": 0.92655,
+          "p95": 1.116225
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.0832228,
+        "acks_per_second": 1153.5300422480377,
+        "application_mib_per_second": 832.4792004114257,
+        "wire_payload_mib_per_second": 832.4792004114257,
+        "ack_latency_ms": {
+          "p50": 1.15595,
+          "p95": 14.860575,
+          "p99": 15.11504
+        },
+        "sender_encode_ms": {
+          "p50": 0.0002,
+          "p95": 0.0005
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.1041941,
+        "acks_per_second": 921.3573513279542,
+        "application_mib_per_second": 664.9248853821857,
+        "wire_payload_mib_per_second": 176.33070998171922,
+        "ack_latency_ms": {
+          "p50": 4.29635,
+          "p95": 4.60105,
+          "p99": 4.723775
+        },
+        "sender_encode_ms": {
+          "p50": 0.97605,
+          "p95": 1.094275
+        }
+      }
+    ],
+    "windows_to_accelerator_ssh_forward": [
+      {
+        "payload": "1KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 1024,
+        "elapsed_seconds": 0.7972146,
+        "acks_per_second": 321.1180527802677,
+        "application_mib_per_second": 0.3135918484182302,
+        "wire_payload_mib_per_second": 0.3135918484182302,
+        "ack_latency_ms": {
+          "p50": 3.05645,
+          "p95": 3.8122,
+          "p99": 4.863384999999997
+        },
+        "sender_encode_ms": {
+          "p50": 0.0003,
+          "p95": 0.0004
+        }
+      },
+      {
+        "payload": "1KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 507,
+        "elapsed_seconds": 0.7945904,
+        "acks_per_second": 322.17857150048627,
+        "application_mib_per_second": 0.3146275112309436,
+        "wire_payload_mib_per_second": 0.15577748847078948,
+        "ack_latency_ms": {
+          "p50": 3.0887,
+          "p95": 3.6504,
+          "p99": 4.0989049999999985
+        },
+        "sender_encode_ms": {
+          "p50": 0.0105,
+          "p95": 0.01375
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 65536,
+        "elapsed_seconds": 0.4477321,
+        "acks_per_second": 285.8852425367759,
+        "application_mib_per_second": 17.867827658548492,
+        "wire_payload_mib_per_second": 17.867827658548492,
+        "ack_latency_ms": {
+          "p50": 3.3602,
+          "p95": 4.265785,
+          "p99": 6.109954000000004
+        },
+        "sender_encode_ms": {
+          "p50": 0.0003,
+          "p95": 0.0004
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 22828,
+        "elapsed_seconds": 0.4067567,
+        "acks_per_second": 314.684429291515,
+        "application_mib_per_second": 19.66777683071969,
+        "wire_payload_mib_per_second": 6.850830222956376,
+        "ack_latency_ms": {
+          "p50": 3.1403,
+          "p95": 3.87711,
+          "p99": 4.409644000000001
+        },
+        "sender_encode_ms": {
+          "p50": 0.1028,
+          "p95": 0.12036999999999999
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.9499084,
+        "acks_per_second": 101.06237611963428,
+        "application_mib_per_second": 72.93466401602512,
+        "wire_payload_mib_per_second": 72.93466401602512,
+        "ack_latency_ms": {
+          "p50": 8.87375,
+          "p95": 17.597375,
+          "p99": 19.664604999999984
+        },
+        "sender_encode_ms": {
+          "p50": 0.0005,
+          "p95": 0.000725
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.6732168,
+        "acks_per_second": 142.59893692492523,
+        "application_mib_per_second": 102.91075623781225,
+        "wire_payload_mib_per_second": 27.290791954250476,
+        "ack_latency_ms": {
+          "p50": 6.68925,
+          "p95": 10.148975,
+          "p99": 12.502319999999992
+        },
+        "sender_encode_ms": {
+          "p50": 0.946,
+          "p95": 1.02485
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.7233967,
+        "acks_per_second": 132.70726836326457,
+        "application_mib_per_second": 95.77213996137942,
+        "wire_payload_mib_per_second": 95.77213996137942,
+        "ack_latency_ms": {
+          "p50": 27.25745,
+          "p95": 51.47775,
+          "p99": 56.47032
+        },
+        "sender_encode_ms": {
+          "p50": 0.0005,
+          "p95": 0.0007
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.2509073,
+        "acks_per_second": 382.61142661054504,
+        "application_mib_per_second": 276.1228947902273,
+        "wire_payload_mib_per_second": 73.22473132071586,
+        "ack_latency_ms": {
+          "p50": 9.1694,
+          "p95": 15.36005,
+          "p99": 16.07911
+        },
+        "sender_encode_ms": {
+          "p50": 0.95355,
+          "p95": 1.046425
+        }
+      }
+    ]
+  },
+  "versions": {
+    "local": {
+      "pyzmq": "27.1.0",
+      "libzmq": "4.3.5",
+      "msgpack": "1.1.2",
+      "zstandard": "0.25.0"
+    },
+    "remote": {
+      "pyzmq": "27.1.0",
+      "libzmq": "4.3.5",
+      "msgpack": "1.1.2",
+      "zstandard": "0.25.0"
+    }
+  },
+  "notes": [
+    "Remote transport is loopback-to-loopback via an SSH local forward over a direct RFC1918 tailnet peer; SSH compression disabled.",
+    "One client and one receiver. Socket setup and case warmup excluded; codec work and ACK included.",
+    "Throughput fields count binary payload bytes, excluding MessagePack, ZMQ, SSH, and TCP overhead.",
+    "No PPO computation, game stepping, disk writes or action gating in the timed path.",
+    "A second run repeated the whole matrix with the same bytes and versions. Reported case latency and throughput remain separate for each run."
+  ],
+  "date": "2026-11-23",
+  "repeat_cases": {
+    "windows_localhost": [
+      {
+        "payload": "1KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 1024,
+        "elapsed_seconds": 0.0298271,
+        "acks_per_second": 8582.798864120214,
+        "application_mib_per_second": 8.381639515742396,
+        "wire_payload_mib_per_second": 8.381639515742396,
+        "ack_latency_ms": {
+          "p50": 0.1075,
+          "p95": 0.173075,
+          "p99": 0.2702649999999997
+        },
+        "sender_encode_ms": {
+          "p50": 0.0001,
+          "p95": 0.0002
+        }
+      },
+      {
+        "payload": "1KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 507,
+        "elapsed_seconds": 0.0329469,
+        "acks_per_second": 7770.078520285671,
+        "application_mib_per_second": 7.587967304966476,
+        "wire_payload_mib_per_second": 3.7569330308769566,
+        "ack_latency_ms": {
+          "p50": 0.11695,
+          "p95": 0.179975,
+          "p99": 0.3253649999999987
+        },
+        "sender_encode_ms": {
+          "p50": 0.006,
+          "p95": 0.0099
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 65536,
+        "elapsed_seconds": 0.0667646,
+        "acks_per_second": 1917.1836572075622,
+        "application_mib_per_second": 119.82397857547264,
+        "wire_payload_mib_per_second": 119.82397857547264,
+        "ack_latency_ms": {
+          "p50": 0.14035,
+          "p95": 0.24533,
+          "p99": 13.41600800000001
+        },
+        "sender_encode_ms": {
+          "p50": 0.0001,
+          "p95": 0.0003
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 22828,
+        "elapsed_seconds": 0.0364201,
+        "acks_per_second": 3514.542793677118,
+        "application_mib_per_second": 219.65892460481987,
+        "wire_payload_mib_per_second": 76.513274091779,
+        "ack_latency_ms": {
+          "p50": 0.27035,
+          "p95": 0.378595,
+          "p99": 0.5243530000000005
+        },
+        "sender_encode_ms": {
+          "p50": 0.0949,
+          "p95": 0.11957999999999994
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.2002076,
+        "acks_per_second": 479.5022766368509,
+        "application_mib_per_second": 346.04705315882114,
+        "wire_payload_mib_per_second": 346.04705315882114,
+        "ack_latency_ms": {
+          "p50": 0.62685,
+          "p95": 13.51725,
+          "p99": 15.70907
+        },
+        "sender_encode_ms": {
+          "p50": 0.0002,
+          "p95": 0.0004
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.1498009,
+        "acks_per_second": 640.8506223927894,
+        "application_mib_per_second": 462.48887690260875,
+        "wire_payload_mib_per_second": 122.6469242101099,
+        "ack_latency_ms": {
+          "p50": 1.53775,
+          "p95": 1.71285,
+          "p99": 1.7925599999999995
+        },
+        "sender_encode_ms": {
+          "p50": 0.927,
+          "p95": 1.00495
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.0552016,
+        "acks_per_second": 1739.0800266658937,
+        "application_mib_per_second": 1255.0587301817338,
+        "wire_payload_mib_per_second": 1255.0587301817338,
+        "ack_latency_ms": {
+          "p50": 1.23755,
+          "p95": 9.0798,
+          "p99": 24.99558
+        },
+        "sender_encode_ms": {
+          "p50": 0.0002,
+          "p95": 0.0003
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.0946264,
+        "acks_per_second": 1014.5160335804807,
+        "application_mib_per_second": 732.1556140781008,
+        "wire_payload_mib_per_second": 194.15955408750887,
+        "ack_latency_ms": {
+          "p50": 3.88105,
+          "p95": 4.116725,
+          "p99": 4.1412
+        },
+        "sender_encode_ms": {
+          "p50": 0.92135,
+          "p95": 1.006825
+        }
+      }
+    ],
+    "windows_to_accelerator_ssh_forward": [
+      {
+        "payload": "1KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 1024,
+        "elapsed_seconds": 0.8073839,
+        "acks_per_second": 317.0734516752192,
+        "application_mib_per_second": 0.30964204265158124,
+        "wire_payload_mib_per_second": 0.30964204265158124,
+        "ack_latency_ms": {
+          "p50": 3.12495,
+          "p95": 3.8997,
+          "p99": 4.767784999999998
+        },
+        "sender_encode_ms": {
+          "p50": 0.0003,
+          "p95": 0.0004
+        }
+      },
+      {
+        "payload": "1KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 256,
+        "raw_payload_bytes": 1024,
+        "wire_payload_bytes": 507,
+        "elapsed_seconds": 0.6961193,
+        "acks_per_second": 367.7530561212712,
+        "application_mib_per_second": 0.3591338438684289,
+        "wire_payload_mib_per_second": 0.17781333871220062,
+        "ack_latency_ms": {
+          "p50": 2.8785,
+          "p95": 3.58665,
+          "p99": 4.274444999999998
+        },
+        "sender_encode_ms": {
+          "p50": 0.0106,
+          "p95": 0.014925
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 65536,
+        "elapsed_seconds": 0.416209,
+        "acks_per_second": 307.5377995189917,
+        "application_mib_per_second": 19.22111246993698,
+        "wire_payload_mib_per_second": 19.22111246993698,
+        "ack_latency_ms": {
+          "p50": 3.2524,
+          "p95": 4.657094999999999,
+          "p99": 6.191788000000002
+        },
+        "sender_encode_ms": {
+          "p50": 0.0003,
+          "p95": 0.0004
+        }
+      },
+      {
+        "payload": "64KiB",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 128,
+        "raw_payload_bytes": 65536,
+        "wire_payload_bytes": 22828,
+        "elapsed_seconds": 0.276048,
+        "acks_per_second": 463.6874746420912,
+        "application_mib_per_second": 28.9804671651307,
+        "wire_payload_mib_per_second": 10.09469763863531,
+        "ack_latency_ms": {
+          "p50": 1.82045,
+          "p95": 3.29629,
+          "p99": 3.608849
+        },
+        "sender_encode_ms": {
+          "p50": 0.1016,
+          "p95": 0.11822
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.9285973,
+        "acks_per_second": 103.38173501042918,
+        "application_mib_per_second": 74.60849821553434,
+        "wire_payload_mib_per_second": 74.60849821553434,
+        "ack_latency_ms": {
+          "p50": 8.6037,
+          "p95": 15.246925,
+          "p99": 27.75078499999999
+        },
+        "sender_encode_ms": {
+          "p50": 0.0004,
+          "p95": 0.0006
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 1,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.4769436,
+        "acks_per_second": 201.28166097626638,
+        "application_mib_per_second": 145.26088619283286,
+        "wire_payload_mib_per_second": 38.521577035327134,
+        "ack_latency_ms": {
+          "p50": 4.7678,
+          "p95": 6.466375,
+          "p99": 7.366174999999999
+        },
+        "sender_encode_ms": {
+          "p50": 0.92415,
+          "p95": 0.988575
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "raw",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 756736,
+        "elapsed_seconds": 0.8024234,
+        "acks_per_second": 119.63758783704463,
+        "application_mib_per_second": 86.34001700349216,
+        "wire_payload_mib_per_second": 86.34001700349216,
+        "ack_latency_ms": {
+          "p50": 30.21785,
+          "p95": 45.276175,
+          "p99": 51.87700499999999
+        },
+        "sender_encode_ms": {
+          "p50": 0.0004,
+          "p95": 0.0006
+        }
+      },
+      {
+        "payload": "native-256-fragment",
+        "codec": "zstd1",
+        "in_flight_limit": 4,
+        "samples": 96,
+        "raw_payload_bytes": 756736,
+        "wire_payload_bytes": 200678,
+        "elapsed_seconds": 0.1919491,
+        "acks_per_second": 500.1325872327612,
+        "application_mib_per_second": 360.9355292627056,
+        "wire_payload_mib_per_second": 95.7161019713364,
+        "ack_latency_ms": {
+          "p50": 7.34125,
+          "p95": 11.027325,
+          "p99": 12.017499999999998
+        },
+        "sender_encode_ms": {
+          "p50": 0.93535,
+          "p95": 1.0236
+        }
+      }
+    ]
+  },
+  "benchmark_script_sha256": "777781f9577c8bcc13711bb4d1faaa660bd70d97a06f48b32464d3a3bbd3d26c"
+}
