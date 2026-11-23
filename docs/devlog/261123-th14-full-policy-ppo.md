@@ -2,7 +2,7 @@
 
 ## Setup
 
-All three controllers run Stage 1 in the Steam build of TH14 1.00b, on Normal with Reimu A. The original game supplies state and enacts inputs. Each evaluation starts from the native Retry command and ends at the first miss, the next stage, or 3,300 decisions. One decision advances four nominal original-game frames. Evaluation uses deterministic actions and rotates controller order between blocks.
+All three controllers run Stage 1 in the Steam build of TH14 1.00b, on Normal with Reimu A. The original game supplies state and enacts inputs. Each evaluation starts from the native Retry command and ends at the first miss, the next stage, or 3,300 decisions. One decision advances four nominal original-game frames. The first tests use greedy actions. The fixed evaluator samples the learned actors and rotates the arms between blocks.
 
 | Arm | Movement / Focus / Shoot / Bomb | Geometric dodge | Boss aim correction | Automatic bomb |
 | --- | --- | --- | --- | --- |
@@ -39,9 +39,22 @@ An evaluation-only run loaded the 4,096-step checkpoint and rotated the two lear
 | Frozen SFT | 390, 554, 450 | 450 | 0/3 |
 | Full-policy PPO, 4,096 decisions | 578, 542, 478 | 542 | 0/3 |
 
-The median increased by 92 frames (20.4%). PPO survived longer in two of three paired blocks. Both learned arms used zero bombs during these evaluations. The separately measured hybrid cleared Stage 1 twice with zero misses and zero bombs, at last observed frames 9,894 and 9,866. Each learned evaluation starts at frame 18. This small set of native retries does not establish a repeatable gain across training seeds or stages. The second recipe changes both reward and budget, so it does not isolate either change.
+The 92-frame difference measures survival while stationary. Greedy SFT emitted idle movement in all 335 decisions and greedy PPO did so in all 386 decisions, with zero horizontal or vertical moves and zero bombs across the six trials. The separately measured hybrid cleared Stage 1 twice with zero misses and zero bombs, at last observed frames 9,894 and 9,866. Each learned evaluation starts at frame 18. The second recipe changes both reward and budget together.
 
 The machine-readable records preserve the discarded update, checkpoint hashes, incomplete evaluations and the full replicated comparison. [First training segment](../../results/2026-11-23-th14-full-policy/survival-4096-segment-1-report.json), [training continuation](../../results/2026-11-23-th14-full-policy/survival-4096-segment-2-report.json), [paired original-game trials](../../results/2026-11-23-th14-full-policy/survival-4096-paired-eval.json), [hybrid replication](../../results/2026-11-23-th14-full-policy/hybrid-replication.json)
+
+## Movement verification after 8,192 decisions
+
+PPO continued from 4,096 to 8,192 decisions using the same survival-time reward. The additional 4,096 decisions took 291.4 seconds, with 267.8 seconds in native stepping. Another foreground interruption left two completed greedy pairs and a valid checkpoint. Those greedy actors still chose idle on every completed decision.
+
+The evaluator now samples both learned actors' categorical distributions by default, using matching trial seeds 61, 62 and 63. Each arm controls its own movement, focus, shoot and Bomb. The episode logs include commanded actions and the observed horizontal position range. Horizontal response counts consider commands for which the player is active both before and after the step, and use the sign of the measured displacement.
+
+| Sampled arm | First miss frames | Median | Horizontal responses | Stage 1 clears |
+| --- | --- | ---: | ---: | ---: |
+| Frozen SFT | 1,690, 1,706, 1,574 | 1,690 | 581/592 | 0/3 |
+| Full-policy PPO, 8,192 decisions | 914, 2,478, 4,666 | 2,478 | 689/805 | 0/3 |
+
+PPO won two of three pairs. It used three policy-selected bombs in the longest trial. Both learned arms moved across the playfield. The 46.6% median difference is an initial result from one trained PPO seed and three native retry pairs. [8,192-step training log](../../results/2026-11-23-th14-full-policy/survival-8192-train.json), [sampled native trials](../../results/2026-11-23-th14-full-policy/survival-8192-sampled-eval.json)
 
 ## Collection throughput
 
@@ -56,3 +69,5 @@ For the two-worker benchmark, record aggregate decisions per second, the native-
 The Apple M3 Ultra host booted a diskless two-vCPU ARM64 guest to UEFI under QEMU 10.2.2 with explicit `accel=hvf`. QMP confirmed it ran and shut down cleanly. Windows and TH14 remain untested in that VM. [QEMU accelerators](https://www.qemu.org/docs/master/system/introduction.html#virtualisation-accelerators)
 
 An x86 Linux host ran two concurrent Docker containers with Wine 8, independent virtual displays and independent prefixes. Both [Win32 fixtures](../../tools/rollout-worker-probe/README.md) presented a Direct3D 9 frame and received one key each through foreground DirectInput. Their memory counters froze at 4 and 7 ticks, remained fixed through the hold, and resumed to 14 and 17 ticks. The first attempt hung in the Xvfb wrapper startup. Explicit display readiness polling fixed it. The production gate is launching the Steam build of TH14 1.00b and verifying the original observations, exact native frame histogram and resets. [Probe results](../../results/2026-11-23-th14-full-policy/worker-probes.json)
+
+The Linux host also ran two simultaneous copies of ZUN's genuine TH14 trial 0.01b into Normal Stage 1 at 640×480. The initial graphics-only setup stalled on the Stage 1 loading screen and emitted ALSA device errors. A private PulseAudio null sink per worker let both copies load. Sending Left to one and Right to the other put Reimu near opposite edges of the playfield, reproduced from fresh containers with the checked-in trial launcher. These game tests use the trial binary. Production PPO still uses the Steam 1.00b binary and awaits the same test with the full-version state reader. [Trial launcher](../../tools/rollout-worker-probe/README.md#th14-trial), [developer download page](https://www16.big.or.jp/~zun/html/th14dl.html)

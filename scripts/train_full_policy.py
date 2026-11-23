@@ -170,17 +170,31 @@ def warm_start(base, env, seed):
     return model
 
 
-def direct_trial(stage, base, policy):
+def direct_trial(stage, base, policy, deterministic):
     observation, _ = stage.reset()
     start_frame = stage.last_frame
     action_counts = {name: np.zeros(width, dtype=np.int64) for name, width in zip(ACTION_NAMES, ACTION_WIDTHS)}
+    start_x = float(observation["context"][0]) * 192
+    x_min, x_max = start_x, start_x
+    horizontal_commands = 0
+    horizontal_responses = 0
     while True:
-        action, _ = policy.predict(policy_observation(base, stage, observation), deterministic=True)
+        action, _ = policy.predict(policy_observation(base, stage, observation), deterministic=deterministic)
         for counts, value in zip(action_counts.values(), action):
             counts[value] += 1
+        old_x = float(observation["context"][0]) * 192
+        was_active = stage.snapshot.player_state == 1
         observation, _, terminated, truncated, info = stage.step(action)
+        x = float(observation["context"][0]) * 192
+        x_min, x_max = min(x_min, x), max(x_max, x)
+        horizontal = int(action[0]) % 3 - 1
+        if horizontal and was_active and stage.snapshot.player_state == 1:
+            horizontal_commands += 1
+            horizontal_responses += int(horizontal * (x - old_x) > .05)
         if terminated or truncated:
-            return dict(info, start_frame=start_frame,
+            return dict(info, start_frame=start_frame, x_start=start_x, x_min=x_min, x_max=x_max,
+                        horizontal_commands_while_active=horizontal_commands,
+                        horizontal_responses=horizontal_responses,
                         action_counts={name: counts.tolist() for name, counts in action_counts.items()})
 
 
@@ -195,6 +209,8 @@ def main():
     parser.add_argument("--eval-limit", type=int, default=3300)
     parser.add_argument("--blocks", type=int, default=1)
     parser.add_argument("--eval-arms", nargs="+", choices=CONTROLLERS, default=CONTROLLERS)
+    parser.add_argument("--eval-action", choices=("sampled", "greedy"), default="sampled",
+                        help="Decode the learned heads by argmax or sample their categorical policy.")
     parser.add_argument("--seed", type=int, default=61)
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
@@ -224,6 +240,7 @@ def main():
                     "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu"},
         "seed": args.seed, "additional_steps": args.steps, "requested_blocks": args.blocks,
         "evaluation_arms": args.eval_arms,
+        "learned_evaluation_action": args.eval_action,
         "ppo_hyperparameters": PPO_SETTINGS,
         "reward": REWARDS[args.reward],
         "controller_settings": {arm: {"geometry": arm == "hybrid", "aim_correction": arm == "hybrid",
@@ -273,7 +290,10 @@ def main():
                 if name == "hybrid":
                     result = trial(stage, base, None, True, lambda *_: None, None, student, True, True, True)
                 else:
-                    result = direct_trial(stage, base, base if name == "sft" else model.policy)
+                    if args.eval_action == "sampled":
+                        torch.manual_seed(args.seed + block)
+                    result = direct_trial(stage, base, base if name == "sft" else model.policy,
+                                          deterministic=args.eval_action == "greedy")
                 result.update(block=block + 1, seconds=perf_counter() - start)
                 report["controllers"][name].append(result)
                 publish_json(report_path, report)

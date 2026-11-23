@@ -77,7 +77,7 @@ For source and data changes, add a dated devlog entry with the hypothesis, affec
 Start TH14 1.00b at Normal Reimu A Stage 1 through Game Start, with the game window active at 640×480. Supply the SFT checkpoint with its `metrics.json` sidecar and the masked aim checkpoint. The runner trains on the native executable and compares the frozen SFT actor, the PPO actor, and the existing hybrid under the same first-miss stopping rule.
 
 ```powershell
-python -m scripts.train_full_policy --base models-local/sft/policy.pt --aim models-local/aim/aim.pt --steps 1024 --train-limit 512 --eval-limit 3300 --blocks 1 --out runs/th14-full-policy-smoke
+python -m scripts.train_full_policy --base models-local/sft/policy.pt --aim models-local/aim/aim.pt --steps 1024 --train-limit 512 --eval-limit 3300 --blocks 1 --eval-action greedy --out runs/th14-full-policy-smoke
 ```
 
-`report.json` contains the complete per-update metrics, native training episodes and evaluation trials. `progress.csv` contains the SB3 rollout metrics, with optimization statistics emitted on the next rollout. A compatible local `policy.zip` can resume using `--resume` with matching SFT, seed, reward and training horizon. See the [pilot devlog](devlog/261123-th14-full-policy-ppo.md) for the native results and throughput.
+`report.json` contains the complete per-update metrics, native training episodes and evaluation trials. `progress.csv` contains the SB3 rollout metrics, with optimization statistics emitted on the next rollout. A compatible local `policy.zip` can resume using `--resume` with matching SFT, seed, reward and training horizon. For new runs, the default evaluation samples from the actor, as during PPO collection, and records native horizontal responses. The explicit greedy flag above reproduces the original smoke run. See the [pilot devlog](devlog/261123-th14-full-policy-ppo.md) for the native results and throughput.
