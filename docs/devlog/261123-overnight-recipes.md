@@ -177,4 +177,15 @@ Seed 137 in the anchored experiment reached its normal early stop before an SSH 
 
 Run `20261123T130811Z-overnight-th14-title-equal-hard-885ac5c4` reused the 147,560-decision checkpoint and the controller from the second Normal clear with the native rank set to Hard. It cleared four stages and recorded a Game Over in Stage 5 at frame 16,912. The original game reported zero continues, 173,968,760 displayed score, five misses and 17 bombs.
 
-The independent Hard Stage 5 capture yielded 2,479 on-policy windows. Among 924 eligible moving windows, the earlier two-speed estimator changed mean displacement error from 2.318 to 1.208 units and the rate within half a unit from 70.78% to 77.49%. This rollout used fixed player speed for its decisions. The adaptive-motion flag is used in the follow-up story trial.
+The independent Hard Stage 5 capture yielded 2,479 on-policy windows. Among 924 eligible moving windows, the earlier two-speed estimator changed mean displacement error from 2.318 to 1.208 units and the rate within half a unit from 70.78% to 77.49%. This rollout used fixed player speed for its decisions.
+
+## Native Hard speed-calibration comparison
+
+Ran the same SFT, aiming checkpoint and control configuration with `--adaptive-motion`. Both trials started control at native frame 18 on a fresh Hard Reimu A credit. Each lost its first life in Stage 2.
+
+| Motion setting | Stages cleared | Terminal stage and frame | Continues | Misses | Bombs | Displayed score |
+| --- | ---: | --- | ---: | ---: | ---: | ---: |
+| Fixed speed | 4 | Stage 5, 16,912 | 0 | 5 | 17 | 173,968,760 |
+| Adaptive speed | 3 | Stage 4, 16,923 | 0 | 4 | 14 | 115,348,500 |
+
+Run `20261123T133150Z-overnight-th14-title-equal-hard-adaptive-cac5c922` used the slow estimate for 773 decisions and switched speed estimates 30 times. The first Stage 2 records showed two bombs used in the fixed-speed run and zero in the adaptive run, before the first adaptive change. Each arm has one trial and the underlying game trajectories differed from the early stages. Keep fixed speed as the default. Both original replay files were saved and decoded through their terminal stages.
