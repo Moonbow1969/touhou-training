@@ -1,0 +1,4849 @@
+{
+  "version": 1,
+  "purpose": "Final locked-test reporting. Epochs selected on validation before opening the test. No ranking or selection.",
+  "scope": "Offline agreement on recorded expert trajectories. Native survival, action success and clears require native evaluation.",
+  "test_design": {
+    "split_plan_sha256": "18488485c0b609cc7c34b189424d382fcaecde9c03b38bba1e57235955c73fa8",
+    "expanded_training_manifest_sha256": "60bd5285519b55b2d6b7eb9daed06aed5c7e03782e7072c9fc00fb5f5e053b35",
+    "player_groups": 1,
+    "replays": 1,
+    "stages": 6,
+    "paired_decisions": 26279,
+    "aggregation": "Equal replay weights within supported metric, then equal seed weights.",
+    "uncertainty": "Range and sample SD across matched training seeds are descriptive. Stage rows and decisions are correlated within a replay.",
+    "player_population_interval": null
+  },
+  "definitions": {
+    "movement": "Greedy exact direction against the four-tick training label.",
+    "immediate_events": "Starts begin from native idle; turns begin moving and change to another moving direction at the first future tick.",
+    "bomb": "Positive if any of four expert input ticks sets Bomb; predictions use the greedy Bomb head.",
+    "bomb_onset": "First positive window following an observed contiguous negative window in the same stage.",
+    "counts": "Null rates indicate zero denominator. Button labels and onset counts do not measure actual Bomb consumption."
+  },
+  "inputs": [
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 1,
+      "pairs": 3292,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "92cefc172f9a7eaaf1b9ac1a4dab9dc23932f015f63ec26e1da1ee03bd28c270",
+      "arrays_sha256": "9af51455267db8c319c9a6d788c87358a3402830a4b68461fa2fca881f4e2027",
+      "moving_alignment": 1.0,
+      "frame_coverage": 0.9881669851536087
+    },
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 2,
+      "pairs": 4167,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "7a7f542573c5ab14579c7a6a0470399757cff706faa1506134f3101ff5507e3d",
+      "arrays_sha256": "54c16f0d3efce807c2f72ccc494dcaf7a630a582f0f0c729119d0c799da0b6d1",
+      "moving_alignment": 1.0,
+      "frame_coverage": 0.9906328535526616
+    },
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 3,
+      "pairs": 4408,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "fd96d7af2dcf144ac0526e7580ad3c82712900dfe16019f15737a1ff07f35f62",
+      "arrays_sha256": "81b585519e7519e742218472aa9e1d28b15cb7fad518d7b264b1b41ca4925495",
+      "moving_alignment": 1.0,
+      "frame_coverage": 0.9910205869469996
+    },
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 4,
+      "pairs": 5260,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "a14913ee6ec62485a169eefefe47e5320d3bbb1886cf953b1ee49b23ca19db33",
+      "arrays_sha256": "e2fab78cb684007280b12399663ca14c1ef8a6c23d4ad0dfc7cc66a4485976d0",
+      "moving_alignment": 1.0,
+      "frame_coverage": 0.9927341582632436
+    },
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 5,
+      "pairs": 3997,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "a2f5e506b58fad04ee6ab4ee169f5094491f3194090305860608ccac71006cb5",
+      "arrays_sha256": "c95cdbdcb73042fc6ac6523f14a520a985348d92932eccc88dd095867237282b",
+      "moving_alignment": 0.999537251272559,
+      "frame_coverage": 0.9904666627434826
+    },
+    {
+      "replay": "th14_ud0559.rpy",
+      "stage": 6,
+      "pairs": 5155,
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215",
+      "player_group_sha256": "d096d49f054a2a69093154b72dfef101bd40e0a0103b77024dbde67761fea429",
+      "metadata_sha256": "4491dea3ef8b202fa045203027fdb3c7e8f698dd6aca069acc71d6a4b11322d5",
+      "arrays_sha256": "c0d572a3a58ffbc8c65190ed1273563730aea2c72e74295888f5f49323593282",
+      "moving_alignment": 0.9804432855280313,
+      "frame_coverage": 0.9754068385445237
+    }
+  ],
+  "checkpoints": {
+    "legacy_clock": {
+      "61": {
+        "checkpoint_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "metrics_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "selected_validation_epoch": 2,
+        "validation_nll": 1.291647702699276,
+        "training_decisions": 147560,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "97": {
+        "checkpoint_sha256": "7f795e722866dfef0a0f1d453027a8faf738515892a3a2ada00687380bf031e2",
+        "metrics_sha256": "5b664f713f3924023bf7c3e62137eb27691d7f0e5f4b6a38689079604c2828e2",
+        "selected_validation_epoch": 4,
+        "validation_nll": 1.2462435710391015,
+        "training_decisions": 147560,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "137": {
+        "checkpoint_sha256": "5c7f2b7f6c6149661144b350128da2f874a2df1d548d182ba30d405d8a921056",
+        "metrics_sha256": "feeeec3b449d1ebb7987e737f8feed808be58bd8c4a1e1e7143dcc6b917c2204",
+        "selected_validation_epoch": 3,
+        "validation_nll": 1.1852220934545088,
+        "training_decisions": 147560,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      }
+    },
+    "expanded_clock": {
+      "61": {
+        "checkpoint_sha256": "c6c37c2ab13b85dd78361a540f956ecf2bb47cfbba7d5822497e15afbdc71918",
+        "metrics_sha256": "9fbf4a16594d6e0d79f4e56b445d8a8858f2f75eb2529a50682ae3d14d76a075",
+        "selected_validation_epoch": 5,
+        "validation_nll": 1.2502368503756802,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "97": {
+        "checkpoint_sha256": "afb12c035dd194a22b92137c29d39b7f940c624ee7f90d989b0bdbd529ab9dd9",
+        "metrics_sha256": "a79fddde7fafcbb244f373dc4041570c37e6ef374c2a4149f58c6d33aac33e07",
+        "selected_validation_epoch": 4,
+        "validation_nll": 1.3355842476887347,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "137": {
+        "checkpoint_sha256": "4eafba36020b94d6ea0ebbf4e8219b27b035f313d3698d3a741fa9613bab10fe",
+        "metrics_sha256": "fc336bb94624d7b528295e8dd4620971271ca50f86388ee0823c1e44f3854a8e",
+        "selected_validation_epoch": 1,
+        "validation_nll": 1.2368854299339473,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      }
+    },
+    "expanded_no_clock": {
+      "61": {
+        "checkpoint_sha256": "e3b8b7b36c5318d6f3c2c046620bc759724d3ae6d435b1ab2bc5e088d67c214f",
+        "metrics_sha256": "ec2b492a926ddd1610da5888a8a15e8eb42a8ff9f9144ca19b21f6b412e4d523",
+        "selected_validation_epoch": 5,
+        "validation_nll": 1.2773377424693206,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "97": {
+        "checkpoint_sha256": "1bc42ef386d364b03d5af1a307c1ee6ec63f04b48db00fff7ecdd55aeba38113",
+        "metrics_sha256": "1150d82341df13bb8c86595857b277c08d75361a314c57b72b70f4faea97d0e0",
+        "selected_validation_epoch": 4,
+        "validation_nll": 1.312837365150349,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      },
+      "137": {
+        "checkpoint_sha256": "3a692a78e14fc036cfaf3dad51d1ac25cf9696f235dedb7df2aad4f185b8ebfd",
+        "metrics_sha256": "20d42f7fa7af711d9fbeba9a70a839537fbe24bdab02080c8b887404457f5cd6",
+        "selected_validation_epoch": 4,
+        "validation_nll": 1.2719564738711868,
+        "training_decisions": 232697,
+        "validation_decisions": 13938,
+        "validation_replays": [
+          "th14_ud06d6.rpy",
+          "th17_ud0445.rpy"
+        ]
+      }
+    }
+  },
+  "arms": {
+    "legacy_clock": {
+      "by_seed": {
+        "61": {
+          "macro_replay_metrics": {
+            "movement": 0.6520415540926214,
+            "movement_while_moving": 0.5173451834862385,
+            "immediate_movement": 0.6952699874424445,
+            "immediate_start_direction": 0.02,
+            "immediate_turn_direction": 0.027874564459930314,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": null,
+            "bomb_recall": 0.0,
+            "bomb_false_positive_rate": 0.0,
+            "bomb_observed_onset_recall": 0.0,
+            "bomb_probability_on_positive": 0.014141416217146607,
+            "bomb_probability_on_negative": 0.0032195308827777267
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17135,
+                  "denominator": 26279,
+                  "value": 0.6520415540926214
+                },
+                "movement_while_moving": {
+                  "numerator": 7218,
+                  "denominator": 13952,
+                  "value": 0.5173451834862385
+                },
+                "immediate_movement": {
+                  "numerator": 18271,
+                  "denominator": 26279,
+                  "value": 0.6952699874424445
+                },
+                "immediate_start_direction": {
+                  "numerator": 25,
+                  "denominator": 1250,
+                  "value": 0.02
+                },
+                "immediate_turn_direction": {
+                  "numerator": 16,
+                  "denominator": 574,
+                  "value": 0.027874564459930314
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 0,
+                  "denominator": 0,
+                  "value": null
+                },
+                "bomb_recall": {
+                  "numerator": 0,
+                  "denominator": 147,
+                  "value": 0.0
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 0,
+                  "denominator": 26132,
+                  "value": 0.0
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 0,
+                  "denominator": 50,
+                  "value": 0.0
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 2.078788183920551,
+                  "denominator": 147,
+                  "value": 0.014141416217146607
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 84.13278102874756,
+                  "denominator": 26132,
+                  "value": 0.0032195308827777267
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2180,
+                    "denominator": 3292,
+                    "value": 0.6622114216281896
+                  },
+                  "movement_while_moving": {
+                    "numerator": 858,
+                    "denominator": 1690,
+                    "value": 0.5076923076923077
+                  },
+                  "immediate_movement": {
+                    "numerator": 2309,
+                    "denominator": 3292,
+                    "value": 0.701397326852977
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 77,
+                    "value": 0.025974025974025976
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 7.885282516479492,
+                    "denominator": 3292,
+                    "value": 0.0023952863051274276
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 2827,
+                    "denominator": 4167,
+                    "value": 0.6784257259419246
+                  },
+                  "movement_while_moving": {
+                    "numerator": 923,
+                    "denominator": 2021,
+                    "value": 0.45670460168233545
+                  },
+                  "immediate_movement": {
+                    "numerator": 2936,
+                    "denominator": 4167,
+                    "value": 0.7045836333093353
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 108,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 90,
+                    "value": 0.044444444444444446
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4128,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.5473060011863708,
+                    "denominator": 39,
+                    "value": 0.014033487209906945
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 17.31168556213379,
+                    "denominator": 4128,
+                    "value": 0.004193722277648689
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2807,
+                    "denominator": 4408,
+                    "value": 0.6367967332123412
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1451,
+                    "denominator": 2631,
+                    "value": 0.5515013302926643
+                  },
+                  "immediate_movement": {
+                    "numerator": 3115,
+                    "denominator": 4408,
+                    "value": 0.7066696914700544
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 7,
+                    "denominator": 197,
+                    "value": 0.03553299492385787
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 112,
+                    "value": 0.017857142857142856
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 15,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4393,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.12057331949472427,
+                    "denominator": 15,
+                    "value": 0.008038221299648285
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 9.140405654907227,
+                    "denominator": 4393,
+                    "value": 0.0020806750864801335
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3585,
+                    "denominator": 5260,
+                    "value": 0.6815589353612167
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1295,
+                    "denominator": 2475,
+                    "value": 0.5232323232323233
+                  },
+                  "immediate_movement": {
+                    "numerator": 3714,
+                    "denominator": 5260,
+                    "value": 0.7060836501901141
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 3,
+                    "denominator": 251,
+                    "value": 0.01195219123505976
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 113,
+                    "value": 0.04424778761061947
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 64,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5196,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.4567263722419739,
+                    "denominator": 64,
+                    "value": 0.007136349566280842
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 14.056218147277832,
+                    "denominator": 5196,
+                    "value": 0.0027051997973975813
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2534,
+                    "denominator": 3997,
+                    "value": 0.6339754816112084
+                  },
+                  "movement_while_moving": {
+                    "numerator": 974,
+                    "denominator": 2137,
+                    "value": 0.45577912962096395
+                  },
+                  "immediate_movement": {
+                    "numerator": 2688,
+                    "denominator": 3997,
+                    "value": 0.6725043782837128
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 178,
+                    "value": 0.0056179775280898875
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 96,
+                    "value": 0.020833333333333332
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 26,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3971,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.9535077810287476,
+                    "denominator": 26,
+                    "value": 0.03667337619341337
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 14.777942657470703,
+                    "denominator": 3971,
+                    "value": 0.003721466295006473
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3202,
+                    "denominator": 5155,
+                    "value": 0.6211445198836082
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1717,
+                    "denominator": 2998,
+                    "value": 0.5727151434289527
+                  },
+                  "immediate_movement": {
+                    "numerator": 3509,
+                    "denominator": 5155,
+                    "value": 0.6806983511154219
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 13,
+                    "denominator": 298,
+                    "value": 0.0436241610738255
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 1,
+                    "denominator": 86,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5152,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0006747099687345326,
+                    "denominator": 3,
+                    "value": 0.00022490332291151086
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 20.961246490478516,
+                    "denominator": 5152,
+                    "value": 0.004068564924394122
+                  }
+                }
+              }
+            }
+          }
+        },
+        "97": {
+          "macro_replay_metrics": {
+            "movement": 0.6512424369268237,
+            "movement_while_moving": 0.5493836009174312,
+            "immediate_movement": 0.6989230944860916,
+            "immediate_start_direction": 0.0192,
+            "immediate_turn_direction": 0.029616724738675958,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.5,
+            "bomb_recall": 0.006802721088435374,
+            "bomb_false_positive_rate": 3.8267258533598655e-05,
+            "bomb_observed_onset_recall": 0.0,
+            "bomb_probability_on_positive": 0.023815369616392492,
+            "bomb_probability_on_negative": 0.002270361119201277
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17114,
+                  "denominator": 26279,
+                  "value": 0.6512424369268237
+                },
+                "movement_while_moving": {
+                  "numerator": 7665,
+                  "denominator": 13952,
+                  "value": 0.5493836009174312
+                },
+                "immediate_movement": {
+                  "numerator": 18367,
+                  "denominator": 26279,
+                  "value": 0.6989230944860916
+                },
+                "immediate_start_direction": {
+                  "numerator": 24,
+                  "denominator": 1250,
+                  "value": 0.0192
+                },
+                "immediate_turn_direction": {
+                  "numerator": 17,
+                  "denominator": 574,
+                  "value": 0.029616724738675958
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 1,
+                  "denominator": 2,
+                  "value": 0.5
+                },
+                "bomb_recall": {
+                  "numerator": 1,
+                  "denominator": 147,
+                  "value": 0.006802721088435374
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 1,
+                  "denominator": 26132,
+                  "value": 3.8267258533598655e-05
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 0,
+                  "denominator": 50,
+                  "value": 0.0
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 3.5008593336096965,
+                  "denominator": 147,
+                  "value": 0.023815369616392492
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 59.32907676696777,
+                  "denominator": 26132,
+                  "value": 0.002270361119201277
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2142,
+                    "denominator": 3292,
+                    "value": 0.6506682867557716
+                  },
+                  "movement_while_moving": {
+                    "numerator": 949,
+                    "denominator": 1690,
+                    "value": 0.5615384615384615
+                  },
+                  "immediate_movement": {
+                    "numerator": 2305,
+                    "denominator": 3292,
+                    "value": 0.7001822600243013
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 77,
+                    "value": 0.025974025974025976
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 3.411245822906494,
+                    "denominator": 3292,
+                    "value": 0.0010362229109679509
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 2844,
+                    "denominator": 4167,
+                    "value": 0.6825053995680346
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1024,
+                    "denominator": 2021,
+                    "value": 0.5066798614547254
+                  },
+                  "immediate_movement": {
+                    "numerator": 2971,
+                    "denominator": 4167,
+                    "value": 0.7129829613630909
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 108,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 90,
+                    "value": 0.03333333333333333
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4128,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.4648737907409668,
+                    "denominator": 39,
+                    "value": 0.011919840788229918
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 14.90227222442627,
+                    "denominator": 4128,
+                    "value": 0.003610046565994736
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2815,
+                    "denominator": 4408,
+                    "value": 0.6386116152450091
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1513,
+                    "denominator": 2631,
+                    "value": 0.5750665146332193
+                  },
+                  "immediate_movement": {
+                    "numerator": 3127,
+                    "denominator": 4408,
+                    "value": 0.7093920145190563
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 6,
+                    "denominator": 197,
+                    "value": 0.030456852791878174
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 15,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4393,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.2051067054271698,
+                    "denominator": 15,
+                    "value": 0.01367378036181132
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 5.116455554962158,
+                    "denominator": 4393,
+                    "value": 0.0011646837138543497
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3483,
+                    "denominator": 5260,
+                    "value": 0.6621673003802281
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1325,
+                    "denominator": 2475,
+                    "value": 0.5353535353535354
+                  },
+                  "immediate_movement": {
+                    "numerator": 3640,
+                    "denominator": 5260,
+                    "value": 0.6920152091254753
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 251,
+                    "value": 0.00796812749003984
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 113,
+                    "value": 0.04424778761061947
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 64,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5196,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.0532695055007935,
+                    "denominator": 64,
+                    "value": 0.016457336023449898
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 15.151405334472656,
+                    "denominator": 5196,
+                    "value": 0.002915974852669872
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2538,
+                    "denominator": 3997,
+                    "value": 0.6349762321741306
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1031,
+                    "denominator": 2137,
+                    "value": 0.4824520355638746
+                  },
+                  "immediate_movement": {
+                    "numerator": 2705,
+                    "denominator": 3997,
+                    "value": 0.6767575681761321
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 178,
+                    "value": 0.011235955056179775
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 96,
+                    "value": 0.041666666666666664
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 1,
+                    "denominator": 2,
+                    "value": 0.5
+                  },
+                  "bomb_recall": {
+                    "numerator": 1,
+                    "denominator": 26,
+                    "value": 0.038461538461538464
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 1,
+                    "denominator": 3971,
+                    "value": 0.0002518257365902795
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.7769653797149658,
+                    "denominator": 26,
+                    "value": 0.06834482229672946
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 10.495206832885742,
+                    "denominator": 3971,
+                    "value": 0.002642963191358787
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3292,
+                    "denominator": 5155,
+                    "value": 0.6386032977691561
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1823,
+                    "denominator": 2998,
+                    "value": 0.6080720480320213
+                  },
+                  "immediate_movement": {
+                    "numerator": 3619,
+                    "denominator": 5155,
+                    "value": 0.7020368574199806
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 13,
+                    "denominator": 298,
+                    "value": 0.0436241610738255
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 0,
+                    "denominator": 86,
+                    "value": 0.0
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5152,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0006439522258006036,
+                    "denominator": 3,
+                    "value": 0.00021465074193353453
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 10.252490997314453,
+                    "denominator": 5152,
+                    "value": 0.0019900021345719047
+                  }
+                }
+              }
+            }
+          }
+        },
+        "137": {
+          "macro_replay_metrics": {
+            "movement": 0.6555043951444118,
+            "movement_while_moving": 0.5365538990825688,
+            "immediate_movement": 0.702271775942768,
+            "immediate_start_direction": 0.0144,
+            "immediate_turn_direction": 0.029616724738675958,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": null,
+            "bomb_recall": 0.0,
+            "bomb_false_positive_rate": 0.0,
+            "bomb_observed_onset_recall": 0.0,
+            "bomb_probability_on_positive": 0.0011346158132014073,
+            "bomb_probability_on_negative": 0.0005646730735658523
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17226,
+                  "denominator": 26279,
+                  "value": 0.6555043951444118
+                },
+                "movement_while_moving": {
+                  "numerator": 7486,
+                  "denominator": 13952,
+                  "value": 0.5365538990825688
+                },
+                "immediate_movement": {
+                  "numerator": 18455,
+                  "denominator": 26279,
+                  "value": 0.702271775942768
+                },
+                "immediate_start_direction": {
+                  "numerator": 18,
+                  "denominator": 1250,
+                  "value": 0.0144
+                },
+                "immediate_turn_direction": {
+                  "numerator": 17,
+                  "denominator": 574,
+                  "value": 0.029616724738675958
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 0,
+                  "denominator": 0,
+                  "value": null
+                },
+                "bomb_recall": {
+                  "numerator": 0,
+                  "denominator": 147,
+                  "value": 0.0
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 0,
+                  "denominator": 26132,
+                  "value": 0.0
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 0,
+                  "denominator": 50,
+                  "value": 0.0
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 0.1667885245406069,
+                  "denominator": 147,
+                  "value": 0.0011346158132014073
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 14.756036758422852,
+                  "denominator": 26132,
+                  "value": 0.0005646730735658523
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2166,
+                    "denominator": 3292,
+                    "value": 0.6579586877278251
+                  },
+                  "movement_while_moving": {
+                    "numerator": 908,
+                    "denominator": 1690,
+                    "value": 0.5372781065088758
+                  },
+                  "immediate_movement": {
+                    "numerator": 2305,
+                    "denominator": 3292,
+                    "value": 0.7001822600243013
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 77,
+                    "value": 0.025974025974025976
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 1.0129461288452148,
+                    "denominator": 3292,
+                    "value": 0.00030769931009878946
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 2864,
+                    "denominator": 4167,
+                    "value": 0.6873050155987521
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1010,
+                    "denominator": 2021,
+                    "value": 0.4997525977238991
+                  },
+                  "immediate_movement": {
+                    "numerator": 2997,
+                    "denominator": 4167,
+                    "value": 0.7192224622030238
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 108,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 90,
+                    "value": 0.044444444444444446
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4128,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.07969002425670624,
+                    "denominator": 39,
+                    "value": 0.0020433339553001598
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 2.812171459197998,
+                    "denominator": 4128,
+                    "value": 0.0006812430860460266
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2813,
+                    "denominator": 4408,
+                    "value": 0.6381578947368421
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1489,
+                    "denominator": 2631,
+                    "value": 0.5659445077917141
+                  },
+                  "immediate_movement": {
+                    "numerator": 3123,
+                    "denominator": 4408,
+                    "value": 0.7084845735027223
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 6,
+                    "denominator": 197,
+                    "value": 0.030456852791878174
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 15,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4393,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.009980815462768078,
+                    "denominator": 15,
+                    "value": 0.0006653876975178718
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 2.6938610076904297,
+                    "denominator": 4393,
+                    "value": 0.0006132167101503368
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3558,
+                    "denominator": 5260,
+                    "value": 0.676425855513308
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1331,
+                    "denominator": 2475,
+                    "value": 0.5377777777777778
+                  },
+                  "immediate_movement": {
+                    "numerator": 3702,
+                    "denominator": 5260,
+                    "value": 0.7038022813688213
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 251,
+                    "value": 0.00796812749003984
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 113,
+                    "value": 0.04424778761061947
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 64,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5196,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.019183039665222168,
+                    "denominator": 64,
+                    "value": 0.0002997349947690964
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 1.9050548076629639,
+                    "denominator": 5196,
+                    "value": 0.00036663872356869977
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2526,
+                    "denominator": 3997,
+                    "value": 0.631973980485364
+                  },
+                  "movement_while_moving": {
+                    "numerator": 997,
+                    "denominator": 2137,
+                    "value": 0.4665418811417876
+                  },
+                  "immediate_movement": {
+                    "numerator": 2695,
+                    "denominator": 3997,
+                    "value": 0.6742556917688266
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 178,
+                    "value": 0.0056179775280898875
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 96,
+                    "value": 0.020833333333333332
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 26,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3971,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.05770958214998245,
+                    "denominator": 26,
+                    "value": 0.0022195993134608637
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 2.7192258834838867,
+                    "denominator": 3971,
+                    "value": 0.0006847710610636833
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3299,
+                    "denominator": 5155,
+                    "value": 0.6399612027158099
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1751,
+                    "denominator": 2998,
+                    "value": 0.5840560373582389
+                  },
+                  "immediate_movement": {
+                    "numerator": 3633,
+                    "denominator": 5155,
+                    "value": 0.7047526673132881
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 8,
+                    "denominator": 298,
+                    "value": 0.026845637583892617
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 1,
+                    "denominator": 86,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5152,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.00022506300592795014,
+                    "denominator": 3,
+                    "value": 7.502100197598338e-05
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 3.6127774715423584,
+                    "denominator": 5152,
+                    "value": 0.0007012378632652093
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "across_seeds": {
+        "movement": {
+          "seeds_with_support": 3,
+          "mean": 0.652929462054619,
+          "min": 0.6512424369268237,
+          "max": 0.6555043951444118,
+          "seed_sample_sd": 0.0022654706738006406
+        },
+        "movement_while_moving": {
+          "seeds_with_support": 3,
+          "mean": 0.5344275611620795,
+          "min": 0.5173451834862385,
+          "max": 0.5493836009174312,
+          "seed_sample_sd": 0.01612470255812248
+        },
+        "immediate_movement": {
+          "seeds_with_support": 3,
+          "mean": 0.6988216192904347,
+          "min": 0.6952699874424445,
+          "max": 0.702271775942768,
+          "seed_sample_sd": 0.003501997067719482
+        },
+        "immediate_start_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.017866666666666666,
+          "min": 0.0144,
+          "max": 0.02,
+          "seed_sample_sd": 0.003028751117760146
+        },
+        "immediate_turn_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.029036004645760744,
+          "min": 0.027874564459930314,
+          "max": 0.029616724738675958,
+          "seed_sample_sd": 0.001005836705905271
+        },
+        "bomb_prevalence": {
+          "seeds_with_support": 3,
+          "mean": 0.005593820160584497,
+          "min": 0.005593820160584497,
+          "max": 0.005593820160584497,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_precision": {
+          "seeds_with_support": 1,
+          "mean": 0.5,
+          "min": 0.5,
+          "max": 0.5,
+          "seed_sample_sd": null
+        },
+        "bomb_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.0022675736961451248,
+          "min": 0.0,
+          "max": 0.006802721088435374,
+          "seed_sample_sd": 0.003927552851630107
+        },
+        "bomb_false_positive_rate": {
+          "seeds_with_support": 3,
+          "mean": 1.2755752844532885e-05,
+          "min": 0.0,
+          "max": 3.8267258533598655e-05,
+          "seed_sample_sd": 2.2093612015522188e-05
+        },
+        "bomb_observed_onset_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_probability_on_positive": {
+          "seeds_with_support": 3,
+          "mean": 0.013030467215580169,
+          "min": 0.0011346158132014073,
+          "max": 0.023815369616392492,
+          "seed_sample_sd": 0.011381116115447676
+        },
+        "bomb_probability_on_negative": {
+          "seeds_with_support": 3,
+          "mean": 0.002018188358514952,
+          "min": 0.0005646730735658523,
+          "max": 0.0032195308827777267,
+          "seed_sample_sd": 0.0013452735122299257
+        }
+      }
+    },
+    "expanded_clock": {
+      "by_seed": {
+        "61": {
+          "macro_replay_metrics": {
+            "movement": 0.6732752387838198,
+            "movement_while_moving": 0.6245699541284404,
+            "immediate_movement": 0.7268160888922715,
+            "immediate_start_direction": 0.0336,
+            "immediate_turn_direction": 0.033101045296167246,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.078125,
+            "bomb_recall": 0.1360544217687075,
+            "bomb_false_positive_rate": 0.009031073013929282,
+            "bomb_observed_onset_recall": 0.04,
+            "bomb_probability_on_positive": 0.18033814283252572,
+            "bomb_probability_on_negative": 0.03478277592678704
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17693,
+                  "denominator": 26279,
+                  "value": 0.6732752387838198
+                },
+                "movement_while_moving": {
+                  "numerator": 8714,
+                  "denominator": 13952,
+                  "value": 0.6245699541284404
+                },
+                "immediate_movement": {
+                  "numerator": 19100,
+                  "denominator": 26279,
+                  "value": 0.7268160888922715
+                },
+                "immediate_start_direction": {
+                  "numerator": 42,
+                  "denominator": 1250,
+                  "value": 0.0336
+                },
+                "immediate_turn_direction": {
+                  "numerator": 19,
+                  "denominator": 574,
+                  "value": 0.033101045296167246
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 20,
+                  "denominator": 256,
+                  "value": 0.078125
+                },
+                "bomb_recall": {
+                  "numerator": 20,
+                  "denominator": 147,
+                  "value": 0.1360544217687075
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 236,
+                  "denominator": 26132,
+                  "value": 0.009031073013929282
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 2,
+                  "denominator": 50,
+                  "value": 0.04
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 26.509706996381283,
+                  "denominator": 147,
+                  "value": 0.18033814283252572
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 908.9435005187988,
+                  "denominator": 26132,
+                  "value": 0.03478277592678704
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2114,
+                    "denominator": 3292,
+                    "value": 0.6421628189550426
+                  },
+                  "movement_while_moving": {
+                    "numerator": 987,
+                    "denominator": 1690,
+                    "value": 0.5840236686390533
+                  },
+                  "immediate_movement": {
+                    "numerator": 2307,
+                    "denominator": 3292,
+                    "value": 0.7007897934386391
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 77,
+                    "value": 0.03896103896103896
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 1,
+                    "denominator": 3292,
+                    "value": 0.00030376670716889426
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 28.851505279541016,
+                    "denominator": 3292,
+                    "value": 0.008764126755632142
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 3051,
+                    "denominator": 4167,
+                    "value": 0.7321814254859611
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1248,
+                    "denominator": 2021,
+                    "value": 0.6175160811479465
+                  },
+                  "immediate_movement": {
+                    "numerator": 3190,
+                    "denominator": 4167,
+                    "value": 0.7655387568994481
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 108,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 90,
+                    "value": 0.05555555555555555
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 52,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 52,
+                    "denominator": 4128,
+                    "value": 0.012596899224806201
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.4734199047088623,
+                    "denominator": 39,
+                    "value": 0.037779997556637496
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 186.32562255859375,
+                    "denominator": 4128,
+                    "value": 0.04513702096865159
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2923,
+                    "denominator": 4408,
+                    "value": 0.6631125226860254
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1675,
+                    "denominator": 2631,
+                    "value": 0.636640060813379
+                  },
+                  "immediate_movement": {
+                    "numerator": 3252,
+                    "denominator": 4408,
+                    "value": 0.7377495462794919
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 6,
+                    "denominator": 197,
+                    "value": 0.030456852791878174
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 2,
+                    "denominator": 12,
+                    "value": 0.16666666666666666
+                  },
+                  "bomb_recall": {
+                    "numerator": 2,
+                    "denominator": 15,
+                    "value": 0.13333333333333333
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 10,
+                    "denominator": 4393,
+                    "value": 0.0022763487366264513
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 2.8100976943969727,
+                    "denominator": 15,
+                    "value": 0.18733984629313152
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 82.83059692382812,
+                    "denominator": 4393,
+                    "value": 0.018855132466157096
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3569,
+                    "denominator": 5260,
+                    "value": 0.6785171102661597
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1510,
+                    "denominator": 2475,
+                    "value": 0.6101010101010101
+                  },
+                  "immediate_movement": {
+                    "numerator": 3747,
+                    "denominator": 5260,
+                    "value": 0.7123574144486692
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 4,
+                    "denominator": 251,
+                    "value": 0.01593625498007968
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 113,
+                    "value": 0.02654867256637168
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 2,
+                    "denominator": 67,
+                    "value": 0.029850746268656716
+                  },
+                  "bomb_recall": {
+                    "numerator": 2,
+                    "denominator": 64,
+                    "value": 0.03125
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 65,
+                    "denominator": 5196,
+                    "value": 0.012509622786759045
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 7.057792663574219,
+                    "denominator": 64,
+                    "value": 0.11027801036834717
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 233.24600219726562,
+                    "denominator": 5196,
+                    "value": 0.044889530830882526
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2667,
+                    "denominator": 3997,
+                    "value": 0.6672504378283712
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1290,
+                    "denominator": 2137,
+                    "value": 0.6036499766027141
+                  },
+                  "immediate_movement": {
+                    "numerator": 2890,
+                    "denominator": 3997,
+                    "value": 0.7230422817112835
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 178,
+                    "value": 0.011235955056179775
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 96,
+                    "value": 0.041666666666666664
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 16,
+                    "denominator": 111,
+                    "value": 0.14414414414414414
+                  },
+                  "bomb_recall": {
+                    "numerator": 16,
+                    "denominator": 26,
+                    "value": 0.6153846153846154
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 95,
+                    "denominator": 3971,
+                    "value": 0.023923444976076555
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 2,
+                    "denominator": 8,
+                    "value": 0.25
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 15.053105354309082,
+                    "denominator": 26,
+                    "value": 0.5789655905503494
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 237.0902557373047,
+                    "denominator": 3971,
+                    "value": 0.059705428289424496
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3369,
+                    "denominator": 5155,
+                    "value": 0.6535402521823472
+                  },
+                  "movement_while_moving": {
+                    "numerator": 2004,
+                    "denominator": 2998,
+                    "value": 0.6684456304202802
+                  },
+                  "immediate_movement": {
+                    "numerator": 3714,
+                    "denominator": 5155,
+                    "value": 0.7204655674102812
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 29,
+                    "denominator": 298,
+                    "value": 0.09731543624161074
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 1,
+                    "denominator": 86,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 13,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 13,
+                    "denominator": 5152,
+                    "value": 0.0025232919254658385
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.11529137939214706,
+                    "denominator": 3,
+                    "value": 0.038430459797382355
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 140.59951782226562,
+                    "denominator": 5152,
+                    "value": 0.0272902790804087
+                  }
+                }
+              }
+            }
+          }
+        },
+        "97": {
+          "macro_replay_metrics": {
+            "movement": 0.6692035465580882,
+            "movement_while_moving": 0.6131737385321101,
+            "immediate_movement": 0.7201567791772898,
+            "immediate_start_direction": 0.0352,
+            "immediate_turn_direction": 0.036585365853658534,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.04103479036574487,
+            "bomb_recall": 0.3129251700680272,
+            "bomb_false_positive_rate": 0.04113730292361855,
+            "bomb_observed_onset_recall": 0.12,
+            "bomb_probability_on_positive": 0.32641155835317104,
+            "bomb_probability_on_negative": 0.08018062725268588
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17586,
+                  "denominator": 26279,
+                  "value": 0.6692035465580882
+                },
+                "movement_while_moving": {
+                  "numerator": 8555,
+                  "denominator": 13952,
+                  "value": 0.6131737385321101
+                },
+                "immediate_movement": {
+                  "numerator": 18925,
+                  "denominator": 26279,
+                  "value": 0.7201567791772898
+                },
+                "immediate_start_direction": {
+                  "numerator": 44,
+                  "denominator": 1250,
+                  "value": 0.0352
+                },
+                "immediate_turn_direction": {
+                  "numerator": 21,
+                  "denominator": 574,
+                  "value": 0.036585365853658534
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 46,
+                  "denominator": 1121,
+                  "value": 0.04103479036574487
+                },
+                "bomb_recall": {
+                  "numerator": 46,
+                  "denominator": 147,
+                  "value": 0.3129251700680272
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 1075,
+                  "denominator": 26132,
+                  "value": 0.04113730292361855
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 6,
+                  "denominator": 50,
+                  "value": 0.12
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 47.982499077916145,
+                  "denominator": 147,
+                  "value": 0.32641155835317104
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 2095.2801513671875,
+                  "denominator": 26132,
+                  "value": 0.08018062725268588
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2130,
+                    "denominator": 3292,
+                    "value": 0.6470230862697448
+                  },
+                  "movement_while_moving": {
+                    "numerator": 975,
+                    "denominator": 1690,
+                    "value": 0.5769230769230769
+                  },
+                  "immediate_movement": {
+                    "numerator": 2314,
+                    "denominator": 3292,
+                    "value": 0.7029161603888214
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 218,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 77,
+                    "value": 0.05194805194805195
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 13,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 13,
+                    "denominator": 3292,
+                    "value": 0.003948967193195626
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 66.99858093261719,
+                    "denominator": 3292,
+                    "value": 0.02035193831488979
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 3041,
+                    "denominator": 4167,
+                    "value": 0.7297816174706023
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1225,
+                    "denominator": 2021,
+                    "value": 0.6061355764473033
+                  },
+                  "immediate_movement": {
+                    "numerator": 3175,
+                    "denominator": 4167,
+                    "value": 0.7619390448764098
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 108,
+                    "value": 0.009259259259259259
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 90,
+                    "value": 0.05555555555555555
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 211,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 211,
+                    "denominator": 4128,
+                    "value": 0.05111434108527132
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.432504892349243,
+                    "denominator": 39,
+                    "value": 0.08801294595767291
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 364.06988525390625,
+                    "denominator": 4128,
+                    "value": 0.08819522414096566
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2897,
+                    "denominator": 4408,
+                    "value": 0.6572141560798548
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1656,
+                    "denominator": 2631,
+                    "value": 0.629418472063854
+                  },
+                  "immediate_movement": {
+                    "numerator": 3217,
+                    "denominator": 4408,
+                    "value": 0.7298094373865699
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 6,
+                    "denominator": 197,
+                    "value": 0.030456852791878174
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 3,
+                    "denominator": 50,
+                    "value": 0.06
+                  },
+                  "bomb_recall": {
+                    "numerator": 3,
+                    "denominator": 15,
+                    "value": 0.2
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 47,
+                    "denominator": 4393,
+                    "value": 0.01069883906214432
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 1,
+                    "denominator": 5,
+                    "value": 0.2
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.76948881149292,
+                    "denominator": 15,
+                    "value": 0.25129925409952797
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 211.5738067626953,
+                    "denominator": 4393,
+                    "value": 0.04816157677275104
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3525,
+                    "denominator": 5260,
+                    "value": 0.6701520912547528
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1442,
+                    "denominator": 2475,
+                    "value": 0.5826262626262626
+                  },
+                  "immediate_movement": {
+                    "numerator": 3697,
+                    "denominator": 5260,
+                    "value": 0.7028517110266159
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 3,
+                    "denominator": 251,
+                    "value": 0.01195219123505976
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 113,
+                    "value": 0.04424778761061947
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 26,
+                    "denominator": 536,
+                    "value": 0.048507462686567165
+                  },
+                  "bomb_recall": {
+                    "numerator": 26,
+                    "denominator": 64,
+                    "value": 0.40625
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 510,
+                    "denominator": 5196,
+                    "value": 0.09815242494226328
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 3,
+                    "denominator": 22,
+                    "value": 0.13636363636363635
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 23.258651733398438,
+                    "denominator": 64,
+                    "value": 0.3634164333343506
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 718.9222412109375,
+                    "denominator": 5196,
+                    "value": 0.13836070847015733
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2666,
+                    "denominator": 3997,
+                    "value": 0.6670002501876408
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1267,
+                    "denominator": 2137,
+                    "value": 0.5928872250818905
+                  },
+                  "immediate_movement": {
+                    "numerator": 2861,
+                    "denominator": 3997,
+                    "value": 0.7157868401300975
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 3,
+                    "denominator": 178,
+                    "value": 0.016853932584269662
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 96,
+                    "value": 0.020833333333333332
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 17,
+                    "denominator": 268,
+                    "value": 0.06343283582089553
+                  },
+                  "bomb_recall": {
+                    "numerator": 17,
+                    "denominator": 26,
+                    "value": 0.6538461538461539
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 251,
+                    "denominator": 3971,
+                    "value": 0.06320825988416016
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 2,
+                    "denominator": 8,
+                    "value": 0.25
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 17.438505172729492,
+                    "denominator": 26,
+                    "value": 0.6707117374126728
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 490.09844970703125,
+                    "denominator": 3971,
+                    "value": 0.1234194030992272
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3327,
+                    "denominator": 5155,
+                    "value": 0.6453928225024248
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1990,
+                    "denominator": 2998,
+                    "value": 0.6637758505670447
+                  },
+                  "immediate_movement": {
+                    "numerator": 3661,
+                    "denominator": 5155,
+                    "value": 0.710184287099903
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 31,
+                    "denominator": 298,
+                    "value": 0.1040268456375839
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 86,
+                    "value": 0.023255813953488372
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 43,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 43,
+                    "denominator": 5152,
+                    "value": 0.008346273291925466
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.08334846794605255,
+                    "denominator": 3,
+                    "value": 0.027782822648684185
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 243.6171875,
+                    "denominator": 5152,
+                    "value": 0.04728594477872671
+                  }
+                }
+              }
+            }
+          }
+        },
+        "137": {
+          "macro_replay_metrics": {
+            "movement": 0.6534875756307318,
+            "movement_while_moving": 0.542144495412844,
+            "immediate_movement": 0.7011301799916283,
+            "immediate_start_direction": 0.016,
+            "immediate_turn_direction": 0.03484320557491289,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.25,
+            "bomb_recall": 0.006802721088435374,
+            "bomb_false_positive_rate": 0.00011480177560079596,
+            "bomb_observed_onset_recall": 0.0,
+            "bomb_probability_on_positive": 0.10257158049566,
+            "bomb_probability_on_negative": 0.034569171711074875
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17173,
+                  "denominator": 26279,
+                  "value": 0.6534875756307318
+                },
+                "movement_while_moving": {
+                  "numerator": 7564,
+                  "denominator": 13952,
+                  "value": 0.542144495412844
+                },
+                "immediate_movement": {
+                  "numerator": 18425,
+                  "denominator": 26279,
+                  "value": 0.7011301799916283
+                },
+                "immediate_start_direction": {
+                  "numerator": 20,
+                  "denominator": 1250,
+                  "value": 0.016
+                },
+                "immediate_turn_direction": {
+                  "numerator": 20,
+                  "denominator": 574,
+                  "value": 0.03484320557491289
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 1,
+                  "denominator": 4,
+                  "value": 0.25
+                },
+                "bomb_recall": {
+                  "numerator": 1,
+                  "denominator": 147,
+                  "value": 0.006802721088435374
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 3,
+                  "denominator": 26132,
+                  "value": 0.00011480177560079596
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 0,
+                  "denominator": 50,
+                  "value": 0.0
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 15.07802233286202,
+                  "denominator": 147,
+                  "value": 0.10257158049566
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 903.3615951538086,
+                  "denominator": 26132,
+                  "value": 0.034569171711074875
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2157,
+                    "denominator": 3292,
+                    "value": 0.655224787363305
+                  },
+                  "movement_while_moving": {
+                    "numerator": 928,
+                    "denominator": 1690,
+                    "value": 0.5491124260355029
+                  },
+                  "immediate_movement": {
+                    "numerator": 2308,
+                    "denominator": 3292,
+                    "value": 0.701093560145808
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 77,
+                    "value": 0.05194805194805195
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 51.11170196533203,
+                    "denominator": 3292,
+                    "value": 0.015526033403806814
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 2835,
+                    "denominator": 4167,
+                    "value": 0.6803455723542117
+                  },
+                  "movement_while_moving": {
+                    "numerator": 990,
+                    "denominator": 2021,
+                    "value": 0.48985650667986147
+                  },
+                  "immediate_movement": {
+                    "numerator": 2961,
+                    "denominator": 4167,
+                    "value": 0.7105831533477321
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 108,
+                    "value": 0.009259259259259259
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 90,
+                    "value": 0.044444444444444446
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4128,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 4.609241485595703,
+                    "denominator": 39,
+                    "value": 0.11818567911783855
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 246.65687561035156,
+                    "denominator": 4128,
+                    "value": 0.05975215009940687
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2821,
+                    "denominator": 4408,
+                    "value": 0.63997277676951
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1503,
+                    "denominator": 2631,
+                    "value": 0.5712656784492588
+                  },
+                  "immediate_movement": {
+                    "numerator": 3134,
+                    "denominator": 4408,
+                    "value": 0.7109800362976406
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 5,
+                    "denominator": 197,
+                    "value": 0.025380710659898477
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 15,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 4393,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.2251274585723877,
+                    "denominator": 15,
+                    "value": 0.08167516390482585
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 129.37057495117188,
+                    "denominator": 4393,
+                    "value": 0.02944925448467377
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3525,
+                    "denominator": 5260,
+                    "value": 0.6701520912547528
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1305,
+                    "denominator": 2475,
+                    "value": 0.5272727272727272
+                  },
+                  "immediate_movement": {
+                    "numerator": 3684,
+                    "denominator": 5260,
+                    "value": 0.7003802281368822
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 251,
+                    "value": 0.00796812749003984
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 113,
+                    "value": 0.02654867256637168
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 64,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5196,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.6727142333984375,
+                    "denominator": 64,
+                    "value": 0.057386159896850586
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 170.90863037109375,
+                    "denominator": 5196,
+                    "value": 0.03289234610683098
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2558,
+                    "denominator": 3997,
+                    "value": 0.6399799849887415
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1078,
+                    "denominator": 2137,
+                    "value": 0.5044454843238184
+                  },
+                  "immediate_movement": {
+                    "numerator": 2724,
+                    "denominator": 3997,
+                    "value": 0.6815111333500125
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 178,
+                    "value": 0.0056179775280898875
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 96,
+                    "value": 0.03125
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 1,
+                    "denominator": 4,
+                    "value": 0.25
+                  },
+                  "bomb_recall": {
+                    "numerator": 1,
+                    "denominator": 26,
+                    "value": 0.038461538461538464
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 3,
+                    "denominator": 3971,
+                    "value": 0.0007554772097708386
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 5.542062759399414,
+                    "denominator": 26,
+                    "value": 0.21315625997690055
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 150.859619140625,
+                    "denominator": 3971,
+                    "value": 0.037990334711816925
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3277,
+                    "denominator": 5155,
+                    "value": 0.6356935014548981
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1760,
+                    "denominator": 2998,
+                    "value": 0.5870580386924616
+                  },
+                  "immediate_movement": {
+                    "numerator": 3614,
+                    "denominator": 5155,
+                    "value": 0.701066925315228
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 10,
+                    "denominator": 298,
+                    "value": 0.03355704697986577
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 86,
+                    "value": 0.03488372093023256
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5152,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.028876395896077156,
+                    "denominator": 3,
+                    "value": 0.009625465298692385
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 154.45419311523438,
+                    "denominator": 5152,
+                    "value": 0.029979462949385555
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "across_seeds": {
+        "movement": {
+          "seeds_with_support": 3,
+          "mean": 0.6653221203242132,
+          "min": 0.6534875756307318,
+          "max": 0.6732752387838198,
+          "seed_sample_sd": 0.010449258608713763
+        },
+        "movement_while_moving": {
+          "seeds_with_support": 3,
+          "mean": 0.5932960626911316,
+          "min": 0.542144495412844,
+          "max": 0.6245699541284404,
+          "seed_sample_sd": 0.04466352604473126
+        },
+        "immediate_movement": {
+          "seeds_with_support": 3,
+          "mean": 0.7160343493537299,
+          "min": 0.7011301799916283,
+          "max": 0.7268160888922715,
+          "seed_sample_sd": 0.013329939975508787
+        },
+        "immediate_start_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.028266666666666666,
+          "min": 0.016,
+          "max": 0.0352,
+          "seed_sample_sd": 0.01065332498956703
+        },
+        "immediate_turn_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.03484320557491289,
+          "min": 0.033101045296167246,
+          "max": 0.036585365853658534,
+          "seed_sample_sd": 0.0017421602787456442
+        },
+        "bomb_prevalence": {
+          "seeds_with_support": 3,
+          "mean": 0.005593820160584497,
+          "min": 0.005593820160584497,
+          "max": 0.005593820160584497,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_precision": {
+          "seeds_with_support": 3,
+          "mean": 0.1230532634552483,
+          "min": 0.04103479036574487,
+          "max": 0.25,
+          "seed_sample_sd": 0.11149227036974445
+        },
+        "bomb_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.15192743764172337,
+          "min": 0.006802721088435374,
+          "max": 0.3129251700680272,
+          "seed_sample_sd": 0.1536772687061898
+        },
+        "bomb_false_positive_rate": {
+          "seeds_with_support": 3,
+          "mean": 0.01676105923771621,
+          "min": 0.00011480177560079596,
+          "max": 0.04113730292361855,
+          "seed_sample_sd": 0.02157604957759254
+        },
+        "bomb_observed_onset_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.05333333333333333,
+          "min": 0.0,
+          "max": 0.12,
+          "seed_sample_sd": 0.061101009266077866
+        },
+        "bomb_probability_on_positive": {
+          "seeds_with_support": 3,
+          "mean": 0.2031070938937856,
+          "min": 0.10257158049566,
+          "max": 0.32641155835317104,
+          "seed_sample_sd": 0.11364375377087513
+        },
+        "bomb_probability_on_negative": {
+          "seeds_with_support": 3,
+          "mean": 0.0498441916301826,
+          "min": 0.034569171711074875,
+          "max": 0.08018062725268588,
+          "seed_sample_sd": 0.026272340995787888
+        }
+      }
+    },
+    "expanded_no_clock": {
+      "by_seed": {
+        "61": {
+          "macro_replay_metrics": {
+            "movement": 0.6736938239659044,
+            "movement_while_moving": 0.6342459862385321,
+            "immediate_movement": 0.728071844438525,
+            "immediate_start_direction": 0.0376,
+            "immediate_turn_direction": 0.04006968641114982,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.07017543859649122,
+            "bomb_recall": 0.1360544217687075,
+            "bomb_false_positive_rate": 0.010140823511403644,
+            "bomb_observed_onset_recall": 0.02,
+            "bomb_probability_on_positive": 0.20560294683693217,
+            "bomb_probability_on_negative": 0.03965405485047218
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17704,
+                  "denominator": 26279,
+                  "value": 0.6736938239659044
+                },
+                "movement_while_moving": {
+                  "numerator": 8849,
+                  "denominator": 13952,
+                  "value": 0.6342459862385321
+                },
+                "immediate_movement": {
+                  "numerator": 19133,
+                  "denominator": 26279,
+                  "value": 0.728071844438525
+                },
+                "immediate_start_direction": {
+                  "numerator": 47,
+                  "denominator": 1250,
+                  "value": 0.0376
+                },
+                "immediate_turn_direction": {
+                  "numerator": 23,
+                  "denominator": 574,
+                  "value": 0.04006968641114982
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 20,
+                  "denominator": 285,
+                  "value": 0.07017543859649122
+                },
+                "bomb_recall": {
+                  "numerator": 20,
+                  "denominator": 147,
+                  "value": 0.1360544217687075
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 265,
+                  "denominator": 26132,
+                  "value": 0.010140823511403644
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 1,
+                  "denominator": 50,
+                  "value": 0.02
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 30.22363318502903,
+                  "denominator": 147,
+                  "value": 0.20560294683693217
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 1036.239761352539,
+                  "denominator": 26132,
+                  "value": 0.03965405485047218
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2096,
+                    "denominator": 3292,
+                    "value": 0.6366950182260024
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1015,
+                    "denominator": 1690,
+                    "value": 0.6005917159763313
+                  },
+                  "immediate_movement": {
+                    "numerator": 2304,
+                    "denominator": 3292,
+                    "value": 0.6998784933171325
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 4,
+                    "denominator": 218,
+                    "value": 0.01834862385321101
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 77,
+                    "value": 0.03896103896103896
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 4,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 4,
+                    "denominator": 3292,
+                    "value": 0.001215066828675577
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 45.23185729980469,
+                    "denominator": 3292,
+                    "value": 0.013739932351094985
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 3040,
+                    "denominator": 4167,
+                    "value": 0.7295416366690665
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1274,
+                    "denominator": 2021,
+                    "value": 0.6303809995051954
+                  },
+                  "immediate_movement": {
+                    "numerator": 3190,
+                    "denominator": 4167,
+                    "value": 0.7655387568994481
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 108,
+                    "value": 0.009259259259259259
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 6,
+                    "denominator": 90,
+                    "value": 0.06666666666666667
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 48,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 48,
+                    "denominator": 4128,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 2.885164976119995,
+                    "denominator": 39,
+                    "value": 0.07397858913128193
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 232.42684936523438,
+                    "denominator": 4128,
+                    "value": 0.056304953819097475
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2944,
+                    "denominator": 4408,
+                    "value": 0.6678765880217786
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1712,
+                    "denominator": 2631,
+                    "value": 0.6507031546940327
+                  },
+                  "immediate_movement": {
+                    "numerator": 3270,
+                    "denominator": 4408,
+                    "value": 0.7418330308529946
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 8,
+                    "denominator": 197,
+                    "value": 0.04060913705583756
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 112,
+                    "value": 0.03571428571428571
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 3,
+                    "denominator": 22,
+                    "value": 0.13636363636363635
+                  },
+                  "bomb_recall": {
+                    "numerator": 3,
+                    "denominator": 15,
+                    "value": 0.2
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 19,
+                    "denominator": 4393,
+                    "value": 0.004325062599590257
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 1,
+                    "denominator": 5,
+                    "value": 0.2
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.283320426940918,
+                    "denominator": 15,
+                    "value": 0.21888802846272787
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 137.49658203125,
+                    "denominator": 4393,
+                    "value": 0.03129901707972912
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3574,
+                    "denominator": 5260,
+                    "value": 0.679467680608365
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1525,
+                    "denominator": 2475,
+                    "value": 0.6161616161616161
+                  },
+                  "immediate_movement": {
+                    "numerator": 3755,
+                    "denominator": 5260,
+                    "value": 0.7138783269961977
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 4,
+                    "denominator": 251,
+                    "value": 0.01593625498007968
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 113,
+                    "value": 0.02654867256637168
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 3,
+                    "denominator": 111,
+                    "value": 0.02702702702702703
+                  },
+                  "bomb_recall": {
+                    "numerator": 3,
+                    "denominator": 64,
+                    "value": 0.046875
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 108,
+                    "denominator": 5196,
+                    "value": 0.020785219399538105
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 9.430671691894531,
+                    "denominator": 64,
+                    "value": 0.14735424518585205
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 290.24676513671875,
+                    "denominator": 5196,
+                    "value": 0.05585965456826766
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2680,
+                    "denominator": 3997,
+                    "value": 0.6705028771578684
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1309,
+                    "denominator": 2137,
+                    "value": 0.612540945250351
+                  },
+                  "immediate_movement": {
+                    "numerator": 2902,
+                    "denominator": 3997,
+                    "value": 0.72604453340005
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 178,
+                    "value": 0.011235955056179775
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 6,
+                    "denominator": 96,
+                    "value": 0.0625
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 14,
+                    "denominator": 82,
+                    "value": 0.17073170731707318
+                  },
+                  "bomb_recall": {
+                    "numerator": 14,
+                    "denominator": 26,
+                    "value": 0.5384615384615384
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 68,
+                    "denominator": 3971,
+                    "value": 0.017124150088139008
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 14.527372360229492,
+                    "denominator": 26,
+                    "value": 0.5587450907780573
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 193.06130981445312,
+                    "denominator": 3971,
+                    "value": 0.04861780655110882
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3370,
+                    "denominator": 5155,
+                    "value": 0.6537342386032978
+                  },
+                  "movement_while_moving": {
+                    "numerator": 2014,
+                    "denominator": 2998,
+                    "value": 0.6717811874583055
+                  },
+                  "immediate_movement": {
+                    "numerator": 3712,
+                    "denominator": 5155,
+                    "value": 0.7200775945683802
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 28,
+                    "denominator": 298,
+                    "value": 0.09395973154362416
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 1,
+                    "denominator": 86,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 18,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 18,
+                    "denominator": 5152,
+                    "value": 0.0034937888198757765
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.09710372984409332,
+                    "denominator": 3,
+                    "value": 0.032367909948031105
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 137.77639770507812,
+                    "denominator": 5152,
+                    "value": 0.026742313219153362
+                  }
+                }
+              }
+            }
+          }
+        },
+        "97": {
+          "macro_replay_metrics": {
+            "movement": 0.6683283229955478,
+            "movement_while_moving": 0.5969036697247706,
+            "immediate_movement": 0.7188249172342935,
+            "immediate_start_direction": 0.0296,
+            "immediate_turn_direction": 0.033101045296167246,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.046875,
+            "bomb_recall": 0.22448979591836735,
+            "bomb_false_positive_rate": 0.025677330476044695,
+            "bomb_observed_onset_recall": 0.04,
+            "bomb_probability_on_positive": 0.27164371620838335,
+            "bomb_probability_on_negative": 0.05574891717952516
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17563,
+                  "denominator": 26279,
+                  "value": 0.6683283229955478
+                },
+                "movement_while_moving": {
+                  "numerator": 8328,
+                  "denominator": 13952,
+                  "value": 0.5969036697247706
+                },
+                "immediate_movement": {
+                  "numerator": 18890,
+                  "denominator": 26279,
+                  "value": 0.7188249172342935
+                },
+                "immediate_start_direction": {
+                  "numerator": 37,
+                  "denominator": 1250,
+                  "value": 0.0296
+                },
+                "immediate_turn_direction": {
+                  "numerator": 19,
+                  "denominator": 574,
+                  "value": 0.033101045296167246
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 33,
+                  "denominator": 704,
+                  "value": 0.046875
+                },
+                "bomb_recall": {
+                  "numerator": 33,
+                  "denominator": 147,
+                  "value": 0.22448979591836735
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 671,
+                  "denominator": 26132,
+                  "value": 0.025677330476044695
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 2,
+                  "denominator": 50,
+                  "value": 0.04
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 39.93162628263235,
+                  "denominator": 147,
+                  "value": 0.27164371620838335
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 1456.8307037353516,
+                  "denominator": 26132,
+                  "value": 0.05574891717952516
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2143,
+                    "denominator": 3292,
+                    "value": 0.6509720534629405
+                  },
+                  "movement_while_moving": {
+                    "numerator": 975,
+                    "denominator": 1690,
+                    "value": 0.5769230769230769
+                  },
+                  "immediate_movement": {
+                    "numerator": 2327,
+                    "denominator": 3292,
+                    "value": 0.706865127582017
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 0,
+                    "denominator": 218,
+                    "value": 0.0
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 77,
+                    "value": 0.03896103896103896
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 32,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 32,
+                    "denominator": 3292,
+                    "value": 0.009720534629404616
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 72.6392593383789,
+                    "denominator": 3292,
+                    "value": 0.022065388620406714
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 3036,
+                    "denominator": 4167,
+                    "value": 0.728581713462923
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1211,
+                    "denominator": 2021,
+                    "value": 0.599208312716477
+                  },
+                  "immediate_movement": {
+                    "numerator": 3170,
+                    "denominator": 4167,
+                    "value": 0.7607391408687305
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 108,
+                    "value": 0.009259259259259259
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 90,
+                    "value": 0.05555555555555555
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 187,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 187,
+                    "denominator": 4128,
+                    "value": 0.04530038759689922
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.72361421585083,
+                    "denominator": 39,
+                    "value": 0.09547728758591872
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 352.7173156738281,
+                    "denominator": 4128,
+                    "value": 0.08544508616129558
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2890,
+                    "denominator": 4408,
+                    "value": 0.6556261343012704
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1634,
+                    "denominator": 2631,
+                    "value": 0.621056632459141
+                  },
+                  "immediate_movement": {
+                    "numerator": 3209,
+                    "denominator": 4408,
+                    "value": 0.727994555353902
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 7,
+                    "denominator": 197,
+                    "value": 0.03553299492385787
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 2,
+                    "denominator": 23,
+                    "value": 0.08695652173913043
+                  },
+                  "bomb_recall": {
+                    "numerator": 2,
+                    "denominator": 15,
+                    "value": 0.13333333333333333
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 21,
+                    "denominator": 4393,
+                    "value": 0.0047803323469155475
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 3.1544229984283447,
+                    "denominator": 15,
+                    "value": 0.21029486656188964
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 150.00531005859375,
+                    "denominator": 4393,
+                    "value": 0.034146439803913894
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3530,
+                    "denominator": 5260,
+                    "value": 0.6711026615969582
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1401,
+                    "denominator": 2475,
+                    "value": 0.566060606060606
+                  },
+                  "immediate_movement": {
+                    "numerator": 3695,
+                    "denominator": 5260,
+                    "value": 0.7024714828897338
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 3,
+                    "denominator": 251,
+                    "value": 0.01195219123505976
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 5,
+                    "denominator": 113,
+                    "value": 0.04424778761061947
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 16,
+                    "denominator": 323,
+                    "value": 0.04953560371517028
+                  },
+                  "bomb_recall": {
+                    "numerator": 16,
+                    "denominator": 64,
+                    "value": 0.25
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 307,
+                    "denominator": 5196,
+                    "value": 0.05908391070053887
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 2,
+                    "denominator": 22,
+                    "value": 0.09090909090909091
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 17.490272521972656,
+                    "denominator": 64,
+                    "value": 0.27328550815582275
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 500.07440185546875,
+                    "denominator": 5196,
+                    "value": 0.09624218665424726
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2630,
+                    "denominator": 3997,
+                    "value": 0.657993495121341
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1184,
+                    "denominator": 2137,
+                    "value": 0.5540477304632663
+                  },
+                  "immediate_movement": {
+                    "numerator": 2829,
+                    "denominator": 3997,
+                    "value": 0.70778083562672
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 2,
+                    "denominator": 178,
+                    "value": 0.011235955056179775
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 2,
+                    "denominator": 96,
+                    "value": 0.020833333333333332
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 15,
+                    "denominator": 131,
+                    "value": 0.11450381679389313
+                  },
+                  "bomb_recall": {
+                    "numerator": 15,
+                    "denominator": 26,
+                    "value": 0.5769230769230769
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 116,
+                    "denominator": 3971,
+                    "value": 0.029211785444472425
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 15.51991081237793,
+                    "denominator": 26,
+                    "value": 0.5969196466299204
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 277.07476806640625,
+                    "denominator": 3971,
+                    "value": 0.06977455755890362
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3334,
+                    "denominator": 5155,
+                    "value": 0.6467507274490786
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1923,
+                    "denominator": 2998,
+                    "value": 0.6414276184122748
+                  },
+                  "immediate_movement": {
+                    "numerator": 3660,
+                    "denominator": 5155,
+                    "value": 0.7099903006789525
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 24,
+                    "denominator": 298,
+                    "value": 0.08053691275167785
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 1,
+                    "denominator": 86,
+                    "value": 0.011627906976744186
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 8,
+                    "denominator": 5152,
+                    "value": 0.0015527950310559005
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.04340573400259018,
+                    "denominator": 3,
+                    "value": 0.014468578000863394
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 104.31964874267578,
+                    "denominator": 5152,
+                    "value": 0.020248379026140486
+                  }
+                }
+              }
+            }
+          }
+        },
+        "137": {
+          "macro_replay_metrics": {
+            "movement": 0.674835419917044,
+            "movement_while_moving": 0.6104501146788991,
+            "immediate_movement": 0.7273868868678413,
+            "immediate_start_direction": 0.0248,
+            "immediate_turn_direction": 0.033101045296167246,
+            "bomb_prevalence": 0.005593820160584497,
+            "bomb_precision": 0.22641509433962265,
+            "bomb_recall": 0.08163265306122448,
+            "bomb_false_positive_rate": 0.0015689575998775447,
+            "bomb_observed_onset_recall": 0.0,
+            "bomb_probability_on_positive": 0.10572459799598674,
+            "bomb_probability_on_negative": 0.01936078155531592
+          },
+          "replays": {
+            "th14_ud0559.rpy": {
+              "metrics": {
+                "movement": {
+                  "numerator": 17734,
+                  "denominator": 26279,
+                  "value": 0.674835419917044
+                },
+                "movement_while_moving": {
+                  "numerator": 8517,
+                  "denominator": 13952,
+                  "value": 0.6104501146788991
+                },
+                "immediate_movement": {
+                  "numerator": 19115,
+                  "denominator": 26279,
+                  "value": 0.7273868868678413
+                },
+                "immediate_start_direction": {
+                  "numerator": 31,
+                  "denominator": 1250,
+                  "value": 0.0248
+                },
+                "immediate_turn_direction": {
+                  "numerator": 19,
+                  "denominator": 574,
+                  "value": 0.033101045296167246
+                },
+                "bomb_prevalence": {
+                  "numerator": 147,
+                  "denominator": 26279,
+                  "value": 0.005593820160584497
+                },
+                "bomb_precision": {
+                  "numerator": 12,
+                  "denominator": 53,
+                  "value": 0.22641509433962265
+                },
+                "bomb_recall": {
+                  "numerator": 12,
+                  "denominator": 147,
+                  "value": 0.08163265306122448
+                },
+                "bomb_false_positive_rate": {
+                  "numerator": 41,
+                  "denominator": 26132,
+                  "value": 0.0015689575998775447
+                },
+                "bomb_observed_onset_recall": {
+                  "numerator": 0,
+                  "denominator": 50,
+                  "value": 0.0
+                },
+                "bomb_probability_on_positive": {
+                  "numerator": 15.541515905410051,
+                  "denominator": 147,
+                  "value": 0.10572459799598674
+                },
+                "bomb_probability_on_negative": {
+                  "numerator": 505.9359436035156,
+                  "denominator": 26132,
+                  "value": 0.01936078155531592
+                }
+              },
+              "stages": {
+                "1": {
+                  "movement": {
+                    "numerator": 2130,
+                    "denominator": 3292,
+                    "value": 0.6470230862697448
+                  },
+                  "movement_while_moving": {
+                    "numerator": 977,
+                    "denominator": 1690,
+                    "value": 0.5781065088757397
+                  },
+                  "immediate_movement": {
+                    "numerator": 2317,
+                    "denominator": 3292,
+                    "value": 0.7038274605103281
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 218,
+                    "value": 0.0045871559633027525
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 4,
+                    "denominator": 77,
+                    "value": 0.05194805194805195
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 3292,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 22.691055297851562,
+                    "denominator": 3292,
+                    "value": 0.006892787150015663
+                  }
+                },
+                "2": {
+                  "movement": {
+                    "numerator": 3050,
+                    "denominator": 4167,
+                    "value": 0.7319414446844252
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1254,
+                    "denominator": 2021,
+                    "value": 0.6204849084611579
+                  },
+                  "immediate_movement": {
+                    "numerator": 3203,
+                    "denominator": 4167,
+                    "value": 0.7686585073194144
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 108,
+                    "value": 0.009259259259259259
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 6,
+                    "denominator": 90,
+                    "value": 0.06666666666666667
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 39,
+                    "denominator": 4167,
+                    "value": 0.009359251259899209
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 39,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 3,
+                    "denominator": 4128,
+                    "value": 0.0007267441860465116
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 14,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.839320421218872,
+                    "denominator": 39,
+                    "value": 0.047162062082535185
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 113.66101837158203,
+                    "denominator": 4128,
+                    "value": 0.02753416142722433
+                  }
+                },
+                "3": {
+                  "movement": {
+                    "numerator": 2927,
+                    "denominator": 4408,
+                    "value": 0.6640199637023594
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1663,
+                    "denominator": 2631,
+                    "value": 0.6320790573926264
+                  },
+                  "immediate_movement": {
+                    "numerator": 3254,
+                    "denominator": 4408,
+                    "value": 0.7382032667876588
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 6,
+                    "denominator": 197,
+                    "value": 0.030456852791878174
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 112,
+                    "value": 0.026785714285714284
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 15,
+                    "denominator": 4408,
+                    "value": 0.0034029038112522686
+                  },
+                  "bomb_precision": {
+                    "numerator": 2,
+                    "denominator": 8,
+                    "value": 0.25
+                  },
+                  "bomb_recall": {
+                    "numerator": 2,
+                    "denominator": 15,
+                    "value": 0.13333333333333333
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 6,
+                    "denominator": 4393,
+                    "value": 0.0013658092419758707
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 5,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.962889313697815,
+                    "denominator": 15,
+                    "value": 0.13085928757985432
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 95.55732727050781,
+                    "denominator": 4393,
+                    "value": 0.02175218012076208
+                  }
+                },
+                "4": {
+                  "movement": {
+                    "numerator": 3592,
+                    "denominator": 5260,
+                    "value": 0.6828897338403042
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1482,
+                    "denominator": 2475,
+                    "value": 0.5987878787878788
+                  },
+                  "immediate_movement": {
+                    "numerator": 3757,
+                    "denominator": 5260,
+                    "value": 0.7142585551330799
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 4,
+                    "denominator": 251,
+                    "value": 0.01593625498007968
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 113,
+                    "value": 0.02654867256637168
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 64,
+                    "denominator": 5260,
+                    "value": 0.012167300380228136
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 0,
+                    "value": null
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 64,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 0,
+                    "denominator": 5196,
+                    "value": 0.0
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 22,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 1.6990547180175781,
+                    "denominator": 64,
+                    "value": 0.026547729969024658
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 83.16070556640625,
+                    "denominator": 5196,
+                    "value": 0.016004754727945776
+                  }
+                },
+                "5": {
+                  "movement": {
+                    "numerator": 2701,
+                    "denominator": 3997,
+                    "value": 0.6757568176132099
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1244,
+                    "denominator": 2137,
+                    "value": 0.5821244735610669
+                  },
+                  "immediate_movement": {
+                    "numerator": 2907,
+                    "denominator": 3997,
+                    "value": 0.7272954716037028
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 1,
+                    "denominator": 178,
+                    "value": 0.0056179775280898875
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 3,
+                    "denominator": 96,
+                    "value": 0.03125
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 26,
+                    "denominator": 3997,
+                    "value": 0.006504878658994246
+                  },
+                  "bomb_precision": {
+                    "numerator": 10,
+                    "denominator": 41,
+                    "value": 0.24390243902439024
+                  },
+                  "bomb_recall": {
+                    "numerator": 10,
+                    "denominator": 26,
+                    "value": 0.38461538461538464
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 31,
+                    "denominator": 3971,
+                    "value": 0.007806597834298665
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 8,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 9.996335983276367,
+                    "denominator": 26,
+                    "value": 0.3844744608952449
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 116.60409545898438,
+                    "denominator": 3971,
+                    "value": 0.029363912228402008
+                  }
+                },
+                "6": {
+                  "movement": {
+                    "numerator": 3334,
+                    "denominator": 5155,
+                    "value": 0.6467507274490786
+                  },
+                  "movement_while_moving": {
+                    "numerator": 1897,
+                    "denominator": 2998,
+                    "value": 0.632755170113409
+                  },
+                  "immediate_movement": {
+                    "numerator": 3677,
+                    "denominator": 5155,
+                    "value": 0.7132880698351115
+                  },
+                  "immediate_start_direction": {
+                    "numerator": 18,
+                    "denominator": 298,
+                    "value": 0.06040268456375839
+                  },
+                  "immediate_turn_direction": {
+                    "numerator": 0,
+                    "denominator": 86,
+                    "value": 0.0
+                  },
+                  "bomb_prevalence": {
+                    "numerator": 3,
+                    "denominator": 5155,
+                    "value": 0.0005819592628516004
+                  },
+                  "bomb_precision": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_recall": {
+                    "numerator": 0,
+                    "denominator": 3,
+                    "value": 0.0
+                  },
+                  "bomb_false_positive_rate": {
+                    "numerator": 1,
+                    "denominator": 5152,
+                    "value": 0.00019409937888198756
+                  },
+                  "bomb_observed_onset_recall": {
+                    "numerator": 0,
+                    "denominator": 1,
+                    "value": 0.0
+                  },
+                  "bomb_probability_on_positive": {
+                    "numerator": 0.04391546919941902,
+                    "denominator": 3,
+                    "value": 0.014638489733139673
+                  },
+                  "bomb_probability_on_negative": {
+                    "numerator": 74.2617416381836,
+                    "denominator": 5152,
+                    "value": 0.01441415792666607
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "across_seeds": {
+        "movement": {
+          "seeds_with_support": 3,
+          "mean": 0.6722858556261654,
+          "min": 0.6683283229955478,
+          "max": 0.674835419917044,
+          "seed_sample_sd": 0.0034745299999736482
+        },
+        "movement_while_moving": {
+          "seeds_with_support": 3,
+          "mean": 0.6138665902140673,
+          "min": 0.5969036697247706,
+          "max": 0.6342459862385321,
+          "seed_sample_sd": 0.018904136570213635
+        },
+        "immediate_movement": {
+          "seeds_with_support": 3,
+          "mean": 0.7247612161802199,
+          "min": 0.7188249172342935,
+          "max": 0.728071844438525,
+          "seed_sample_sd": 0.005152380576002166
+        },
+        "immediate_start_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.03066666666666667,
+          "min": 0.0248,
+          "max": 0.0376,
+          "seed_sample_sd": 0.00646632301492381
+        },
+        "immediate_turn_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.03542392566782811,
+          "min": 0.033101045296167246,
+          "max": 0.04006968641114982,
+          "seed_sample_sd": 0.004023346823621084
+        },
+        "bomb_prevalence": {
+          "seeds_with_support": 3,
+          "mean": 0.005593820160584497,
+          "min": 0.005593820160584497,
+          "max": 0.005593820160584497,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_precision": {
+          "seeds_with_support": 3,
+          "mean": 0.11448851097870462,
+          "min": 0.046875,
+          "max": 0.22641509433962265,
+          "seed_sample_sd": 0.09762887716671545
+        },
+        "bomb_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.14739229024943312,
+          "min": 0.08163265306122448,
+          "max": 0.22448979591836735,
+          "seed_sample_sd": 0.07210028614777617
+        },
+        "bomb_false_positive_rate": {
+          "seeds_with_support": 3,
+          "mean": 0.012462370529108627,
+          "min": 0.0015689575998775447,
+          "max": 0.025677330476044695,
+          "seed_sample_sd": 0.012220703584517512
+        },
+        "bomb_observed_onset_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.02,
+          "min": 0.0,
+          "max": 0.04,
+          "seed_sample_sd": 0.02
+        },
+        "bomb_probability_on_positive": {
+          "seeds_with_support": 3,
+          "mean": 0.19432375368043409,
+          "min": 0.10572459799598674,
+          "max": 0.27164371620838335,
+          "seed_sample_sd": 0.08353264987890067
+        },
+        "bomb_probability_on_negative": {
+          "seeds_with_support": 3,
+          "mean": 0.03825458452843775,
+          "min": 0.01936078155531592,
+          "max": 0.05574891717952516,
+          "seed_sample_sd": 0.018234390350054284
+        }
+      }
+    }
+  },
+  "paired_deltas": {
+    "expanded_clock_minus_legacy_clock": {
+      "by_seed": {
+        "61": {
+          "movement": 0.02123368469119835,
+          "movement_while_moving": 0.10722477064220193,
+          "immediate_movement": 0.031546101449826947,
+          "immediate_start_direction": 0.013599999999999998,
+          "immediate_turn_direction": 0.0052264808362369325,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": null,
+          "bomb_recall": 0.1360544217687075,
+          "bomb_false_positive_rate": 0.009031073013929282,
+          "bomb_observed_onset_recall": 0.04,
+          "bomb_probability_on_positive": 0.16619672661537913,
+          "bomb_probability_on_negative": 0.031563245044009314
+        },
+        "97": {
+          "movement": 0.017961109631264516,
+          "movement_while_moving": 0.06379013761467889,
+          "immediate_movement": 0.02123368469119824,
+          "immediate_start_direction": 0.016000000000000004,
+          "immediate_turn_direction": 0.006968641114982577,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": -0.45896520963425513,
+          "bomb_recall": 0.30612244897959184,
+          "bomb_false_positive_rate": 0.04109903566508495,
+          "bomb_observed_onset_recall": 0.12,
+          "bomb_probability_on_positive": 0.30259618873677857,
+          "bomb_probability_on_negative": 0.0779102661334846
+        },
+        "137": {
+          "movement": -0.002016819513680046,
+          "movement_while_moving": 0.005590596330275255,
+          "immediate_movement": -0.0011415959511397178,
+          "immediate_start_direction": 0.0016000000000000007,
+          "immediate_turn_direction": 0.0052264808362369325,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": null,
+          "bomb_recall": 0.006802721088435374,
+          "bomb_false_positive_rate": 0.00011480177560079596,
+          "bomb_observed_onset_recall": 0.0,
+          "bomb_probability_on_positive": 0.1014369646824586,
+          "bomb_probability_on_negative": 0.034004498637509026
+        }
+      },
+      "across_seeds": {
+        "movement": {
+          "seeds_with_support": 3,
+          "mean": 0.012392658269594273,
+          "min": -0.002016819513680046,
+          "max": 0.02123368469119835,
+          "seed_sample_sd": 0.012585794546659833
+        },
+        "movement_while_moving": {
+          "seeds_with_support": 3,
+          "mean": 0.05886850152905202,
+          "min": 0.005590596330275255,
+          "max": 0.10722477064220193,
+          "seed_sample_sd": 0.0509955216007865
+        },
+        "immediate_movement": {
+          "seeds_with_support": 3,
+          "mean": 0.017212730063295156,
+          "min": -0.0011415959511397178,
+          "max": 0.031546101449826947,
+          "seed_sample_sd": 0.016710698592040732
+        },
+        "immediate_start_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.010400000000000001,
+          "min": 0.0016000000000000007,
+          "max": 0.016000000000000004,
+          "seed_sample_sd": 0.007714920608794365
+        },
+        "immediate_turn_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.005807200929152147,
+          "min": 0.0052264808362369325,
+          "max": 0.006968641114982577,
+          "seed_sample_sd": 0.001005836705905271
+        },
+        "bomb_prevalence": {
+          "seeds_with_support": 3,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_precision": {
+          "seeds_with_support": 1,
+          "mean": -0.45896520963425513,
+          "min": -0.45896520963425513,
+          "max": -0.45896520963425513,
+          "seed_sample_sd": null
+        },
+        "bomb_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.14965986394557823,
+          "min": 0.006802721088435374,
+          "max": 0.30612244897959184,
+          "seed_sample_sd": 0.15012296932458444
+        },
+        "bomb_false_positive_rate": {
+          "seeds_with_support": 3,
+          "mean": 0.016748303484871677,
+          "min": 0.00011480177560079596,
+          "max": 0.04109903566508495,
+          "seed_sample_sd": 0.02155443322110829
+        },
+        "bomb_observed_onset_recall": {
+          "seeds_with_support": 3,
+          "mean": 0.05333333333333333,
+          "min": 0.0,
+          "max": 0.12,
+          "seed_sample_sd": 0.061101009266077866
+        },
+        "bomb_probability_on_positive": {
+          "seeds_with_support": 3,
+          "mean": 0.19007662667820543,
+          "min": 0.1014369646824586,
+          "max": 0.30259618873677857,
+          "seed_sample_sd": 0.10268371621533745
+        },
+        "bomb_probability_on_negative": {
+          "seeds_with_support": 3,
+          "mean": 0.047826003271667646,
+          "min": 0.031563245044009314,
+          "max": 0.0779102661334846,
+          "seed_sample_sd": 0.02608231361921557
+        }
+      }
+    },
+    "expanded_no_clock_minus_expanded_clock": {
+      "by_seed": {
+        "61": {
+          "movement": 0.0004185851820845965,
+          "movement_while_moving": 0.009676032110091715,
+          "immediate_movement": 0.0012557555462535674,
+          "immediate_start_direction": 0.0040000000000000036,
+          "immediate_turn_direction": 0.006968641114982577,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": -0.007949561403508776,
+          "bomb_recall": 0.0,
+          "bomb_false_positive_rate": 0.0011097504974743617,
+          "bomb_observed_onset_recall": -0.02,
+          "bomb_probability_on_positive": 0.02526480400440645,
+          "bomb_probability_on_negative": 0.004871278923685142
+        },
+        "97": {
+          "movement": -0.0008752235625404392,
+          "movement_while_moving": -0.0162700688073395,
+          "immediate_movement": -0.001331861942996282,
+          "immediate_start_direction": -0.005600000000000001,
+          "immediate_turn_direction": -0.0034843205574912883,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": 0.005840209634255127,
+          "bomb_recall": -0.08843537414965988,
+          "bomb_false_positive_rate": -0.015459972447573855,
+          "bomb_observed_onset_recall": -0.07999999999999999,
+          "bomb_probability_on_positive": -0.05476784214478769,
+          "bomb_probability_on_negative": -0.024431710073160716
+        },
+        "137": {
+          "movement": 0.0213478442863122,
+          "movement_while_moving": 0.06830561926605505,
+          "immediate_movement": 0.026256706876212954,
+          "immediate_start_direction": 0.008799999999999999,
+          "immediate_turn_direction": -0.0017421602787456442,
+          "bomb_prevalence": 0.0,
+          "bomb_precision": -0.023584905660377353,
+          "bomb_recall": 0.07482993197278912,
+          "bomb_false_positive_rate": 0.0014541558242767488,
+          "bomb_observed_onset_recall": 0.0,
+          "bomb_probability_on_positive": 0.0031530175003267463,
+          "bomb_probability_on_negative": -0.015208390155758957
+        }
+      },
+      "across_seeds": {
+        "movement": {
+          "seeds_with_support": 3,
+          "mean": 0.006963735301952119,
+          "min": -0.0008752235625404392,
+          "max": 0.0213478442863122,
+          "seed_sample_sd": 0.012473789669638429
+        },
+        "movement_while_moving": {
+          "seeds_with_support": 3,
+          "mean": 0.020570527522935755,
+          "min": -0.0162700688073395,
+          "max": 0.06830561926605505,
+          "seed_sample_sd": 0.0433275810079145
+        },
+        "immediate_movement": {
+          "seeds_with_support": 3,
+          "mean": 0.00872686682649008,
+          "min": -0.001331861942996282,
+          "max": 0.026256706876212954,
+          "seed_sample_sd": 0.015236318787499786
+        },
+        "immediate_start_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.0024000000000000007,
+          "min": -0.005600000000000001,
+          "max": 0.008799999999999999,
+          "seed_sample_sd": 0.007332121111929345
+        },
+        "immediate_turn_direction": {
+          "seeds_with_support": 3,
+          "mean": 0.0005807200929152148,
+          "min": -0.0034843205574912883,
+          "max": 0.006968641114982577,
+          "seed_sample_sd": 0.00560026176596571
+        },
+        "bomb_prevalence": {
+          "seeds_with_support": 3,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "seed_sample_sd": 0.0
+        },
+        "bomb_precision": {
+          "seeds_with_support": 3,
+          "mean": -0.008564752476543668,
+          "min": -0.023584905660377353,
+          "max": 0.005840209634255127,
+          "seed_sample_sd": 0.014722200839815356
+        },
+        "bomb_recall": {
+          "seeds_with_support": 3,
+          "mean": -0.004535147392290255,
+          "min": -0.08843537414965988,
+          "max": 0.07482993197278912,
+          "seed_sample_sd": 0.0817270806845356
+        },
+        "bomb_false_positive_rate": {
+          "seeds_with_support": 3,
+          "mean": -0.004298688708607582,
+          "min": -0.015459972447573855,
+          "max": 0.0014541558242767488,
+          "seed_sample_sd": 0.009667489063017717
+        },
+        "bomb_observed_onset_recall": {
+          "seeds_with_support": 3,
+          "mean": -0.033333333333333326,
+          "min": -0.07999999999999999,
+          "max": 0.0,
+          "seed_sample_sd": 0.04163331998932265
+        },
+        "bomb_probability_on_positive": {
+          "seeds_with_support": 3,
+          "mean": -0.008783340213351499,
+          "min": -0.05476784214478769,
+          "max": 0.02526480400440645,
+          "seed_sample_sd": 0.0413299357489483
+        },
+        "bomb_probability_on_negative": {
+          "seeds_with_support": 3,
+          "mean": -0.011589607101744843,
+          "min": -0.024431710073160716,
+          "max": 0.004871278923685142,
+          "seed_sample_sd": 0.014982923083675366
+        }
+      }
+    }
+  }
+}
