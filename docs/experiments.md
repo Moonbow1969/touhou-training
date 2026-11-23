@@ -81,3 +81,15 @@ python -m scripts.train_full_policy --base models-local/sft/policy.pt --aim mode
 ```
 
 `report.json` contains the complete per-update metrics, native training episodes and evaluation trials. `progress.csv` contains the SB3 rollout metrics, with optimization statistics emitted on the next rollout. A compatible local `policy.zip` can resume using `--resume` with matching SFT, seed, reward and training horizon. For new runs, the default evaluation samples from the actor, as during PPO collection, and records native horizontal responses. The explicit greedy flag above reproduces the original smoke run. See the [pilot devlog](devlog/261123-th14-full-policy-ppo.md) for the native results and throughput.
+
+Run `scripts.audit_full_policy_drift` to measure categorical action drift against the SFT parent on fixed replay observations. The replay split plan reserves a complete TH14 Normal Reimu A test replay and its player group for independent capture. [Offline audit command and capture plan](devlog/261123-th14-policy-drift.md)
+
+Use `--retry-game-over` if the foreground game is on the default Retry selection of the Normal Reimu A Stage 1 game-over menu. The trainer checks the game state and expected task before confirming the selection. It records how many eligible horizontal commands produced displacement during training.
+
+## Distributed native trial PPO
+
+Run `scripts.train_distributed_native_ppo` with one learner and one actor beside each native TH14 trial process. The learner trains only on same-version fragments and verifies the action log-probabilities, values, native tick counts and task signature. The distributed trial and the Steam 1.00b same-SFT continuation have distinct observation contracts and checkpoints. [Commands and native rollout measurements](devlog/261123-native-ppo-scale.md)
+
+## Fangame coverage
+
+Track the Fantastic Danmaku Festival trilogy, Touhou Kikamu and Abyss Soul Lotus as separate titles. Freeze the train/test split before admitting game data or comparing policies. [Steam builds, replay intake and title splits](fangame-coverage.md)

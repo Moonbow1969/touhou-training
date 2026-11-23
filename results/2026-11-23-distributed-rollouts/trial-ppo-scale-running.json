@@ -1,0 +1,2174 @@
+{
+  "run": "trial-scale-261123",
+  "task": {
+    "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+    "setting": "TH14 trial 0.01b Normal Reimu A Stage 1",
+    "observation_schema": "trial-bullets-96x7-context-10-v1",
+    "action_schema": "movement9-focus2-shoot2-bomb2",
+    "reward": "one divided by horizon per surviving decision, stage advance earns one, first miss earns zero",
+    "native_ticks_per_decision": 4,
+    "horizon": 3300,
+    "synthetic": false
+  },
+  "environment": "f935c4bb739f302f40deab3af6d6b7790218a9aee9ddd85d816d525b76502c5b",
+  "initial_policy": {
+    "kind": "ppo-resume",
+    "sha256": "620de8bf13cca960774195fc141fec0a1c04500461741933a4b6e656533fbe28",
+    "warm_start_actor_exact": false
+  },
+  "learner_device": "cpu",
+  "config": {
+    "environment": "f935c4bb739f302f40deab3af6d6b7790218a9aee9ddd85d816d525b76502c5b",
+    "hidden": 128,
+    "seed": 14,
+    "settings": {
+      "learning_rate": 8e-05,
+      "gamma": 0.997,
+      "gae_lambda": 0.95,
+      "clip_range": 0.15,
+      "ent_coef": 0.004,
+      "n_epochs": 4,
+      "target_kl": 0.03,
+      "n_steps": 256,
+      "batch_size": 64
+    }
+  },
+  "quotas": {
+    "momentum-1": 2,
+    "momentum-2": 2,
+    "gamer-1": 2,
+    "gamer-2": 2,
+    "accelerator-1": 2,
+    "accelerator-2": 2,
+    "endeavour-1": 1,
+    "endeavour-2": 1,
+    "entropy-1": 1,
+    "entropy-2": 1,
+    "deck-1": 1
+  },
+  "updates": [
+    {
+      "round": 1,
+      "steps": 20736,
+      "rollout_policy_sha256": "04fab0b9e5fa235976b99e1725f7b36db42f627a0ee61b6e2c12bfbb7b92a51d",
+      "collection_seconds": 58.04621943831444,
+      "optimize_seconds": 1.16077187564224,
+      "rollout_decisions_per_second": 74.97473637580926,
+      "untrained_snapshot_max_error": {
+        "log_prob": 9.5367431640625e-07,
+        "value": 1.7881393432617188e-07
+      },
+      "action_counts": [
+        [
+          442,
+          392,
+          418,
+          666,
+          543,
+          512,
+          504,
+          550,
+          325
+        ],
+        [
+          1836,
+          2516
+        ],
+        [
+          1881,
+          2471
+        ],
+        [
+          1559,
+          2793
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 0,
+          "seconds": 28.460591207258403,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 53,
+          "horizontal_responses": 50,
+          "max_projectiles": 28,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 0,
+          "seconds": 29.524800995364785,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 73,
+          "horizontal_responses": 63,
+          "max_projectiles": 22,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 0,
+          "seconds": 29.625457525253296,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 42,
+          "horizontal_responses": 38,
+          "max_projectiles": 28,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 0,
+          "seconds": 30.011555576696992,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 42,
+          "max_projectiles": 29,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 0,
+          "seconds": 36.702189199859276,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 43,
+          "horizontal_responses": 35,
+          "max_projectiles": 27,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 0,
+          "seconds": 38.54667340009473,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 48,
+          "max_projectiles": 25,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 1,
+          "seconds": 13.541116083040833,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 53,
+          "horizontal_responses": 46,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1274,
+              "decisions": 317
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 1,
+          "seconds": 13.475995796732605,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 46,
+          "max_projectiles": 42,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1279,
+              "decisions": 318
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 1,
+          "seconds": 14.776012054644525,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 41,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1406,
+              "decisions": 350
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 1,
+          "seconds": 15.040019596926868,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 58,
+          "horizontal_responses": 55,
+          "max_projectiles": 72,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1634,
+              "decisions": 407
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 0,
+          "seconds": 50.28180655743927,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 42,
+          "max_projectiles": 25,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 1,
+          "seconds": 17.16409600013867,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 42,
+          "horizontal_responses": 34,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1146,
+              "decisions": 285
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 0,
+          "seconds": 50.463957463391125,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 46,
+          "horizontal_responses": 41,
+          "max_projectiles": 29,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 0,
+          "seconds": 53.29662622883916,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 45,
+          "max_projectiles": 25,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 1,
+          "seconds": 16.569245799910277,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 44,
+          "max_projectiles": 28,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1042,
+              "decisions": 259
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 0,
+          "seconds": 54.138279107399285,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 48,
+          "max_projectiles": 12,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 946,
+              "decisions": 235
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 0,
+          "seconds": 53.71010112000022,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 58,
+          "horizontal_responses": 52,
+          "max_projectiles": 29,
+          "episodes": [],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.167636289316065,
+        "train/policy_gradient_loss": -0.004135549376609132,
+        "train/value_loss": 0.00011143567521417829,
+        "train/approx_kl": 0.0053428527899086475,
+        "train/clip_fraction": 0.060546875,
+        "train/loss": -0.015237544663250446,
+        "train/explained_variance": 0.7939651608467102,
+        "train/n_updates": 52.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 2,
+      "steps": 25088,
+      "rollout_policy_sha256": "fc16a2f64d324d7c696126f94f5a6b0f8187a8111de53e9c90c45b628056bafa",
+      "collection_seconds": 36.391910010017455,
+      "optimize_seconds": 0.912101598456502,
+      "rollout_decisions_per_second": 119.58701807083065,
+      "untrained_snapshot_max_error": {
+        "log_prob": 7.152557373046875e-07,
+        "value": 2.086162567138672e-07
+      },
+      "action_counts": [
+        [
+          396,
+          377,
+          300,
+          756,
+          548,
+          477,
+          524,
+          575,
+          399
+        ],
+        [
+          1813,
+          2539
+        ],
+        [
+          1791,
+          2561
+        ],
+        [
+          1449,
+          2903
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 2,
+          "seconds": 13.292968448251486,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 44,
+          "horizontal_responses": 37,
+          "max_projectiles": 51,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1382,
+              "decisions": 344
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 2,
+          "seconds": 13.908341838046908,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 48,
+          "max_projectiles": 44,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1366,
+              "decisions": 340
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 2,
+          "seconds": 14.542368993163109,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 38,
+          "max_projectiles": 17,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 982,
+              "decisions": 244
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 2,
+          "seconds": 14.885246141813695,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 28,
+          "horizontal_responses": 26,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1334,
+              "decisions": 332
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 2,
+          "seconds": 15.653095999965444,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 49,
+          "horizontal_responses": 44,
+          "max_projectiles": 30,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 2,
+          "seconds": 16.085188299883157,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 42,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1111,
+              "decisions": 276
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 1,
+          "seconds": 25.07896319311112,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 51,
+          "max_projectiles": 27,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 1,
+          "seconds": 26.84188525658101,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 45,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1334,
+              "decisions": 332
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 3,
+          "seconds": 14.277912391349673,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 41,
+          "horizontal_responses": 36,
+          "max_projectiles": 27,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1006,
+              "decisions": 250
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 3,
+          "seconds": 13.775079770945013,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 46,
+          "horizontal_responses": 42,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1306,
+              "decisions": 325
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 3,
+          "seconds": 15.082555796019733,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 39,
+          "horizontal_responses": 37,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1366,
+              "decisions": 340
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 3,
+          "seconds": 13.45797757524997,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 66,
+          "horizontal_responses": 59,
+          "max_projectiles": 44,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 1,
+          "seconds": 29.64352381000026,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 40,
+          "horizontal_responses": 37,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1086,
+              "decisions": 270
+            },
+            {
+              "outcome": "miss",
+              "frame": 946,
+              "decisions": 235
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 3,
+          "seconds": 15.26591659989208,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 51,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1230,
+              "decisions": 306
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 3,
+          "seconds": 15.42271800013259,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 25,
+          "horizontal_responses": 18,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1359,
+              "decisions": 338
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 1,
+          "seconds": 36.26717420760542,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 36,
+          "horizontal_responses": 34,
+          "max_projectiles": 39,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1506,
+              "decisions": 375
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 1,
+          "seconds": 36.33600977808237,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 38,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1366,
+              "decisions": 340
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.182040368809419,
+        "train/policy_gradient_loss": -0.001759541724288069,
+        "train/value_loss": 9.009258653403616e-05,
+        "train/approx_kl": 0.002759134629741311,
+        "train/clip_fraction": 0.030675551470588234,
+        "train/loss": -0.008080397732555866,
+        "train/explained_variance": 0.832267165184021,
+        "train/n_updates": 56.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 3,
+      "steps": 29440,
+      "rollout_policy_sha256": "f3ff540fca03620c3688250a1ed12e841c2fe36720b36ee94abe02ba7a3f6113",
+      "collection_seconds": 32.19533954560757,
+      "optimize_seconds": 0.7876616567373276,
+      "rollout_decisions_per_second": 135.17484398122295,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 2.086162567138672e-07
+      },
+      "action_counts": [
+        [
+          382,
+          327,
+          333,
+          751,
+          523,
+          462,
+          572,
+          571,
+          431
+        ],
+        [
+          1874,
+          2478
+        ],
+        [
+          1882,
+          2470
+        ],
+        [
+          1604,
+          2748
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 4,
+          "seconds": 13.270676287822425,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 65,
+          "horizontal_responses": 60,
+          "max_projectiles": 42,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 4,
+          "seconds": 14.22815228626132,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 44,
+          "max_projectiles": 37,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1326,
+              "decisions": 330
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 4,
+          "seconds": 14.529889989644289,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 43,
+          "max_projectiles": 44,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 4,
+          "seconds": 14.689693426713347,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 51,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1354,
+              "decisions": 337
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 4,
+          "seconds": 17.360924100037664,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 50,
+          "horizontal_responses": 48,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1342,
+              "decisions": 334
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 4,
+          "seconds": 17.803472599945962,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 71,
+          "horizontal_responses": 67,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1495,
+              "decisions": 372
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 2,
+          "seconds": 25.612158405594528,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 42,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1326,
+              "decisions": 330
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 2,
+          "seconds": 25.625981457531452,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 41,
+          "max_projectiles": 38,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1450,
+              "decisions": 361
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 2,
+          "seconds": 26.65599925599963,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 46,
+          "horizontal_responses": 39,
+          "max_projectiles": 28,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 5,
+          "seconds": 13.785962365567684,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 39,
+          "horizontal_responses": 34,
+          "max_projectiles": 76,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1702,
+              "decisions": 424
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 2,
+          "seconds": 27.010280177928507,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 47,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1078,
+              "decisions": 268
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 2,
+          "seconds": 27.134824915789068,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 69,
+          "horizontal_responses": 63,
+          "max_projectiles": 27,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1054,
+              "decisions": 262
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 5,
+          "seconds": 13.323242026381195,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 59,
+          "horizontal_responses": 53,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 5,
+          "seconds": 14.085973623208702,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 42,
+          "max_projectiles": 17,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 958,
+              "decisions": 238
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 5,
+          "seconds": 14.04743264708668,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 54,
+          "max_projectiles": 36,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1502,
+              "decisions": 374
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 5,
+          "seconds": 14.671927700052038,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 55,
+          "horizontal_responses": 46,
+          "max_projectiles": 18,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 915,
+              "decisions": 227
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 5,
+          "seconds": 14.346051499946043,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 55,
+          "horizontal_responses": 50,
+          "max_projectiles": 44,
+          "episodes": [],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.17555581646807,
+        "train/policy_gradient_loss": -0.0032463402740712114,
+        "train/value_loss": 7.605275026007268e-05,
+        "train/approx_kl": 0.003299436066299677,
+        "train/clip_fraction": 0.04411764705882353,
+        "train/loss": -0.03262535110116005,
+        "train/explained_variance": 0.8467427492141724,
+        "train/n_updates": 60.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 4,
+      "steps": 33792,
+      "rollout_policy_sha256": "752503be6df580f6b002df0a521587bfb5817ade330fcbdf6b29da695d8bd077",
+      "collection_seconds": 38.80754395574331,
+      "optimize_seconds": 0.9712922368198633,
+      "rollout_decisions_per_second": 112.14314425471203,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 2.2351741790771484e-07
+      },
+      "action_counts": [
+        [
+          348,
+          355,
+          358,
+          771,
+          501,
+          447,
+          596,
+          550,
+          426
+        ],
+        [
+          1836,
+          2516
+        ],
+        [
+          1712,
+          2640
+        ],
+        [
+          1582,
+          2770
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "accelerator-1",
+          "sequence": 6,
+          "seconds": 14.152807402424514,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 42,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1318,
+              "decisions": 328
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 6,
+          "seconds": 14.235197584144771,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 51,
+          "max_projectiles": 71,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1786,
+              "decisions": 445
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 6,
+          "seconds": 14.369238654151559,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 43,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1386,
+              "decisions": 345
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 6,
+          "seconds": 14.539647344499826,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 48,
+          "max_projectiles": 14,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 892,
+              "decisions": 221
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 6,
+          "seconds": 15.717958699911833,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 60,
+          "horizontal_responses": 50,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1354,
+              "decisions": 337
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 6,
+          "seconds": 15.807044199900702,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 45,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 3,
+          "seconds": 25.103495940566063,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 48,
+          "horizontal_responses": 44,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1258,
+              "decisions": 313
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 3,
+          "seconds": 27.10812026169151,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 44,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1194,
+              "decisions": 297
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 7,
+          "seconds": 13.55451218597591,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 52,
+          "max_projectiles": 45,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 3,
+          "seconds": 28.131911776999914,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 37,
+          "horizontal_responses": 32,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1342,
+              "decisions": 334
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 7,
+          "seconds": 13.96826452575624,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 52,
+          "max_projectiles": 26,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1026,
+              "decisions": 255
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 7,
+          "seconds": 14.320471678860486,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 65,
+          "horizontal_responses": 57,
+          "max_projectiles": 19,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 934,
+              "decisions": 232
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 7,
+          "seconds": 14.618785286322236,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 44,
+          "max_projectiles": 30,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1046,
+              "decisions": 260
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 7,
+          "seconds": 16.27920740004629,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 50,
+          "horizontal_responses": 47,
+          "max_projectiles": 36,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 7,
+          "seconds": 17.305501600028947,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 46,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1534,
+              "decisions": 382
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 3,
+          "seconds": 37.23243309184909,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 40,
+          "horizontal_responses": 35,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1338,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 3,
+          "seconds": 38.730797921307385,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 43,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.181439785396352,
+        "train/policy_gradient_loss": -0.004481464594445082,
+        "train/value_loss": 6.335396758860203e-05,
+        "train/approx_kl": 0.0033759688958525658,
+        "train/clip_fraction": 0.05193014705882353,
+        "train/loss": -0.022544125095009804,
+        "train/explained_variance": 0.8786736726760864,
+        "train/n_updates": 64.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 5,
+      "steps": 38144,
+      "rollout_policy_sha256": "e1d913d972b57fd60e1c7ae3743abd31349a200f64b0bf429d7c2423006a091f",
+      "collection_seconds": 35.43358843959868,
+      "optimize_seconds": 0.9641109509393573,
+      "rollout_decisions_per_second": 122.82131705115246,
+      "untrained_snapshot_max_error": {
+        "log_prob": 9.5367431640625e-07,
+        "value": 1.7881393432617188e-07
+      },
+      "action_counts": [
+        [
+          359,
+          362,
+          369,
+          721,
+          550,
+          459,
+          599,
+          494,
+          439
+        ],
+        [
+          1841,
+          2511
+        ],
+        [
+          1808,
+          2544
+        ],
+        [
+          1660,
+          2692
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 8,
+          "seconds": 13.829774514771998,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 43,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1168,
+              "decisions": 290
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 8,
+          "seconds": 13.934897900559008,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 45,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1326,
+              "decisions": 330
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 8,
+          "seconds": 14.06316621042788,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 65,
+          "horizontal_responses": 56,
+          "max_projectiles": 27,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1038,
+              "decisions": 258
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 8,
+          "seconds": 14.302685229107738,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 45,
+          "max_projectiles": 27,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1398,
+              "decisions": 348
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 8,
+          "seconds": 15.365452599944547,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 43,
+          "horizontal_responses": 38,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1331,
+              "decisions": 331
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 8,
+          "seconds": 15.76405689981766,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 55,
+          "horizontal_responses": 49,
+          "max_projectiles": 49,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 4,
+          "seconds": 27.01825734693557,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 50,
+          "max_projectiles": 17,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 942,
+              "decisions": 234
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 9,
+          "seconds": 14.003231186419725,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 60,
+          "horizontal_responses": 52,
+          "max_projectiles": 29,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1060,
+              "decisions": 263
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 9,
+          "seconds": 14.249821602366865,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 41,
+          "horizontal_responses": 37,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1274,
+              "decisions": 317
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 9,
+          "seconds": 14.713329105637968,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 54,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1207,
+              "decisions": 300
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 4,
+          "seconds": 29.17601019795984,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 48,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1174,
+              "decisions": 292
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 4,
+          "seconds": 29.23011937299998,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 51,
+          "max_projectiles": 37,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1486,
+              "decisions": 370
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 9,
+          "seconds": 15.46136022452265,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 67,
+          "horizontal_responses": 65,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1342,
+              "decisions": 334
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 9,
+          "seconds": 16.18607149994932,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 65,
+          "horizontal_responses": 57,
+          "max_projectiles": 32,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1275,
+              "decisions": 317
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 9,
+          "seconds": 16.82508340012282,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 49,
+          "horizontal_responses": 47,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 4,
+          "seconds": 33.462472500279546,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 59,
+          "horizontal_responses": 52,
+          "max_projectiles": 17,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 926,
+              "decisions": 230
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 4,
+          "seconds": 35.37487262301147,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 68,
+          "horizontal_responses": 62,
+          "max_projectiles": 46,
+          "episodes": [],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.187853976207621,
+        "train/policy_gradient_loss": -0.0020903463018304832,
+        "train/value_loss": 5.534154263386881e-05,
+        "train/approx_kl": 0.002793635008856654,
+        "train/clip_fraction": 0.024011948529411766,
+        "train/loss": -0.024547463282942772,
+        "train/explained_variance": 0.8711241483688354,
+        "train/n_updates": 68.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 6,
+      "steps": 42496,
+      "rollout_policy_sha256": "528007d4a37b719f225da59093e47ac9ffecf3ed01fd67e41de6328eb00a963d",
+      "collection_seconds": 31.64178914297372,
+      "optimize_seconds": 0.7579852994531393,
+      "rollout_decisions_per_second": 137.53963090820963,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.6391277313232422e-07
+      },
+      "action_counts": [
+        [
+          350,
+          332,
+          429,
+          737,
+          497,
+          434,
+          652,
+          507,
+          414
+        ],
+        [
+          1893,
+          2459
+        ],
+        [
+          1848,
+          2504
+        ],
+        [
+          1623,
+          2729
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 10,
+          "seconds": 13.337183700874448,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 67,
+          "horizontal_responses": 53,
+          "max_projectiles": 19,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 887,
+              "decisions": 220
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 10,
+          "seconds": 13.362836577929556,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 49,
+          "max_projectiles": 16,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 894,
+              "decisions": 222
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 10,
+          "seconds": 13.608450835570693,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 75,
+          "horizontal_responses": 69,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 10,
+          "seconds": 14.076776709407568,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 49,
+          "max_projectiles": 38,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1510,
+              "decisions": 376
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 10,
+          "seconds": 15.096558999968693,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 58,
+          "horizontal_responses": 47,
+          "max_projectiles": 14,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 999,
+              "decisions": 248
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 10,
+          "seconds": 15.140064800158143,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 45,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1366,
+              "decisions": 340
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-1",
+          "sequence": 5,
+          "seconds": 26.31345451530069,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 45,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1070,
+              "decisions": 266
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 11,
+          "seconds": 13.104386223480105,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 39,
+          "horizontal_responses": 32,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1154,
+              "decisions": 287
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 11,
+          "seconds": 13.264976329170167,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 40,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1078,
+              "decisions": 268
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "deck-1",
+          "sequence": 5,
+          "seconds": 26.884749433999787,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 62,
+          "horizontal_responses": 57,
+          "max_projectiles": 14,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 914,
+              "decisions": 227
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "entropy-2",
+          "sequence": 5,
+          "seconds": 27.15279202722013,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 42,
+          "horizontal_responses": 35,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1166,
+              "decisions": 290
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-1",
+          "sequence": 5,
+          "seconds": 27.65269967354834,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 47,
+          "horizontal_responses": 41,
+          "max_projectiles": 28,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1322,
+              "decisions": 329
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-1",
+          "sequence": 11,
+          "seconds": 14.389282683841884,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 44,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1358,
+              "decisions": 338
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "accelerator-2",
+          "sequence": 11,
+          "seconds": 14.600555190816522,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 58,
+          "horizontal_responses": 56,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-2",
+          "sequence": 11,
+          "seconds": 15.044330599950626,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 45,
+          "max_projectiles": 14,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 950,
+              "decisions": 236
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "gamer-1",
+          "sequence": 11,
+          "seconds": 15.276391699910164,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 67,
+          "horizontal_responses": 59,
+          "max_projectiles": 30,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1047,
+              "decisions": 260
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "endeavour-2",
+          "sequence": 5,
+          "seconds": 31.576936627738178,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 46,
+          "horizontal_responses": 42,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.1898533912266,
+        "train/policy_gradient_loss": -0.003167423964067198,
+        "train/value_loss": 5.4701503860515536e-05,
+        "train/approx_kl": 0.0031024785712361336,
+        "train/clip_fraction": 0.04021139705882353,
+        "train/loss": -0.0030421901028603315,
+        "train/explained_variance": 0.8687474727630615,
+        "train/n_updates": 72.0,
+        "train/clip_range": 0.15
+      }
+    }
+  ],
+  "checkpoint_storage": {
+    "current": {
+      "steps": 42496,
+      "sha256": "200cd3aac29ad7b01b1ac39adbf492b11396ec470db4d4f76f0a7d0593a173b0",
+      "bytes": 944576
+    },
+    "previous": {
+      "steps": 38144,
+      "sha256": "e409d4cec37ad932bc9ca361c20f889c16a4784cd1659e6711da742f5495adb1",
+      "bytes": 944576
+    }
+  }
+}

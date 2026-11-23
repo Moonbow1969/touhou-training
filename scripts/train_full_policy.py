@@ -6,7 +6,7 @@ from functools import partial
 import json
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from time import perf_counter
+from time import perf_counter, sleep
 
 import gymnasium as gym
 import numpy as np
@@ -48,6 +48,32 @@ def publish_json(path, value):
             temporary.unlink(missing_ok=True)
 
 
+def retry_story_game_over(parakit):
+    from environment import interface as game
+    from environment.structured import StateReader, load_parakit_offsets
+
+    game._get_focus()
+    state = game.read_game_val("game_state")
+    if state == 2:
+        return
+    reader = StateReader(game, load_parakit_offsets(parakit), 96)
+    offsets = reader.offsets.environment
+    setup = tuple(reader.read_uint(field, relative=True) for field in
+                  (offsets.stage, offsets.difficulty, offsets.character, offsets.subshot))
+    screen = reader.read_uint(reader.offsets.statics.game_screen, relative=True)
+    if screen != 7 or state != 1 or game.read_game_val("lives") >= 0 or setup != (1, 1, 0, 0):
+        raise RuntimeError("Expected the TH14 Normal Reimu A Stage 1 game-over Retry menu.")
+    game.release_all_keys()
+    game._press_and_release("z")
+    deadline = perf_counter() + 7
+    while perf_counter() < deadline:
+        game.require_game_focus()
+        if game.read_game_val("game_state") == 2:
+            return
+        sleep(.025)
+    raise RuntimeError("The native game-over Retry did not restore active gameplay.")
+
+
 class SurvivalRollout(gym.Wrapper):
     def __init__(self, env, base, reward_mode):
         super().__init__(env)
@@ -60,6 +86,8 @@ class SurvivalRollout(gym.Wrapper):
         self.action_counts = {name: np.zeros(width, dtype=np.int64)
                               for name, width in zip(ACTION_NAMES, ACTION_WIDTHS)}
         self.frame_deltas = {}
+        self.horizontal_commands = 0
+        self.horizontal_responses = 0
 
     def reset(self, **kwargs):
         started = perf_counter()
@@ -72,8 +100,16 @@ class SurvivalRollout(gym.Wrapper):
     def step(self, action):
         started = perf_counter()
         frame = self.env.last_frame
+        before = self.env.snapshot
         observation, _, terminated, truncated, info = self.env.step(action)
         observation = policy_observation(self.base, self.env, observation)
+        direction = int(action[0]) % 3 - 1
+        after = self.env.snapshot
+        before_x, after_x = (float(snapshot.observation["context"][0]) * 192 for snapshot in (before, after))
+        if (direction and before.player_state == after.player_state == 1 and before.lives == after.lives
+                and before.stage == after.stage and -173 < before_x < 173 and not action[3]):
+            self.horizontal_commands += 1
+            self.horizontal_responses += int(direction * (after_x - before_x) > .05)
         for counts, value in zip(self.action_counts.values(), action):
             counts[value] += 1
         delta = self.env.last_frame - frame
@@ -154,6 +190,8 @@ class RolloutLog(BaseCallback):
                                               native_frame_deltas=self.env.frame_deltas.copy())
         self.report["training_action_counts"] = {name: counts.tolist()
                                                   for name, counts in self.env.action_counts.items()}
+        self.report["training_horizontal_input"] = {"eligible": self.env.horizontal_commands,
+                                                    "observed": self.env.horizontal_responses}
         publish_json(self.out / "report.json", self.report)
         print(json.dumps(row), flush=True)
         if self.num_timesteps % 1024 == 0:
@@ -224,6 +262,8 @@ def main():
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
     parser.add_argument("--focus-wait", type=int, default=30)
+    parser.add_argument("--retry-game-over", action="store_true",
+                        help="Confirm the default Retry selection if TH14 is at the verified story game-over menu.")
     parser.add_argument("--checkpoint-budget-mib", type=int, default=DEFAULT_BUDGET_MIB,
                         help="Per-run budget including the current, previous, and staged checkpoint archives.")
     parser.add_argument("--min-free-disk-mib", type=int, default=DEFAULT_RESERVE_MIB,
@@ -282,6 +322,8 @@ def main():
     continuous, system_required, display_required = 0x80000000, 0x00000001, 0x00000002
     keep_awake(continuous | system_required | display_required)
     try:
+        if args.retry_game_over:
+            retry_story_game_over(args.parakit)
         stage = NormalStageOne(args.parakit, limit=args.train_limit, motion_history=True,
                                history_frames=max(base.motion_spans or (12,)), focus_wait=args.focus_wait)
         env = SurvivalRollout(stage, base, args.reward)

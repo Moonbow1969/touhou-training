@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkpoints": {
+    "sft": {
+      "sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+      "metrics_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f"
+    },
+    "ppo": {
+      "sha256": "b03b2deb7e95367b866e975a2f134fb2d5d64f34bae23e2fffc6261e6306ff84",
+      "steps": 8192,
+      "lineage": "legacy_training_report"
+    }
+  },
+  "split_plan_sha256": "18488485c0b609cc7c34b189424d382fcaecde9c03b38bba1e57235955c73fa8",
+  "reserved_test_replays_excluded": [
+    {
+      "replay": "th14_ud0559.rpy",
+      "replay_sha256": "241b667e8c6a61e6b34a17210769942a2ad63ecb63d5a4ab1a097dd2328a2215"
+    }
+  ],
+  "sampler": "Exact categorical probabilities and argmax on recorded human replay observations",
+  "th14_normal_reimu_a_stage1_validation": {
+    "inputs": [
+      {
+        "replay": "th14_ud06d6.rpy",
+        "stage": 1,
+        "pairs": 2288,
+        "metadata_sha256": "6f719ef2511bf5e2e47fdf4b249075dffcb514d19a956eda2384bfd7677a178d",
+        "arrays_sha256": "0ca2971753b6a2750b026355641481eaa3008a5df4c95e28e515281983b254c8"
+      }
+    ],
+    "full": {
+      "decisions": 2288,
+      "stride": 1,
+      "last_stage_frame": null,
+      "expert_idle_fraction": 0.4208916083916084,
+      "actors": {
+        "sft": {
+          "greedy_idle_fraction": 0.49038461538461536,
+          "sampled_idle_probability": 0.40840691453093414,
+          "greedy_movement_accuracy": 0.7281468531468531,
+          "movement_entropy_nats": 1.0890565485387416,
+          "moving_probability_over_half_fraction": 0.5681818181818182,
+          "focus_probability": 0.617805004119873,
+          "shoot_probability": 0.9650096960001059,
+          "bomb_probability": 0.0008137496448792778,
+          "movement_expert_probability": 0.5225601262979575
+        },
+        "ppo": {
+          "greedy_idle_fraction": 0.6573426573426573,
+          "sampled_idle_probability": 0.5094916570436704,
+          "greedy_movement_accuracy": 0.49038461538461536,
+          "movement_entropy_nats": 0.972440752949748,
+          "moving_probability_over_half_fraction": 0.4812062937062937,
+          "focus_probability": 0.6093455294629077,
+          "shoot_probability": 0.9676483127620671,
+          "bomb_probability": 0.0011546526208415732,
+          "movement_expert_probability": 0.40568945291159036
+        }
+      }
+    },
+    "first_500_stage_frames": {
+      "decisions": 124,
+      "stride": 1,
+      "last_stage_frame": 500,
+      "expert_idle_fraction": 0.4274193548387097,
+      "actors": {
+        "sft": {
+          "greedy_idle_fraction": 0.5,
+          "sampled_idle_probability": 0.3996751231531943,
+          "greedy_movement_accuracy": 0.7016129032258065,
+          "movement_entropy_nats": 1.0854766599593624,
+          "moving_probability_over_half_fraction": 0.5725806451612904,
+          "focus_probability": 0.6093490354476436,
+          "shoot_probability": 0.9831183033604776,
+          "bomb_probability": 0.0005264872865330788,
+          "movement_expert_probability": 0.5270880422284526
+        },
+        "ppo": {
+          "greedy_idle_fraction": 0.7258064516129032,
+          "sampled_idle_probability": 0.5702901655627836,
+          "greedy_movement_accuracy": 0.43548387096774194,
+          "movement_entropy_nats": 0.9847324740502142,
+          "moving_probability_over_half_fraction": 0.3709677419354839,
+          "focus_probability": 0.6017134881788685,
+          "shoot_probability": 0.9875252016129032,
+          "bomb_probability": 0.00030106411225372745,
+          "movement_expert_probability": 0.4386002940516318
+        }
+      }
+    }
+  },
+  "th17_test_players": {
+    "inputs": [
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 1,
+        "pairs": 2267,
+        "metadata_sha256": "b95506bb09c260eb6e0565fbc692d995ba9124aa6dea3e92616814fdabb8459f",
+        "arrays_sha256": "bf72c3b53e6e09e6686dc052457cbeddd55d216c905aaf6cc42fe5e1c289caf6"
+      },
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 2,
+        "pairs": 2540,
+        "metadata_sha256": "09f21d615a1b9173b503beec8614ba293e3ab84cb2d8d3b65213035d109eb079",
+        "arrays_sha256": "25389872c2c4bd45ba29df99d2f16470c47d4cddfb9876dc1c4fa7b4345b5f52"
+      },
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 3,
+        "pairs": 3681,
+        "metadata_sha256": "23b9aabe1820151ba2aa646ab30170029c1b4a639cc70e86ee80c11d689e1874",
+        "arrays_sha256": "313adeec47707dceaf23eed7ecc6d00be1a854190706c09bd3475fa1cbfacfd7"
+      },
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 4,
+        "pairs": 3960,
+        "metadata_sha256": "4aca781727a5c6ff1a31141a3e4b78f76351f56749f5e3ed0a0e384dad4699f3",
+        "arrays_sha256": "7c9d1740ce77858b8255a25c9f9c1c963fa65f043e1976aefa29f159d8dc05bc"
+      },
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 5,
+        "pairs": 3846,
+        "metadata_sha256": "9c113da3e71fa8f1a93db8b46ddfe13386a6b70ede2cee7d1a9f9c5a4ea5e28d",
+        "arrays_sha256": "30d70c9959b020c9fd94d1148b24f1c975635c1d0ec7f7b79b00d16eeede605e"
+      },
+      {
+        "replay": "th17_ud040c.rpy",
+        "stage": 6,
+        "pairs": 4903,
+        "metadata_sha256": "cec0169297f964ebd7110c00b3a77aca64c68162efd882b33279bce94362e3cb",
+        "arrays_sha256": "78506b484f465b8d9471d5e652790ac79593b3665ec513e637dbf498f1dc5947"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 1,
+        "pairs": 2973,
+        "metadata_sha256": "17ede1b40e774f00fdbfd02b821bdcf1d008af6a357de30e2750a572578b4651",
+        "arrays_sha256": "bd6c1b4a3dce3deb01e7a837e8727fe011c3d0f79bdd9c68e8785e819d0472f8"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 2,
+        "pairs": 3462,
+        "metadata_sha256": "9dde85a4ae2da48e47bf0d94ab3714f84ccda316356d642d22dfbbf3354c3b4f",
+        "arrays_sha256": "6b65ba31db9b2c35cfe0e2e48cb4fe9eaa34c38547622adc29a89574f9091398"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 3,
+        "pairs": 4173,
+        "metadata_sha256": "6d30a050ffceab72f68477c86aa64b4b03022b38de119cc733dd086a4672dff5",
+        "arrays_sha256": "dc700a6cdce2fb43c8464d45a6bf464a56f780559ee0a9c452d496976e604098"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 4,
+        "pairs": 5654,
+        "metadata_sha256": "44bdd94dc5c62302f51a9049191d4f3a808bad94e9b41507bad70a90a1990eba",
+        "arrays_sha256": "e6cf656c9df986bf1c6a61699d0f6d42549f3c88d94dc93e3b1deb6e4d10dc97"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 5,
+        "pairs": 4750,
+        "metadata_sha256": "7e112d45fafe3315991228887b7dd6c8eec5ce543641b21757ce3cdee0eac5db",
+        "arrays_sha256": "fbcc67d724b54655c412ce5239541d27be60a2a8fc70b1b7e94b7692ecbe886c"
+      },
+      {
+        "replay": "th17_ud0448.rpy",
+        "stage": 6,
+        "pairs": 9212,
+        "metadata_sha256": "b01768c9d7c9749e90a31e3e9c062cd8622206a2ae29505eb855529360949320",
+        "arrays_sha256": "301e49068600e24c8d4653864a6f917e8a1bdec7a1e9227ee3f0aa1a0e957e2c"
+      }
+    ],
+    "every_fourth_decision": {
+      "decisions": 12860,
+      "stride": 4,
+      "last_stage_frame": null,
+      "expert_idle_fraction": 0.3671073094867807,
+      "actors": {
+        "sft": {
+          "greedy_idle_fraction": 0.38561430793157075,
+          "sampled_idle_probability": 0.31862525591397917,
+          "greedy_movement_accuracy": 0.6489891135303266,
+          "movement_entropy_nats": 1.2117789532496808,
+          "moving_probability_over_half_fraction": 0.7265163297045101,
+          "focus_probability": 0.7140458053600732,
+          "shoot_probability": 0.7188665151225279,
+          "bomb_probability": 0.006656902530817185,
+          "movement_expert_probability": 0.4502624855071167
+        },
+        "ppo": {
+          "greedy_idle_fraction": 0.43670295489891137,
+          "sampled_idle_probability": 0.35267779237560315,
+          "greedy_movement_accuracy": 0.4496889580093313,
+          "movement_entropy_nats": 1.0947073427737222,
+          "moving_probability_over_half_fraction": 0.6804821150855366,
+          "focus_probability": 0.7109592639454416,
+          "shoot_probability": 0.6654124778314475,
+          "bomb_probability": 0.01062743005431134,
+          "movement_expert_probability": 0.3653614008593522
+        }
+      }
+    }
+  }
+}
