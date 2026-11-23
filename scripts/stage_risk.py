@@ -9,34 +9,35 @@ _UPPER_BOUND = np.array([184, 432], dtype=np.float32)
 _PROJECTILE_POSITION_SCALE = np.array([384, 448], dtype=np.float32)
 
 
-def player_paths(observation, horizon):
+def player_paths(observation, horizon, speed_scale=1.):
     position = observation['context'][:2] * np.array([192, 448], dtype=np.float32)
     time = np.arange(1, horizon + 1, dtype=np.float32)
-    movement = _SPEEDS[:, None, None] * _DIRECTIONS[None]
+    movement = (_SPEEDS * speed_scale)[:, None, None] * _DIRECTIONS[None]
     return np.clip(position + movement[:, :, None] * time[None, None, :, None], _LOWER_BOUND, _UPPER_BOUND)
 
 
-def action_clearances(observation, player_radius, horizon=12):
+def action_clearances(observation, player_radius, horizon=12, *, speed_scale=1.):
     """Min predicted projectile surface distance for each focus/direction pair."""
     objects = observation['bullets']
     hazard = objects[(objects[:, 6] > 0) & (objects[:, 5] > 0) & (objects[:, 4] > 0)]
     return _projectile_clearances(observation, player_radius, horizon, hazard[:, :2] * _PROJECTILE_POSITION_SCALE,
-                                  hazard[:, 2:4] * 16, hazard[:, 4] * 32)
+                                  hazard[:, 2:4] * 16, hazard[:, 4] * 32, speed_scale)
 
 
-def raw_projectile_clearances(observation, player_radius, projectiles, horizon=12):
+def raw_projectile_clearances(observation, player_radius, projectiles, horizon=12, *, speed_scale=1.):
     """Check native positions, velocities and radii without the policy's feature limits."""
     hazard = projectiles[(projectiles[:, 5] > 0) & (projectiles[:, 4] > 0)]
     hazard = hazard[np.isfinite(hazard).all(axis=1)]
-    return _projectile_clearances(observation, player_radius, horizon, hazard[:, :2], hazard[:, 2:4], hazard[:, 4])
+    return _projectile_clearances(observation, player_radius, horizon, hazard[:, :2], hazard[:, 2:4], hazard[:, 4],
+                                  speed_scale)
 
 
-def _projectile_clearances(observation, player_radius, horizon, centers, velocity, radius):
+def _projectile_clearances(observation, player_radius, horizon, centers, velocity, radius, speed_scale):
     if not len(centers):
         return np.full((2, 9), 512, dtype=np.float32)
     position = observation['context'][:2] * np.array([192, 448], dtype=np.float32)
     time = np.arange(1, horizon + 1, dtype=np.float32)
-    player = player_paths(observation, horizon)
+    player = player_paths(observation, horizon, speed_scale)
     bullets = centers[:, None, :] + velocity[:, None, :] * time[None, :, None]
     relative = bullets[None, None] - (player - position)[:, :, None]
     distance = np.linalg.norm(relative, axis=-1)
@@ -44,12 +45,12 @@ def _projectile_clearances(observation, player_radius, horizon, centers, velocit
     return clearance.min(axis=(2, 3))
 
 
-def body_clearances(observation, player_radius, hitboxes, horizon=12):
+def body_clearances(observation, player_radius, hitboxes, horizon=12, *, speed_scale=1.):
     if not len(hitboxes):
         return np.full((2, 9), 512, dtype=np.float32)
     time = np.arange(1, horizon + 1, dtype=np.float32)
     centers = hitboxes[:, None, :2] + hitboxes[:, None, 2:4] * time[None, :, None]
-    relative = player_paths(observation, horizon)[:, :, None] - centers
+    relative = player_paths(observation, horizon, speed_scale)[:, :, None] - centers
     cosine, sine = np.cos(hitboxes[:, 6]), np.sin(hitboxes[:, 6])
     rx, ry = relative[..., 0], relative[..., 1]
     local_x = rx * cosine[:, None] + ry * sine[:, None]
@@ -61,14 +62,14 @@ def body_clearances(observation, player_radius, hitboxes, horizon=12):
     return clearance.min(axis=(2, 3))
 
 
-def laser_clearances(observation, player_radius, segments, horizon=12):
+def laser_clearances(observation, player_radius, segments, horizon=12, *, speed_scale=1.):
     if not len(segments):
         return np.full((2, 9), 512, dtype=np.float32)
     time = np.arange(1, horizon + 1, dtype=np.float32)
     tail = segments[:, None, :2] + segments[:, None, 2:4] * time[None, :, None]
     angle = segments[:, None, 4] + segments[:, None, 5] * time
     direction = np.stack((np.cos(angle), np.sin(angle)), axis=-1)
-    relative = player_paths(observation, horizon)[:, :, None] - tail
+    relative = player_paths(observation, horizon, speed_scale)[:, :, None] - tail
     projected = (relative * direction).sum(axis=-1)
     along = np.clip(projected, 0, segments[:, None, 6])
     distance = np.linalg.norm(relative - along[..., None] * direction, axis=-1)

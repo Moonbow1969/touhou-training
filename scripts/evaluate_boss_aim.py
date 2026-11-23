@@ -12,6 +12,7 @@ from scripts.evaluate_stage_policies import read_policy, stage_action
 from scripts.pretrain_policy import LEVELS
 from scripts.probe_stage_risk import player_radius
 from scripts.record_run import write_json
+from scripts.stage_motion import MotionCalibrator
 from scripts.stage_policy import NormalStageOne
 from scripts.stage_risk import (action_clearances, body_clearances, laser_clearances, player_paths,
                                 raw_projectile_clearances, suggest_dodge)
@@ -19,9 +20,9 @@ from scripts.train_stage_dodge import learned_action
 from scripts.world_shadow import WorldShadow
 
 
-def aim_geometry(observation, action, clearances, boss):
+def aim_geometry(observation, action, clearances, boss, speed_scale=1.):
     move, focus = map(int, action[:2])
-    ends = player_paths(observation, 4)[focus, :, -1]
+    ends = player_paths(observation, 4, speed_scale)[focus, :, -1]
     lateral = np.abs(ends[:, 0] - boss.x)
     too_close = np.maximum(boss.y + 65 - ends[:, 1], 0)
     costs = lateral + 2 * too_close
@@ -30,10 +31,10 @@ def aim_geometry(observation, action, clearances, boss):
     return move, costs, safety_delta
 
 
-def aim_features(observation, action, clearances, boss):
+def aim_features(observation, action, clearances, boss, speed_scale=1.):
     if boss is None or not boss.vulnerable or not action[2]:
         return None, int(action[0])
-    move, costs, safety_delta = aim_geometry(observation, action, clearances, boss)
+    move, costs, safety_delta = aim_geometry(observation, action, clearances, boss, speed_scale)
     acceptable = safety_delta >= 0
     best = int(np.where(acceptable, costs, np.inf).argmin())
     if not acceptable[best] or costs[best] + 2 >= costs[move]:
@@ -63,7 +64,8 @@ def same_phase(before, after):
             and before.boss.max_hp == after.boss.max_hp and before.spell_id == after.spell_id)
 
 
-def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_risk, emergency_bomb, shadow=None):
+def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_risk, emergency_bomb, shadow=None,
+          adaptive_motion=False):
     observation, _ = stage.reset()
     start_frame = stage.last_frame
     radius = player_radius(stage)
@@ -78,22 +80,24 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
     samples = []
     impacts = []
     protective_bombs = 0
+    motion = MotionCalibrator() if adaptive_motion else None
     if shadow is not None:
         shadow.reset()
     while True:
         old_frame = stage.last_frame
         before = stage.snapshot
+        speed = motion.predict(old_frame) if motion is not None else 1.
         base = stage_action(policy, stage, observation)
-        projectile_risk = action_clearances(observation, radius)
+        projectile_risk = action_clearances(observation, radius, speed_scale=speed)
         hitboxes = stage.reader.read_enemy_hitboxes()
-        enemy_risk = body_clearances(observation, radius, hitboxes)
+        enemy_risk = body_clearances(observation, radius, hitboxes, speed_scale=speed)
         segments = stage.reader.read_straight_lasers()
-        beam_risk = laser_clearances(observation, radius, segments)
+        beam_risk = laser_clearances(observation, radius, segments, speed_scale=speed)
         clearance = np.minimum(projectile_risk, enemy_risk) if body_risk else projectile_risk
         if laser_risk:
             clearance = np.minimum(clearance, beam_risk)
         candidate = (suggest_dodge(base, clearance)[0] if head is None else learned_action(head, base, clearance))
-        features, target = aim_features(observation, candidate, clearance, before.boss)
+        features, target = aim_features(observation, candidate, clearance, before.boss, speed)
         correction = target != candidate[0]
         if features is not None and examples is not None and (correction or stage.steps % 3 == 0):
             examples.append((features, target, int(candidate[0])))
@@ -108,9 +112,10 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
         move, focus = map(int, action[:2])
         if emergency_bomb and observation['context'][4] > 0 and 'x' not in stage.held:
             if before.player_state == 4 or before.player_state == 1 and clearance[focus, move] < 0:
-                imminent = np.minimum(action_clearances(observation, radius, horizon=4),
-                                      body_clearances(observation, radius, hitboxes, horizon=4))
-                imminent = np.minimum(imminent, laser_clearances(observation, radius, segments, horizon=4))
+                imminent = np.minimum(action_clearances(observation, radius, horizon=4, speed_scale=speed),
+                                      body_clearances(observation, radius, hitboxes, horizon=4, speed_scale=speed))
+                imminent = np.minimum(imminent,
+                                      laser_clearances(observation, radius, segments, horizon=4, speed_scale=speed))
                 if before.player_state == 4 or imminent.max() < -.5:
                     action[3] = 1
                     protective_bombs += 1
@@ -122,8 +127,15 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
         shadow_valid = (shadow is not None and before.player_state == 1
                         and stage.game.read_game_val('in_dialog') != -1)
         observation, _, done, truncated, info = stage.step(action)
-        impact = before.player_state != 4 and stage.snapshot.player_state == 4
-        if (shadow_valid and before.stage == stage.snapshot.stage and stage.last_frame - old_frame == 4
+        after = stage.snapshot
+        exact_step = before.stage == after.stage and stage.last_frame - old_frame == 4
+        if motion is not None:
+            if before.stage != after.stage or before.lives != after.lives:
+                motion.reset()
+            elif exact_step and before.player_state == after.player_state == 1 and not action[3]:
+                motion.observe(previous_observation, observation, action, old_frame)
+        impact = before.player_state != 4 and after.player_state == 4
+        if (shadow_valid and exact_step
                 and (impact or stage.steps % shadow.stride == 0)):
             shadow.observe(previous_observation, observation, action, impact)
         if impact:
@@ -135,7 +147,8 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                    'laser_clearance': float(beam_risk[focus, move]), 'laser_count': len(segments),
                    'movement': move, 'best_clearance': float(clearance.max())}
             if before.projectiles is not None:
-                native_margins = raw_projectile_clearances(previous_observation, radius, before.projectiles)
+                native_margins = raw_projectile_clearances(previous_observation, radius, before.projectiles,
+                                                           speed_scale=speed)
                 hit['raw_projectile_clearance'] = float(native_margins[focus, move])
                 hit['raw_projectile_count'] = len(before.projectiles)
             impacts.append(hit)
@@ -179,6 +192,9 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                        emergency_bomb_commands=protective_bombs)
             if shadow is not None:
                 row['world_shadow'] = shadow.summary()
+            if motion is not None:
+                row['adaptive_motion'] = {'slow_predictions': motion.slow_predictions,
+                                          'scale_updates': motion.scale_updates}
             emit(row, done or truncated)
         if done or truncated:
             return row
@@ -208,6 +224,7 @@ def main():
     parser.add_argument('--body-risk', action='store_true', help='Include enemy-body collisions in action clearances.')
     parser.add_argument('--laser-risk', action='store_true', help='Include straight lasers in action clearances.')
     parser.add_argument('--emergency-bomb', action='store_true', help='Permit emergency bombs and four-frame evasions.')
+    parser.add_argument('--adaptive-motion', action='store_true', help='Calibrate player speed from recent native moves.')
     parser.add_argument('--world-shadow', type=Path, help='Score a world checkpoint on actual rollouts without controlling actions.')
     parser.add_argument('--world-shadow-stride', type=int, default=8)
     args = parser.parse_args()
@@ -250,7 +267,7 @@ def main():
               'stage_practice': args.stage_practice, 'focus_wait_seconds': args.focus_wait,
               'body_risk': args.body_risk, 'laser_risk': args.laser_risk,
               'world_shadow': str(args.world_shadow) if args.world_shadow else None,
-              'emergency_bomb': args.emergency_bomb, 'results': results}
+              'emergency_bomb': args.emergency_bomb, 'adaptive_motion': args.adaptive_motion, 'results': results}
     try:
         for block in range(args.blocks):
             candidate_first = (block % 2 == 1) ^ args.candidate_first
@@ -277,7 +294,8 @@ def main():
 
                 examples = [] if args.samples else None
                 trial(stage, base, head, candidate or args.teacher_control, emit, examples,
-                      student if candidate else None, args.body_risk, args.laser_risk, args.emergency_bomb, shadow)
+                      student if candidate else None, args.body_risk, args.laser_risk, args.emergency_bomb, shadow,
+                      args.adaptive_motion)
                 if examples:
                     args.samples.mkdir(parents=True, exist_ok=True)
                     features, target, prior = (np.stack(field) for field in zip(*examples))

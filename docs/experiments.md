@@ -50,6 +50,8 @@ python -m scripts.record_run --name th14-story --kind evaluation --input models-
 
 On a shared Windows desktop, enable `--focus-wait` for native TH14 trials. The controller preserves a paused process while the game is in the background. Foreground input remains exclusive to the active game.
 
+The experimental `--adaptive-motion` option estimates player speed from prior exact four-frame moves. A run using the flag reports how often it applied the slow prediction and switched speed estimates. Keep the flag disabled when reproducing the original one-credit controls.
+
 For native transfer, enter Normal with Reimu and launch the evaluator as Stage 1 begins. The verified TH17 pilot used Reimu Wolf. TH15 support expects Legacy Mode and still needs a successful native trial. `--wait-start` lets the evaluator load the checkpoint before the stage starts. Provide the checkpoint and its metrics sidecar to verify the training and selection titles. Run the same procedure without `--base` for stationary shooting.
 
 ```powershell

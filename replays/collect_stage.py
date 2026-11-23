@@ -114,7 +114,7 @@ def has_control(reader, thread_pointer, player_state):
     return player_state == 1 and not (in_dialogue or ending)
 
 
-def collect_stage(game, reader, expected, stage, rank, stride):
+def collect_stage(game, reader, expected, stage, rank, stride, progress_every=0):
     snapshots, labels, times, native = [], [], [], []
     controllable = []
     last_active = perf_counter()
@@ -164,6 +164,10 @@ def collect_stage(game, reader, expected, stage, rank, stride):
         last_frame = frame
         if first_active is None:
             first_active = last_active
+        if progress_every and len(times) % progress_every == 0:
+            print(json.dumps({'stage': stage, 'native_frame': frame, 'snapshots': len(times),
+                              'replay_frames': len(expected), 'elapsed': round(last_active - first_active, 3)}),
+                  flush=True)
     if len(times) < 100:
         raise RuntimeError("Replay did not emit enough snapshots.")
     return {
@@ -241,6 +245,8 @@ def main():
     stages.add_argument("--all-stages", action="store_true",
                         help="Record the replay from its first stage through the final stage.")
     parser.add_argument("--stride", type=int, default=4)
+    parser.add_argument("--progress-every", type=int, default=1000,
+                        help="Log capture progress after this many sampled frames. Use zero to disable.")
     parser.add_argument("--start-selected", action="store_true")
     parser.add_argument("--from-stage", type=int, help="First stage to record with --all-stages.")
     parser.add_argument("--wait-for-stage", type=int, default=0,
@@ -249,6 +255,8 @@ def main():
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--out", type=Path, default=ROOT / PAIRED_DIRECTORY)
     args = parser.parse_args()
+    if args.progress_every < 0:
+        parser.error("Capture progress interval must be nonnegative.")
     if args.stride < 1:
         parser.error("The stride must be positive.")
     if args.from_stage is not None and not args.all_stages:
@@ -288,7 +296,8 @@ def main():
             wait_for_stage(game, reader, requested[0], args.wait_for_stage)
         print(f"Recording TH{row['title']} replay {row['name']}, stages {requested}", flush=True)
         for stage in requested:
-            observations, elapsed = collect_stage(game, reader, words[stage], stage, rank, args.stride)
+            observations, elapsed = collect_stage(game, reader, words[stage], stage, rank, args.stride,
+                                                  args.progress_every)
             try:
                 paired, summary = align(args.filename, observations, words[stage], args.stride, elapsed)
             except AlignmentError as error:

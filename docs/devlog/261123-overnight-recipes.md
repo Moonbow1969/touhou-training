@@ -118,3 +118,19 @@ The selected checkpoint recovers the short-horizon accuracy of the original 370,
 Fit the timestamp offset on the first half of the captured moving windows. The archived replay matched every sampled input in the held-out 592 Stage 5 windows and 894 Stage 6 windows at that offset. Reconstructing player motion from the exported replay inputs gave the same displacement errors as using the live input words. Shifting the input windows by one or two frames reduced alignment in both stages.
 
 On the full native examples, the fixed-kinematics predictor averaged 0.587 and 1.731 game units of error on moving Stage 5 and Stage 6 windows. The selected world model's displacement head averaged 1.698 and 2.766 units. A 20-epoch residual predictor trained on 20,075 TH14 expert windows selected its initial zero correction on the separate 2,258-window validation split. Keep analytic player kinematics for the controller. The late-stage motion errors persisted when reconstructing the captured trajectories from the archived replay inputs.
+
+## Causal speed calibration
+
+Some moving windows fit one-third of the usual speed. Tested a two-speed estimator that uses only earlier observed displacements to choose the next speed and expires evidence after 40 frames. Stage 6 was exploratory. Stages 4 and 5 came from the subsequent story trajectory.
+
+| Native stage | Moving windows | Fixed mean error | Adaptive mean error | Within 0.5 units, fixed → adaptive |
+| --- | ---: | ---: | ---: | ---: |
+| 4 | 438 | 4.482 | 2.156 | 48.17% → 58.90% |
+| 5 | 705 | 0.811 | 0.320 | 92.34% → 94.33% |
+| 6 | 1,788 | 1.731 | 1.032 | 74.44% → 80.98% |
+
+A separate passive probe found the player position stable across repeated reads at the same native stage timer in all 11,552 sampled frames. Input words changed in 13 of the 4,251 sampled Stage 6 frames. These observations cover sampled times in the subsequent story run. The adaptive speed flag is experimental. The recorded comparisons use the earlier controls.
+
+## Repeating title balance with TH17 excluded
+
+Repeated the balance comparison across three matched seeds with TH17 excluded from both training and model selection. Both arms used the same 47,117 TH13/14 training decisions and 2,288 TH14 validation decisions. The test reused the 51,421 TH17 Normal decisions. Under full title balance, mean direction-change accuracy moved from 32.99% to 33.08%. Overall direction accuracy moved from 57.38% to 57.15%. The small average change varied in sign across seeds. There is no consistent improvement on the unseen title in this comparison.
