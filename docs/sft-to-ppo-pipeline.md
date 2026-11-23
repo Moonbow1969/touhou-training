@@ -67,7 +67,9 @@ The pilot initialized all four PPO actor heads from the legacy seed-61 SFT check
 | Pure PPO, 8,192 decisions | 1,354.5 | 0/8 | 6/8 | 10 |
 | Hybrid baseline | Censored by clear in all 8 | 8/8 | 8/8 | 0 |
 
-PPO reached a later frame in 7/8 paired blocks, with a median within-block gain of 518 frames. Its later first misses accompanied ten Bombs used across eight runs. The trial does not estimate how much of the survival gain came from dodging or Bomb use. Training ran at 14.06 decisions per second, and native stepping plus resets accounted for 96.7% of wall time. The timing histogram contains 8,184 exact four-frame transitions, four three-frame transitions and four five-frame transitions. The saved PPO checkpoint is the parent of a continuation to 16,384 decisions, evaluated against the same frozen SFT with new policy seeds 401–408.
+PPO reached a later frame in 7/8 paired blocks, with a median within-block gain of 518 frames. Its later first misses accompanied ten Bombs used across eight runs. The trial does not estimate how much of the survival gain came from dodging or Bomb use. Training ran at 14.06 decisions per second, and native stepping plus resets accounted for 96.7% of wall time. The timing histogram contains 8,184 exact four-frame transitions, four three-frame transitions and four five-frame transitions.
+
+The 16,384-decision checkpoint resumed the exact saved PPO state at 8,192 decisions. Eight new paired blocks used policy seeds 401–408. Pure PPO won 7/8 again. Its median first miss was 1,430 frames, compared with 666 for frozen SFT. The median paired gain was 598 frames, with 15 Bombs used by PPO and zero by SFT. Both arms were 0/8 on no-miss Stage 1 clears. The two budgets were evaluated using separate sampling seed cohorts, so they each estimate a gain against SFT and leave the budget effect unmeasured. [Continuation trace and 16 original episodes](../results/2026-11-23-th14-full-policy/ppo-long-16384-sft-fresh-paired.json)
 
 ## Execution order and gates
 

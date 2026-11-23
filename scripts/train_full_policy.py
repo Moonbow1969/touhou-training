@@ -255,13 +255,14 @@ def main():
     parser.add_argument("--train-limit", type=int, default=512)
     parser.add_argument("--eval-limit", type=int, default=3300)
     parser.add_argument("--blocks", type=int, default=1)
-    parser.add_argument("--eval-arms", nargs="+", choices=CONTROLLERS, default=CONTROLLERS)
+    parser.add_argument("--eval-arms", nargs="+", choices=(*CONTROLLERS, "ppo_reference"), default=CONTROLLERS)
     parser.add_argument("--eval-action", choices=("sampled", "greedy"), default="sampled",
                         help="Decode the learned heads by argmax or sample their categorical policy.")
     parser.add_argument("--seed", type=int, default=61)
     parser.add_argument("--eval-seed", type=int, help="First policy sampling seed. Defaults to the training seed.")
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
+    parser.add_argument("--reference-ppo", type=Path, help="Evaluate a second PPO checkpoint with matching lineage.")
     parser.add_argument("--focus-wait", type=int, default=30)
     parser.add_argument("--retry-game-over", action="store_true",
                         help="Resume a verified story pause or confirm the default game-over Retry selection.")
@@ -276,6 +277,8 @@ def main():
         parser.error("Request training, evaluation of a saved checkpoint, or both.")
     if len(set(args.eval_arms)) != len(args.eval_arms):
         parser.error("Each evaluation arm may be requested once.")
+    if bool(args.reference_ppo) != ("ppo_reference" in args.eval_arms):
+        parser.error("Use --reference-ppo and the ppo_reference evaluation arm together.")
     eval_seed = args.seed if args.eval_seed is None else args.eval_seed
     if not 0 <= eval_seed < 2 ** 63 or eval_seed + max(args.blocks - 1, 0) >= 2 ** 63:
         parser.error("Evaluation policy sampling seeds must be in [0, 2**63).")
@@ -313,6 +316,9 @@ def main():
                                       "automatic_bomb": arm == "hybrid"} for arm in CONTROLLERS},
         "controllers": {arm: [] for arm in CONTROLLERS}, "updates": [], "status": "started",
     }
+    if args.reference_ppo:
+        report["controllers"]["ppo_reference"] = []
+        report["controller_settings"]["ppo_reference"] = report["controller_settings"]["ppo"].copy()
     warm_exact = True
     if args.resume:
         try:
@@ -320,6 +326,14 @@ def main():
         except (CheckpointStorageError, KeyError, OSError, TypeError, ValueError) as error:
             parser.error(f"Cannot resume from {args.resume.name}: {error}")
         report["checkpoints"].update(resume_sha256=fingerprint, resume_evidence=evidence)
+    reference = None
+    if args.reference_ppo:
+        try:
+            fingerprint, _, evidence = read_resume(args.reference_ppo, compatibility(report))
+            reference = PPO.load(args.reference_ppo, device="cpu").policy
+        except (CheckpointStorageError, KeyError, OSError, RuntimeError, TypeError, ValueError) as error:
+            parser.error(f"Cannot evaluate {args.reference_ppo.name}: {error}")
+        report["checkpoints"].update(reference_ppo_sha256=fingerprint, reference_ppo_evidence=evidence)
     report_path = args.out / "report.json"
     publish_json(report_path, report)
     stage = None
@@ -348,6 +362,7 @@ def main():
         report["status"] = "evaluating"
         publish_json(report_path, report)
         stage.limit = args.eval_limit
+        learned = {"sft": base, "ppo": model.policy, "ppo_reference": reference}
         for block in range(args.blocks):
             first = block % len(args.eval_arms)
             order = args.eval_arms[first:] + args.eval_arms[:first]
@@ -359,7 +374,7 @@ def main():
                 else:
                     if args.eval_action == "sampled":
                         torch.manual_seed(eval_seed + block)
-                    result = direct_trial(stage, base, base if name == "sft" else model.policy,
+                    result = direct_trial(stage, base, learned[name],
                                           deterministic=args.eval_action == "greedy")
                     if args.eval_action == "sampled":
                         result["policy_seed"] = eval_seed + block
