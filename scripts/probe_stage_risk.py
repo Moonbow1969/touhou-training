@@ -3,7 +3,6 @@ from collections import deque
 import json
 from pathlib import Path
 from statistics import median
-from struct import unpack
 
 import numpy as np
 import torch
@@ -15,12 +14,7 @@ from scripts.train_stage_dodge import DodgeHead, learned_action
 
 
 def player_radius(env):
-    player = env.reader.offsets.player
-    pointer = env.reader.read_uint(player.player_pointer, relative=True)
-    value, = unpack('<f', env.game._read_game_memory(pointer + player.zPlayer_hit_rad, 4, rel=False))
-    if not 0 < value < 16:
-        raise ValueError(f'Unexpected player collision radius {value}.')
-    return value
+    return env.reader.player_hit_radius()
 
 
 def trial(env, policy, assisted, corrections, head=None):

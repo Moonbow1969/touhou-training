@@ -48,7 +48,9 @@ def evaluate(shards, policies, device):
             stage_counts[label] = {
                 key: (int(correct[mask].sum()), int(mask.sum())) for key, mask in samples.items()
             }
-            for group in ('overall', f'TH{meta["title"]}'):
+            title = f'TH{meta["title"]}'
+            rank = f'{title}/{meta["difficulty"]}'
+            for group in ('overall', title, rank, f'{rank}/{meta["shot"]}'):
                 group_counts = counts.setdefault(group, {}).setdefault(label, {})
                 for key, (wins, total) in stage_counts[label].items():
                     summed = group_counts.setdefault(key, [0, 0])
@@ -74,6 +76,8 @@ def main():
     parser.add_argument('--additional', nargs=2, action='append', metavar=('NAME', 'CHECKPOINT'), default=[])
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--device', default='cuda')
+    parser.add_argument('--holdout-title', type=int,
+                        help='Evaluate this title and verify the candidate did not use it for training or selection.')
     args = parser.parse_args()
     torch.set_num_threads(1)
     device = torch.device(args.device)
@@ -81,6 +85,15 @@ def main():
     choices.extend((label, Path(path)) for label, path in args.additional)
     if len({label for label, _ in choices}) != len(choices) or any(label == 'keep_last_direction' for label, _ in choices):
         parser.error('Use distinct policy names that do not conflict with the baseline.')
+    if args.holdout_title is not None:
+        manifest = args.candidate.with_name('metrics.json')
+        if not manifest.is_file():
+            parser.error('The holdout candidate needs its metrics sidecar.')
+        metrics = json.loads(manifest.read_text(encoding='utf-8'))
+        for key in ('training_replays', 'validation_replays'):
+            rows = metrics.get(key)
+            if not rows or any(row['title'] == args.holdout_title for row in rows):
+                parser.error(f'{key} must document a split that excludes the held-out title.')
     policies = {}
     for label, path in choices:
         policy = read_policy(path, device, motion_history=True)
@@ -91,7 +104,9 @@ def main():
         'models': {label: {'checkpoint': str(path), 'motion_spans': policies[label][1],
                            'retain_recent_motion': policies[label][2],
                            'stage_clock': policies[label][0].stage_clock} for label, path in choices},
-        **{split: evaluate(index_split(args.data, split), policies, device)
+        'holdout_title': args.holdout_title,
+        **{split: evaluate([shard for shard in index_split(args.data, split)
+                            if args.holdout_title is None or shard[1]['title'] == args.holdout_title], policies, device)
            for split in ('validation', 'test')},
     }
     args.out.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

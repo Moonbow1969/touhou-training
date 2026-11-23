@@ -172,6 +172,7 @@ def main():
     parser.add_argument('--first-stage', type=int, choices=range(1, 7), default=1)
     parser.add_argument('--prepared', action='store_true', help='Adopt the active stage on the first trial without Retry.')
     parser.add_argument('--stage-practice', action='store_true', help='Identify the native Stage Clear result in Practice Start.')
+    parser.add_argument('--focus-wait', type=int, default=0, help='Seconds to hold the game paused if it loses focus.')
     parser.add_argument('--max-misses', type=int, default=2)
     parser.add_argument('--samples', type=Path, help='Store candidate features and teacher directions by episode.')
     parser.add_argument('--student', type=Path, help='Evaluate a learned aim head against the frozen avoidance policy.')
@@ -188,6 +189,8 @@ def main():
         parser.error('The first stage cannot follow the last requested stage.')
     if args.stage_practice and args.first_stage != args.last_stage:
         parser.error('Stage Practice requires identical first and last stages.')
+    if args.focus_wait < 0:
+        parser.error('Focus wait cannot be negative.')
     if args.out.exists():
         parser.error('Use a fresh report path.')
     torch.set_num_threads(1)
@@ -201,7 +204,7 @@ def main():
     stage = NormalStageOne(Path(__file__).resolve().parents[2] / 'parakit',
                            limit=args.limit, max_misses=args.max_misses, motion_history=True,
                            first_stage=args.first_stage, last_stage=args.last_stage, prepared=args.prepared,
-                           stage_practice=args.stage_practice)
+                           stage_practice=args.stage_practice, focus_wait=args.focus_wait)
     candidate_name = 'ppo_dodge_with_learned_aim' if student is not None else 'ppo_dodge_with_aim'
     control_name = 'ppo_dodge_with_aim' if args.teacher_control else 'ppo_dodge'
     results = {candidate_name: []} if args.candidate_only else {control_name: [], candidate_name: []}
@@ -209,7 +212,7 @@ def main():
               'student': str(args.student) if args.student else None,
               'blocks': args.blocks, 'max_misses': args.max_misses,
               'first_stage': args.first_stage, 'last_stage': args.last_stage, 'prepared': args.prepared,
-              'stage_practice': args.stage_practice,
+              'stage_practice': args.stage_practice, 'focus_wait_seconds': args.focus_wait,
               'body_risk': args.body_risk, 'laser_risk': args.laser_risk,
               'emergency_bomb': args.emergency_bomb, 'results': results}
     try:

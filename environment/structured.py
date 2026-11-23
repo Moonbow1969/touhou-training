@@ -70,6 +70,14 @@ class StateReader:
     def read_uint(self, address, *, relative=False):
         return UINT.unpack(self.game._read_game_memory(address, 4, rel=relative))[0]
 
+    def player_hit_radius(self):
+        player = self.offsets.player
+        pointer = self.read_uint(player.player_pointer, relative=True)
+        radius, = FLOAT.unpack(self.game._read_game_memory(pointer + player.zPlayer_hit_rad, FLOAT.size, rel=False))
+        if not 0 < radius < 16:
+            raise ValueError(f'Unexpected player collision radius {radius}.')
+        return radius
+
     def read_bullets(self, player_x, player_y):
         # Decode the same linked list and fields as ParaKit while the game is paused.
         bullet = self.offsets.bullets

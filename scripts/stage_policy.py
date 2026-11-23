@@ -2,7 +2,7 @@ import argparse
 from collections import deque
 import json
 from pathlib import Path
-from time import perf_counter
+from time import perf_counter, sleep
 
 import gymnasium as gym
 import numpy as np
@@ -15,9 +15,19 @@ from scripts.pretrain_policy import (MOTION_INTERVALS, action_space, append_moti
                                     condition_context, network_kwargs, observation_space)
 
 
+def action_keys(action):
+    move, focus, shoot, bomb = map(int, action)
+    dy, dx = divmod(move, 3)
+    keys = set()
+    keys.update(("left",) if dx == 0 else ("right",) if dx == 2 else ())
+    keys.update(("up",) if dy == 0 else ("down",) if dy == 2 else ())
+    keys.update(key for value, key in ((focus, "shift"), (shoot, "z"), (bomb, "x")) if value)
+    return keys
+
+
 class NormalStageOne(gym.Env):
     def __init__(self, parakit_path, limit=3000, max_misses=1, motion_history=False, history_frames=12,
-                 last_stage=1, first_stage=1, prepared=False, stage_practice=False):
+                 last_stage=1, first_stage=1, prepared=False, stage_practice=False, focus_wait=0):
         from environment import interface as game
 
         self.game = game
@@ -32,6 +42,7 @@ class NormalStageOne(gym.Env):
         self.last_stage = last_stage
         self.prepared = prepared
         self.stage_practice = stage_practice
+        self.focus_wait = focus_wait
         self.held = set()
         self.reset_count = 0
         self.completed = []
@@ -76,7 +87,7 @@ class NormalStageOne(gym.Env):
             # The native stage-clear results temporarily set the pause flag.
             self.release()
             for _ in range(24):
-                game.require_game_focus()
+                self.wait_for_focus()
                 game._sleep(20)
                 self.freeze()
                 stage = self.current_stage()
@@ -116,6 +127,16 @@ class NormalStageOne(gym.Env):
     def remember(self):
         if self.motion_history:
             self.history.append((self.last_frame, self.current_context()))
+
+    def wait_for_focus(self):
+        if self.focus_wait and not self.game.has_game_focus():
+            self.release()
+            frame = getattr(self, 'last_frame', 'initialization')
+            print(f'Awaiting TH14 foreground at stage {self.snapshot.stage}, frame {frame}.', flush=True)
+            deadline = perf_counter() + self.focus_wait
+            while not self.game.has_game_focus() and perf_counter() < deadline:
+                sleep(.05)
+        self.game.require_game_focus()
 
     def retry(self):
         game = self.game
@@ -167,12 +188,7 @@ class NormalStageOne(gym.Env):
         return self.observation(), {}
 
     def apply(self, action):
-        move, focus, shoot, bomb = map(int, action)
-        dy, dx = divmod(move, 3)
-        keys = set()
-        keys.update(("left",) if dx == 0 else ("right",) if dx == 2 else ())
-        keys.update(("up",) if dy == 0 else ("down",) if dy == 2 else ())
-        keys.update(key for value, key in ((focus, "shift"), (shoot, "z"), (bomb, "x")) if value)
+        keys = action_keys(action)
         if self.game.read_game_val("in_dialog") == -1:
             keys.add("ctrl")
             # Dialogue needs key-down edges even when the shooting policy holds Z or stays idle.
@@ -188,7 +204,7 @@ class NormalStageOne(gym.Env):
 
     def step(self, action):
         game = self.game
-        game.require_game_focus()
+        self.wait_for_focus()
         self.apply(action)
         game._sleep(4)
         self.freeze()

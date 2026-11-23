@@ -247,8 +247,12 @@ def _get_focus():
 
 
 def require_game_focus():
-    if ctypes.windll.user32.GetForegroundWindow() != _game_window._hWnd:
+    if not has_game_focus():
         raise RuntimeError("TH14 lost keyboard focus. No game action was sent.")
+
+
+def has_game_focus():
+    return ctypes.windll.user32.GetForegroundWindow() == _game_window._hWnd
 
 
 def _resume_shooting():

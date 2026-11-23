@@ -24,4 +24,16 @@ To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Pract
 python -m scripts.record_run --name th14-stage4-practice --kind evaluation --input models-local --artifact runs/stage4-practice.json --note 'TH14 1.00b, Normal, Reimu A, Stage 4 Practice' -- python -m scripts.evaluate_boss_aim --base models-local/sft/policy.pt --ppo models-local/ppo/ppo.zip --student models-local/aim/aim.pt --first-stage 4 --last-stage 4 --prepared --stage-practice --candidate-only --blocks 1 --body-risk --laser-risk --emergency-bomb --out runs/stage4-practice.json
 ```
 
+On a shared Windows desktop, enable `--focus-wait` for native TH14 trials. The controller preserves a paused process while the game is in the background. Foreground input remains exclusive to the active game.
+
+For native transfer, enter Normal with Reimu and launch the evaluator as Stage 1 begins. The verified TH17 pilot used Reimu Wolf. TH15 support expects Legacy Mode and still needs a successful native trial. `--wait-start` lets the evaluator load the checkpoint before the stage starts. Provide the checkpoint and its metrics sidecar to verify the training and selection titles. Run the same procedure without `--base` for stationary shooting.
+
+```powershell
+python -m scripts.record_run --name th17-zero-shot-sft --kind evaluation --input models-local/sft --artifact runs/th17-zero-shot-sft.json -- python -m scripts.evaluate_title_transfer --title 17 --base models-local/sft/policy.pt --wait-start 45 --out runs/th17-zero-shot-sft.json
+```
+
+Use `--analytic-dodge --body-risk` for geometric selection, or `--ppo` with a frozen dodge checkpoint plus `--body-risk` for the learned selector. Keep the first-miss limit, native frame allowance, shot, difficulty, and decision cutoff identical across trials.
+
+For a leave-one-title-out replay test, keep the original player splits and prepare a training shard directory with only the selected training titles. Leave the action caches alongside its parent data directory as usual. Train with the same architecture, then evaluate the resulting checkpoint on the reserved title using `scripts.evaluate_replay_policies --holdout-title 17`. The evaluator checks the candidate’s training and validation manifests. Record which checkpoint used the title at training time for any reference comparison.
+
 For source and data changes, add a dated devlog entry with the hypothesis, affected code or data, exact comparison, result, and decision. Include failed attempts and specify when comparison groups are missing. Refer to run IDs or checkpoint hashes. Before publishing a report, review raw logs and manifests for local paths, account details, and third-party data. The public record contains reviewed aggregates and source code. Local raw evidence includes full command lines and tracebacks.

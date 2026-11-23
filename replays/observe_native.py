@@ -2,7 +2,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
-from struct import error as StructError, unpack
+from struct import error as StructError
 from time import perf_counter, sleep
 
 import numpy as np
@@ -24,12 +24,8 @@ def game_step(game, reader):
     return stage, frame, pointer
 
 
-def projected_hazards(game, reader, observation):
-    player = reader.offsets.player
-    address = reader.read_uint(player.player_pointer, relative=True)
-    radius, = unpack('<f', game._read_game_memory(address + player.zPlayer_hit_rad, 4, rel=False))
-    if not 0 < radius < 16:
-        raise ValueError('Invalid player hit radius while reading the native state.')
+def projected_hazards(reader, observation):
+    radius = reader.player_hit_radius()
     return np.stack((action_clearances(observation, radius),
                      body_clearances(observation, radius, reader.read_enemy_hitboxes()),
                      laser_clearances(observation, radius, reader.read_straight_lasers())))
@@ -50,7 +46,7 @@ def capture(game, reader, duration, stride, risk=False):
             snapshot = reader.snapshot() if frame % stride == 0 else None
             controllable = (snapshot is not None and snapshot.stage == stage
                             and has_control(reader, thread, snapshot.player_state))
-            hazards = projected_hazards(game, reader, snapshot.observation) if risk and controllable else None
+            hazards = projected_hazards(reader, snapshot.observation) if risk and controllable else None
             if game_step(game, reader) != sample:
                 continue
             key = stage, frame
