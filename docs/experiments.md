@@ -22,6 +22,8 @@ Use `replays.snapshot` to freeze existing and newly aligned shard directories in
 
 During a native replay capture, `--progress-every` controls interim logging of the current stage frame and sampled states. A stage enters the paired dataset only after it meets the alignment and coverage checks. When continuing a replay from a later selected stage, use `--all-stages --from-stage` with that stage number.
 
+Use `replays.action_prior` to train on decoded button sequences and replay metadata. Its inputs can be packed directly from the action caches with `python -m replays.action_prior pack --corpus replays/data/expanded-corpus.json --out runs/action-tokens`. Train with `python -m replays.action_prior train --data runs/action-tokens --out runs/action-prior --epochs 10`. The trainer records each epoch and selects by validation direction-change accuracy.
+
 For native PPO, supply `--analytic-control` to compare the frozen imitation head, the trained PPO head, and rule-based selection. `--body-risk` and `--laser-risk` apply consistently to all arms. Use `--resume-ppo` with a saved training checkpoint to continue a run after an interruption. `--initial-temperature` applies only at initialization and rescales the final actor layer for exploration.
 
 Use `--evaluation-aim` to apply geometric aiming to each arm after training, and `--evaluation-reference` to include a previous PPO checkpoint. The selected rank of the foreground original game must match `--difficulty` if it is changed from Normal.

@@ -147,13 +147,17 @@ def train(data, out, args):
             if number % 100 == 0:
                 print(f'epoch {epoch + 1}, {min(number * args.batch_size, len(order)) * args.sequence} tokens',
                       flush=True)
-        row = {'trained_decisions': len(order) * args.sequence, 'mean_batch_nll': float(total_loss / number),
+        row = {'epoch': epoch + 1, 'trained_decisions': len(order) * args.sequence,
+               'mean_batch_nll': float(total_loss / number),
                'validation': assess(model, stream, groups['validation'], args, args.sequence)}
         report['epochs'].append(row)
+        with (out / 'epochs.jsonl').open('a', encoding='utf-8') as stream_log:
+            stream_log.write(json.dumps(row) + '\n')
         print(row, flush=True)
         score = row['validation']['direction_change_accuracy']
         if score > best:
             best = score
+            report['selected_epoch'] = epoch + 1
             torch.save(model.state_dict(), out / 'prior.pt')
     model.load_state_dict(torch.load(out / 'prior.pt', weights_only=True, map_location=args.device))
     report['unique_train_decisions'] = len(seen) * args.sequence

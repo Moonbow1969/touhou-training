@@ -113,6 +113,8 @@ Kept the expanded 432,456-transition dataset, optimizer and loss fixed. Used the
 
 The selected checkpoint recovers the short-horizon accuracy of the original 370,330-transition model. Its held-out player displacement error changed from 1.716 to 1.671 units at four frames, from 2.734 to 2.795 at 12 frames, and from 4.098 to 4.487 at 24 frames. The selection criterion is occupancy AP. The native one-credit comparisons keep the earlier world checkpoint in shadow mode.
 
+In a separate endpoint ranking audit, forecasted the bullet field under the recorded inputs and held those future hazards fixed while scoring 18 possible move-and-focus endpoints. Among 2,796 twelve-frame windows with both occupied and free candidate neighborhoods, the occupied-neighborhood rate of minimum-risk picks was 0.989% for ballistic extrapolation, 0.118% for the original world checkpoint and 0.119% for the selected checkpoint. The outcome is coarse 3×3 cell occupancy under the recorded actions. Both native story runs retained shadow-only world forecasts.
+
 ## Checking native motion against the saved replay
 
 Fit the timestamp offset on the first half of the captured moving windows. The archived replay matched every sampled input in the held-out 592 Stage 5 windows and 894 Stage 6 windows at that offset. Reconstructing player motion from the exported replay inputs gave the same displacement errors as using the live input words. Shifting the input windows by one or two frames reduced alignment in both stages.
@@ -149,3 +151,9 @@ The original executable entered Ending/Credits in both trials. The updated check
 ## Native launch and capture follow-up
 
 Closed both completed game sessions and retried TH16 through its official Steam launch. The game exited before gameplay and Windows logged an access violation in the game executable. Launching the installed executable and testing its default configuration also exited before gameplay. Restored the two original configuration files with matching SHA-256 hashes. The executable produced no paired TH16 data in these attempts. The exclusive TH13 Steam launch entered its Replay menu successfully.
+
+## Policy width and action-only scale
+
+Compared SFT hidden width 512 with 1024 at seeds 61, 97 and 137. The 147,560 training decisions, equal title weights, 20-epoch budget and replay splits were fixed. Total policy parameters including the value stack increased from 781,552 to 2,601,200. Mean direction-change accuracy rose from 30.15% to 32.43%, with gains at two of the three seeds. Mean overall direction accuracy fell from 64.18% to 62.30%. The recorded native story benchmark uses width 512.
+
+The source corpus contains 2,000 complete action replays with 209,326,603 native input frames. Its training split contains 45,498,703 non-overlapping four-frame button windows. The action-only prior consumed 45,161,344 distinct windows per epoch after constructing contiguous 64-step sequences. A ten-epoch H100 run processed 451,613,440 window presentations and selected epoch 8 using validation direction changes. On 2,549,888 test windows, direction-change accuracy moved from 6.80% after one epoch to 11.43%, and overall direction accuracy moved from 70.97% to 71.80%. This prior takes previous button inputs and replay metadata. State-conditioned SFT uses the separate native state–action pairs.
