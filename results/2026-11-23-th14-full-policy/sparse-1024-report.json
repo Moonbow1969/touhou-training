@@ -1,0 +1,734 @@
+{
+  "task": {
+    "title": "TH14",
+    "version": "1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "first_stage": 1,
+    "last_stage": 1,
+    "first_miss_ends_trial": true,
+    "frames_per_action": 4,
+    "train_limit": 512,
+    "eval_limit": 3300
+  },
+  "checkpoints": {
+    "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "aim_sha256": "89702b9bb880c2810bac42fde457c7dc41037ff24ffe1a3ae8e723d3a6bf9149",
+    "ppo_sha256": "a3431f41d72f1036fb22c8eaab1dc979e8c65b044cc468fc76f484eaf20b8f16"
+  },
+  "seed": 61,
+  "additional_steps": 1024,
+  "requested_blocks": 1,
+  "ppo_hyperparameters": {
+    "n_steps": 256,
+    "batch_size": 64,
+    "n_epochs": 4,
+    "learning_rate": 8e-05,
+    "gamma": 0.997,
+    "gae_lambda": 0.95,
+    "clip_range": 0.15,
+    "ent_coef": 0.004
+  },
+  "reward": {
+    "clear_or_survive_horizon": 1,
+    "miss_or_native_end": -1,
+    "other": 0
+  },
+  "controller_settings": {
+    "sft": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "ppo": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "hybrid": {
+      "geometry": true,
+      "aim_correction": true,
+      "automatic_bomb": true
+    }
+  },
+  "controllers": {
+    "sft": [
+      {
+        "stage_frame": 546,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 206,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 132,
+        "first_miss_frame": 546,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            132,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            132,
+            0
+          ],
+          "shoot": [
+            0,
+            132
+          ],
+          "bomb": [
+            132,
+            0
+          ]
+        },
+        "block": 1,
+        "seconds": 10.09772270009853
+      }
+    ],
+    "ppo": [
+      {
+        "stage_frame": 510,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 177,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 123,
+        "first_miss_frame": 510,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            123,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            123,
+            0
+          ],
+          "shoot": [
+            0,
+            123
+          ],
+          "bomb": [
+            123,
+            0
+          ]
+        },
+        "block": 1,
+        "seconds": 9.449213000014424
+      }
+    ],
+    "hybrid": [
+      {
+        "stage_frame": 9894,
+        "native_stage": 2,
+        "native_pause_state": 0,
+        "stages_cleared": 1,
+        "score": 1084402,
+        "misses": 0,
+        "bombs_used": 0,
+        "steps": 2470,
+        "first_miss_frame": null,
+        "first_miss_stage": null,
+        "outcome": "advanced_stage",
+        "start_frame": 18,
+        "aim_interventions": 163,
+        "vulnerable_frames": 4912,
+        "native_game_screen": 7,
+        "native_continues": 0,
+        "lives_remaining": 2,
+        "bombs_remaining": 3,
+        "damage": 31644,
+        "excluded_hp_drop": 6,
+        "hp_per_vulnerable_second": 386.5309446254072,
+        "mean_lateral_offset": 6.6934689629355795,
+        "aligned_fraction": 0.9755700325732899,
+        "firing_fraction": 1.0,
+        "phases": [
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 9000,
+            "first_frame": 2422,
+            "lowest_hp": 12,
+            "vulnerable_frames": 840,
+            "damage": 8988,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 11300,
+            "first_frame": 5662,
+            "lowest_hp": 1528,
+            "vulnerable_frames": 908,
+            "damage": 9772,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": 4,
+            "max_hp": 11300,
+            "first_frame": 6570,
+            "lowest_hp": 2,
+            "vulnerable_frames": 964,
+            "damage": 1498,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 11400,
+            "first_frame": 7534,
+            "lowest_hp": 1908,
+            "vulnerable_frames": 1004,
+            "damage": 9492,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": 8,
+            "max_hp": 11400,
+            "first_frame": 8538,
+            "lowest_hp": 6,
+            "vulnerable_frames": 1196,
+            "damage": 1894,
+            "excluded_hp_drop": 6
+          }
+        ],
+        "observations": [
+          {
+            "stage": 1,
+            "frame": 2422,
+            "hp": 9000,
+            "lateral_offset": 376.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2542,
+            "hp": 8272,
+            "lateral_offset": 0.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2662,
+            "hp": 6984,
+            "lateral_offset": 0.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2782,
+            "hp": 5598,
+            "lateral_offset": 0.68,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2902,
+            "hp": 4296,
+            "lateral_offset": 8.34,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 3022,
+            "hp": 2838,
+            "lateral_offset": 2.66,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 3142,
+            "hp": 1490,
+            "lateral_offset": 0.31,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5662,
+            "hp": 11300,
+            "lateral_offset": 184.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5782,
+            "hp": 10404,
+            "lateral_offset": 4.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5902,
+            "hp": 9172,
+            "lateral_offset": 8.8,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6022,
+            "hp": 7870,
+            "lateral_offset": 5.23,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6142,
+            "hp": 6364,
+            "lateral_offset": 2.51,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6262,
+            "hp": 4972,
+            "lateral_offset": 5.8,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6382,
+            "hp": 3684,
+            "lateral_offset": 5.86,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6502,
+            "hp": 2228,
+            "lateral_offset": 5.19,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6622,
+            "hp": 1422,
+            "lateral_offset": 4.05,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6742,
+            "hp": 1240,
+            "lateral_offset": 4.0,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6862,
+            "hp": 1048,
+            "lateral_offset": 4.0,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6982,
+            "hp": 864,
+            "lateral_offset": 3.85,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7102,
+            "hp": 674,
+            "lateral_offset": 3.85,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7222,
+            "hp": 488,
+            "lateral_offset": 3.53,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7342,
+            "hp": 306,
+            "lateral_offset": 2.03,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7462,
+            "hp": 112,
+            "lateral_offset": 2.03,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7582,
+            "hp": 11400,
+            "lateral_offset": 4.95,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7702,
+            "hp": 10896,
+            "lateral_offset": 4.95,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7822,
+            "hp": 9552,
+            "lateral_offset": 3.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7942,
+            "hp": 8180,
+            "lateral_offset": 3.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8062,
+            "hp": 6822,
+            "lateral_offset": 5.24,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8182,
+            "hp": 5590,
+            "lateral_offset": 2.02,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8302,
+            "hp": 4260,
+            "lateral_offset": 2.02,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8422,
+            "hp": 3140,
+            "lateral_offset": 0.32,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8542,
+            "hp": 1900,
+            "lateral_offset": 3.34,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8662,
+            "hp": 1755,
+            "lateral_offset": 0.44,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8782,
+            "hp": 1533,
+            "lateral_offset": 12.14,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8902,
+            "hp": 1333,
+            "lateral_offset": 1.74,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9022,
+            "hp": 1115,
+            "lateral_offset": 1.36,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9142,
+            "hp": 908,
+            "lateral_offset": 5.06,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9262,
+            "hp": 726,
+            "lateral_offset": 2.35,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9382,
+            "hp": 542,
+            "lateral_offset": 2.35,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9502,
+            "hp": 366,
+            "lateral_offset": 2.99,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9622,
+            "hp": 178,
+            "lateral_offset": 6.9,
+            "shoot": 1,
+            "spell_id": 8
+          }
+        ],
+        "impacts": [],
+        "emergency_bomb_commands": 0,
+        "block": 1,
+        "seconds": 166.26571339997463
+      }
+    ]
+  },
+  "updates": [
+    {
+      "steps": 256,
+      "optimization_epochs": 4,
+      "rollout_seconds": 19.599977900041267,
+      "environment_step_seconds": 16.763432297622785,
+      "reset_seconds": 2.503788399975747,
+      "update_and_logging_seconds": 0.2238747999072075,
+      "completed_episodes": 2,
+      "learning_rate": 8e-05,
+      "entropy_loss": -1.334679700434208,
+      "policy_gradient_loss": -0.02329470869153738,
+      "value_loss": 0.03828379535116255,
+      "approx_kl": 0.015145087614655495,
+      "clip_fraction": 0.1806640625,
+      "loss": -0.03812647610902786,
+      "explained_variance": 0.20577454566955566,
+      "n_updates": 4.0,
+      "clip_range": 0.15
+    },
+    {
+      "steps": 512,
+      "optimization_epochs": 8,
+      "rollout_seconds": 18.29190140007995,
+      "environment_step_seconds": 16.6931168010924,
+      "reset_seconds": 1.2516157999634743,
+      "update_and_logging_seconds": 0.21528059989213943,
+      "completed_episodes": 3,
+      "learning_rate": 8e-05,
+      "entropy_loss": -1.3539223745465279,
+      "policy_gradient_loss": -0.019068474182859063,
+      "value_loss": 0.021676516451407224,
+      "approx_kl": 0.016734763979911804,
+      "clip_fraction": 0.12890625,
+      "loss": -0.020655695348978043,
+      "explained_variance": 0.7524421364068985,
+      "n_updates": 8.0,
+      "clip_range": 0.15
+    },
+    {
+      "steps": 768,
+      "optimization_epochs": 12,
+      "rollout_seconds": 18.334059100132436,
+      "environment_step_seconds": 16.751707901945338,
+      "reset_seconds": 1.2519972000736743,
+      "update_and_logging_seconds": 0.24420659989118576,
+      "completed_episodes": 4,
+      "learning_rate": 8e-05,
+      "entropy_loss": -1.3252679333090782,
+      "policy_gradient_loss": -0.01829472850658931,
+      "value_loss": 0.014308697922388092,
+      "approx_kl": 0.017118778079748154,
+      "clip_fraction": 0.16796875,
+      "loss": -0.03946277126669884,
+      "explained_variance": 0.6142739951610565,
+      "n_updates": 12.0,
+      "clip_range": 0.15
+    },
+    {
+      "steps": 1024,
+      "optimization_epochs": 16,
+      "rollout_seconds": 17.087931600166485,
+      "environment_step_seconds": 16.735878700390458,
+      "reset_seconds": 0.0,
+      "update_and_logging_seconds": 0.2091995000373572,
+      "completed_episodes": 4,
+      "learning_rate": 8e-05,
+      "entropy_loss": -1.329001359641552,
+      "policy_gradient_loss": -0.010947470902465284,
+      "value_loss": 0.010221401957096532,
+      "approx_kl": 0.008790306746959686,
+      "clip_fraction": 0.09765625,
+      "loss": -0.02908416837453842,
+      "explained_variance": 0.18912160396575928,
+      "n_updates": 16.0,
+      "clip_range": 0.15
+    }
+  ],
+  "status": "complete",
+  "starting_steps": 0,
+  "warm_start_actor_exact": true,
+  "training_episodes": [
+    {
+      "stage_frame": 398,
+      "native_stage": 1,
+      "native_pause_state": 2,
+      "stages_cleared": 0,
+      "score": 142,
+      "misses": 1,
+      "bombs_used": 0,
+      "steps": 95,
+      "first_miss_frame": 398,
+      "first_miss_stage": 1,
+      "outcome": "miss"
+    },
+    {
+      "stage_frame": 554,
+      "native_stage": 1,
+      "native_pause_state": 2,
+      "stages_cleared": 0,
+      "score": 195,
+      "misses": 1,
+      "bombs_used": 0,
+      "steps": 134,
+      "first_miss_frame": 554,
+      "first_miss_stage": 1,
+      "outcome": "miss"
+    },
+    {
+      "stage_frame": 546,
+      "native_stage": 1,
+      "native_pause_state": 2,
+      "stages_cleared": 0,
+      "score": 318,
+      "misses": 1,
+      "bombs_used": 0,
+      "steps": 132,
+      "first_miss_frame": 546,
+      "first_miss_stage": 1,
+      "outcome": "miss"
+    },
+    {
+      "stage_frame": 1510,
+      "native_stage": 1,
+      "native_pause_state": 2,
+      "stages_cleared": 0,
+      "score": 1532,
+      "misses": 1,
+      "bombs_used": 0,
+      "steps": 373,
+      "first_miss_frame": 1510,
+      "first_miss_stage": 1,
+      "outcome": "miss"
+    }
+  ],
+  "training_timing": {
+    "seconds": 75.52361899986863,
+    "native_step_seconds": 66.94413570105098,
+    "reset_seconds": 6.32154869986698,
+    "resets": 5,
+    "native_frame_deltas": {
+      "4": 1022,
+      "3": 1,
+      "5": 1
+    }
+  },
+  "training_action_counts": {
+    "movement": [
+      52,
+      81,
+      74,
+      100,
+      345,
+      64,
+      97,
+      126,
+      85
+    ],
+    "focus": [
+      301,
+      723
+    ],
+    "shoot": [
+      13,
+      1011
+    ],
+    "bomb": [
+      1024,
+      0
+    ]
+  },
+  "trained_steps": 1024,
+  "actor_head_weight_delta_l2": {
+    "movement": 0.074634850025177,
+    "focus": 0.059353478252887726,
+    "shoot": 0.009186550043523312,
+    "bomb": 0.045093584805727005
+  }
+}

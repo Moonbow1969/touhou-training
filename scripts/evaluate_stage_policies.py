@@ -41,7 +41,7 @@ def read_policy(path, device, motion_history=False):
     return policy
 
 
-def stage_action(policy, env, observation, uses_history=True):
+def policy_observation(policy, env, observation, uses_history=True):
     if policy.motion_spans:
         observation = env.observation(policy.motion_spans, policy.retain_recent_motion)
     elif not uses_history:
@@ -49,6 +49,11 @@ def stage_action(policy, env, observation, uses_history=True):
     if policy.stage_clock:
         context = append_stage_context(observation['context'], env.last_frame, env.snapshot.stage)
         observation = dict(observation, context=context)
+    return observation
+
+
+def stage_action(policy, env, observation, uses_history=True):
+    observation = policy_observation(policy, env, observation, uses_history)
     return policy.predict(observation, deterministic=True)[0]
 
 

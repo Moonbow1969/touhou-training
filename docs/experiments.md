@@ -71,3 +71,13 @@ Use `--analytic-dodge --body-risk` for geometric selection, or `--ppo` with a fr
 For a leave-one-title-out replay test, keep the original player splits and prepare a training shard directory with only the selected training titles. Leave the action caches alongside its parent data directory as usual. Train with the same architecture, then evaluate the resulting checkpoint on the reserved title using `scripts.evaluate_replay_policies --holdout-title 17`. The evaluator checks the candidate’s training and validation manifests. Record which checkpoint used the title at training time for any reference comparison.
 
 For source and data changes, add a dated devlog entry with the hypothesis, affected code or data, exact comparison, result, and decision. Include failed attempts and specify when comparison groups are missing. Refer to run IDs or checkpoint hashes. Before publishing a report, review raw logs and manifests for local paths, account details, and third-party data. The public record contains reviewed aggregates and source code. Local raw evidence includes full command lines and tracebacks.
+
+## TH14 full-policy PPO
+
+Start TH14 1.00b at Normal Reimu A Stage 1 through Game Start, with the game window active at 640×480. Supply the SFT checkpoint with its `metrics.json` sidecar and the masked aim checkpoint. The runner trains on the native executable and compares the frozen SFT actor, the PPO actor, and the existing hybrid under the same first-miss stopping rule.
+
+```powershell
+python -m scripts.train_full_policy --base models-local/sft/policy.pt --aim models-local/aim/aim.pt --steps 1024 --train-limit 512 --eval-limit 3300 --blocks 1 --out runs/th14-full-policy-smoke
+```
+
+`report.json` contains the complete per-update metrics, native training episodes and evaluation trials. `progress.csv` contains the SB3 rollout metrics, with optimization statistics emitted on the next rollout. A compatible local `policy.zip` can resume using `--resume` with matching SFT, seed, reward and training horizon. See the [pilot devlog](devlog/261123-th14-full-policy-ppo.md) for the native results and throughput.
