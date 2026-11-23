@@ -4,6 +4,8 @@ The five requested fangames extend the transfer benchmark beyond the original To
 
 The Windows Steam library has all five executables installed. The local manifests report builds `25150345`, `25556794`, `24014363`, `5170117`, and `10758608` in the table's order. The trilogy shares the `THMHJ.exe` basename, so bind to the expected installation and executable hash when identifying a process.
 
+The installation directories contained 1, 2, 6, 0, and 4 `.rpy` files in the same order. The nine trilogy files share a 12-byte prefix. The Lotus files have a different prefix. These are format and playback candidates. No expert action or observation from them has been admitted to training.
+
 | Game | Steam app | Replay and environment evidence |
 | --- | ---: | --- |
 | 东方幕华祭 红月篇 · Fantastic Danmaku Festival, Part I | 882710 | The developer added spell and non-spell practice and reports Steam Deck compatibility improvements. The Fangame Accomplishments index lists version-tagged native replay links as well as videos. [Publisher listing](https://store.steampowered.com/app/882710/TouHou_Makuka_Sai__Fantastic_Danmaku_Festival/?l=schinese), [developer updates](https://steamcommunity.com/app/882710/allnews/), [replay leads](https://maribelhearn.com/fangame) |

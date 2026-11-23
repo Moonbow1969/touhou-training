@@ -1,0 +1,487 @@
+{
+  "run": "trial-scale-eval-261123",
+  "task": {
+    "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+    "setting": "TH14 trial 0.01b Normal Reimu A Stage 1",
+    "observation_schema": "trial-bullets-96x7-context-10-v1",
+    "action_schema": "movement9-focus2-shoot2-bomb2",
+    "reward": "one divided by horizon per surviving decision, stage advance earns one, first miss earns zero",
+    "native_ticks_per_decision": 4,
+    "horizon": 3300,
+    "synthetic": false
+  },
+  "environment": "f935c4bb739f302f40deab3af6d6b7790218a9aee9ddd85d816d525b76502c5b",
+  "sources": {
+    "initial": {
+      "kind": "random",
+      "seed": 14,
+      "hidden": 128,
+      "sha256": "d33ab5f073671ed73ac2391dcdf34950853382be5cd778b3dcf6b2401fcceab5"
+    },
+    "scaled": {
+      "kind": "ppo",
+      "steps": 46848,
+      "sha256": "57f8fc117b8e645700c1f02574208d3dd21f816466679bd89db7b0636bcdef6c"
+    }
+  },
+  "episodes": {
+    "initial": [
+      {
+        "policy_seed": 106,
+        "outcome": "miss",
+        "native_stage_frame": 1502,
+        "decisions": 374,
+        "reward": 0.11303030303030348,
+        "horizontal_commands": 103,
+        "horizontal_responses": 90,
+        "max_projectiles": 39,
+        "action_counts": [
+          [
+            38,
+            31,
+            55,
+            41,
+            41,
+            48,
+            34,
+            45,
+            41
+          ],
+          [
+            180,
+            194
+          ],
+          [
+            199,
+            175
+          ],
+          [
+            186,
+            188
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 107,
+        "outcome": "miss",
+        "native_stage_frame": 1354,
+        "decisions": 337,
+        "reward": 0.1018181818181822,
+        "horizontal_commands": 104,
+        "horizontal_responses": 88,
+        "max_projectiles": 48,
+        "action_counts": [
+          [
+            29,
+            38,
+            35,
+            41,
+            42,
+            45,
+            40,
+            38,
+            29
+          ],
+          [
+            186,
+            151
+          ],
+          [
+            156,
+            181
+          ],
+          [
+            166,
+            171
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 108,
+        "outcome": "miss",
+        "native_stage_frame": 1050,
+        "decisions": 261,
+        "reward": 0.07878787878787902,
+        "horizontal_commands": 72,
+        "horizontal_responses": 64,
+        "max_projectiles": 28,
+        "action_counts": [
+          [
+            27,
+            35,
+            31,
+            28,
+            40,
+            26,
+            18,
+            31,
+            25
+          ],
+          [
+            128,
+            133
+          ],
+          [
+            141,
+            120
+          ],
+          [
+            128,
+            133
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 109,
+        "outcome": "miss",
+        "native_stage_frame": 1098,
+        "decisions": 273,
+        "reward": 0.08242424242424268,
+        "horizontal_commands": 79,
+        "horizontal_responses": 71,
+        "max_projectiles": 43,
+        "action_counts": [
+          [
+            29,
+            28,
+            35,
+            23,
+            37,
+            31,
+            33,
+            30,
+            27
+          ],
+          [
+            153,
+            120
+          ],
+          [
+            142,
+            131
+          ],
+          [
+            130,
+            143
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 110,
+        "outcome": "miss",
+        "native_stage_frame": 1038,
+        "decisions": 258,
+        "reward": 0.0778787878787881,
+        "horizontal_commands": 76,
+        "horizontal_responses": 70,
+        "max_projectiles": 32,
+        "action_counts": [
+          [
+            29,
+            32,
+            22,
+            30,
+            37,
+            30,
+            27,
+            31,
+            20
+          ],
+          [
+            123,
+            135
+          ],
+          [
+            134,
+            124
+          ],
+          [
+            133,
+            125
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 111,
+        "outcome": "miss",
+        "native_stage_frame": 922,
+        "decisions": 229,
+        "reward": 0.06909090909090926,
+        "horizontal_commands": 68,
+        "horizontal_responses": 54,
+        "max_projectiles": 14,
+        "action_counts": [
+          [
+            19,
+            32,
+            14,
+            24,
+            21,
+            23,
+            31,
+            29,
+            36
+          ],
+          [
+            116,
+            113
+          ],
+          [
+            108,
+            121
+          ],
+          [
+            120,
+            109
+          ]
+        ],
+        "retries": []
+      }
+    ],
+    "scaled": [
+      {
+        "policy_seed": 106,
+        "outcome": "miss",
+        "native_stage_frame": 1630,
+        "decisions": 406,
+        "reward": 0.12272727272727324,
+        "horizontal_commands": 90,
+        "horizontal_responses": 82,
+        "max_projectiles": 69,
+        "action_counts": [
+          [
+            37,
+            24,
+            50,
+            80,
+            47,
+            33,
+            48,
+            39,
+            48
+          ],
+          [
+            162,
+            244
+          ],
+          [
+            175,
+            231
+          ],
+          [
+            164,
+            242
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 107,
+        "outcome": "miss",
+        "native_stage_frame": 1366,
+        "decisions": 340,
+        "reward": 0.10272727272727311,
+        "horizontal_commands": 71,
+        "horizontal_responses": 60,
+        "max_projectiles": 48,
+        "action_counts": [
+          [
+            28,
+            33,
+            23,
+            70,
+            44,
+            32,
+            49,
+            29,
+            32
+          ],
+          [
+            166,
+            174
+          ],
+          [
+            132,
+            208
+          ],
+          [
+            124,
+            216
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 108,
+        "outcome": "miss",
+        "native_stage_frame": 1350,
+        "decisions": 336,
+        "reward": 0.10151515151515189,
+        "horizontal_commands": 67,
+        "horizontal_responses": 60,
+        "max_projectiles": 47,
+        "action_counts": [
+          [
+            34,
+            31,
+            27,
+            64,
+            51,
+            23,
+            32,
+            39,
+            35
+          ],
+          [
+            141,
+            195
+          ],
+          [
+            162,
+            174
+          ],
+          [
+            131,
+            205
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 109,
+        "outcome": "miss",
+        "native_stage_frame": 942,
+        "decisions": 234,
+        "reward": 0.07060606060606078,
+        "horizontal_commands": 48,
+        "horizontal_responses": 41,
+        "max_projectiles": 11,
+        "action_counts": [
+          [
+            25,
+            19,
+            21,
+            37,
+            35,
+            17,
+            32,
+            26,
+            22
+          ],
+          [
+            117,
+            117
+          ],
+          [
+            100,
+            134
+          ],
+          [
+            91,
+            143
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 110,
+        "outcome": "miss",
+        "native_stage_frame": 1094,
+        "decisions": 272,
+        "reward": 0.08212121212121237,
+        "horizontal_commands": 56,
+        "horizontal_responses": 46,
+        "max_projectiles": 49,
+        "action_counts": [
+          [
+            31,
+            28,
+            19,
+            45,
+            37,
+            22,
+            34,
+            32,
+            24
+          ],
+          [
+            113,
+            159
+          ],
+          [
+            126,
+            146
+          ],
+          [
+            99,
+            173
+          ]
+        ],
+        "retries": []
+      },
+      {
+        "policy_seed": 111,
+        "outcome": "miss",
+        "native_stage_frame": 1338,
+        "decisions": 333,
+        "reward": 0.10060606060606098,
+        "horizontal_commands": 75,
+        "horizontal_responses": 65,
+        "max_projectiles": 47,
+        "action_counts": [
+          [
+            19,
+            34,
+            20,
+            63,
+            38,
+            30,
+            49,
+            36,
+            44
+          ],
+          [
+            143,
+            190
+          ],
+          [
+            140,
+            193
+          ],
+          [
+            128,
+            205
+          ]
+        ],
+        "retries": []
+      }
+    ]
+  },
+  "deterministic": false,
+  "native_game_rng_seed_controlled": false,
+  "summary": {
+    "initial": {
+      "episodes": 6,
+      "outcomes": {
+        "miss": 6
+      },
+      "median_furthest_frame": 1074.0,
+      "median_observed_first_miss_frame": 1074.0,
+      "missing_first_miss_observations": 0
+    },
+    "scaled": {
+      "episodes": 6,
+      "outcomes": {
+        "miss": 6
+      },
+      "median_furthest_frame": 1344.0,
+      "median_observed_first_miss_frame": 1344.0,
+      "missing_first_miss_observations": 0
+    }
+  }
+}

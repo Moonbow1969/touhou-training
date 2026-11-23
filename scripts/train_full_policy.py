@@ -61,17 +61,17 @@ def retry_story_game_over(parakit):
     setup = tuple(reader.read_uint(field, relative=True) for field in
                   (offsets.stage, offsets.difficulty, offsets.character, offsets.subshot))
     screen = reader.read_uint(reader.offsets.statics.game_screen, relative=True)
-    if screen != 7 or state != 1 or game.read_game_val("lives") >= 0 or setup != (1, 1, 0, 0):
-        raise RuntimeError("Expected the TH14 Normal Reimu A Stage 1 game-over Retry menu.")
+    if screen != 7 or setup != (1, 1, 0, 0) or not (state == 0 or state == 1 and game.read_game_val("lives") < 0):
+        raise RuntimeError("Expected a TH14 Normal Reimu A Stage 1 pause or game-over Retry menu.")
     game.release_all_keys()
-    game._press_and_release("z")
+    game._press_and_release("esc" if state == 0 else "z")
     deadline = perf_counter() + 7
     while perf_counter() < deadline:
         game.require_game_focus()
         if game.read_game_val("game_state") == 2:
             return
         sleep(.025)
-    raise RuntimeError("The native game-over Retry did not restore active gameplay.")
+    raise RuntimeError("Native pause or Retry recovery did not restore active gameplay.")
 
 
 class SurvivalRollout(gym.Wrapper):
@@ -263,7 +263,7 @@ def main():
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
     parser.add_argument("--focus-wait", type=int, default=30)
     parser.add_argument("--retry-game-over", action="store_true",
-                        help="Confirm the default Retry selection if TH14 is at the verified story game-over menu.")
+                        help="Resume a verified story pause or confirm the default game-over Retry selection.")
     parser.add_argument("--checkpoint-budget-mib", type=int, default=DEFAULT_BUDGET_MIB,
                         help="Per-run budget including the current, previous, and staged checkpoint archives.")
     parser.add_argument("--min-free-disk-mib", type=int, default=DEFAULT_RESERVE_MIB,

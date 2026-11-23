@@ -84,7 +84,7 @@ python -m scripts.train_full_policy --base models-local/sft/policy.pt --aim mode
 
 Run `scripts.audit_full_policy_drift` to measure categorical action drift against the SFT parent on fixed replay observations. The replay split plan reserves a complete TH14 Normal Reimu A test replay and its player group for independent capture. [Offline audit command and capture plan](devlog/261123-th14-policy-drift.md)
 
-Use `--retry-game-over` if the foreground game is on the default Retry selection of the Normal Reimu A Stage 1 game-over menu. The trainer checks the game state and expected task before confirming the selection. It records how many eligible horizontal commands produced displacement during training.
+Use `--retry-game-over` to resume a paused Normal Reimu A Stage 1 game or confirm the default Retry selection on its game-over menu. The trainer checks the game state and expected task before sending the input. It records how many eligible horizontal commands produced displacement during training.
 
 ## Distributed native trial PPO
 
