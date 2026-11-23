@@ -28,6 +28,21 @@ The first SFT and PPO trials lost their first life around nine seconds into Stag
 
 The next run increases the budget to 4,096 decisions and uses a separate PPO initialization from the same SFT. It rewards each surviving decision until the first miss or horizon. The native game objective supplies the reward without collision heuristics, aim corrections or Bomb overrides. The evaluation endpoints remain the same.
 
+## Expanded budget
+
+Foreground focus changed during training and again during the first set of evaluations. The first training segment logged an update at 2,304 decisions, but the durable checkpoint was at 2,048. The continuation restored that checkpoint and trained for 2,048 more decisions. It completed 4,096 decisions across 16 PPO updates and saved its final checkpoint before the second interruption. Of the 13 completed training episodes feeding the retained updates, all ended at the first miss. The furthest reached frame 1,970, and the policy sampled two Bomb commands over the retained decisions.
+
+An evaluation-only run loaded the 4,096-step checkpoint and rotated the two learned arms over three more native Retry blocks.
+
+| Arm | First miss frames | Median | Stage 1 clears |
+| --- | --- | ---: | ---: |
+| Frozen SFT | 390, 554, 450 | 450 | 0/3 |
+| Full-policy PPO, 4,096 decisions | 578, 542, 478 | 542 | 0/3 |
+
+The median increased by 92 frames (20.4%). PPO survived longer in two of three paired blocks. Both learned arms used zero bombs during these evaluations. The separately measured hybrid cleared Stage 1 twice with zero misses and zero bombs, at last observed frames 9,894 and 9,866. Each learned evaluation starts at frame 18. This small set of native retries does not establish a repeatable gain across training seeds or stages. The second recipe changes both reward and budget, so it does not isolate either change.
+
+The machine-readable records preserve the discarded update, checkpoint hashes, incomplete evaluations and the full replicated comparison. [First training segment](../../results/2026-11-23-th14-full-policy/survival-4096-segment-1-report.json), [training continuation](../../results/2026-11-23-th14-full-policy/survival-4096-segment-2-report.json), [paired original-game trials](../../results/2026-11-23-th14-full-policy/survival-4096-paired-eval.json), [hybrid replication](../../results/2026-11-23-th14-full-policy/hybrid-replication.json)
+
 ## Collection throughput
 
 The 1,024-decision smoke run took 75.5 seconds end to end for training, or 13.56 decisions/s. Native stepping took 66.9 seconds, Retry and the initial reset took 6.3 seconds, and the four learner updates took about one second combined. The game advanced exactly four frames on 1,022 of 1,024 decisions. A single worker at this measured rate would take roughly 20.5 hours to collect 1 million decisions.
@@ -35,3 +50,9 @@ The 1,024-decision smoke run took 75.5 seconds end to end for training, or 13.56
 The Windows runner sends foreground keyboard input. Concurrent controlled instances need independent input and game state. First establish a second worker on an x86 Linux host or Steam Deck through Proton or Wine with an independent display and prefix. Verify TH14 1.00b launch, memory observations, native clock, action delivery and 20 consecutive Retry cycles while the Windows worker is also running. An isolated Windows guest with its own virtual display is another option if the Linux route fails the compatibility check. The current Windows 11 Home host does not provide the Hyper-V role. [Valve Proton compatibility](https://partner.steamgames.com/doc/steamhardware/compat), [Xvfb](https://www.x.org/X11R6/), [Microsoft Hyper-V requirements](https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/get-started/install-hyper-v)
 
 For the two-worker benchmark, record aggregate decisions per second, the native-frame delta histogram, resets, interrupted trials and CPU/RAM per worker. A starting target is at least 1.6× the single-worker throughput while preserving the four-frame rate and avoiding input cross-talk. Additional workers should collect against the same policy version for a PPO batch. H100 becomes relevant if a larger encoder or more workers make learner time material. Mac Studio, Mac mini and MacBook Pro can help decode replays or run offline jobs. A Windows-on-Arm game worker needs a separate timing and input check. [PyTorch MPS](https://docs.pytorch.org/docs/main/notes/mps.html), [Microsoft's Windows on Apple silicon options](https://support.microsoft.com/en-gb/windows/experience/platform-variants/options-for-using-windows-11-with-mac-computers-with-apple-m1-m2-and-m3-chips)
+
+## Worker isolation tests
+
+The Apple M3 Ultra host booted a diskless two-vCPU ARM64 guest to UEFI under QEMU 10.2.2 with explicit `accel=hvf`. QMP confirmed it ran and shut down cleanly. Windows and TH14 remain untested in that VM. [QEMU accelerators](https://www.qemu.org/docs/master/system/introduction.html#virtualisation-accelerators)
+
+An x86 Linux host ran two concurrent Docker containers with Wine 8, independent virtual displays and independent prefixes. Both [Win32 fixtures](../../tools/rollout-worker-probe/README.md) presented a Direct3D 9 frame and received one key each through foreground DirectInput. Their memory counters froze at 4 and 7 ticks, remained fixed through the hold, and resumed to 14 and 17 ticks. The first attempt hung in the Xvfb wrapper startup. Explicit display readiness polling fixed it. The production gate is launching the Steam build of TH14 1.00b and verifying the original observations, exact native frame histogram and resets. [Probe results](../../results/2026-11-23-th14-full-policy/worker-probes.json)

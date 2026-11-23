@@ -1,0 +1,329 @@
+{
+  "task": {
+    "title": "TH14",
+    "version": "1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "first_stage": 1,
+    "last_stage": 1,
+    "first_miss_ends_trial": true,
+    "frames_per_action": 4,
+    "train_limit": 512,
+    "eval_limit": 3300
+  },
+  "checkpoints": {
+    "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "aim_sha256": "89702b9bb880c2810bac42fde457c7dc41037ff24ffe1a3ae8e723d3a6bf9149",
+    "resume_sha256": "335d47327f8f4910ab560e23f2301af47aca69a009d35c9d36fa8f9183142109"
+  },
+  "runtime": {
+    "runner_sha256": "f65620cd08fdbc1bfe8cc24504cbc70e6b94bad1639970c098003a95dfdf8a5e",
+    "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+    "torch": "2.5.1+cu124",
+    "stable_baselines3": "2.5.0",
+    "device": "cpu"
+  },
+  "seed": 61,
+  "additional_steps": 0,
+  "requested_blocks": 3,
+  "evaluation_arms": [
+    "sft",
+    "ppo"
+  ],
+  "ppo_hyperparameters": {
+    "n_steps": 256,
+    "batch_size": 64,
+    "n_epochs": 4,
+    "learning_rate": 8e-05,
+    "gamma": 0.997,
+    "gae_lambda": 0.95,
+    "clip_range": 0.15,
+    "ent_coef": 0.004
+  },
+  "reward": {
+    "alive_step": "1 / train_limit",
+    "miss_or_native_end": 0,
+    "stage_clear": 1
+  },
+  "controller_settings": {
+    "sft": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "ppo": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "hybrid": {
+      "geometry": true,
+      "aim_correction": true,
+      "automatic_bomb": true
+    }
+  },
+  "controllers": {
+    "sft": [
+      {
+        "stage_frame": 390,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 95,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 93,
+        "first_miss_frame": 390,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            93,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            93,
+            0
+          ],
+          "shoot": [
+            0,
+            93
+          ],
+          "bomb": [
+            93,
+            0
+          ]
+        },
+        "block": 1,
+        "seconds": 7.534892400028184
+      },
+      {
+        "stage_frame": 554,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 213,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 134,
+        "first_miss_frame": 554,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            134,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            134,
+            0
+          ],
+          "shoot": [
+            0,
+            134
+          ],
+          "bomb": [
+            134,
+            0
+          ]
+        },
+        "block": 2,
+        "seconds": 10.182577700121328
+      },
+      {
+        "stage_frame": 450,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 131,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 108,
+        "first_miss_frame": 450,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            108,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            108,
+            0
+          ],
+          "shoot": [
+            0,
+            108
+          ],
+          "bomb": [
+            108,
+            0
+          ]
+        },
+        "block": 3,
+        "seconds": 8.499075700063258
+      }
+    ],
+    "ppo": [
+      {
+        "stage_frame": 578,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 236,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 140,
+        "first_miss_frame": 578,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            140,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            140,
+            0
+          ],
+          "shoot": [
+            0,
+            140
+          ],
+          "bomb": [
+            140,
+            0
+          ]
+        },
+        "block": 1,
+        "seconds": 10.582525999983773
+      },
+      {
+        "stage_frame": 542,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 205,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 131,
+        "first_miss_frame": 542,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            131,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            131,
+            0
+          ],
+          "shoot": [
+            0,
+            131
+          ],
+          "bomb": [
+            131,
+            0
+          ]
+        },
+        "block": 2,
+        "seconds": 10.032680300064385
+      },
+      {
+        "stage_frame": 478,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 148,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 115,
+        "first_miss_frame": 478,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "action_counts": {
+          "movement": [
+            0,
+            0,
+            0,
+            0,
+            115,
+            0,
+            0,
+            0,
+            0
+          ],
+          "focus": [
+            115,
+            0
+          ],
+          "shoot": [
+            0,
+            115
+          ],
+          "bomb": [
+            115,
+            0
+          ]
+        },
+        "block": 3,
+        "seconds": 8.916111099999398
+      }
+    ],
+    "hybrid": []
+  },
+  "updates": [],
+  "status": "complete",
+  "starting_steps": 4096,
+  "warm_start_actor_exact": true,
+  "trained_steps": 4096,
+  "actor_head_weight_delta_l2": {
+    "movement": 0.11671091616153717,
+    "focus": 0.06488846987485886,
+    "shoot": 0.01620885170996189,
+    "bomb": 0.03475606441497803
+  }
+}

@@ -1,6 +1,7 @@
 """Warm-start full-policy PPO and compare controllers in the native TH14 executable."""
 
 import argparse
+import ctypes
 from functools import partial
 from hashlib import file_digest
 import json
@@ -193,6 +194,7 @@ def main():
     parser.add_argument("--train-limit", type=int, default=512)
     parser.add_argument("--eval-limit", type=int, default=3300)
     parser.add_argument("--blocks", type=int, default=1)
+    parser.add_argument("--eval-arms", nargs="+", choices=CONTROLLERS, default=CONTROLLERS)
     parser.add_argument("--seed", type=int, default=61)
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
@@ -202,6 +204,8 @@ def main():
         parser.error(f"Steps must be a multiple of {UPDATE_STEPS}, and 0 < train limit <= eval limit.")
     if args.blocks < 0 or not (args.blocks or args.steps) or (not args.steps and not args.resume):
         parser.error("Request training, evaluation of a saved checkpoint, or both.")
+    if len(set(args.eval_arms)) != len(args.eval_arms):
+        parser.error("Each evaluation arm may be requested once.")
     args.out.mkdir(parents=True, exist_ok=False)
     torch.set_num_threads(1)
     base = read_policy(args.base, "cpu", motion_history=True)
@@ -219,6 +223,7 @@ def main():
                     "parakit_offsets_sha256": digest(args.parakit / "offsets.py"),
                     "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu"},
         "seed": args.seed, "additional_steps": args.steps, "requested_blocks": args.blocks,
+        "evaluation_arms": args.eval_arms,
         "ppo_hyperparameters": PPO_SETTINGS,
         "reward": REWARDS[args.reward],
         "controller_settings": {arm: {"geometry": arm == "hybrid", "aim_correction": arm == "hybrid",
@@ -237,6 +242,9 @@ def main():
     report_path = args.out / "report.json"
     publish_json(report_path, report)
     stage = None
+    keep_awake = ctypes.windll.kernel32.SetThreadExecutionState
+    continuous, system_required, display_required = 0x80000000, 0x00000001, 0x00000002
+    keep_awake(continuous | system_required | display_required)
     try:
         stage = NormalStageOne(args.parakit, limit=args.train_limit, motion_history=True,
                                history_frames=max(base.motion_spans or (12,)), focus_wait=args.focus_wait)
@@ -257,7 +265,8 @@ def main():
         publish_json(report_path, report)
         stage.limit = args.eval_limit
         for block in range(args.blocks):
-            order = CONTROLLERS[block % len(CONTROLLERS):] + CONTROLLERS[:block % len(CONTROLLERS)]
+            first = block % len(args.eval_arms)
+            order = args.eval_arms[first:] + args.eval_arms[:first]
             for name in order:
                 start = perf_counter()
                 print(f"Evaluating block {block + 1}, {name}.", flush=True)
@@ -276,9 +285,12 @@ def main():
         report["error_type"] = type(error).__name__
         raise
     finally:
-        if stage is not None:
-            stage.close()
-        publish_json(report_path, report)
+        try:
+            if stage is not None:
+                stage.close()
+            publish_json(report_path, report)
+        finally:
+            keep_awake(continuous)
 
 
 if __name__ == "__main__":

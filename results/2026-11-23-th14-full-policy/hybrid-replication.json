@@ -1,0 +1,493 @@
+{
+  "task": {
+    "title": "TH14",
+    "version": "1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "first_stage": 1,
+    "last_stage": 1,
+    "first_miss_ends_trial": true,
+    "frames_per_action": 4,
+    "train_limit": 512,
+    "eval_limit": 3300
+  },
+  "checkpoints": {
+    "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "aim_sha256": "89702b9bb880c2810bac42fde457c7dc41037ff24ffe1a3ae8e723d3a6bf9149",
+    "resume_sha256": "335d47327f8f4910ab560e23f2301af47aca69a009d35c9d36fa8f9183142109"
+  },
+  "runtime": {
+    "runner_sha256": "f65620cd08fdbc1bfe8cc24504cbc70e6b94bad1639970c098003a95dfdf8a5e",
+    "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+    "torch": "2.5.1+cu124",
+    "stable_baselines3": "2.5.0",
+    "device": "cpu"
+  },
+  "seed": 61,
+  "additional_steps": 0,
+  "requested_blocks": 1,
+  "evaluation_arms": [
+    "hybrid"
+  ],
+  "ppo_hyperparameters": {
+    "n_steps": 256,
+    "batch_size": 64,
+    "n_epochs": 4,
+    "learning_rate": 8e-05,
+    "gamma": 0.997,
+    "gae_lambda": 0.95,
+    "clip_range": 0.15,
+    "ent_coef": 0.004
+  },
+  "reward": {
+    "alive_step": "1 / train_limit",
+    "miss_or_native_end": 0,
+    "stage_clear": 1
+  },
+  "controller_settings": {
+    "sft": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "ppo": {
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false
+    },
+    "hybrid": {
+      "geometry": true,
+      "aim_correction": true,
+      "automatic_bomb": true
+    }
+  },
+  "controllers": {
+    "sft": [],
+    "ppo": [],
+    "hybrid": [
+      {
+        "stage_frame": 9866,
+        "native_stage": 2,
+        "native_pause_state": 0,
+        "stages_cleared": 1,
+        "score": 1075269,
+        "misses": 0,
+        "bombs_used": 0,
+        "steps": 2463,
+        "first_miss_frame": null,
+        "first_miss_stage": null,
+        "outcome": "advanced_stage",
+        "start_frame": 18,
+        "aim_interventions": 162,
+        "vulnerable_frames": 4860,
+        "native_game_screen": 7,
+        "native_continues": 0,
+        "lives_remaining": 2,
+        "bombs_remaining": 3,
+        "damage": 31621,
+        "excluded_hp_drop": 1,
+        "hp_per_vulnerable_second": 390.38271604938274,
+        "mean_lateral_offset": 6.344423239209034,
+        "aligned_fraction": 0.9761316872427983,
+        "firing_fraction": 1.0,
+        "phases": [
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 9000,
+            "first_frame": 2422,
+            "lowest_hp": 36,
+            "vulnerable_frames": 812,
+            "damage": 8964,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 11300,
+            "first_frame": 5662,
+            "lowest_hp": 1514,
+            "vulnerable_frames": 956,
+            "damage": 9786,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": 4,
+            "max_hp": 11300,
+            "first_frame": 6618,
+            "lowest_hp": 8,
+            "vulnerable_frames": 952,
+            "damage": 1488,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 11400,
+            "first_frame": 7570,
+            "lowest_hp": 1916,
+            "vulnerable_frames": 952,
+            "damage": 9484,
+            "excluded_hp_drop": 0
+          },
+          {
+            "stage": 1,
+            "spell_id": 8,
+            "max_hp": 11400,
+            "first_frame": 8522,
+            "lowest_hp": 1,
+            "vulnerable_frames": 1188,
+            "damage": 1899,
+            "excluded_hp_drop": 1
+          }
+        ],
+        "observations": [
+          {
+            "stage": 1,
+            "frame": 2422,
+            "hp": 9000,
+            "lateral_offset": 376.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2542,
+            "hp": 8272,
+            "lateral_offset": 0.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2662,
+            "hp": 6984,
+            "lateral_offset": 0.87,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2782,
+            "hp": 5598,
+            "lateral_offset": 7.35,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 2902,
+            "hp": 4254,
+            "lateral_offset": 3.04,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 3022,
+            "hp": 2618,
+            "lateral_offset": 2.98,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 3142,
+            "hp": 1216,
+            "lateral_offset": 0.6,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5662,
+            "hp": 11300,
+            "lateral_offset": 184.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5782,
+            "hp": 10404,
+            "lateral_offset": 4.0,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 5902,
+            "hp": 9172,
+            "lateral_offset": 4.16,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6022,
+            "hp": 7814,
+            "lateral_offset": 5.75,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6142,
+            "hp": 6610,
+            "lateral_offset": 3.15,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6262,
+            "hp": 5364,
+            "lateral_offset": 6.63,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6382,
+            "hp": 4020,
+            "lateral_offset": 6.84,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6502,
+            "hp": 2648,
+            "lateral_offset": 4.9,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 6622,
+            "hp": 1490,
+            "lateral_offset": 6.51,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6742,
+            "hp": 1292,
+            "lateral_offset": 1.28,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6862,
+            "hp": 1108,
+            "lateral_offset": 1.28,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 6982,
+            "hp": 926,
+            "lateral_offset": 1.82,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7102,
+            "hp": 738,
+            "lateral_offset": 3.1,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7222,
+            "hp": 546,
+            "lateral_offset": 3.1,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7342,
+            "hp": 364,
+            "lateral_offset": 2.07,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7462,
+            "hp": 172,
+            "lateral_offset": 2.07,
+            "shoot": 1,
+            "spell_id": 4
+          },
+          {
+            "stage": 1,
+            "frame": 7582,
+            "hp": 11400,
+            "lateral_offset": 2.07,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7702,
+            "hp": 11246,
+            "lateral_offset": 2.07,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7822,
+            "hp": 9902,
+            "lateral_offset": 2.07,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 7942,
+            "hp": 8488,
+            "lateral_offset": 0.79,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8062,
+            "hp": 7256,
+            "lateral_offset": 1.93,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8182,
+            "hp": 5954,
+            "lateral_offset": 10.31,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8302,
+            "hp": 4596,
+            "lateral_offset": 1.26,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8422,
+            "hp": 3180,
+            "lateral_offset": 2.79,
+            "shoot": 1,
+            "spell_id": null
+          },
+          {
+            "stage": 1,
+            "frame": 8542,
+            "hp": 1900,
+            "lateral_offset": 10.16,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8662,
+            "hp": 1736,
+            "lateral_offset": 0.34,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8782,
+            "hp": 1493,
+            "lateral_offset": 3.53,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 8902,
+            "hp": 1266,
+            "lateral_offset": 2.64,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9022,
+            "hp": 1081,
+            "lateral_offset": 2.64,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9142,
+            "hp": 887,
+            "lateral_offset": 4.5,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9262,
+            "hp": 697,
+            "lateral_offset": 5.13,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9382,
+            "hp": 505,
+            "lateral_offset": 5.13,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9502,
+            "hp": 323,
+            "lateral_offset": 8.94,
+            "shoot": 1,
+            "spell_id": 8
+          },
+          {
+            "stage": 1,
+            "frame": 9622,
+            "hp": 129,
+            "lateral_offset": 3.4,
+            "shoot": 1,
+            "spell_id": 8
+          }
+        ],
+        "impacts": [],
+        "emergency_bomb_commands": 0,
+        "block": 1,
+        "seconds": 165.81546430010349
+      }
+    ]
+  },
+  "updates": [],
+  "status": "complete",
+  "starting_steps": 4096,
+  "warm_start_actor_exact": true,
+  "trained_steps": 4096,
+  "actor_head_weight_delta_l2": {
+    "movement": 0.11671091616153717,
+    "focus": 0.06488846987485886,
+    "shoot": 0.01620885170996189,
+    "bomb": 0.03475606441497803
+  }
+}

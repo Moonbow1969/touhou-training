@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-23",
+  "windows_arm_host": {
+    "chip": "Apple M3 Ultra",
+    "ram_gib": 512,
+    "logical_cpus": 32,
+    "qemu": "10.2.2",
+    "accelerator": "hvf",
+    "vcpus": 2,
+    "guest_memory_mib": 2048,
+    "qmp_status": "running",
+    "qmp_shutdown": "host-qmp-quit",
+    "uefi_booted": true,
+    "windows_booted": false
+  },
+  "linux_x86_host": {
+    "arch": "x86_64",
+    "logical_cpus": 32,
+    "wine": "8.0",
+    "first_attempt": "xvfb-run readiness hang",
+    "concurrent_containers": 2,
+    "container_cpu_limit": 1,
+    "container_memory_limit_mib": 900,
+    "container_network": "none",
+    "fixture": "synthetic Win32 executable",
+    "original_th14_tested": false,
+    "results": [
+      {"directinput_keys": 1, "d3d9_present": true, "frozen_ticks": 4, "later_ticks": 4, "resumed_ticks": 14},
+      {"directinput_keys": 1, "d3d9_present": true, "frozen_ticks": 7, "later_ticks": 7, "resumed_ticks": 17}
+    ]
+  }
+}
