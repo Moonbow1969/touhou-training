@@ -128,9 +128,10 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                         and stage.game.read_game_val('in_dialog') != -1)
         observation, _, done, truncated, info = stage.step(action)
         after = stage.snapshot
-        exact_step = before.stage == after.stage and stage.last_frame - old_frame == 4
+        stage_changed = before.stage != after.stage
+        exact_step = not stage_changed and stage.last_frame - old_frame == 4
         if motion is not None:
-            if before.stage != after.stage or before.lives != after.lives:
+            if stage_changed or before.lives != after.lives:
                 motion.reset()
             elif exact_step and before.player_state == after.player_state == 1 and not action[3]:
                 motion.observe(previous_observation, observation, action, old_frame)
@@ -179,8 +180,10 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                 samples.append({'stage': before.stage, 'frame': old_frame, 'hp': boss.hp,
                                 'lateral_offset': round(lateral, 2),
                                 'shoot': int(action[2]), 'spell_id': before.spell_id})
-        if done or truncated or info['steps'] % 300 == 0:
+        if done or truncated or stage_changed or info['steps'] % 300 == 0:
             row = dict(info, start_frame=start_frame, aim_interventions=interventions, vulnerable_frames=vulnerable_frames,
+                       native_game_screen=stage.current_screen(),
+                       native_continues=stage.reader.read_uint(stage.reader.offsets.statics.continues, relative=True),
                        lives_remaining=stage.game.read_game_val('lives'),
                        bombs_remaining=stage.game.read_game_val('bombs'),
                        damage=damage, excluded_hp_drop=excluded_hp_drop,

@@ -6,6 +6,8 @@ Open research for training agents across the original Touhou Project games. The 
 
 Two TH14 1.00b Normal Reimu A story trials cleared all six stages with zero continues. The first scored 296,778,700 with six misses and 23 bombs. Replacing the base SFT checkpoint with the expanded, title-balanced policy scored 253,575,700 with five misses and 22 bombs. Both runs used geometric dodging, learned boss aim, and emergency bombing. The world model scored forecasts in shadow mode. Separate native PPO comparisons measured Stage 1 performance.
 
+The first native Hard pilot with the expanded checkpoint cleared four stages and ended in Stage 5 at frame 16,912 with zero continues.
+
 - [Initial benchmark and devlog](docs/devlog/261123-initial-benchmark.md)
 - [Late-stage practice and title transfer](docs/devlog/261123-transfer-and-late-stages.md)
 - [Overnight training recipes](docs/devlog/261123-overnight-recipes.md)

@@ -172,3 +172,9 @@ Captured six stages of TH13 1.00c Lunatic Marisa from the original executable. T
 Randomly initialized runs used the same 20-epoch recipe and equal title weighting as the reference. Warm-start runs used learning rate 0.00004, the updated corpus, the same three initial checkpoints, a 16-epoch maximum, and patience six. The anchored variant added a weight-four KL term to retain each initial checkpoint's movement distribution on the sampled inputs. The starting checkpoint participated in model selection. The updated data remain available for future training, and the native story controller retains the 147,560-decision checkpoint.
 
 Seed 137 in the anchored experiment reached its normal early stop before an SSH timeout interrupted artifact retrieval. The recovery fetched the saved checkpoint and epoch log with verified hashes. The original failure and subsequent evaluation have separate run records.
+
+## First native Hard story pilot
+
+Run `20261123T130811Z-overnight-th14-title-equal-hard-885ac5c4` reused the 147,560-decision checkpoint and the controller from the second Normal clear with the native rank set to Hard. It cleared four stages and recorded a Game Over in Stage 5 at frame 16,912. The original game reported zero continues, 173,968,760 displayed score, five misses and 17 bombs.
+
+The independent Hard Stage 5 capture yielded 2,479 on-policy windows. Among 924 eligible moving windows, the earlier two-speed estimator changed mean displacement error from 2.318 to 1.208 units and the rate within half a unit from 70.78% to 77.49%. This rollout used fixed player speed for its decisions. The adaptive-motion flag is used in the follow-up story trial.
