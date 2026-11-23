@@ -215,7 +215,7 @@ def _time():
     return read_game_val("global_timer")
 
 
-def _sleep(k: int = 0):
+def _sleep(k: int = 0, *, poll_interval: float = 0.0):
     """
     Wait for k ticks for the in-game timer.
     """
@@ -234,6 +234,8 @@ def _sleep(k: int = 0):
             return
         if time.monotonic() >= deadline:
             raise TimeoutError("TH14's clock stopped advancing.")
+        if poll_interval:
+            time.sleep(poll_interval)
 
 
 def _press_and_release(key):

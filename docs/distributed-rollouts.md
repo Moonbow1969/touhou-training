@@ -34,6 +34,16 @@ Momentum subsequently qualified two isolated workers. This smoke used 64 decisio
 
 On Windows TH14 1.00b FAST mode, a reversible limiter-only experiment measured a median of 60.03 versus 120.10 native stage ticks/s and Retry medians of 1.252 versus 0.626 seconds. Both rates produced 192/192 exact four-tick decisions in the first probe. A second probe aligned both caps at stage frame 30 and yielded 384/384 exact four-tick decisions. The two 120 Hz repetitions ran at 117.54 and 59.69 ticks/s. Projectile traces differed even between repeated runs at stock 60 Hz. Keep the stock runtime as the official evaluation reference and treat 120 Hz as a candidate that needs reproducible replay and sustained-speed validation. [Timing summary](../results/2026-11-23-distributed-rollouts/th14-windows-clock-summary.json), [Aligned comparison](../results/2026-11-23-distributed-rollouts/th14-windows-clock-aligned.json)
 
+At the stock 60 Hz cap, the Python controller can yield briefly between native-clock reads. A rotated benchmark compared two 256-decision episodes per interval, each starting at Stage 1 frame 30.
+
+| Clock poll interval | Mean controller CPU seconds per 256 decisions | Mean stepping wall seconds | Exact four global and stage ticks |
+| ---: | ---: | ---: | ---: |
+| Busy poll | 16.77 | 17.09 | 510/512 |
+| 0.25 ms | 1.06 | 17.10 | 512/512 |
+| 0.50 ms | 1.11 | 17.10 | 512/512 |
+
+The 0.25 ms interval reduced controller stepping CPU by 93.7% in this probe. The game's real-time cap still dictates wall time. `scripts.train_full_policy --clock-poll-ms 0.25` opts into yielding and records the interval and native delta histogram. The benchmark measures the Python process, with game rendering and multi-instance capacity left for a separate original-build trial. [CPU and per-rotation timing](../results/2026-11-23-distributed-rollouts/th14-stock-clock-controller-cpu.json)
+
 The Windows probe reads the active limiter. The 120 Hz wrapper applies the setting temporarily to the verified Steam executable in Fast input mode and restores its original limiter afterward. Start Normal Reimu A Stage 1 before comparing the two caps.
 
 ```powershell
@@ -46,6 +56,8 @@ python -m scripts.benchmark_native_clock_120 --parakit ../parakit --label candid
 Give each worker its own original-game process, display and input focus, writable game state, and reset lifecycle. On Linux use a separate Wine or Proton prefix and virtual display per instance, with game assets mounted read-only where possible. The Windows runner needs an exclusive interactive session, desktop or guest that passes the same input tests. Keep one worker per host initially. Use a second instance on a host only after measuring how rendering, pause/resume and reset change under contention.
 
 The Win32 fixture exercises DirectInput, Direct3D 9, debugger attach and cross-process reads. The official trial exercises original-game load and isolated input. Training comparisons for the full game require the Steam 1.00b executable, its matching memory offsets and the same observation, action, event and reward schema as the Windows runner. Treat any trial or full-build mismatch as a separate environment identifier. [Worker probes](../results/2026-11-23-th14-full-policy/worker-probes.json)
+
+The Gamer WSL copy matched the Windows Steam 1.00b executable hash. The existing isolated standalone Wine launch failed at Steam initialization. Windows original-game runs still use one verified instance. The WSL trial-rate measurements are for the independent 0.01b runtime.
 
 Before admitting a worker to the rollout pool, record the executable and offset hashes, OS/runtime and renderer, task, action repeat, observation schema, reward version and exact launch revision. Run a fixed action trace and check native frame deltas, movement in both directions, parsed bullets and resources, one life-loss event, 20 consecutive Retry cycles, and 30 minutes of unattended input isolation. Compare the trace with the reference where the start state and RNG are controlled. Log the observed start state and clock when Retry does not give a deterministic replay seed. The initial gate is at least 99% four-frame deltas on the hold test. Preserve the complete histogram. Use central playfield positions for input checks because valid input can produce zero displacement at an edge.
 

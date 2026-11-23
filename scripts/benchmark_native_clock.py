@@ -7,15 +7,18 @@ under Advanced Options (F12) before running the probe.
 
 import argparse
 from collections import Counter
+from functools import partial
 import hashlib
 import json
+import math
 from pathlib import Path
 import struct
-from time import perf_counter, sleep
+from time import perf_counter, process_time, sleep
 
 import numpy as np
 
 from scripts.stage_policy import NormalStageOne
+from scripts.train_full_policy import retry_story_game_over
 
 
 TRACE = (
@@ -52,8 +55,10 @@ def align_start(env, target_frame):
 
 def measure(env, count, target_frame):
     reset_started = perf_counter()
+    reset_cpu_started = process_time()
     env.reset()
     reset_seconds = perf_counter() - reset_started
+    reset_cpu_seconds = process_time() - reset_cpu_started
     align_start(env, target_frame)
     game = env.game
     initial_global = game.read_game_val("global_timer")
@@ -61,6 +66,7 @@ def measure(env, count, target_frame):
     global_cursor, stage_cursor = initial_global, initial_stage
     transitions = []
     started = perf_counter()
+    cpu_started = process_time()
     for step in range(count):
         action = TRACE[(step // 8) % len(TRACE)]
         obs, _, done, truncated, info = env.step(np.asarray(action, dtype=np.int64))
@@ -84,11 +90,14 @@ def measure(env, count, target_frame):
         if done or truncated:
             break
     seconds = perf_counter() - started
+    cpu_seconds = process_time() - cpu_started
     transitions_bytes = json.dumps(transitions, sort_keys=True).encode()
     return {
         "decisions": len(transitions),
         "stepping_wall_s": seconds,
+        "stepping_controller_cpu_s": cpu_seconds,
         "reset_wall_s": reset_seconds,
+        "reset_controller_cpu_s": reset_cpu_seconds,
         "initial_stage_frame": initial_stage,
         "global_ticks": global_cursor - initial_global,
         "stage_ticks": stage_cursor - initial_stage,
@@ -111,14 +120,23 @@ def main():
     parser.add_argument("--steps", type=int, default=64)
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--start-frame", type=int, help="Advance without input to this exact stage tick after Retry.")
+    parser.add_argument("--poll-ms", type=float, nargs="+", default=[0.0], metavar="MS",
+                        help="Rotate native clock polling intervals across repeats. Zero is the stock busy poll.")
+    parser.add_argument("--retry-game-over", action="store_true",
+                        help="Resume the verified Normal Reimu A Stage 1 pause or Retry menu.")
     args = parser.parse_args()
     if args.steps < 1 or args.repeats < 1 or args.out.exists():
         parser.error("Use positive steps and repeats and a new output path.")
     if args.start_frame is not None and args.start_frame < 1:
         parser.error("Use a positive starting frame.")
+    if (len(set(args.poll_ms)) != len(args.poll_ms)
+            or any(not math.isfinite(value) or not 0 <= value <= 4 for value in args.poll_ms)):
+        parser.error("Use distinct clock poll intervals between 0 and 4 ms.")
 
     from environment import interface as game
 
+    if args.retry_game_over:
+        retry_story_game_over(args.parakit)
     deadline = perf_counter() + 45
     while game.read_game_val("game_state") != 2 and perf_counter() < deadline:
         sleep(.05)
@@ -137,15 +155,22 @@ def main():
         "limiter_hz": 1 / period,
         "requested_decisions": args.steps,
         "requested_start_frame": args.start_frame,
+        "clock_poll_ms": args.poll_ms,
         "episodes": [],
     }
     env = NormalStageOne(args.parakit, limit=args.steps, max_misses=3)
+    original_sleep = game._sleep
     try:
-        for _ in range(args.repeats):
-            row = measure(env, args.steps, args.start_frame)
-            result["episodes"].append(row)
-            print(json.dumps({key: value for key, value in row.items() if key != "transitions"}), flush=True)
+        for index in range(args.repeats):
+            pivot = index % len(args.poll_ms)
+            for interval in args.poll_ms[pivot:] + args.poll_ms[:pivot]:
+                game._sleep = partial(original_sleep, poll_interval=interval / 1000) if interval else original_sleep
+                row = measure(env, args.steps, args.start_frame)
+                row.update(repeat=index + 1, poll_ms=interval)
+                result["episodes"].append(row)
+                print(json.dumps({key: value for key, value in row.items() if key != "transitions"}), flush=True)
     finally:
+        game._sleep = original_sleep
         env.close()
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

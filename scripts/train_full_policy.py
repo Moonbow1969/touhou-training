@@ -4,9 +4,10 @@ import argparse
 import ctypes
 from functools import partial
 import json
+import math
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-from time import perf_counter, sleep
+from time import perf_counter, process_time, sleep
 
 import gymnasium as gym
 import numpy as np
@@ -135,6 +136,8 @@ class RolloutLog(BaseCallback):
         self.started = perf_counter()
         self.rollout_started = self.started
         self.rollout_finished = None
+        self.rollout_cpu_started = 0.
+        self.rollout_cpu_seconds = 0.
         self.step_start = 0.
         self.reset_start = 0.
 
@@ -144,11 +147,13 @@ class RolloutLog(BaseCallback):
     def _on_rollout_start(self):
         self.save_update()
         self.rollout_started = perf_counter()
+        self.rollout_cpu_started = process_time()
         self.step_start = self.env.step_seconds
         self.reset_start = self.env.reset_seconds
 
     def _on_rollout_end(self):
         self.rollout_finished = perf_counter()
+        self.rollout_cpu_seconds = process_time() - self.rollout_cpu_started
 
     def _on_training_end(self):
         self.save_update()
@@ -174,6 +179,7 @@ class RolloutLog(BaseCallback):
         elapsed = perf_counter() - self.rollout_finished
         row = dict(steps=self.num_timesteps, optimization_epochs=self.model._n_updates,
                    rollout_seconds=self.rollout_finished - self.rollout_started,
+                   rollout_controller_cpu_seconds=self.rollout_cpu_seconds,
                    environment_step_seconds=self.env.step_seconds - self.step_start,
                    reset_seconds=self.env.reset_seconds - self.reset_start,
                    update_and_logging_seconds=elapsed,
@@ -264,6 +270,8 @@ def main():
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
     parser.add_argument("--reference-ppo", type=Path, help="Evaluate a second PPO checkpoint with matching lineage.")
     parser.add_argument("--focus-wait", type=int, default=30)
+    parser.add_argument("--clock-poll-ms", type=float, default=0.,
+                        help="Sleep between native clock reads. Zero keeps the stock busy poll.")
     parser.add_argument("--retry-game-over", action="store_true",
                         help="Resume a verified story pause or confirm the default game-over Retry selection.")
     parser.add_argument("--checkpoint-budget-mib", type=int, default=DEFAULT_BUDGET_MIB,
@@ -282,6 +290,8 @@ def main():
     eval_seed = args.seed if args.eval_seed is None else args.eval_seed
     if not 0 <= eval_seed < 2 ** 63 or eval_seed + max(args.blocks - 1, 0) >= 2 ** 63:
         parser.error("Evaluation policy sampling seeds must be in [0, 2**63).")
+    if not math.isfinite(args.clock_poll_ms) or not 0 <= args.clock_poll_ms <= 4:
+        parser.error("The native clock poll interval must be between 0 and 4 ms.")
     try:
         storage = CheckpointStore(args.out, args.checkpoint_budget_mib * MIB, args.min_free_disk_mib * MIB)
         if args.steps:
@@ -305,7 +315,8 @@ def main():
                                "current": None, "previous": None},
         "runtime": {"runner_sha256": digest(Path(__file__)),
                     "parakit_offsets_sha256": digest(args.parakit / "offsets.py"),
-                    "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu"},
+                    "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu",
+                    "clock_poll_ms": args.clock_poll_ms},
         "seed": args.seed, "additional_steps": args.steps, "requested_blocks": args.blocks,
         "evaluation_arms": args.eval_arms,
         "learned_evaluation_action": args.eval_action,
@@ -340,7 +351,13 @@ def main():
     keep_awake = ctypes.windll.kernel32.SetThreadExecutionState
     continuous, system_required, display_required = 0x80000000, 0x00000001, 0x00000002
     keep_awake(continuous | system_required | display_required)
+    original_sleep = None
     try:
+        if args.clock_poll_ms:
+            from environment import interface as game
+
+            original_sleep = game._sleep
+            game._sleep = partial(original_sleep, poll_interval=args.clock_poll_ms / 1000)
         if args.retry_game_over:
             retry_story_game_over(args.parakit)
         stage = NormalStageOne(args.parakit, limit=args.train_limit, motion_history=True,
@@ -396,6 +413,8 @@ def main():
                 stage.close()
             publish_json(report_path, report)
         finally:
+            if original_sleep is not None:
+                game._sleep = original_sleep
             keep_awake(continuous)
 
 
