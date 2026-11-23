@@ -57,6 +57,18 @@ The all-stage offline mean hides an opening-stage regression for the deployed se
 
 The native policies requested shooting on 98.33%, 88.55% and 87.62% of their decisions, and focus on 53.03%, 37.10% and 24.34%. They requested Bomb on one, 16 and 17 decisions. These pooled rates give longer episodes more weight. They describe what the policy requested and do not identify which head caused earlier misses. Offline replay scoring uses greedy decisions. A frozen-head native crossover could compare sampled and greedy buttons with a separate, shared movement RNG stream to isolate the effect of button decoding. [Native action histogram counts](../results/2026-11-23-th14-full-policy/sft-expanded-native-pure.json)
 
+### Native full-policy PPO pilot
+
+The pilot initialized all four PPO actor heads from the legacy seed-61 SFT checkpoint. Its initial actor logits matched SFT exactly. The original game supplied 8,192 training decisions over a 3,300-decision Stage 1 horizon, with a survival-time reward and a fresh value branch. Eight evaluation blocks rotated frozen SFT, pure PPO and the existing deterministic hybrid. SFT and PPO sampled with policy seeds 211–218. The game RNG was unmanaged and geometry, aim correction and automatic Bomb were disabled for both learned arms. [All 32 training updates and 24 evaluated episodes](../results/2026-11-23-th14-full-policy/ppo-long-8192-sft-paired.json)
+
+| Controller | Median first-miss frame | Clears | Reached frame 1,000 | Bombs used |
+| --- | ---: | ---: | ---: | ---: |
+| Frozen SFT | 570.5 | 0/8 | 3/8 | 0 |
+| Pure PPO, 8,192 decisions | 1,354.5 | 0/8 | 6/8 | 10 |
+| Hybrid baseline | Censored by clear in all 8 | 8/8 | 8/8 | 0 |
+
+PPO reached a later frame in 7/8 paired blocks, with a median within-block gain of 518 frames. Its later first misses accompanied ten Bombs used across eight runs. The trial does not estimate how much of the survival gain came from dodging or Bomb use. Training ran at 14.06 decisions per second, and native stepping plus resets accounted for 96.7% of wall time. The timing histogram contains 8,184 exact four-frame transitions, four three-frame transitions and four five-frame transitions. The saved PPO checkpoint is the parent of a continuation to 16,384 decisions, evaluated against the same frozen SFT with new policy seeds 401–408.
+
 ## Execution order and gates
 
 1. **Capture matching TH14 data.** The checked queue includes twelve Normal Reimu A, six Hard, and six Lunatic training credits, with distinct replay groups and 599,770 candidate four-tick windows before alignment. All 24 stages in the first tranche passed the minimum 95% moving alignment and 90% coverage. Its three training credits added 64,561 decisions including 591 Bomb-positive windows. The independent test replay stayed outside training and model selection. [Capture queue and hashes](../results/2026-11-23-th14-full-policy/sft-capture-queue.json), [completed first tranche](../results/2026-11-23-th14-full-policy/sft-expanded-admitted-captures.json)

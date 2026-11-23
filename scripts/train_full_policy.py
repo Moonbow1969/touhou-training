@@ -259,6 +259,7 @@ def main():
     parser.add_argument("--eval-action", choices=("sampled", "greedy"), default="sampled",
                         help="Decode the learned heads by argmax or sample their categorical policy.")
     parser.add_argument("--seed", type=int, default=61)
+    parser.add_argument("--eval-seed", type=int, help="First policy sampling seed. Defaults to the training seed.")
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
     parser.add_argument("--focus-wait", type=int, default=30)
@@ -275,6 +276,9 @@ def main():
         parser.error("Request training, evaluation of a saved checkpoint, or both.")
     if len(set(args.eval_arms)) != len(args.eval_arms):
         parser.error("Each evaluation arm may be requested once.")
+    eval_seed = args.seed if args.eval_seed is None else args.eval_seed
+    if not 0 <= eval_seed < 2 ** 63 or eval_seed + max(args.blocks - 1, 0) >= 2 ** 63:
+        parser.error("Evaluation policy sampling seeds must be in [0, 2**63).")
     try:
         storage = CheckpointStore(args.out, args.checkpoint_budget_mib * MIB, args.min_free_disk_mib * MIB)
         if args.steps:
@@ -302,6 +306,7 @@ def main():
         "seed": args.seed, "additional_steps": args.steps, "requested_blocks": args.blocks,
         "evaluation_arms": args.eval_arms,
         "learned_evaluation_action": args.eval_action,
+        "evaluation_first_policy_seed": eval_seed, "native_rng_seed_controlled": False,
         "ppo_hyperparameters": PPO_SETTINGS,
         "reward": REWARDS[args.reward],
         "controller_settings": {arm: {"geometry": arm == "hybrid", "aim_correction": arm == "hybrid",
@@ -353,9 +358,11 @@ def main():
                     result = trial(stage, base, None, True, lambda *_: None, None, student, True, True, True)
                 else:
                     if args.eval_action == "sampled":
-                        torch.manual_seed(args.seed + block)
+                        torch.manual_seed(eval_seed + block)
                     result = direct_trial(stage, base, base if name == "sft" else model.policy,
                                           deterministic=args.eval_action == "greedy")
+                    if args.eval_action == "sampled":
+                        result["policy_seed"] = eval_seed + block
                 result.update(block=block + 1, seconds=perf_counter() - start)
                 report["controllers"][name].append(result)
                 publish_json(report_path, report)
