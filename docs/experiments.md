@@ -30,6 +30,8 @@ Use `--evaluation-aim` to apply geometric aiming to each arm after training, and
 
 For SFT use `--patience 6` with a maximum epoch budget to stop after six rounds without an improvement in validation loss. The policy checkpoint is always the selected validation epoch. Preserve replay and player splits while fitting and selecting weights.
 
+For a corpus expansion from an existing SFT checkpoint, use `--resume` with the same observation and network configuration. `--learning-rate 0.00004` sets the warm-start step size. Add `--retain-resume` to include epoch zero in checkpoint selection. `--anchor-movement 4` adds a KL loss against the frozen initial movement distribution during warm-start training.
+
 The expanded SFT comparison kept four-frame decision targets, recent motion history, and stage-clock context. It used a pooled projectile encoder, hidden width 512, batch size 256, and seeds 61, 97, and 137. The 20-epoch matched comparison leaves early stopping disabled, while the follow-up stopping experiment uses the same seed and switches on `--patience 6`. Set `--title-balance 0.5` to reproduce the inverse-square-root title weighting.
 
 ```powershell

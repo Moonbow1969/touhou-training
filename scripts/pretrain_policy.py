@@ -1,5 +1,6 @@
 import argparse
 from collections import Counter
+from copy import deepcopy
 import json
 from pathlib import Path
 
@@ -327,6 +328,11 @@ def main():
     parser.add_argument("--moving-transition-weight", type=float, default=1.0,
                         help="Extra direction loss weight when the expert starts moving or turns.")
     parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
+    parser.add_argument("--learning-rate", type=float, default=3e-4)
+    parser.add_argument("--retain-resume", action="store_true",
+                        help="Include the initialization in validation-based checkpoint selection.")
+    parser.add_argument("--anchor-movement", type=float, default=0.,
+                        help="KL weight for retaining movement predictions from the initial checkpoint.")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--seed", type=int, default=61)
     args = parser.parse_args()
@@ -345,6 +351,10 @@ def main():
         parser.error("Epochs, hidden width, batch size and shards per block must be positive.")
     if args.patience < 0:
         parser.error("Early-stopping patience cannot be negative.")
+    if not 0 < args.learning_rate < float("inf") or args.retain_resume and not args.resume:
+        parser.error("Use a finite positive learning rate and supply a checkpoint when retaining the initialization.")
+    if not 0 <= args.anchor_movement < float("inf") or args.anchor_movement and not args.resume:
+        parser.error("Use a finite nonnegative anchor weight and supply its initial checkpoint.")
     if not 0 <= args.title_balance <= 1:
         parser.error("Title balance must be between zero and one.")
     if not 1 <= args.moving_transition_weight < float("inf"):
@@ -370,15 +380,26 @@ def main():
     rng = np.random.default_rng(args.seed)
     device = torch.device(args.device)
     policy = MovementPolicy(observation_space(args.motion_history, args.retain_recent_motion, args.stage_clock),
-                            action_space(), lambda _: 3e-4, **network_kwargs(args.hidden, args.encoder)).to(device)
+                            action_space(), lambda _: args.learning_rate,
+                            **network_kwargs(args.hidden, args.encoder)).to(device)
     policy.factorized_movement = args.factorized_movement
     if args.resume:
         policy.load_state_dict(torch.load(args.resume, map_location=device, weights_only=True))
+    teacher = deepcopy(policy).eval().requires_grad_(False) if args.anchor_movement else None
     counts = label_counts(train)
     majority = np.asarray([count.argmax() for count in counts])
     weights = [torch.from_numpy(np.maximum(count, 1).astype(np.float32)).rsqrt().to(device) for count in counts]
     history = []
     best = None
+    initial_validation = None
+    if args.retain_resume:
+        metrics, _, per_replay = validate(policy, val, majority, args.batch_size * 2, device,
+                                          args.motion_history, args.motion_spans, args.retain_recent_motion,
+                                          args.stage_clock)
+        initial_validation = {"epoch": 0, **metrics}
+        best = dict(initial_validation, per_replay=per_replay)
+        torch.save(policy.state_dict(), args.out / "policy.pt")
+        print(json.dumps({"initial_validation": initial_validation}), flush=True)
     motion_fields = 3 * MOTION_INTERVALS * (int(args.motion_history) + int(args.retain_recent_motion))
     for epoch in range(1, args.epochs + 1):
         policy.train()
@@ -416,6 +437,12 @@ def main():
                 negative_mass, eligible, _ = replay_risk_terms(bullets, context, truth, logits[0], logits[1])
                 loss += args.geometry_loss_weight * negative_mass / eligible.clamp_min(1)
                 geometry_totals += torch.stack((negative_mass.detach(), eligible))
+            if teacher is not None:
+                with torch.no_grad():
+                    target_movement = predict_heads(teacher, bullets, context)[0].softmax(dim=1)
+                divergence = functional.kl_div(logits[0].log_softmax(dim=1), target_movement,
+                                               reduction="none").sum(dim=1)
+                loss += args.anchor_movement * (divergence * title_weight).sum() / title_weight.sum()
             policy.optimizer.zero_grad(set_to_none=True)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0)
@@ -459,7 +486,7 @@ def main():
         "training_player_loss_weights": {f"{title}/{player}": weight for (title, player), weight in player_weights.items()},
         "validation_samples": sum(row["samples"] for row in validation_replays),
         "epochs_requested": args.epochs, "epochs_completed": len(history),
-        "majority_baseline": baseline, "best": best, "epochs": history,
+        "majority_baseline": baseline, "initial_validation": initial_validation, "best": best, "epochs": history,
     }
     (args.out / "metrics.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 

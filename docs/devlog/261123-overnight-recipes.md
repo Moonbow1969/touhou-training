@@ -157,3 +157,18 @@ Closed both completed game sessions and retried TH16 through its official Steam 
 Compared SFT hidden width 512 with 1024 at seeds 61, 97 and 137. The 147,560 training decisions, equal title weights, 20-epoch budget and replay splits were fixed. Total policy parameters including the value stack increased from 781,552 to 2,601,200. Mean direction-change accuracy rose from 30.15% to 32.43%, with gains at two of the three seeds. Mean overall direction accuracy fell from 64.18% to 62.30%. The recorded native story benchmark uses width 512.
 
 The source corpus contains 2,000 complete action replays with 209,326,603 native input frames. Its training split contains 45,498,703 non-overlapping four-frame button windows. The action-only prior consumed 45,161,344 distinct windows per epoch after constructing contiguous 64-step sequences. A ten-epoch H100 run processed 451,613,440 window presentations and selected epoch 8 using validation direction changes. On 2,549,888 test windows, direction-change accuracy moved from 6.80% after one epoch to 11.43%, and overall direction accuracy moved from 70.97% to 71.80%. This prior takes previous button inputs and replay metadata. State-conditioned SFT uses the separate native state–action pairs.
+
+## Adding a second full Lunatic replay
+
+Captured six stages of TH13 1.00c Lunatic Marisa from the original executable. The training replay `th13_ud0bf1.rpy` contributed 20,576 paired decisions. Per-stage moving-input alignment ranged from 98.96% to 100%. The new snapshot has 168,136 training decisions from 44 stages. Both prior validation and test splits have identical shard fingerprints in the new snapshot.
+
+| Training on the updated snapshot | Mean direction accuracy | Mean direction-change accuracy | Selected epochs for seeds 61, 97, 137 |
+| --- | ---: | ---: | --- |
+| Frozen 147,560-decision reference | 64.18% | 30.15% | 2, 4, 3 |
+| 168,136 decisions, random initialization | 61.62% | 14.79% | 3, 2, 2 |
+| Low-rate warm start | 63.17% | 18.47% | 2, 2, 0 |
+| Warm start with movement anchor | 64.22% | 29.01% | 2, 0, 0 |
+
+Randomly initialized runs used the same 20-epoch recipe and equal title weighting as the reference. Warm-start runs used learning rate 0.00004, the updated corpus, the same three initial checkpoints, a 16-epoch maximum, and patience six. The anchored variant added a weight-four KL term to retain each initial checkpoint's movement distribution on the sampled inputs. The starting checkpoint participated in model selection. The updated data remain available for future training, and the native story controller retains the 147,560-decision checkpoint.
+
+Seed 137 in the anchored experiment reached its normal early stop before an SSH timeout interrupted artifact retrieval. The recovery fetched the saved checkpoint and epoch log with verified hashes. The original failure and subsequent evaluation have separate run records.
