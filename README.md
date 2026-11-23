@@ -8,6 +8,7 @@ The TH14 1.00b Normal Reimu A controller has cleared the first three stages and 
 
 - [Initial benchmark and devlog](docs/devlog/261123-initial-benchmark.md)
 - [Late-stage practice and title transfer](docs/devlog/261123-transfer-and-late-stages.md)
+- [Overnight training recipes](docs/devlog/261123-overnight-recipes.md)
 - [Native environment, models, and evaluation design](docs/design.md)
 - [Training logs and reproduction commands](docs/experiments.md)
 - [Machine-readable results](results/2026-11-23.json)

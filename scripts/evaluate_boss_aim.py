@@ -12,7 +12,8 @@ from scripts.evaluate_stage_policies import read_policy, stage_action
 from scripts.probe_stage_risk import player_radius
 from scripts.record_run import write_json
 from scripts.stage_policy import NormalStageOne
-from scripts.stage_risk import action_clearances, body_clearances, laser_clearances, player_paths, suggest_dodge
+from scripts.stage_risk import (action_clearances, body_clearances, laser_clearances, player_paths,
+                                raw_projectile_clearances, suggest_dodge)
 from scripts.train_stage_dodge import learned_action
 from scripts.world_shadow import WorldShadow
 
@@ -126,12 +127,17 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
             shadow.observe(previous_observation, observation, action, impact)
         if impact:
             move, focus = map(int, action[:2])
-            impacts.append({'stage': before.stage, 'frame': stage.last_frame, 'previous_frame': old_frame,
-                            'position': (before.observation['context'][:2] * [192, 448]).tolist(),
-                            'projectile_clearance': float(projectile_risk[focus, move]),
-                            'body_clearance': float(enemy_risk[focus, move]),
-                            'laser_clearance': float(beam_risk[focus, move]), 'laser_count': len(segments),
-                            'movement': move, 'best_clearance': float(clearance.max())})
+            hit = {'stage': before.stage, 'frame': stage.last_frame, 'previous_frame': old_frame,
+                   'position': (before.observation['context'][:2] * [192, 448]).tolist(),
+                   'projectile_clearance': float(projectile_risk[focus, move]),
+                   'body_clearance': float(enemy_risk[focus, move]),
+                   'laser_clearance': float(beam_risk[focus, move]), 'laser_count': len(segments),
+                   'movement': move, 'best_clearance': float(clearance.max())}
+            if before.projectiles is not None:
+                native_margins = raw_projectile_clearances(previous_observation, radius, before.projectiles)
+                hit['raw_projectile_clearance'] = float(native_margins[focus, move])
+                hit['raw_projectile_count'] = len(before.projectiles)
+            impacts.append(hit)
         boss = before.boss
         delta = min(12, max(0, stage.last_frame - old_frame))
         if boss is not None and boss.vulnerable:

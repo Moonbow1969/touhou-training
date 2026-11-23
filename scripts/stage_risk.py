@@ -6,6 +6,7 @@ _DIRECTIONS /= np.linalg.norm(_DIRECTIONS, axis=1, keepdims=True).clip(min=1)
 _SPEEDS = np.array([4.5, 2.0], dtype=np.float32)
 _LOWER_BOUND = np.array([-184, 32], dtype=np.float32)
 _UPPER_BOUND = np.array([184, 432], dtype=np.float32)
+_PROJECTILE_POSITION_SCALE = np.array([384, 448], dtype=np.float32)
 
 
 def player_paths(observation, horizon):
@@ -19,16 +20,27 @@ def action_clearances(observation, player_radius, horizon=12):
     """Min predicted projectile surface distance for each focus/direction pair."""
     objects = observation['bullets']
     hazard = objects[(objects[:, 6] > 0) & (objects[:, 5] > 0) & (objects[:, 4] > 0)]
-    if not len(hazard):
+    return _projectile_clearances(observation, player_radius, horizon, hazard[:, :2] * _PROJECTILE_POSITION_SCALE,
+                                  hazard[:, 2:4] * 16, hazard[:, 4] * 32)
+
+
+def raw_projectile_clearances(observation, player_radius, projectiles, horizon=12):
+    """Check native positions, velocities and radii without the policy's feature limits."""
+    hazard = projectiles[(projectiles[:, 5] > 0) & (projectiles[:, 4] > 0)]
+    hazard = hazard[np.isfinite(hazard).all(axis=1)]
+    return _projectile_clearances(observation, player_radius, horizon, hazard[:, :2], hazard[:, 2:4], hazard[:, 4])
+
+
+def _projectile_clearances(observation, player_radius, horizon, centers, velocity, radius):
+    if not len(centers):
         return np.full((2, 9), 512, dtype=np.float32)
     position = observation['context'][:2] * np.array([192, 448], dtype=np.float32)
     time = np.arange(1, horizon + 1, dtype=np.float32)
     player = player_paths(observation, horizon)
-    bullets = hazard[:, None, :2] * np.array([384, 448], dtype=np.float32)
-    bullets = bullets + hazard[:, None, 2:4] * 16 * time[None, :, None]
+    bullets = centers[:, None, :] + velocity[:, None, :] * time[None, :, None]
     relative = bullets[None, None] - (player - position)[:, :, None]
     distance = np.linalg.norm(relative, axis=-1)
-    clearance = distance - hazard[None, None, :, None, 4] * 32 - player_radius
+    clearance = distance - radius[None, None, :, None] - player_radius
     return clearance.min(axis=(2, 3))
 
 

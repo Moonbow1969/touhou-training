@@ -1,0 +1,149 @@
+{
+  "date": "2026-11-23",
+  "paired_dataset": {
+    "earlier_train": 126781,
+    "expanded_train": 147560,
+    "validation": 13938,
+    "test": 51421
+  },
+  "sft_data_and_title_balance": {
+    "original_126781": {
+      "seeds": [
+        {
+          "seed": 61,
+          "overall_accuracy": 0.5865502421189787,
+          "moving_accuracy": 0.5636793902513983,
+          "turn_accuracy": 0.1716959234005513,
+          "start_accuracy": 0.17338565822333216
+        },
+        {
+          "seed": 97,
+          "overall_accuracy": 0.5826413333074036,
+          "moving_accuracy": 0.5752965763107751,
+          "turn_accuracy": 0.14696068475264762,
+          "start_accuracy": 0.1280770602925437
+        },
+        {
+          "seed": 137,
+          "overall_accuracy": 0.5838859609887012,
+          "moving_accuracy": 0.5743745774171738,
+          "turn_accuracy": 0.14877411867111562,
+          "start_accuracy": 0.14466642882625758
+        }
+      ],
+      "mean": {
+        "overall_accuracy": 0.5843591788050279,
+        "moving_accuracy": 0.5711168479931158,
+        "turn_accuracy": 0.1558102422747715,
+        "start_accuracy": 0.14870971578071115
+      }
+    },
+    "expanded_147560": {
+      "seeds": [
+        {
+          "seed": 61,
+          "overall_accuracy": 0.6403803893350966,
+          "moving_accuracy": 0.5659843874854017,
+          "turn_accuracy": 0.24292760771797475,
+          "start_accuracy": 0.31823046735640387
+        },
+        {
+          "seed": 97,
+          "overall_accuracy": 0.6317652321036152,
+          "moving_accuracy": 0.5446554797467577,
+          "turn_accuracy": 0.16277382852168867,
+          "start_accuracy": 0.14002854084909025
+        },
+        {
+          "seed": 137,
+          "overall_accuracy": 0.6282063748274052,
+          "moving_accuracy": 0.5453623455651854,
+          "turn_accuracy": 0.15559263020455535,
+          "start_accuracy": 0.13467713164466644
+        }
+      ],
+      "mean": {
+        "overall_accuracy": 0.633450665422039,
+        "moving_accuracy": 0.5520007375991149,
+        "turn_accuracy": 0.18709802214807292,
+        "start_accuracy": 0.19764537995005352
+      }
+    },
+    "expanded_147560_title_balanced": {
+      "seeds": [
+        {
+          "seed": 61,
+          "overall_accuracy": 0.6442115089165905,
+          "moving_accuracy": 0.5753580429036819,
+          "turn_accuracy": 0.2750616567532279,
+          "start_accuracy": 0.3901177310024973
+        },
+        {
+          "seed": 97,
+          "overall_accuracy": 0.6307928667276016,
+          "moving_accuracy": 0.6117462659044809,
+          "turn_accuracy": 0.3226461627738285,
+          "start_accuracy": 0.45219407777381376
+        },
+        {
+          "seed": 137,
+          "overall_accuracy": 0.6420723050893604,
+          "moving_accuracy": 0.5746819103817076,
+          "turn_accuracy": 0.22791237487305963,
+          "start_accuracy": 0.28683553335711737
+        }
+      ],
+      "mean": {
+        "overall_accuracy": 0.6390255602445175,
+        "moving_accuracy": 0.5872620730632901,
+        "turn_accuracy": 0.2752067314667054,
+        "start_accuracy": 0.37638244737780946
+      }
+    }
+  },
+  "sft_geometry_regularizer": {
+    "weight": 0.3,
+    "unregularized": {
+      "predicted_collisions": 16,
+      "eligible_decisions": 3437,
+      "predicted_collision_fraction": 0.004655222577829503
+    },
+    "regularized": {
+      "predicted_collisions": 16,
+      "eligible_decisions": 3437,
+      "predicted_collision_fraction": 0.004655222577829503
+    }
+  },
+  "world_near_player_ap": {
+    "4": {
+      "unweighted": 0.9586854516621638,
+      "local_loss_weight_0_5": 0.9516444300873175
+    },
+    "12": {
+      "unweighted": 0.8506446171684617,
+      "local_loss_weight_0_5": 0.8439377210911092
+    },
+    "24": {
+      "unweighted": 0.6461762953394862,
+      "local_loss_weight_0_5": 0.6535498260380425
+    }
+  },
+  "native_th17_leave_title_out_first_miss": {
+    "flat": 2450,
+    "factorized": 514
+  },
+  "dodge_initialization_audit": {
+    "hard": {
+      "entropy": 0.06594007462263107,
+      "risky_state_entropy": 0.10727766156196594,
+      "risky_state_negative_clearance_probability": 0.0016553114401176572,
+      "deterministic_directions_unchanged": true
+    },
+    "margin_mixture": {
+      "entropy": 1.3184771537780762,
+      "risky_state_entropy": 1.1067733764648438,
+      "risky_state_negative_clearance_probability": 0.001028830069117248,
+      "deterministic_directions_unchanged": true
+    }
+  }
+}

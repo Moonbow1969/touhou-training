@@ -10,6 +10,7 @@ from stable_baselines3.common.logger import configure
 from stable_baselines3.common.policies import ActorCriticPolicy
 import torch
 
+from scripts.evaluate_boss_aim import aim_features
 from scripts.evaluate_stage_policies import read_policy, stage_action
 from scripts.probe_stage_risk import player_radius
 from scripts.stage_policy import NormalStageOne, StageProgress, run_episode
@@ -25,10 +26,12 @@ class DodgeEnv(gym.Wrapper):
         self.risk_weight = risk_weight
         self.body_risk = body_risk
         self.laser_risk = laser_risk
+        self.aim = False
         self.observation_space = gym.spaces.Box(-2, 2, (18, 5), dtype=np.float32)
         self.action_space = gym.spaces.Discrete(18)
 
     def decision_features(self, observation):
+        self.current_observation = observation
         self.base_action = stage_action(self.base, self.env, observation)
         self.clearances = action_clearances(observation, self.radius)
         reader = self.env.reader
@@ -49,6 +52,9 @@ class DodgeEnv(gym.Wrapper):
         buttons = self.base_action.copy()
         focus, direction = divmod(int(action), 9)
         buttons[:2] = (direction, focus)
+        if self.aim:
+            _, direction = aim_features(self.current_observation, buttons, self.clearances, self.env.snapshot.boss)
+            buttons[0] = direction
         risk = dodge_regret(buttons, self.clearances)
         observation, reward, terminated, truncated, info = self.env.step(buttons)
         features = self.decision_features(observation)
@@ -77,6 +83,9 @@ def main():
     parser.add_argument('--steps', type=int, default=1024)
     parser.add_argument('--limit', type=int, default=1500)
     parser.add_argument('--evaluation-limit', type=int, help='Use a separate decision bound during native evaluation.')
+    parser.add_argument('--evaluation-max-misses', type=int, choices=(1, 2), default=1)
+    parser.add_argument('--evaluation-aim', action='store_true', help='Use the same geometric boss aim in every evaluation arm.')
+    parser.add_argument('--evaluation-reference', type=Path, help='Include a frozen PPO checkpoint in the evaluation.')
     parser.add_argument('--attempts', type=int, default=3)
     parser.add_argument('--risk-weight', type=float, default=.025)
     parser.add_argument('--seed', type=int, default=77)
@@ -138,10 +147,15 @@ def main():
         arms = [('imitation', imitation), ('ppo', fine_tuned)]
         if args.analytic_control:
             arms.append(('analytic', analytic))
+        if args.evaluation_reference:
+            reference = PPO.load(args.evaluation_reference, device='cpu')
+            arms.append(('reference_ppo', lambda observation: int(reference.predict(observation, deterministic=True)[0])))
         results = {label: [] for label, _ in arms}
         report = {
             'base': str(args.base), 'head': str(args.head), 'limit': args.limit, 'seed': args.seed,
             'evaluation_limit': args.evaluation_limit or args.limit, 'body_risk': args.body_risk,
+            'evaluation_max_misses': args.evaluation_max_misses, 'evaluation_aim': args.evaluation_aim,
+            'evaluation_reference': str(args.evaluation_reference) if args.evaluation_reference else None,
             'laser_risk': args.laser_risk, 'resume_ppo': str(args.resume_ppo) if args.resume_ppo else None,
             'initial_temperature': args.initial_temperature,
             'risk_weight': args.risk_weight, 'rollout_steps': model.num_timesteps,
@@ -149,6 +163,8 @@ def main():
             'training_episodes': list(stage.completed), 'results': results,
         }
         stage.limit = report['evaluation_limit']
+        stage.max_misses = args.evaluation_max_misses
+        env.aim = args.evaluation_aim
         write_json(args.out / 'evaluation.json', report)
         for block in range(args.attempts):
             rotation = block % len(arms)
@@ -157,6 +173,8 @@ def main():
                 results[name].append(result)
                 report['summary'] = {
                     label: {'n': len(rows), 'median_furthest_frame': median(r['stage_frame'] for r in rows),
+                            'median_score': median(r['score'] for r in rows),
+                            'median_misses': median(r['misses'] for r in rows),
                             'first_miss_frames': [r['first_miss_frame'] for r in rows],
                             'stage_clears': sum(r['outcome'] == 'advanced_stage' for r in rows),
                             'no_miss_at_cutoff': sum(r['outcome'] == 'limit' for r in rows)}

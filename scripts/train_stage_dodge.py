@@ -83,6 +83,15 @@ def dataset(rows):
     return TensorDataset(*(torch.from_numpy(np.stack(field)) for field in zip(*rows)))
 
 
+def clearance_targets(features, labels, mixture):
+    hard = F.one_hot(labels, num_classes=features.shape[1]).float()
+    margins = features[..., 0] * 16
+    selected = margins.gather(1, labels[:, None])
+    eligible = ((margins >= 0) & (margins >= selected - 3)) | hard.bool()
+    alternative = torch.softmax((margins / 4).masked_fill(~eligible, -torch.inf), dim=1)
+    return (1 - mixture) * hard + mixture * alternative
+
+
 def main():
     parser = argparse.ArgumentParser(description='Train a neural action selector from replay and closed-loop dodge corrections.')
     parser.add_argument('--base', type=Path, required=True)
@@ -90,9 +99,11 @@ def main():
     parser.add_argument('--corrections', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--epochs', type=int, default=30)
+    parser.add_argument('--clearance-mixture', type=float, default=0.,
+                        help='Preserve probability on nearly as safe candidate actions.')
     args = parser.parse_args()
-    if args.epochs < 1:
-        parser.error('Epochs must be positive.')
+    if args.epochs < 1 or not 0 <= args.clearance_mixture <= 1:
+        parser.error('Epochs must be positive and the clearance mixture must be between zero and one.')
     torch.manual_seed(203)
     torch.set_num_threads(1)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -114,7 +125,8 @@ def main():
         for x, y, changed_action in DataLoader(train, batch_size=192, shuffle=True):
             x, y = x.to(device), y.to(device)
             weights = 1 + changed_action.to(device).float()
-            loss = (F.cross_entropy(model(x), y, reduction='none') * weights).mean()
+            labels_for_loss = clearance_targets(x, y, args.clearance_mixture) if args.clearance_mixture else y
+            loss = (F.cross_entropy(model(x), labels_for_loss, reduction='none') * weights).mean()
             optimizer.zero_grad(set_to_none=True)
             loss.backward()
             optimizer.step()
@@ -122,14 +134,19 @@ def main():
         with torch.inference_mode():
             predictions = model(inputs)
             correct = predictions.argmax(dim=1) == labels
-            val_loss = float(F.cross_entropy(predictions, labels))
+            validation_targets = clearance_targets(inputs, labels, args.clearance_mixture) if args.clearance_mixture else labels
+            val_loss = float(F.cross_entropy(predictions, validation_targets))
+            distribution = torch.distributions.Categorical(logits=predictions)
+            unsafe_probability = float((distribution.probs * (inputs[..., 0] < 0)).sum(1).mean())
         row = {'epoch': epoch, 'validation_loss': val_loss, 'all_accuracy': float(correct.float().mean()),
+               'mean_entropy': float(distribution.entropy().mean()), 'negative_clearance_probability': unsafe_probability,
                'correction_accuracy': float(correct[changed].float().mean()) if changed.any() else None}
         epochs.append(row)
         if val_loss < best:
             best = val_loss
             torch.save(model.state_dict(), args.out / 'head.pt')
     report = {'replay_training_decisions': len(replay_train), 'on_policy_corrections': len(corrections),
+              'clearance_mixture': args.clearance_mixture,
               'validation_decisions': len(validation), 'validation_corrections': int(changed.sum()),
               'best': min(epochs, key=lambda row: row['validation_loss']), 'epochs': epochs}
     (args.out / 'metrics.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

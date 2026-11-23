@@ -53,6 +53,7 @@ class Snapshot:
     score: int
     spell_bonus: int
     boss: BossState | None = None
+    projectiles: np.ndarray | None = None
 
 
 class StateReader:
@@ -241,9 +242,10 @@ class StateReader:
         entities = self.read_bullets(x, y)
         # Keep nearby bullets, with closing speed available to the policy.
         entities.sort(key=lambda entity: entity[0] ** 2 + entity[1] ** 2)
+        projectiles = np.asarray(entities, dtype=np.float32).reshape(-1, 6)
         bullets = np.zeros((self.entity_limit, 7), dtype=np.float32)
         if entities:
-            nearest = np.asarray(entities[: self.entity_limit], dtype=np.float32)
+            nearest = projectiles[: self.entity_limit]
             count = len(nearest)
             bullets[:count, :6] = nearest / (384, 448, 16, 16, 32, 1)
             bullets[:count, 6] = 1
@@ -265,6 +267,7 @@ class StateReader:
             score=game.read_game_val("score"),
             spell_bonus=spell_bonus,
             boss=boss,
+            projectiles=projectiles,
         )
 
 

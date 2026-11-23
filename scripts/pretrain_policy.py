@@ -9,6 +9,7 @@ from stable_baselines3.common.policies import MultiInputActorCriticPolicy
 import torch
 from torch.nn import functional
 
+from scripts.replay_risk import replay_risk_terms
 from scripts.train_spell_qr import AttentiveThreatEncoder, ThreatEncoder
 
 
@@ -305,6 +306,8 @@ def main():
     parser.add_argument("--soft-movement", action="store_true")
     parser.add_argument("--factorized-movement", action="store_true",
                         help="Train separate movement intent and conditional direction losses.")
+    parser.add_argument("--geometry-loss-weight", type=float, default=0.,
+                        help="Penalize probability on predicted collisions when the demonstration is geometrically safe.")
     parser.add_argument("--moving-transition-weight", type=float, default=1.0,
                         help="Extra direction loss weight when the expert starts moving or turns.")
     parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
@@ -313,6 +316,8 @@ def main():
     args = parser.parse_args()
     if not 0 <= args.player_balance <= 1:
         parser.error("Player balance must be between zero and one.")
+    if not 0 <= args.geometry_loss_weight < float("inf"):
+        parser.error("Geometry loss weight must be finite and nonnegative.")
     if args.motion_spans and (not args.motion_history or args.motion_spans != sorted(set(args.motion_spans))
                              or not 4 <= args.motion_spans[0] <= args.motion_spans[-1] <= 120):
         parser.error("Motion spans require motion history and three distinct increasing spans from 4 to 120 frames.")
@@ -356,6 +361,7 @@ def main():
     best = None
     for epoch in range(1, args.epochs + 1):
         policy.train()
+        geometry_totals = torch.zeros(2, device=device)
         for bullets, context, truth, *extra, title_weight in training_batches(
                 train, args.shards_per_block, args.batch_size, device, rng, title_weights,
                 args.motion_history, args.soft_movement, args.motion_spans, args.retain_recent_motion,
@@ -382,6 +388,10 @@ def main():
                 sample_weight = (direction_weight if index == 0 else title_weight) * weights[index][target]
                 losses = functional.cross_entropy(head, target, reduction="none")
                 loss += (losses * sample_weight).sum() / sample_weight.sum()
+            if args.geometry_loss_weight:
+                negative_mass, eligible, _ = replay_risk_terms(bullets, context, truth, logits[0], logits[1])
+                loss += args.geometry_loss_weight * negative_mass / eligible.clamp_min(1)
+                geometry_totals += torch.stack((negative_mass.detach(), eligible))
             policy.optimizer.zero_grad(set_to_none=True)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(policy.parameters(), 1.0)
@@ -390,6 +400,10 @@ def main():
                                                  args.motion_history, args.motion_spans, args.retain_recent_motion,
                                                  args.stage_clock)
         entry = {"epoch": epoch, **metrics}
+        if args.geometry_loss_weight:
+            mass_sum, risky_examples = geometry_totals.tolist()
+            entry.update(geometry_eligible_decisions=int(risky_examples),
+                         geometry_collision_probability=mass_sum / risky_examples if risky_examples else None)
         print(json.dumps(entry), flush=True)
         with (args.out / "epochs.jsonl").open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(entry) + "\n")
@@ -408,6 +422,7 @@ def main():
         "encoder": args.encoder,
         "soft_movement": args.soft_movement,
         "factorized_movement": args.factorized_movement,
+        "geometry_loss_weight": args.geometry_loss_weight,
         "moving_transition_weight": args.moving_transition_weight,
         "training_replays": training_replays, "validation_replays": validation_replays,
         "training_samples_by_title": population,

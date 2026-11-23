@@ -7,6 +7,7 @@ import torch
 
 from scripts.evaluate_stage_policies import read_policy
 from scripts.pretrain_policy import batch_block, decode_movement, index_split, predict_heads, read_shard
+from scripts.replay_risk import collision_mask
 
 
 def prior_direction(context):
@@ -16,8 +17,9 @@ def prior_direction(context):
 
 
 @torch.inference_mode()
-def evaluate(shards, policies, device):
+def evaluate(shards, policies, device, geometry_eval=False):
     counts = {}
+    risk_counts = {}
     stages = []
     for shard in shards:
         path, meta = shard
@@ -32,16 +34,27 @@ def evaluate(shards, policies, device):
             'start_moving': (context[:, -7] > 0) & (truth != 4) & (previous == 4),
         }
         predictions = {'keep_last_direction': previous}
+        focus_predictions = {'keep_last_direction': (context[:, 2] > .5).astype(int)}
+        if geometry_eval:
+            masks = np.concatenate([collision_mask(bullets, ctx).cpu().numpy()
+                                    for bullets, ctx, _ in batch_block(data, 256, device, np.arange(len(truth)))])
+            indices = np.arange(len(truth))
+            eligible = masks.any(axis=(1, 2)) & ~masks[indices, actions[:, 1], truth]
         by_motion_spans = {(None, False, False): data}
         for name, (policy, spans, retained) in policies.items():
             key = spans, retained, policy.stage_clock
             if key not in by_motion_spans:
                 by_motion_spans[key] = read_shard(shard, motion_history=True, motion_spans=spans,
                                                   retain_recent_motion=retained, stage_clock=policy.stage_clock)
-            predictions[name] = np.concatenate([
-                decode_movement(predict_heads(policy, bullets, ctx)[0], policy.factorized_movement).cpu().numpy()
-                for bullets, ctx, _ in batch_block(by_motion_spans[key], 512, device, np.arange(len(truth)))
-            ])
+            direction_batches, focus_batches = [], []
+            for bullets, ctx, _ in batch_block(by_motion_spans[key], 512, device, np.arange(len(truth))):
+                movement, focus, _, _ = predict_heads(policy, bullets, ctx)
+                direction_batches.append(decode_movement(movement, policy.factorized_movement).cpu().numpy())
+                if geometry_eval:
+                    focus_batches.append(focus.argmax(1).cpu().numpy())
+            predictions[name] = np.concatenate(direction_batches)
+            if geometry_eval:
+                focus_predictions[name] = np.concatenate(focus_batches)
         stage_counts = {}
         for label, prediction in predictions.items():
             correct = prediction == truth
@@ -56,6 +69,10 @@ def evaluate(shards, policies, device):
                     summed = group_counts.setdefault(key, [0, 0])
                     summed[0] += wins
                     summed[1] += total
+            if geometry_eval:
+                total = risk_counts.setdefault(label, [0, 0])
+                total[0] += int((masks[indices, focus_predictions[label], prediction] & eligible).sum())
+                total[1] += int(eligible.sum())
         stages.append({'shard': path.stem, **meta, 'counts': stage_counts})
     summary = {
         group: {
@@ -65,7 +82,12 @@ def evaluate(shards, policies, device):
         }
         for group, group_counts in counts.items()
     }
-    return {'summary': summary, 'stages': stages}
+    result = {'summary': summary, 'stages': stages}
+    if geometry_eval:
+        result['geometry'] = {label: {'predicted_collisions': collisions, 'eligible_decisions': count,
+                                      'predicted_collision_fraction': collisions / count if count else None}
+                              for label, (collisions, count) in risk_counts.items()}
+    return result
 
 
 def main():
@@ -78,6 +100,7 @@ def main():
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--holdout-title', type=int,
                         help='Evaluate this title and verify the candidate did not use it for training or selection.')
+    parser.add_argument('--geometry-eval', action='store_true', help='Also compare predicted four-tick collisions.')
     args = parser.parse_args()
     torch.set_num_threads(1)
     device = torch.device(args.device)
@@ -106,7 +129,8 @@ def main():
                            'stage_clock': policies[label][0].stage_clock} for label, path in choices},
         'holdout_title': args.holdout_title,
         **{split: evaluate([shard for shard in index_split(args.data, split)
-                            if args.holdout_title is None or shard[1]['title'] == args.holdout_title], policies, device)
+                            if args.holdout_title is None or shard[1]['title'] == args.holdout_title], policies, device,
+                           args.geometry_eval)
            for split in ('validation', 'test')},
     }
     args.out.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
