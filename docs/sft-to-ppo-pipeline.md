@@ -41,10 +41,22 @@ Reproduce the nine-checkpoint offline report with the frozen private artifacts a
 python -m scripts.summarize_expanded_sft_independent --legacy-root RUNS --expanded-root RUNS/expanded --test-data RUNS/expanded/test/th14_ud0559 --out runs/th14-independent.json
 ```
 
+### Native Stage 1 pure SFT
+
+The three seed-61 checkpoints completed eight rotated blocks in stock TH14 1.00b Normal Reimu A. Each arm sampled its own actions using common policy seeds 101 through 108. Geometry, aim correction and automatic Bomb were disabled. Every episode started at stage frame 18 and ended at the first miss. [Complete native report and checkpoint fingerprints](../results/2026-11-23-th14-full-policy/sft-expanded-native-pure.json)
+
+| Cohort | Median first-miss frame | Clears | More frames than legacy within block | Observed horizontal responses | Bombs used |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Legacy with stage clock | 758 | 0/8 | — | 803/804 | 1 |
+| Expanded with stage clock | 494 | 0/8 | 2/8 | 738/761 | 7 |
+| Expanded with stage clock omitted | 484 | 0/8 | 3/8 | 756/773 | 8 |
+
+The expanded policies improved several offline direction metrics and died earlier in the original game on this sample. Horizontal response counts show physical motion in all three arms. The response denominator includes commands near playfield edges. The two expanded arms used more Bombs over fewer played frames. The full per-episode traces support further action and score analysis. This small live comparison supports using the legacy checkpoint as the frozen common PPO start. The next experiment uses fresh sampling seeds and keeps the existing hybrid backbone fixed.
+
 ## Execution order and gates
 
 1. **Capture matching TH14 data.** The checked queue includes twelve Normal Reimu A, six Hard, and six Lunatic training credits, with distinct replay groups and 599,770 candidate four-tick windows before alignment. All 24 stages in the first tranche passed the minimum 95% moving alignment and 90% coverage. Its three training credits added 64,561 decisions including 591 Bomb-positive windows. The independent test replay stayed outside training and model selection. [Capture queue and hashes](../results/2026-11-23-th14-full-policy/sft-capture-queue.json), [completed first tranche](../results/2026-11-23-th14-full-policy/sft-expanded-admitted-captures.json)
-2. **Measure the data effect in width 512.** Six expanded runs completed, with three seeds, a 20-epoch maximum and patience six, first with the current architecture and then with the stage clock omitted. The sealed evaluator verified replay and player exclusion and reproduced the same report from frozen checkpoints. The native comparison uses the seed-61 checkpoint from each cohort with eight rotated evaluation blocks. Report native outcomes by episode and keep later cross-title and difficulty evaluations distinct from this TH14 Normal result.
+2. **Measure the data effect in width 512.** Six expanded runs completed, with three seeds, a 20-epoch maximum and patience six, first with the current architecture and then with the stage clock omitted. The sealed evaluator verified replay and player exclusion and reproduced the same report from frozen checkpoints. The native comparison completed all eight rotated evaluation blocks with seed-61 checkpoints. Report native outcomes by episode and keep later cross-title and difficulty evaluations distinct from this TH14 Normal result.
 3. **Change one modeling variable at a time.** Test a first-tick or motion-transition auxiliary loss at the four-tick control rate. If needed, compare actual two-tick captures with the same temporal history in native frames. Compare an entity-aware encoder and direct enemy and laser observations as separate changes. Run the width comparison again only on the same expanded data, split, optimizer and selection procedure. Increase width when improvements recur in validation and pure native gameplay across seeds.
 4. **Warm-start full-policy PPO from the frozen SFT.** Keep a pure frozen SFT control and give PPO the exact same initial policy. Start a new task with a long enough horizon for a Stage 1 clear and record stage transitions, first miss, score, reactions and Bomb use. The former 512-step task measures early survival. The new comparison uses a first-miss episode with up to 3,300 decisions and enough native restarts to measure variance. Rule-based and hybrid scores remain separate comparative baselines. Keep the dataset, policy version, random draws, and build fixed for each comparison.
 
