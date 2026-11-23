@@ -1,26 +1,34 @@
 """Compare frozen SFT checkpoints in the original TH14 1.00b Stage 1."""
 
 import argparse
-from collections import Counter
-from contextlib import contextmanager
 import ctypes
-from dataclasses import dataclass
-from hashlib import sha256
 import io
 import json
 import os
-from pathlib import Path
 import re
+from collections import Counter
+from contextlib import contextmanager
+from dataclasses import dataclass
+from hashlib import sha256
+from pathlib import Path
 from statistics import median
 from time import perf_counter
 
+import numpy as np
 import torch
 from stable_baselines3 import __version__ as sb3_version
 
 from scripts import evaluate_stage_policies, stage_policy, train_full_policy
 from scripts.checkpoint_storage import digest
 from scripts.evaluate_stage_policies import summarize
-from scripts.pretrain_policy import MOTION_INTERVALS, MovementPolicy, action_space, network_kwargs, observation_space
+from scripts.pretrain_policy import (
+    MOTION_INTERVALS,
+    MovementPolicy,
+    action_space,
+    network_kwargs,
+    observation_space,
+    predict_heads,
+)
 from scripts.stage_policy import NormalStageOne
 from scripts.train_full_policy import direct_trial, publish_json, retry_story_game_over
 
@@ -30,6 +38,27 @@ class Arm:
     policy: MovementPolicy
     history: bool
     provenance: dict
+
+
+class HeadSampler:
+    """Sample movement independently of the focus, shoot and Bomb decode."""
+
+    def __init__(self, policy, seed, greedy_buttons):
+        self.policy = policy
+        self.greedy_buttons = greedy_buttons
+        self.movement_rng = torch.Generator().manual_seed(seed)
+        self.button_rng = torch.Generator().manual_seed(seed ^ (1 << 62))
+
+    @torch.inference_mode()
+    def predict(self, observation, deterministic=False):
+        tensors, _ = self.policy.obs_to_tensor(observation)
+        movement, *buttons = predict_heads(self.policy, tensors["bullets"], tensors["context"])
+        direction = torch.multinomial(movement.softmax(dim=-1), 1, generator=self.movement_rng).item()
+        if self.greedy_buttons:
+            bits = [head.argmax(dim=-1).item() for head in buttons]
+        else:
+            bits = [torch.multinomial(head.softmax(dim=-1), 1, generator=self.button_rng).item() for head in buttons]
+        return np.asarray([direction, *bits], dtype=np.int64), None
 
 
 def load_arm(path):
@@ -120,8 +149,14 @@ def run_specification(args, arms):
             "stage": 1, "decision_limit": args.limit, "max_misses": args.max_misses, "frames_per_action": 4,
         },
         "controller": {
-            "kind": "sft", "decode": "sampled", "geometry": False, "aim_correction": False,
+            "kind": "sft", "decode": "split_heads" if args.greedy_buttons else "sampled",
+            "geometry": False, "aim_correction": False,
             "automatic_bomb": False, "native_rng_seed_controlled": False,
+            "button_crossover": {
+                "movement_rng": "independent torch.Generator seeded with the policy seed",
+                "sampled_button_rng": "independent torch.Generator with the policy seed XOR 2^62",
+                "greedy_button_arms": sorted(args.greedy_buttons),
+            } if args.greedy_buttons else None,
         },
         "runtime": {
             "runner_sha256": digest(Path(__file__)),
@@ -218,9 +253,13 @@ def run_evaluation(args, arms, path, specification, stage_session=native_stage):
                 print(json.dumps(dict(status="trial", **trial)), flush=True)
                 arm = arms[trial["arm"]]
                 stage.motion_history = arm.history
-                torch.manual_seed(trial["policy_seed"])
+                if args.greedy_buttons:
+                    actor = HeadSampler(arm.policy, trial["policy_seed"], trial["arm"] in args.greedy_buttons)
+                else:
+                    torch.manual_seed(trial["policy_seed"])
+                    actor = arm.policy
                 start = perf_counter()
-                result = direct_trial(stage, arm.policy, arm.policy, deterministic=False)
+                result = direct_trial(stage, arm.policy, actor, deterministic=False)
                 result["seconds"] = perf_counter() - start
                 report["completed"].append(dict(trial=trial, result=result))
                 report["pending"] = None
@@ -249,6 +288,8 @@ def main():
     parser.add_argument("--focus-wait", type=int, default=30)
     parser.add_argument("--retry-game-over", action="store_true",
                         help="Recover a verified Normal Reimu A Stage 1 Retry menu before entering.")
+    parser.add_argument("--greedy-buttons", nargs="+", default=[], metavar="ARM",
+                        help="Use argmax buttons in these arms and a separate movement RNG in every arm.")
     parser.add_argument("--resume", action="store_true", help="Resume the same run after its last committed episode.")
     args = parser.parse_args()
     if args.limit < 1 or args.focus_wait < 0 or len(args.seeds) != len(set(args.seeds)):
@@ -260,6 +301,8 @@ def main():
     torch.set_num_threads(1)
     try:
         arms = load_arms(args.policy)
+        if args.greedy_buttons and not set(args.greedy_buttons) < set(arms):
+            raise ValueError("Name a subset of arms to use greedy buttons and leave a sampled control.")
         specification = run_specification(args, arms)
         if args.resume:
             if not args.out.is_dir():
