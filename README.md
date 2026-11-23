@@ -4,7 +4,7 @@ Open research for training agents across the original Touhou Project games. The 
 
 ## Current result
 
-The TH14 1.00b Normal Reimu A controller has cleared the first three stages and reached Stage 4 on one credit twice. The longer run reached Stage 4 frame 23,694 with one miss and seven bombs. The controller then exited. The current controller combines a supervised policy, a PPO dodge head, supervised boss alignment and geometry-based safety checks. The world model has offline results, and its native control evaluation is pending.
+The TH14 1.00b Normal Reimu A controller has cleared the first three stages and reached Stage 4 on one credit twice. The longer run reached Stage 4 frame 23,694 with one miss and seven bombs before the controller exited. A separate Stage 4 Practice run displayed **STAGE CLEAR** with zero misses and four bombs after taking control at frame 207. The current controller combines a supervised policy, a PPO dodge head, supervised boss alignment and geometry-based safety checks. The world model has offline results, and its native control evaluation is pending.
 
 - [Initial benchmark and devlog](docs/devlog/261123-initial-benchmark.md)
 - [Native environment, models, and evaluation design](docs/design.md)

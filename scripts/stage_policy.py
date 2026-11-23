@@ -17,7 +17,7 @@ from scripts.pretrain_policy import (MOTION_INTERVALS, action_space, append_moti
 
 class NormalStageOne(gym.Env):
     def __init__(self, parakit_path, limit=3000, max_misses=1, motion_history=False, history_frames=12,
-                 last_stage=1, first_stage=1):
+                 last_stage=1, first_stage=1, prepared=False, stage_practice=False):
         from environment import interface as game
 
         self.game = game
@@ -30,12 +30,14 @@ class NormalStageOne(gym.Env):
         self.max_misses = max_misses
         self.first_stage = first_stage
         self.last_stage = last_stage
+        self.prepared = prepared
+        self.stage_practice = stage_practice
         self.held = set()
         self.reset_count = 0
         self.completed = []
         game._get_focus()
         if game.read_game_val("game_state") != 2:
-            raise RuntimeError("Start a Normal Stage 1 story run before running this command.")
+            raise RuntimeError("Start a TH14 Normal game before running this command.")
         self.freeze()
         try:
             self.snapshot = self.reader.snapshot()
@@ -61,6 +63,10 @@ class NormalStageOne(gym.Env):
 
     def current_screen(self):
         return self.reader.read_uint(self.reader.offsets.statics.game_screen, relative=True)
+
+    def practice_cleared(self, stage_number, state):
+        return (self.stage_practice and state == 1 and stage_number == self.first_stage
+                and self.current_screen() == 7 and self.game.read_game_val("lives") >= 0)
 
     def resolve_transition(self):
         game = self.game
@@ -111,11 +117,8 @@ class NormalStageOne(gym.Env):
         if self.motion_history:
             self.history.append((self.last_frame, self.current_context()))
 
-    def reset(self, *, seed=None, options=None):
-        super().reset(seed=seed)
+    def retry(self):
         game = self.game
-        game.require_game_focus()
-        self.release()
         stage_number, state = self.resolve_transition()
         if state != 2:
             # When the verified stage marker changes first, let the next stage load before Retry.
@@ -139,6 +142,14 @@ class NormalStageOne(gym.Env):
             game.force_reset()
         game.release_all_keys()
         self.freeze()
+
+    def reset(self, *, seed=None, options=None):
+        super().reset(seed=seed)
+        game = self.game
+        game.require_game_focus()
+        self.release()
+        if self.reset_count or not self.prepared:
+            self.retry()
         self.snapshot = self.reader.snapshot()
         self.require_task()
         self.reset_count += 1
@@ -183,11 +194,12 @@ class NormalStageOne(gym.Env):
         self.freeze()
         self.steps += 1
         stage_number, state = self.resolve_transition()
-        story_clear = self.last_stage == 6 and self.current_screen() == 15
-        cleared = stage_number > self.last_stage or story_clear
+        story_clear = not self.stage_practice and self.last_stage == 6 and self.current_screen() == 15
+        practice_clear = self.practice_cleared(stage_number, state)
+        cleared = stage_number > self.last_stage or story_clear or practice_clear
         native_end = state != 2 and not cleared
         reward = 0.003
-        advanced = (7 if story_clear else stage_number) - self.first_stage
+        advanced = (7 if story_clear else stage_number) - self.first_stage + int(practice_clear)
         self.stages_cleared = max(self.stages_cleared, advanced)
         if state == 2:
             past = self.snapshot
@@ -219,8 +231,8 @@ class NormalStageOne(gym.Env):
                 self.first_miss_stage = self.snapshot.stage
         terminated = native_end or cleared or self.hits >= self.max_misses
         truncated = not terminated and self.steps >= self.limit
-        reason = ("story_clear" if story_clear else "advanced_stage" if cleared else "native_end" if native_end else
-                  "miss" if self.hits >= self.max_misses else "limit")
+        reason = ("story_clear" if story_clear else "practice_clear" if practice_clear else "advanced_stage" if cleared
+                  else "native_end" if native_end else "miss" if self.hits >= self.max_misses else "limit")
         score = game.read_game_val("score") if cleared else self.snapshot.score
         info = {"stage_frame": self.last_frame, "native_stage": stage_number,
                 "native_pause_state": state, "stages_cleared": self.stages_cleared,

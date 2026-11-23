@@ -57,6 +57,7 @@ def same_phase(before, after):
 
 def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_risk, emergency_bomb):
     observation, _ = stage.reset()
+    start_frame = stage.last_frame
     radius = player_radius(stage)
     vulnerable_frames = 0
     aligned_frames = 0
@@ -145,7 +146,7 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                                 'lateral_offset': round(lateral, 2),
                                 'shoot': int(action[2]), 'spell_id': before.spell_id})
         if done or truncated or info['steps'] % 300 == 0:
-            row = dict(info, aim_interventions=interventions, vulnerable_frames=vulnerable_frames,
+            row = dict(info, start_frame=start_frame, aim_interventions=interventions, vulnerable_frames=vulnerable_frames,
                        damage=damage, excluded_hp_drop=excluded_hp_drop,
                        hp_per_vulnerable_second=damage * 60 / max(1, vulnerable_frames),
                        mean_lateral_offset=lateral_sum / max(1, vulnerable_frames),
@@ -169,6 +170,8 @@ def main():
     parser.add_argument('--candidate-only', action='store_true')
     parser.add_argument('--last-stage', type=int, choices=range(1, 7), default=1)
     parser.add_argument('--first-stage', type=int, choices=range(1, 7), default=1)
+    parser.add_argument('--prepared', action='store_true', help='Adopt the active stage on the first trial without Retry.')
+    parser.add_argument('--stage-practice', action='store_true', help='Identify the native Stage Clear result in Practice Start.')
     parser.add_argument('--max-misses', type=int, default=2)
     parser.add_argument('--samples', type=Path, help='Store candidate features and teacher directions by episode.')
     parser.add_argument('--student', type=Path, help='Evaluate a learned aim head against the frozen avoidance policy.')
@@ -183,6 +186,8 @@ def main():
         parser.error('The teacher comparison requires a student checkpoint.')
     if args.first_stage > args.last_stage:
         parser.error('The first stage cannot follow the last requested stage.')
+    if args.stage_practice and args.first_stage != args.last_stage:
+        parser.error('Stage Practice requires identical first and last stages.')
     if args.out.exists():
         parser.error('Use a fresh report path.')
     torch.set_num_threads(1)
@@ -195,14 +200,16 @@ def main():
         student.eval()
     stage = NormalStageOne(Path(__file__).resolve().parents[2] / 'parakit',
                            limit=args.limit, max_misses=args.max_misses, motion_history=True,
-                           first_stage=args.first_stage, last_stage=args.last_stage)
+                           first_stage=args.first_stage, last_stage=args.last_stage, prepared=args.prepared,
+                           stage_practice=args.stage_practice)
     candidate_name = 'ppo_dodge_with_learned_aim' if student is not None else 'ppo_dodge_with_aim'
     control_name = 'ppo_dodge_with_aim' if args.teacher_control else 'ppo_dodge'
     results = {candidate_name: []} if args.candidate_only else {control_name: [], candidate_name: []}
     report = {'base': str(args.base), 'ppo': str(args.ppo), 'limit': args.limit,
               'student': str(args.student) if args.student else None,
               'blocks': args.blocks, 'max_misses': args.max_misses,
-              'first_stage': args.first_stage, 'last_stage': args.last_stage,
+              'first_stage': args.first_stage, 'last_stage': args.last_stage, 'prepared': args.prepared,
+              'stage_practice': args.stage_practice,
               'body_risk': args.body_risk, 'laser_risk': args.laser_risk,
               'emergency_bomb': args.emergency_bomb, 'results': results}
     try:
@@ -219,7 +226,8 @@ def main():
                         results[name].append(saved)
                     report['summary'] = {
                         label: {
-                            'trials': len(rows), 'clears': sum(r['outcome'] in ('advanced_stage', 'story_clear') for r in rows),
+                            'trials': len(rows), 'clears': sum(r['outcome'] in ('advanced_stage', 'practice_clear', 'story_clear')
+                                                              for r in rows),
                             'damage_per_vulnerable_second': median(r['hp_per_vulnerable_second'] for r in rows),
                             'mean_horizontal_offsets': [r['mean_lateral_offset'] for r in rows],
                         } for label, rows in results.items() if rows

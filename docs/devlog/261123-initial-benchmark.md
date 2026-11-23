@@ -34,3 +34,9 @@ The project added a run recorder, per-epoch streams for SFT and world models, PP
 ## First recorded H100 run
 
 Trained the stage-clock SFT policy for 20 epochs on the same 126,781 pairs, changing only the within-title player balance to 0.5. Run `20261123T085800Z-th14-sft-stage-clock-player-balance-5c1f74e9` saved the full console, all epoch metrics, the checkpoint, and input and artifact hashes. On 51,421 unseen paired decisions, overall movement accuracy moved from 58.66% to 59.13% and direction-change accuracy from 17.17% to 12.72%. The previous checkpoint remains the reference. The held-out evaluation is run `20261123T090038Z-sft-stage-clock-player-balance-heldout-6e1c978c`.
+
+## Stage 4 Practice diagnostic
+
+Run `20261123T090358Z-th14-stage4-practice-diagnostic-60283765` adopted native Stage 4 Practice at frame 207. The original game showed **STAGE CLEAR** after 4,243 decisions, at the last logged stage frame of 17,175. The controller used four bombs and lost zero lives during the recorded section. The end screen showed 40,815,110 points including a 12,000,000 clear bonus. The controller exited normally. The previous story-run failure did not recur in this practice configuration, and a fresh one-credit story trial is required to verify progression to Stage 5.
+
+The original practice report used the generic `native_end` outcome. The screenshot and a read-only memory check verified the clear. The evaluator now supports an explicit Practice Start mode with `practice_clear` as a distinct result. A passive observer collected 2,084 candidate training rows from the practice run. Only 73.3% of consecutive moving samples passed the 0.5-unit kinematic check, so this capture is retained as diagnostic evidence and excluded from expert SFT.

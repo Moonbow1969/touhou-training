@@ -18,4 +18,10 @@ python -m scripts.record_run --name ppo-dodge-demo --kind rl --input runs/sft-de
 
 SFT and world-model jobs write `epochs.jsonl` after every epoch. PPO writes Stable Baselines3 `progress.csv`, intermediate training progress and checkpoint files, and JSON evaluation results. The recorder retains stdout and stderr even when the child exits with an error. A run killed by a process or machine failure may keep its last recorded `starting` or `running` status and a partial log. Preserve that evidence and start a fresh run on retry.
 
+To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Practice Start and launch the recorded evaluator. `--prepared` adopts the active stage on its first trial, so the report includes the actual starting frame.
+
+```powershell
+python -m scripts.record_run --name th14-stage4-practice --kind evaluation --input models-local --artifact runs/stage4-practice.json --note 'TH14 1.00b, Normal, Reimu A, Stage 4 Practice' -- python -m scripts.evaluate_boss_aim --base models-local/sft/policy.pt --ppo models-local/ppo/ppo.zip --student models-local/aim/aim.pt --first-stage 4 --last-stage 4 --prepared --stage-practice --candidate-only --blocks 1 --body-risk --laser-risk --emergency-bomb --out runs/stage4-practice.json
+```
+
 For source and data changes, add a dated devlog entry with the hypothesis, affected code or data, exact comparison, result, and decision. Include failed attempts and specify when comparison groups are missing. Refer to run IDs or checkpoint hashes. Before publishing a report, review raw logs and manifests for local paths, account details, and third-party data. The public record contains reviewed aggregates and source code. Local raw evidence includes full command lines and tracebacks.
