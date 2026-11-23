@@ -118,6 +118,16 @@ def average_precision(truth, scores):
     return float(precision @ np.diff(true_positives, prepend=0) / true_positives[-1])
 
 
+def near_player_loss(loss_grid, displacement, radius):
+    centers = torch.floor(displacement * (32 / CELL) + GRID / 2)
+    axis = torch.arange(GRID, device=loss_grid.device)
+    near_x = (axis - centers[:, 0:1]).abs() <= radius
+    near_y = (axis - centers[:, 1:2]).abs() <= radius
+    in_view = ((centers >= 0) & (centers < GRID)).all(dim=1)
+    mask = near_y[:, :, None] & near_x[:, None, :] & in_view[:, None, None]
+    return (loss_grid * mask).sum() / mask.sum().clamp_min(1)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Forecast local projectile occupancy and player motion.')
     parser.add_argument('--data', type=Path, required=True)
@@ -126,9 +136,13 @@ def main():
     parser.add_argument('--width', type=int, default=32)
     parser.add_argument('--device', default='cuda')
     parser.add_argument('--shards-per-block', type=int, default=12)
+    parser.add_argument('--near-player-loss-weight', type=float, default=0.)
+    parser.add_argument('--near-player-cells', type=int, default=3)
     args = parser.parse_args()
     if min(args.shards_per_block, args.epochs, args.width) < 1:
         parser.error('Epochs, width and shards per block must be positive.')
+    if not 0 <= args.near_player_loss_weight < float('inf') or not 0 <= args.near_player_cells < GRID:
+        parser.error('The local loss weight must be finite and the neighborhood must fit the grid.')
     torch.manual_seed(79)
     torch.set_num_threads(1)
     shards = [(path, json.loads(path.read_text(encoding='utf-8'))) for path in sorted(args.data.glob('*.json'))]
@@ -161,7 +175,12 @@ def main():
             for batch in DataLoader(train_data, batch_size=128, shuffle=True):
                 grid, condition, occupancy_target, displacement = (x.to(args.device) for x in batch)
                 pred, offset = model(grid, condition)
-                loss = F.binary_cross_entropy_with_logits(pred, occupancy_target, pos_weight=positive_weight)
+                cell_loss = F.binary_cross_entropy_with_logits(pred, occupancy_target, pos_weight=positive_weight,
+                                                               reduction='none')
+                loss = cell_loss.mean()
+                if args.near_player_loss_weight:
+                    local_loss = near_player_loss(cell_loss, displacement, args.near_player_cells)
+                    loss += args.near_player_loss_weight * local_loss
                 loss += F.smooth_l1_loss(offset, displacement)
                 optimizer.zero_grad(set_to_none=True)
                 loss.backward()

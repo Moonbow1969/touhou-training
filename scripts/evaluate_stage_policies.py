@@ -5,10 +5,10 @@ from pathlib import Path
 from statistics import median
 
 import numpy as np
-from stable_baselines3.common.policies import MultiInputActorCriticPolicy
 import torch
 
-from scripts.pretrain_policy import CONTEXT_SIZE, action_space, append_stage_context, network_kwargs, observation_space
+from scripts.pretrain_policy import (CONTEXT_SIZE, MovementPolicy, action_space, append_stage_context,
+                                    network_kwargs, observation_space)
 from scripts.stage_policy import NormalStageOne, run_episode
 
 
@@ -30,15 +30,26 @@ def read_policy(path, device, motion_history=False):
     configuration = json.loads(metrics.read_text(encoding='utf-8')) if metrics.is_file() else {}
     retain_recent = configuration.get('retain_recent_motion', False)
     stage_clock = configuration.get('stage_clock', False)
-    policy = MultiInputActorCriticPolicy(observation_space(motion_history, retain_recent, stage_clock), action_space(),
-                                        lambda _: 3e-4,
-                                        **network_kwargs(512, encoder)).to(device)
+    policy = MovementPolicy(observation_space(motion_history, retain_recent, stage_clock), action_space(),
+                            lambda _: 3e-4, **network_kwargs(configuration.get('hidden', 512), encoder)).to(device)
     policy.load_state_dict(weights)
     policy.motion_spans = configuration.get('motion_spans')
     policy.retain_recent_motion = retain_recent
     policy.stage_clock = stage_clock
+    policy.factorized_movement = configuration.get('factorized_movement', False)
     policy.eval()
     return policy
+
+
+def stage_action(policy, env, observation, uses_history=True):
+    if policy.motion_spans:
+        observation = env.observation(policy.motion_spans, policy.retain_recent_motion)
+    elif not uses_history:
+        observation = {'bullets': observation['bullets'], 'context': observation['context'][:CONTEXT_SIZE]}
+    if policy.stage_clock:
+        context = append_stage_context(observation['context'], env.last_frame, env.snapshot.stage)
+        observation = dict(observation, context=context)
+    return policy.predict(observation, deterministic=True)[0]
 
 
 def main():
@@ -66,20 +77,10 @@ def main():
     weighted = read_policy(args.title_weighted, device, args.title_weighted_history)
     motion_history = args.reference_history or args.title_weighted_history
 
-    def predict(policy, observation, uses_history):
-        if policy.motion_spans:
-            observation = env.observation(policy.motion_spans, policy.retain_recent_motion)
-        elif not uses_history:
-            observation = {'bullets': observation['bullets'], 'context': observation['context'][:CONTEXT_SIZE]}
-        if policy.stage_clock:
-            observation = dict(observation, context=append_stage_context(observation['context'], env.last_frame,
-                                                                         env.snapshot.stage))
-        return policy.predict(observation, deterministic=True)[0]
-
     strategies = {
         'stationary': lambda _: np.array([4, 0, 1, 0]),
-        args.reference_name: lambda obs: predict(uniform, obs, args.reference_history),
-        args.candidate_name: lambda obs: predict(weighted, obs, args.title_weighted_history),
+        args.reference_name: lambda obs: stage_action(uniform, env, obs, args.reference_history),
+        args.candidate_name: lambda obs: stage_action(weighted, env, obs, args.title_weighted_history),
     }
     report = {
         'task': 'TH14 1.00b, Reimu A, Normal Stage 1',

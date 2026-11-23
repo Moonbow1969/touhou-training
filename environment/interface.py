@@ -121,7 +121,11 @@ _process_handle = ctypes.windll.kernel32.OpenProcess(
 
 
 def suspend_game_process():
-    return bool(ctypes.windll.kernel32.DebugActiveProcess(_game_pid))
+    kernel = ctypes.windll.kernel32
+    if not kernel.DebugActiveProcess(_game_pid):
+        return False
+    kernel.DebugSetProcessKillOnExit(False)
+    return True
 
 
 def resume_game_process():
@@ -253,6 +257,10 @@ def require_game_focus():
 
 def has_game_focus():
     return ctypes.windll.user32.GetForegroundWindow() == _game_window._hWnd
+
+
+def focus_transition_pending():
+    return not ctypes.windll.user32.GetForegroundWindow()
 
 
 def _resume_shooting():

@@ -18,6 +18,12 @@ python -m scripts.record_run --name ppo-dodge-demo --kind rl --input runs/sft-de
 
 SFT and world-model jobs write `epochs.jsonl` after every epoch. PPO writes Stable Baselines3 `progress.csv`, intermediate training progress and checkpoint files, and JSON evaluation results. The recorder retains stdout and stderr even when the child exits with an error. A run killed by a process or machine failure may keep its last recorded `starting` or `running` status and a partial log. Preserve that evidence and start a fresh run on retry.
 
+Use `replays.snapshot` to freeze existing and newly aligned shard directories into a new versioned directory. It checks sample counts, duplicate replay stages, and player split consistency. The adjacent manifest hashes the copied data. Keep world-model snapshots under the same replay data directory as the source action caches.
+
+For native PPO, supply `--analytic-control` to compare the frozen imitation head, the trained PPO head, and rule-based selection. `--body-risk` and `--laser-risk` apply consistently to all arms. Use `--resume-ppo` with a saved training checkpoint to continue a run after an interruption. `--initial-temperature` applies only at initialization and rescales the final actor layer for exploration.
+
+To measure a short-horizon world checkpoint on native rollouts, supply `--world-shadow` to `scripts.evaluate_boss_aim`. The report logs coarse occupancy AP near the actual future player for exact four-frame transitions. Keep the world checkpoint’s metrics sidecar alongside the weights.
+
 To reproduce the Stage 4 diagnostic, select TH14 Normal Reimu A Stage 4 in Practice Start and launch the recorded evaluator. `--prepared` adopts the active stage on its first trial, so the report includes the actual starting frame.
 
 ```powershell

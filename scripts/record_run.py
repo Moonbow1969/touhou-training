@@ -12,7 +12,7 @@ import re
 import subprocess
 import sys
 import tarfile
-from time import perf_counter
+from time import perf_counter, sleep
 from uuid import uuid4
 
 
@@ -85,7 +85,14 @@ def inventory(roots):
 def write_json(path, content):
     temporary = path.with_suffix(path.suffix + '.tmp')
     temporary.write_text(json.dumps(content, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    temporary.replace(path)
+    for attempt in range(5):
+        try:
+            temporary.replace(path)
+            return
+        except PermissionError:
+            if os.name != 'nt' or attempt == 4:
+                raise
+            sleep(.05)
 
 
 def execute(command, log):

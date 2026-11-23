@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from scripts.evaluate_stage_policies import read_policy
-from scripts.pretrain_policy import batch_block, index_split, predict_heads, read_shard
+from scripts.pretrain_policy import batch_block, decode_movement, index_split, predict_heads, read_shard
 
 
 def prior_direction(context):
@@ -39,7 +39,7 @@ def evaluate(shards, policies, device):
                 by_motion_spans[key] = read_shard(shard, motion_history=True, motion_spans=spans,
                                                   retain_recent_motion=retained, stage_clock=policy.stage_clock)
             predictions[name] = np.concatenate([
-                predict_heads(policy, bullets, ctx)[0].argmax(dim=1).cpu().numpy()
+                decode_movement(predict_heads(policy, bullets, ctx)[0], policy.factorized_movement).cpu().numpy()
                 for bullets, ctx, _ in batch_block(by_motion_spans[key], 512, device, np.arange(len(truth)))
             ])
         stage_counts = {}

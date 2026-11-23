@@ -196,6 +196,42 @@ def predict_heads(policy, bullets, context):
     return policy.action_net(latent).split(ACTION_WIDTHS, dim=-1)
 
 
+def split_movement(logits):
+    directions = torch.cat((logits[:, :4], logits[:, 5:]), dim=1)
+    return torch.logsumexp(directions, dim=1) - logits[:, 4], directions
+
+
+def decode_movement(logits, factorized=False):
+    if not factorized:
+        return logits.argmax(dim=1)
+    gate, directions = split_movement(logits)
+    selected = directions.argmax(dim=1)
+    selected = selected + (selected >= 4)
+    return torch.where(gate > 0, selected, 4)
+
+
+def factorized_movement_loss(logits, targets, sample_weights, class_weights):
+    gate, directions = split_movement(logits)
+    moving_targets = torch.cat((targets[:, :4], targets[:, 5:]), dim=1)
+    moving_probability = moving_targets.sum(dim=1)
+    gate_loss = functional.binary_cross_entropy_with_logits(gate, moving_probability, reduction="none")
+    gate_loss = (gate_loss * sample_weights).sum() / sample_weights.sum()
+    direction_weights = torch.cat((class_weights[:4], class_weights[5:]))
+    weighted_targets = moving_targets * direction_weights * sample_weights[:, None]
+    direction_loss = -(functional.log_softmax(directions, dim=1) * weighted_targets).sum()
+    return gate_loss + direction_loss / weighted_targets.sum().clamp_min(1e-8)
+
+
+class MovementPolicy(MultiInputActorCriticPolicy):
+    factorized_movement = False
+
+    def _predict(self, observation, deterministic=False):
+        if not deterministic or not self.factorized_movement:
+            return super()._predict(observation, deterministic=deterministic)
+        movement, *buttons = predict_heads(self, observation["bullets"], observation["context"])
+        return torch.stack((decode_movement(movement, True), *(head.argmax(1) for head in buttons)), dim=1)
+
+
 @torch.inference_mode()
 def validate(policy, shards, majority, batch_size, device, motion_history=False, motion_spans=None,
              retain_recent_motion=False, stage_clock=False):
@@ -205,6 +241,8 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
     sample_total = 0
     moving_total = 0
     correct_moving = 0
+    predicted_moving_total = 0
+    moving_true_positive = 0
     loss = 0.0
     per_replay = {}
     for shard in shards:
@@ -214,14 +252,20 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
         predicted = []
         for bullets, context, truth in batch_block(data, batch_size, device, np.arange(len(labels))):
             logits = predict_heads(policy, bullets, context)
-            predicted.append(torch.stack([head.argmax(dim=1) for head in logits], dim=1).cpu().numpy())
+            movement, *buttons = logits
+            decoded = torch.stack((decode_movement(movement, getattr(policy, "factorized_movement", False)),
+                                   *(head.argmax(1) for head in buttons)), dim=1)
+            predicted.append(decoded.cpu().numpy())
             for index, head in enumerate(logits):
                 loss += functional.cross_entropy(head, truth[:, index], reduction="sum").item()
         predicted = np.concatenate(predicted)
         correct = predicted == labels
         baseline = labels == majority
         moving = labels[:, 0] != 4
+        predicted_moving = predicted[:, 0] != 4
         moving_total += int(moving.sum())
+        predicted_moving_total += int(predicted_moving.sum())
+        moving_true_positive += int((moving & predicted_moving).sum())
         correct_moving += int(correct[moving, 0].sum())
         per_replay[shard[0].stem] = {
             "accuracy": dict(zip(ACTION_NAMES, correct.mean(axis=0).tolist())),
@@ -234,6 +278,9 @@ def validate(policy, shards, majority, batch_size, device, motion_history=False,
         sample_total += len(labels)
     metrics = {"val_loss": loss / sample_total,
                "accuracy": dict(zip(ACTION_NAMES, correct_total / sample_total)),
+               "predicted_moving_fraction": predicted_moving_total / sample_total,
+               "moving_precision": moving_true_positive / predicted_moving_total if predicted_moving_total else None,
+               "moving_recall": moving_true_positive / moving_total if moving_total else None,
                "active_direction_accuracy": correct_moving / moving_total if moving_total else None}
     return metrics, dict(zip(ACTION_NAMES, baseline_total / sample_total)), per_replay
 
@@ -256,6 +303,8 @@ def main():
     parser.add_argument("--stage-clock", action="store_true")
     parser.add_argument("--encoder", choices=("pool", "attention"), default="pool")
     parser.add_argument("--soft-movement", action="store_true")
+    parser.add_argument("--factorized-movement", action="store_true",
+                        help="Train separate movement intent and conditional direction losses.")
     parser.add_argument("--moving-transition-weight", type=float, default=1.0,
                         help="Extra direction loss weight when the expert starts moving or turns.")
     parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
@@ -295,9 +344,9 @@ def main():
     player_weights = weights_by_player(training_replays, args.player_balance)
     rng = np.random.default_rng(args.seed)
     device = torch.device(args.device)
-    policy = MultiInputActorCriticPolicy(observation_space(args.motion_history, args.retain_recent_motion, args.stage_clock),
-                                        action_space(),
-                                        lambda _: 3e-4, **network_kwargs(args.hidden, args.encoder)).to(device)
+    policy = MovementPolicy(observation_space(args.motion_history, args.retain_recent_motion, args.stage_clock),
+                            action_space(), lambda _: 3e-4, **network_kwargs(args.hidden, args.encoder)).to(device)
+    policy.factorized_movement = args.factorized_movement
     if args.resume:
         policy.load_state_dict(torch.load(args.resume, map_location=device, weights_only=True))
     counts = label_counts(train)
@@ -321,6 +370,10 @@ def main():
                 direction_weight = title_weight * (1 + (args.moving_transition_weight - 1) * changed)
             loss = 0.0
             for index, head in enumerate(logits):
+                if index == 0 and args.factorized_movement:
+                    targets = extra[0] if args.soft_movement else functional.one_hot(truth[:, 0], 9).float()
+                    loss += factorized_movement_loss(head, targets, direction_weight, weights[index])
+                    continue
                 if index == 0 and args.soft_movement:
                     target_weights = extra[0] * weights[index] * direction_weight[:, None]
                     loss -= (functional.log_softmax(head, dim=-1) * target_weights).sum() / target_weights.sum()
@@ -354,6 +407,7 @@ def main():
         "stage_clock": args.stage_clock,
         "encoder": args.encoder,
         "soft_movement": args.soft_movement,
+        "factorized_movement": args.factorized_movement,
         "moving_transition_weight": args.moving_transition_weight,
         "training_replays": training_replays, "validation_replays": validation_replays,
         "training_samples_by_title": population,

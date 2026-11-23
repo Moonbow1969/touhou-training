@@ -135,6 +135,13 @@ class NormalStageOne(gym.Env):
             print(f'Awaiting TH14 foreground at stage {self.snapshot.stage}, frame {frame}.', flush=True)
             deadline = perf_counter() + self.focus_wait
             while not self.game.has_game_focus() and perf_counter() < deadline:
+                if self.game.focus_transition_pending():
+                    start = self.stage_frame()
+                    self.game.resume_game_process()
+                    sleep(.025)
+                    self.freeze()
+                    if self.stage_frame() != start:
+                        raise RuntimeError('TH14 advanced during foreground recovery; the trial is interrupted.')
                 sleep(.05)
         self.game.require_game_focus()
 

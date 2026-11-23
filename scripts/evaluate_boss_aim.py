@@ -1,5 +1,4 @@
 import argparse
-import json
 from pathlib import Path
 from statistics import median
 from traceback import format_exc
@@ -9,11 +8,13 @@ from stable_baselines3 import PPO
 import torch
 from torch import nn
 
-from scripts.evaluate_stage_policies import read_policy
+from scripts.evaluate_stage_policies import read_policy, stage_action
 from scripts.probe_stage_risk import player_radius
+from scripts.record_run import write_json
 from scripts.stage_policy import NormalStageOne
-from scripts.stage_risk import action_clearances, body_clearances, laser_clearances, player_paths
+from scripts.stage_risk import action_clearances, body_clearances, laser_clearances, player_paths, suggest_dodge
 from scripts.train_stage_dodge import learned_action
+from scripts.world_shadow import WorldShadow
 
 
 def aim_geometry(observation, action, clearances, boss):
@@ -50,12 +51,17 @@ class AimHead(nn.Module):
         return self.score(features).squeeze(-1)
 
 
+def mask_aim_logits(logits, features):
+    permitted = (features[..., 1] >= 0) | (features[..., 2] > 0)
+    return logits.masked_fill(~permitted, -torch.inf)
+
+
 def same_phase(before, after):
     return (before.stage == after.stage and after.boss is not None and before.boss.pointer == after.boss.pointer
             and before.boss.max_hp == after.boss.max_hp and before.spell_id == after.spell_id)
 
 
-def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_risk, emergency_bomb):
+def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_risk, emergency_bomb, shadow=None):
     observation, _ = stage.reset()
     start_frame = stage.last_frame
     radius = player_radius(stage)
@@ -70,10 +76,12 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
     samples = []
     impacts = []
     protective_bombs = 0
+    if shadow is not None:
+        shadow.reset()
     while True:
         old_frame = stage.last_frame
         before = stage.snapshot
-        base = policy.predict(observation, deterministic=True)[0]
+        base = stage_action(policy, stage, observation)
         projectile_risk = action_clearances(observation, radius)
         hitboxes = stage.reader.read_enemy_hitboxes()
         enemy_risk = body_clearances(observation, radius, hitboxes)
@@ -82,7 +90,7 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
         clearance = np.minimum(projectile_risk, enemy_risk) if body_risk else projectile_risk
         if laser_risk:
             clearance = np.minimum(clearance, beam_risk)
-        candidate = learned_action(head, base, clearance)
+        candidate = (suggest_dodge(base, clearance)[0] if head is None else learned_action(head, base, clearance))
         features, target = aim_features(observation, candidate, clearance, before.boss)
         correction = target != candidate[0]
         if features is not None and examples is not None and (correction or stage.steps % 3 == 0):
@@ -92,8 +100,7 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
             if student is not None:
                 with torch.inference_mode():
                     features_tensor = torch.from_numpy(features)
-                    permitted = (features_tensor[:, 1] >= 0) | (features_tensor[:, 2] > 0)
-                    logits = student(features_tensor).masked_fill(~permitted, -torch.inf)
+                    logits = mask_aim_logits(student(features_tensor), features_tensor)
                     target = int(logits.argmax())
             action[0] = target
         move, focus = map(int, action[:2])
@@ -109,8 +116,15 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                     focus, move = np.unravel_index(imminent.argmax(), imminent.shape)
                     action[:2] = move, focus
         interventions += int(action[0] != candidate[0])
+        previous_observation = observation
+        shadow_valid = (shadow is not None and before.player_state == 1
+                        and stage.game.read_game_val('in_dialog') != -1)
         observation, _, done, truncated, info = stage.step(action)
-        if before.player_state != 4 and stage.snapshot.player_state == 4:
+        impact = before.player_state != 4 and stage.snapshot.player_state == 4
+        if (shadow_valid and before.stage == stage.snapshot.stage and stage.last_frame - old_frame == 4
+                and (impact or stage.steps % shadow.stride == 0)):
+            shadow.observe(previous_observation, observation, action, impact)
+        if impact:
             move, focus = map(int, action[:2])
             impacts.append({'stage': before.stage, 'frame': stage.last_frame, 'previous_frame': old_frame,
                             'position': (before.observation['context'][:2] * [192, 448]).tolist(),
@@ -147,6 +161,8 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                                 'shoot': int(action[2]), 'spell_id': before.spell_id})
         if done or truncated or info['steps'] % 300 == 0:
             row = dict(info, start_frame=start_frame, aim_interventions=interventions, vulnerable_frames=vulnerable_frames,
+                       lives_remaining=stage.game.read_game_val('lives'),
+                       bombs_remaining=stage.game.read_game_val('bombs'),
                        damage=damage, excluded_hp_drop=excluded_hp_drop,
                        hp_per_vulnerable_second=damage * 60 / max(1, vulnerable_frames),
                        mean_lateral_offset=lateral_sum / max(1, vulnerable_frames),
@@ -154,6 +170,8 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
                        firing_fraction=firing_frames / max(1, vulnerable_frames),
                        phases=list(phases.values()), observations=samples, impacts=impacts,
                        emergency_bomb_commands=protective_bombs)
+            if shadow is not None:
+                row['world_shadow'] = shadow.summary()
             emit(row, done or truncated)
         if done or truncated:
             return row
@@ -162,7 +180,9 @@ def trial(stage, policy, head, aim, emit, examples, student, body_risk, laser_ri
 def main():
     parser = argparse.ArgumentParser(description='Compare boss alignment against the frozen native PPO dodge policy.')
     parser.add_argument('--base', required=True, type=Path)
-    parser.add_argument('--ppo', required=True, type=Path)
+    dodge_options = parser.add_mutually_exclusive_group(required=True)
+    dodge_options.add_argument('--ppo', type=Path)
+    dodge_options.add_argument('--analytic-dodge', action='store_true', help='Use explicit clearance instead of a PPO head.')
     parser.add_argument('--out', required=True, type=Path)
     parser.add_argument('--blocks', type=int, default=2)
     parser.add_argument('--limit', type=int, default=3200)
@@ -180,8 +200,10 @@ def main():
     parser.add_argument('--body-risk', action='store_true', help='Include enemy-body collisions in action clearances.')
     parser.add_argument('--laser-risk', action='store_true', help='Include straight lasers in action clearances.')
     parser.add_argument('--emergency-bomb', action='store_true', help='Permit emergency bombs and four-frame evasions.')
+    parser.add_argument('--world-shadow', type=Path, help='Score a world checkpoint on actual rollouts without controlling actions.')
+    parser.add_argument('--world-shadow-stride', type=int, default=8)
     args = parser.parse_args()
-    if min(args.blocks, args.limit, args.max_misses) <= 0:
+    if min(args.blocks, args.limit, args.max_misses, args.world_shadow_stride) <= 0:
         parser.error('Blocks, decision limit, and miss limit must be positive.')
     if args.teacher_control and not args.student:
         parser.error('The teacher comparison requires a student checkpoint.')
@@ -195,25 +217,29 @@ def main():
         parser.error('Use a fresh report path.')
     torch.set_num_threads(1)
     base = read_policy(args.base, torch.device('cuda'), motion_history=True)
-    head = PPO.load(args.ppo, device='cpu').policy.action_net.eval()
+    head = PPO.load(args.ppo, device='cpu').policy.action_net.eval() if args.ppo else None
     student = None
     if args.student:
         student = AimHead()
         student.load_state_dict(torch.load(args.student, map_location='cpu', weights_only=True))
         student.eval()
+    shadow = WorldShadow(args.world_shadow, torch.device('cuda'), args.world_shadow_stride) if args.world_shadow else None
     stage = NormalStageOne(Path(__file__).resolve().parents[2] / 'parakit',
                            limit=args.limit, max_misses=args.max_misses, motion_history=True,
+                           history_frames=max(base.motion_spans or (12,)),
                            first_stage=args.first_stage, last_stage=args.last_stage, prepared=args.prepared,
                            stage_practice=args.stage_practice, focus_wait=args.focus_wait)
-    candidate_name = 'ppo_dodge_with_learned_aim' if student is not None else 'ppo_dodge_with_aim'
-    control_name = 'ppo_dodge_with_aim' if args.teacher_control else 'ppo_dodge'
+    dodge_name = 'ppo_dodge' if head is not None else 'analytic_dodge'
+    candidate_name = f'{dodge_name}_with_learned_aim' if student is not None else f'{dodge_name}_with_aim'
+    control_name = f'{dodge_name}_with_aim' if args.teacher_control else dodge_name
     results = {candidate_name: []} if args.candidate_only else {control_name: [], candidate_name: []}
-    report = {'base': str(args.base), 'ppo': str(args.ppo), 'limit': args.limit,
+    report = {'base': str(args.base), 'ppo': str(args.ppo) if args.ppo else None, 'limit': args.limit,
               'student': str(args.student) if args.student else None,
               'blocks': args.blocks, 'max_misses': args.max_misses,
               'first_stage': args.first_stage, 'last_stage': args.last_stage, 'prepared': args.prepared,
               'stage_practice': args.stage_practice, 'focus_wait_seconds': args.focus_wait,
               'body_risk': args.body_risk, 'laser_risk': args.laser_risk,
+              'world_shadow': str(args.world_shadow) if args.world_shadow else None,
               'emergency_bomb': args.emergency_bomb, 'results': results}
     try:
         for block in range(args.blocks):
@@ -235,15 +261,13 @@ def main():
                             'mean_horizontal_offsets': [r['mean_lateral_offset'] for r in rows],
                         } for label, rows in results.items() if rows
                     }
-                    temporary = args.out.with_suffix('.tmp')
-                    temporary.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
-                    temporary.replace(args.out)
+                    write_json(args.out, report)
                     print(block + 1, name, {k: v for k, v in row.items() if k not in ('phases', 'observations')},
                           flush=True)
 
                 examples = [] if args.samples else None
                 trial(stage, base, head, candidate or args.teacher_control, emit, examples,
-                      student if candidate else None, args.body_risk, args.laser_risk, args.emergency_bomb)
+                      student if candidate else None, args.body_risk, args.laser_risk, args.emergency_bomb, shadow)
                 if examples:
                     args.samples.mkdir(parents=True, exist_ok=True)
                     features, target, prior = (np.stack(field) for field in zip(*examples))
@@ -253,7 +277,7 @@ def main():
         report['error'] = {'traceback': format_exc(), 'native_stage': stage.snapshot.stage,
                            'stage_frame': getattr(stage, 'last_frame', None),
                            'steps': getattr(stage, 'steps', None)}
-        args.out.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+        write_json(args.out, report)
         raise
     finally:
         stage.close()
