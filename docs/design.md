@@ -14,6 +14,8 @@ Native replay files provide input words. State–action examples require playbac
 - **World model** predicts a projectile occupancy grid and player displacement after 4, 12 or 24 native frames, conditioned on recorded inputs. Evaluation compares predicted occupancy with constant-velocity extrapolation. A controlled live action-ranking trial remains pending.
 - **Native RL** currently fine-tunes a dodge head with PPO. The base SFT policy supplies a proposal, and the dodge head scores candidate movement and focus actions using analytic clearance. A separately supervised aim head can revise movement toward a vulnerable boss. The controller can model enemy hitboxes and straight lasers and issue emergency bombs.
 
+The learned-only control benchmark starts from a human-replay SFT checkpoint. First run the frozen checkpoint with its actions applied directly. Then fine-tune the full policy with native RL and repeat the same evaluation. In both arms the policy outputs movement, focus, shoot and bomb. The published hybrid controller is the comparison baseline. Replay demonstrations are part of initialization, and the benchmark measures whether learned control can take over all four action heads.
+
 ## Evaluation
 
 Native trials record build, mode, difficulty, shot, first miss, stage transition, bombs, score and termination reason. A one-credit result requires starting at Stage 1, using zero continues, and observing the game’s ending. Practice results and controller errors have their own outcomes. A native stage frame resets at each transition. First-miss times censored by a limit remain individually identifiable.

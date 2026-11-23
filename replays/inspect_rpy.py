@@ -1,8 +1,8 @@
+import argparse
 from collections import Counter
 import os
 from pathlib import Path
 from struct import unpack_from
-import sys
 
 
 DECODER_VERSION = 'circular-dictionary-v1'
@@ -65,6 +65,7 @@ def decompress(data, expected):
 
 
 REPLAY_LAYOUTS = {
+    10: (b"t10r", 0x4C, 0x64, 0x1C4),
     13: (b"t13r", 0x58, 0x74, 0xC4),
     14: (b"t13r", 0x78, 0x94, 0xDC),
     16: (b"t16r", 0x80, 0xA0, 0x294),
@@ -78,8 +79,13 @@ def read_gameplay_payload(path, title=14):
     compressed, expanded = u32(data, 28), u32(data, 32)
     if data[:4] != magic or not 0 < compressed <= len(data) - 36 or not 0 < expanded < 8_000_000:
         raise ValueError("Invalid replay size or magic.")
-    data = unshuffle(data[36:36 + compressed], 0x400, 0x5C, 0xE1)
-    data = unshuffle(data, 0x100, 0x7D, 0x3A)
+    if title == 10:
+        # Mountain of Faith uses its own shuffle keys and second block size.
+        data = unshuffle(data[36:36 + compressed], 0x400, 0xAA, 0xE1)
+        data = unshuffle(data, 0x80, 0x3D, 0x7A)
+    else:
+        data = unshuffle(data[36:36 + compressed], 0x400, 0x5C, 0xE1)
+        data = unshuffle(data, 0x100, 0x7D, 0x3A)
     return decompress(data, expanded)
 
 
@@ -97,15 +103,15 @@ def action_streams(path, title=14):
         raise ValueError("Unexpected trailing gameplay payload.")
 
 
-def inspect(path):
-    payload = read_gameplay_payload(path)
-    stage_count = payload[0x78]
-    stage_offset = 0x94
+def inspect(path, title=14):
+    payload = read_gameplay_payload(path, title)
+    _, count_offset, stage_offset, header_size = REPLAY_LAYOUTS[title]
+    stage_count = payload[count_offset]
     print(path, len(payload), "stages", stage_count)
     for index in range(stage_count):
         size = u32(payload, stage_offset + 8)
-        entry = payload[stage_offset:stage_offset + 0xdc]
-        offset = stage_offset + 0xdc
+        entry = payload[stage_offset:stage_offset + header_size]
+        offset = stage_offset + header_size
         body = payload[offset:offset + size]
         print("stage", index, "header starts", entry[:32].hex(), "data bytes", size)
         print("data prefix", body[:90].hex(" "))
@@ -114,5 +120,9 @@ def inspect(path):
 
 
 if __name__ == "__main__":
-    for filename in sys.argv[1:]:
-        inspect(filename)
+    parser = argparse.ArgumentParser(description="Inspect native replay stage blocks.")
+    parser.add_argument("paths", nargs="+", type=Path)
+    parser.add_argument("--title", type=int, choices=REPLAY_LAYOUTS, default=14)
+    args = parser.parse_args()
+    for path in args.paths:
+        inspect(path, args.title)
