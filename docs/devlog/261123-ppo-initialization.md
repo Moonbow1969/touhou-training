@@ -10,7 +10,7 @@ The existing stock-game evaluations compare frozen SFT with PPO initialized from
 - Re-evaluate all six frozen policies with eight common sampling seeds, 901–908, under a rotated arm order. Disable geometry, aim correction and automatic Bomb in every trial. The sampling seeds control the policy draw. The original game's RNG remains unmanaged.
 - Use median furthest Stage 1 frame as the principal outcome. Report change from each arm's own step-0 median and the change per 1,000 decisions. Report per-seed differences, clears, and Bomb use. Keep on-policy training episodes and frozen-policy evaluation in separate figures.
 
-The pilot tests one training seed and one PPO recipe on one original stage. Evaluation seeds measure rollout variation for the frozen checkpoints. Additional training seeds are needed to measure variation from retraining.
+The pilot tests one training seed and one PPO recipe on one original stage. The decision budgets count online interactions. The SFT arm also used offline demonstrations before PPO. Evaluation seeds measure rollout variation for the frozen checkpoints. Additional training seeds are needed to measure variation from retraining.
 
 ## Figures and source tables
 
@@ -23,3 +23,7 @@ python -m scripts.plot_th14_ppo_curves
 ```
 
 [Archived figures and CSV data](../../results/2026-11-23-th14-full-policy/figures), [plotting code](../../scripts/plot_th14_ppo_curves.py)
+
+The random arm completed both training segments. Its two reports include each PPO update, each completed training episode, checkpoint fingerprints and native timing. The combined on-policy figure shows the policies changing through training. The frozen-policy figure supplies the comparison at fixed budgets.
+
+[Combined training rollout figure](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-on-policy.svg), [first random training segment](../../results/2026-11-23-th14-full-policy/ppo-random-training-8192.json), [second random training segment](../../results/2026-11-23-th14-full-policy/ppo-random-training-16384.json)

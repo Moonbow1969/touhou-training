@@ -249,6 +249,39 @@ def plot_archive_evaluations(directory, cohorts):
     save(fig, directory, "ppo-archived-paired-evaluations")
 
 
+def plot_on_policy_comparison(directory, warm, random, boundary):
+    fig, axis = plt.subplots(figsize=(10.6, 5.8))
+    fig.subplots_adjust(left=.09, right=.97, top=.75, bottom=.22)
+    heading(fig, "PPO rollouts during training",
+            f'TH14 1.00b · Normal Reimu A · Stage 1 · one PPO training seed ({warm[0]["training_seed"]})')
+    for rows, color, name in ((warm, WARM, "SFT initialization"), (random, CHECKPOINT, "Random initialization")):
+        for segment in sorted({row["segment"] for row in rows}):
+            segment_rows = [row for row in rows if row["segment"] == segment]
+            x = [row["cumulative_decisions"] for row in segment_rows]
+            y = [row["stage_frame"] for row in segment_rows]
+            axis.scatter(x, y, s=20, color=color, alpha=.48, linewidth=0, zorder=3)
+            smoothed = [median(y[index - 6:index + 1]) for index in range(6, len(y))]
+            axis.plot(x[6:], smoothed, color=color, lw=2.15, zorder=4,
+                      label=name if segment == 1 else None)
+    axis.axvline(boundary, color=SFT, lw=1, ls=(0, (3, 4)), zorder=2)
+    axis.text(boundary + 230, .98, f"Resume at {boundary:,}", transform=axis.get_xaxis_transform(),
+              color=MUTED, va="top", fontsize=9)
+    axis.set_xlim(left=0)
+    axis.set_ylim(bottom=0)
+    axis.set_xlabel("Cumulative native training decisions", color=INK, labelpad=8)
+    axis.set_ylabel("Stage 1 endpoint (native frames)", color=INK, labelpad=9)
+    axis.xaxis.set_major_locator(MaxNLocator(8, integer=True))
+    axis.xaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
+    axis.legend(loc="lower left", bbox_to_anchor=(0, 1.005), ncols=2, frameon=False,
+                borderaxespad=0, labelcolor=INK, fontsize=9)
+    style_axis(axis)
+    fig.text(.09, .075, "Dots show completed on-policy episodes. Lines show the trailing median of seven episodes.",
+             color=MUTED, fontsize=9)
+    fig.text(.09, .038, "Policies change during these rollouts. Review the frozen evaluations for checkpoint performance.",
+             color=MUTED, fontsize=9)
+    save(fig, directory, "ppo-matched-initialization-on-policy")
+
+
 def plot_matched(directory, episodes, task):
     fig, axes = plt.subplots(1, 2, figsize=(12.3, 6.25))
     fig.subplots_adjust(left=.085, right=.967, top=.745, bottom=.233, wspace=.32)
@@ -308,6 +341,8 @@ def main():
     parser.add_argument("--results", type=Path, default=ARCHIVE, help="Directory with the archived JSON reports.")
     parser.add_argument("--out", type=Path, help="Output directory. Defaults to figures under --results.")
     parser.add_argument("--matched", type=Path, help="Completed native report for the six matched initialization arms.")
+    parser.add_argument("--random-traces", type=Path, nargs=2, metavar="REPORT",
+                        help="Completed random-initialization training reports at 8,192 and 16,384 decisions.")
     parser.add_argument("--matched-training-seed", type=int, default=211,
                         help="PPO training seed for the matched figure. Defaults to the original paired run’s 211.")
     args = parser.parse_args()
@@ -317,6 +352,13 @@ def main():
     episodes, updates = archive_training(((FIRST_REPORT, first), (SECOND_REPORT, second)))
     cohorts = paired_archive(first, second, read_report(args.results, HEAD_TO_HEAD))
     matched_run = matched_evaluations(args.matched, args.matched_training_seed) if args.matched is not None else None
+    cold = None
+    if args.random_traces:
+        traces = [(path.name, read_report(path.parent, path.name)) for path in args.random_traces]
+        if any(report.get("initialization") != "random" or report["seed"] != first["seed"]
+               for _, report in traces):
+            raise ValueError("Expected random-initialization training traces from the same training seed.")
+        cold = archive_training(traces)
     directory = args.out or args.results / "figures"
     directory.mkdir(parents=True, exist_ok=True)
     write_csv(directory / "ppo-on-policy-training-episodes.csv", episodes)
@@ -331,6 +373,16 @@ def main():
             write_csv(directory / "ppo-matched-initialization-evaluations.csv", matched)
             write_csv(directory / "ppo-matched-initialization-gains.csv", gains)
             plot_matched(directory, matched, task)
+        if cold is not None:
+            cold_episodes, cold_updates = cold
+            for suffix, warm_rows, cold_rows in (
+                ("episodes", episodes, cold_episodes), ("updates", updates, cold_updates),
+            ):
+                rows = [dict(initialization=init, **row) for init, source in (
+                    ("sft", warm_rows), ("random", cold_rows),
+                ) for row in source]
+                write_csv(directory / f"ppo-matched-initialization-on-policy-{suffix}.csv", rows)
+            plot_on_policy_comparison(directory, episodes, cold_episodes, first["trained_steps"])
 
 
 if __name__ == "__main__":
