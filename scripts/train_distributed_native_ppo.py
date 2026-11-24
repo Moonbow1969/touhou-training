@@ -279,6 +279,8 @@ def run_actor(args, socket):
                 # Episode counts can be large on short horizons; send metrics outside the bounded rollout header.
                 socket.send_multipart([msgpack.packb(metrics, use_bin_type=True), *packet])
                 (ack,) = receive(socket, monotonic() + args.timeout)
+                if ack == message("stop"):
+                    return
                 if Receipt.unpack(ack) != receipt:
                     raise ValueError("Learner acknowledged a different rollout fragment.")
                 actor.sequence += 1
