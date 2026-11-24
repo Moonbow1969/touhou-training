@@ -46,6 +46,20 @@ The 0.25 ms interval reduced controller stepping CPU by 93.7% in this probe. The
 
 A separate 1,024-decision PPO smoke using that flag finished four PPO updates and saved a checkpoint. The full rollout controller, including policy inference, took 1.59 CPU seconds per 256 decisions. There were 1,023 four-frame decisions and one five-frame decision. This run checks the training path on a single original instance. [PPO rollout timing and frame deltas](../results/2026-11-23-th14-full-policy/ppo-stock-clock-poll-1024-smoke.json)
 
+### Speed up original replay acquisition
+
+Holding Left Ctrl during stock Steam TH14 1.00b replay playback advanced the stage clock at approximately 476 native frames per second, versus 60 at stock speed. In a rotated early-stage probe, sleeping 0.5 ms between reads captured 40/512 exact four-tick steps under fast-forward. Busy polling captured 512/512. An extended probe with the same binary and replay captured 1,024/1,024 exact four-tick steps under fast-forward. The separate PPO stock-speed clock optimization uses a sleep interval. [Original replay timing and state checks](../results/2026-11-23-distributed-rollouts/th14-stock-replay-fast-forward.json), [Replay control branch](https://github.com/khang06/OpenInputLagPatch/blob/e4eb70ba0b95a4af9994dbc746cebce8d3b7eb0f/openinputlagpatch/games/touhou14.cpp#L44-L58)
+
+The full Normal Reimu A replay took 195.95 seconds of active stage sampling with fast-forward and 1,555.85 seconds in the archived stock capture. The first five stages cleared the alignment, coverage and joint four-tick gates. Their fast capture took 144.66 seconds versus 1,147.67 seconds at stock speed. Stage 6 fell to 6,009/6,096 exact joint clock transitions and was rejected. Its global clock advanced exactly four ticks in 6,072/6,096 transitions. Stage-clock slowdown also appears in the archived stock Stage 6 capture near frame 24,000.
+
+The follow-up ran Stage 5 fast and automatically switched to stock speed at Stage 6 in the same replay. Both stages passed their capture gates. The stock Stage 6 run also showed stage-clock slowdown near frame 24,000 while the global clock advanced exactly four ticks. Combining the measured fast Stages 1–5 with the measured stock Stage 6 gives 552.86 seconds of active sampling versus 1,555.85 seconds for the archived all-stock capture, a 2.81× improvement. This total combines the two measured runs. [Switch trace and per-stage capture gates](../results/2026-11-23-distributed-rollouts/th14-stock-replay-fast-forward.json)
+
+Action chunks matched on every common accepted frame in Stages 1–5. State parity varied by stage. Stage 4 had 125/463 exact player-position matches and a 4.50-pixel p95 position difference. The comparison uses repeated stock and fast capture slices of one replay. The diagnostic shards stayed outside the training snapshot. A fresh output directory is required for the fast-forward collector.
+
+```powershell
+python -m replays.collect_stage REPLAY.rpy --manifest CORPUS.json --pid GAME_PID --all-stages --wait-for-stage 18 --fast-forward --fast-forward-through-stage 5 --out runs/replay-speed-candidate
+```
+
 The Windows probe reads the active limiter. The 120 Hz wrapper applies the setting temporarily to the verified Steam executable in Fast input mode and restores its original limiter afterward. Start Normal Reimu A Stage 1 before comparing the two caps.
 
 ```powershell
