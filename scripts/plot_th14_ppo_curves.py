@@ -347,6 +347,50 @@ def plot_matched(directory, episodes, task):
     save(fig, directory, "ppo-matched-initialization-curve")
 
 
+def plot_trial_pair(directory, path):
+    with path.open(encoding="utf-8") as stream:
+        report = json.load(stream)
+    names = sorted(report["sources"], key=lambda name: report["sources"][name]["steps"])
+    if len(names) != 2:
+        raise ValueError("A trial comparison requires two frozen checkpoints.")
+    episodes = {name: {episode["policy_seed"]: episode for episode in report["episodes"][name]} for name in names}
+    seeds = sorted(episodes[names[0]])
+    if not seeds or any(set(episodes[name]) != set(seeds) or len(report["episodes"][name]) != len(seeds)
+                        for name in names):
+        raise ValueError("Each policy seed must appear once for each frozen checkpoint.")
+    budgets = [report["sources"][name]["steps"] for name in names]
+    rows = [
+        {
+            "policy_seed": seed, "training_decisions": budget,
+            "native_stage_frame": episodes[name][seed]["native_stage_frame"],
+            "outcome": episodes[name][seed]["outcome"],
+        }
+        for seed in seeds for name, budget in zip(names, budgets, strict=True)
+    ]
+
+    fig, axis = plt.subplots(figsize=(8.2, 5.25))
+    fig.subplots_adjust(left=.13, right=.94, top=.75, bottom=.23)
+    heading(fig, "Paired PPO checkpoint evaluation", f"{report['task']['setting']} · {len(seeds)} paired policy seeds")
+    offsets = [(index - (len(seeds) - 1) / 2) * .035 for index in range(len(seeds))]
+    endpoints = [[episodes[name][seed]["native_stage_frame"] for seed in seeds] for name in names]
+    for shift, left, right in zip(offsets, *endpoints, strict=True):
+        axis.plot([shift, 1 + shift], [left, right], color="#ABB8C0", lw=.8, alpha=.8, zorder=2)
+    for index, (values, color) in enumerate(zip(endpoints, (CHECKPOINT, WARM), strict=True)):
+        axis.scatter([index + shift for shift in offsets], values, color=color, s=30, linewidth=0, zorder=3)
+        axis.hlines(median(values), index - .16, index + .16, color=color, lw=3, zorder=4)
+    axis.set_xticks([0, 1], [f"{budget:,}" for budget in budgets])
+    axis.set_xlim(-.35, 1.35)
+    axis.set_ylim(bottom=0)
+    axis.set_xlabel("Cumulative native training decisions", color=INK, labelpad=8)
+    axis.set_ylabel("Stage 1 endpoint (native frames)", color=INK, labelpad=9)
+    style_axis(axis)
+    fig.text(.13, .075, "Lines pair policy sampling seeds. Thick bars mark the medians.", color=MUTED, fontsize=9)
+    fig.text(.13, .038, "The original game's RNG was uncontrolled.", color=MUTED, fontsize=9)
+    stem = f"trial-ppo-{budgets[0]}-vs-{budgets[1]}"
+    write_csv(directory / f"{stem}.csv", rows)
+    save(fig, directory, stem)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results", type=Path, default=ARCHIVE, help="Directory with the archived JSON reports.")
@@ -356,6 +400,7 @@ def main():
                         help="Completed random-initialization training reports at 8,192 and 16,384 decisions.")
     parser.add_argument("--warm-continuations", type=Path, nargs="+", metavar="REPORT",
                         help="Ordered warm-start reports after 16,384, with a saved checkpoint in every report.")
+    parser.add_argument("--trial-paired", type=Path, help="Paired frozen checkpoints on the original TH14 trial.")
     parser.add_argument("--matched-training-seed", type=int, default=211,
                         help="PPO training seed for the matched figure. Defaults to the original paired run’s 211.")
     args = parser.parse_args()
@@ -382,6 +427,8 @@ def main():
     with plt.rc_context({"font.family": "DejaVu Sans", "svg.fonttype": "none", "svg.hashsalt": "th14-ppo-curves"}):
         plot_training(directory, episodes, [first["trained_steps"]])
         plot_archive_evaluations(directory, cohorts)
+        if args.trial_paired:
+            plot_trial_pair(directory, args.trial_paired)
         if args.warm_continuations:
             traces = list(warm_reports)
             for path in args.warm_continuations:
