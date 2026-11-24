@@ -107,6 +107,12 @@ def movement_distribution(chunks, first_tick_weight=0.):
     return target
 
 
+def immediate_start_targets(native, chunks):
+    previous = movement_direction(native)
+    first = movement_direction(chunks[:, 0])
+    return np.where(previous == 4, first, 4)
+
+
 def label_actions(chunks):
     # Pick the most common direction/focus/shoot combination over a decision window.
     keys = chunks & 0xF9
@@ -133,7 +139,7 @@ def index_split(directory, split):
 
 
 def read_shard(shard, motion_history=False, soft_movement=False, motion_spans=None, retain_recent_motion=False,
-               stage_clock=False, first_tick_weight=0.):
+               stage_clock=False, first_tick_weight=0., *, immediate_starts=False):
     path, meta = shard
     with np.load(path) as data:
         chunks = data["expert_action_chunk"]
@@ -148,7 +154,11 @@ def read_shard(shard, motion_history=False, soft_movement=False, motion_spans=No
             if stage_clock:
                 context = append_stage_context(context, frames, meta["stage"])
         fields = data["bullets"], context, labels
-        return (*fields, movement_distribution(chunks, first_tick_weight)) if soft_movement else fields
+        if soft_movement:
+            fields = (*fields, movement_distribution(chunks, first_tick_weight))
+        if immediate_starts:
+            fields = (*fields, immediate_start_targets(data["native"], chunks))
+        return fields
 
 
 def batch_block(arrays, batch_size, device, order):
@@ -159,14 +169,14 @@ def batch_block(arrays, batch_size, device, order):
 
 def training_batches(shards, block_size, batch_size, device, rng, title_weights, motion_history=False,
                      soft_movement=False, motion_spans=None, retain_recent_motion=False, player_weights=None,
-                     stage_clock=False, first_tick_weight=0.):
+                     stage_clock=False, first_tick_weight=0., *, immediate_starts=False):
     order = rng.permutation(len(shards))
     for start in range(0, len(shards), block_size):
         block = []
         for index in order[start:start + block_size]:
             shard = shards[index]
             fields = read_shard(shard, motion_history, soft_movement, motion_spans, retain_recent_motion,
-                                stage_clock, first_tick_weight)
+                                stage_clock, first_tick_weight, immediate_starts=immediate_starts)
             meta = shard[1]
             player_weight = player_weights[(meta["title"], meta["player_group"])] if player_weights is not None else 1.
             weight = np.full(len(fields[2]), title_weights[meta["title"]] * player_weight, dtype=np.float32)
@@ -230,7 +240,7 @@ def factorized_movement_loss(logits, targets, sample_weights, class_weights):
     return gate_loss + direction_loss / weighted_targets.sum().clamp_min(1e-8)
 
 
-def mirror_batch(bullets, context, actions, movement_targets, rows, motion_fields):
+def mirror_batch(bullets, context, actions, movement_targets, rows, motion_fields, start_targets=None):
     mapping = actions.new_tensor((2, 1, 0, 5, 4, 3, 8, 7, 6))
     bullets[rows, :, 0] *= -1
     bullets[rows, :, 2] *= -1
@@ -240,6 +250,8 @@ def mirror_batch(bullets, context, actions, movement_targets, rows, motion_field
     actions[rows, 0] = mapping[actions[rows, 0]]
     if movement_targets is not None:
         movement_targets[rows] = movement_targets[rows][:, mapping]
+    if start_targets is not None:
+        start_targets[rows] = mapping[start_targets[rows]]
 
 
 class MovementPolicy(MultiInputActorCriticPolicy):
@@ -349,6 +361,8 @@ def main():
                         help="Probability of reflecting each training observation and direction horizontally.")
     parser.add_argument("--moving-transition-weight", type=float, default=1.0,
                         help="Extra direction loss weight when the expert starts moving or turns.")
+    parser.add_argument("--immediate-start-loss-weight", type=float, default=0.,
+                        help="Auxiliary direction loss on exact next-tick starts from idle.")
     parser.add_argument("--resume", type=Path, help="Initialize from a prior SFT checkpoint of matching width.")
     parser.add_argument("--learning-rate", type=float, default=3e-4)
     parser.add_argument("--retain-resume", action="store_true",
@@ -389,6 +403,8 @@ def main():
         parser.error("Moving transition weight must be finite and at least one.")
     if args.moving_transition_weight != 1 and not args.motion_history:
         parser.error("Moving transition weights require motion history.")
+    if not 0 <= args.immediate_start_loss_weight < float("inf"):
+        parser.error("Immediate start loss weight must be finite and nonnegative.")
     torch.manual_seed(args.seed)
     torch.set_num_threads(1)
     train = index_split(args.data, "train")
@@ -432,18 +448,22 @@ def main():
         torch.save(policy.state_dict(), args.out / "policy.pt")
         print(json.dumps({"initial_validation": initial_validation}), flush=True)
     motion_fields = 3 * MOTION_INTERVALS * (int(args.motion_history) + int(args.retain_recent_motion))
+    immediate_starts = args.immediate_start_loss_weight > 0
     for epoch in range(1, args.epochs + 1):
         policy.train()
         geometry_totals = torch.zeros(2, device=device)
         train_objective = torch.zeros((), device=device)
         train_examples = 0
+        start_examples = torch.zeros((), device=device, dtype=torch.int64) if immediate_starts else None
         for bullets, context, truth, *extra, title_weight in training_batches(
                 train, args.shards_per_block, args.batch_size, device, rng, title_weights,
                 args.motion_history, args.soft_movement, args.motion_spans, args.retain_recent_motion,
-                player_weights, args.stage_clock, args.first_tick_weight):
+                player_weights, args.stage_clock, args.first_tick_weight, immediate_starts=immediate_starts):
+            start_targets = extra[-1] if immediate_starts else None
             if args.mirror_probability:
                 mirrored = torch.rand(len(truth), device=device) < args.mirror_probability
-                mirror_batch(bullets, context, truth, extra[0] if args.soft_movement else None, mirrored, motion_fields)
+                mirror_batch(bullets, context, truth, extra[0] if args.soft_movement else None,
+                             mirrored, motion_fields, start_targets)
             logits = predict_heads(policy, bullets, context)
             direction_weight = title_weight
             if args.moving_transition_weight != 1:
@@ -466,6 +486,12 @@ def main():
                 sample_weight = (direction_weight if index == 0 else title_weight) * weights[index][target]
                 losses = functional.cross_entropy(head, target, reduction="none")
                 loss += (losses * sample_weight).sum() / sample_weight.sum()
+            if immediate_starts:
+                starts = start_targets != 4
+                start_weights = starts * title_weight
+                start_loss = functional.cross_entropy(logits[0], start_targets, reduction="none")
+                loss += args.immediate_start_loss_weight * (start_loss * start_weights).sum() / start_weights.sum().clamp_min(1)
+                start_examples += starts.sum()
             if args.geometry_loss_weight:
                 negative_mass, eligible, _ = replay_risk_terms(bullets, context, truth, logits[0], logits[1])
                 loss += args.geometry_loss_weight * negative_mass / eligible.clamp_min(1)
@@ -487,6 +513,8 @@ def main():
                                                  args.stage_clock)
         entry = {"epoch": epoch, "train_examples": train_examples,
                  "train_weighted_objective": (train_objective / train_examples).item(), **metrics}
+        if immediate_starts:
+            entry["immediate_start_examples"] = start_examples.item()
         if args.geometry_loss_weight:
             mass_sum, risky_examples = geometry_totals.tolist()
             entry.update(geometry_eligible_decisions=int(risky_examples),
@@ -515,6 +543,7 @@ def main():
         "factorized_movement": args.factorized_movement,
         "geometry_loss_weight": args.geometry_loss_weight,
         "moving_transition_weight": args.moving_transition_weight,
+        "immediate_start_loss_weight": args.immediate_start_loss_weight,
         "training_replays": training_replays, "validation_replays": validation_replays,
         "training_samples_by_title": population,
         "training_action_counts": {name: count.tolist() for name, count in zip(ACTION_NAMES, counts)},

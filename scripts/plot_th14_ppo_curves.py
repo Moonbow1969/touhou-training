@@ -37,17 +37,23 @@ def read_report(directory, name):
 
 
 def archive_training(reports):
-    first, second = (report for _, report in reports)
-    if (first["starting_steps"] != 0 or second["starting_steps"] != first["trained_steps"]
-            or second["checkpoints"]["resume_sha256"] != first["checkpoints"]["ppo_sha256"]
-            or any(first[key] != second[key] for key in ("task", "seed", "ppo_hyperparameters", "reward"))):
+    if reports[0][1]["starting_steps"] != 0:
         raise ValueError("The training reports do not form one PPO lineage.")
+    for (_, parent), (_, child) in zip(reports, reports[1:]):
+        if (child["starting_steps"] != parent["checkpoint_steps"]
+                or child["checkpoints"]["resume_sha256"] != parent["checkpoints"]["ppo_sha256"]
+                or any(parent[key] != child[key] for key in ("task", "seed", "ppo_hyperparameters", "reward"))):
+            raise ValueError("The training reports do not form one PPO lineage.")
 
     episodes, updates = [], []
     for segment, (source, report) in enumerate(reports, 1):
-        raw_episodes = report["training_episodes"]
+        durable_steps = report["checkpoint_steps"]
+        durable_updates = [row for row in report["updates"] if row["steps"] <= durable_steps]
+        if not durable_updates or durable_updates[-1]["steps"] != durable_steps:
+            raise ValueError(f"The saved checkpoint has no final update record in {source}.")
+        raw_episodes = report["training_episodes"][:durable_updates[-1]["completed_episodes"]]
         ends = list(accumulate((ep["steps"] for ep in raw_episodes), initial=report["starting_steps"]))[1:]
-        if any(bisect_right(ends, update["steps"]) != update["completed_episodes"] for update in report["updates"]):
+        if any(bisect_right(ends, update["steps"]) != update["completed_episodes"] for update in durable_updates):
             raise ValueError(f"Cumulative episode decisions disagree with update counts in {source}.")
         for index, (end, ep) in enumerate(zip(ends, raw_episodes, strict=True), 1):
             episodes.append({
@@ -58,7 +64,7 @@ def archive_training(reports):
                 "bombs_used": ep["bombs_used"],
             })
         updates.extend({"source_report": source, "training_seed": report["seed"], "segment": segment, **row}
-                       for row in report["updates"])
+                       for row in durable_updates)
     return episodes, updates
 
 
@@ -183,7 +189,7 @@ def save(fig, directory, name):
     plt.close(fig)
 
 
-def plot_training(directory, episodes, boundary):
+def plot_training(directory, episodes, boundaries, stem="ppo-on-policy-training"):
     fig, axis = plt.subplots(figsize=(10.3, 5.65))
     fig.subplots_adjust(left=.09, right=.97, top=.75, bottom=.22)
     seed = episodes[0]["training_seed"]
@@ -198,9 +204,12 @@ def plot_training(directory, episodes, boundary):
             smoothed = [median(y[i - 6:i + 1]) for i in range(6, len(y))]
             axis.plot(x[6:], smoothed, color=WARM, lw=2.2, zorder=4,
                       label="Trailing median of 7 episodes" if segment == 1 else None)
-    axis.axvline(boundary, color=SFT, lw=1, ls=(0, (3, 4)), zorder=2)
-    axis.text(boundary + 230, .98, f"Resume at {boundary:,}", transform=axis.get_xaxis_transform(),
-              color=MUTED, va="top", fontsize=9)
+    for boundary in boundaries:
+        axis.axvline(boundary, color=SFT, lw=1, ls=(0, (3, 4)), zorder=2)
+    if len(boundaries) == 1:
+        boundary, = boundaries
+        axis.text(boundary + 230, .98, f"Resume at {boundary:,}", transform=axis.get_xaxis_transform(),
+                  color=MUTED, va="top", fontsize=9)
     axis.set_ylim(bottom=0)
     axis.set_xlim(left=0)
     axis.xaxis.set_major_locator(MaxNLocator(8, integer=True))
@@ -212,9 +221,11 @@ def plot_training(directory, episodes, boundary):
     style_axis(axis)
     fig.text(.09, .075, "On-policy rollouts from changing weights. These are training observations rather than fixed-policy evaluations.",
              color=MUTED, fontsize=9)
-    fig.text(.09, .038, "Unfinished episodes are omitted. The rolling median restarts at the checkpoint resume.",
-             color=MUTED, fontsize=9)
-    save(fig, directory, "ppo-on-policy-training")
+    note = ("Unfinished episodes are omitted. The rolling median restarts at the checkpoint resume."
+            if len(boundaries) == 1 else
+            "Dashed lines mark resumes. Only episodes covered by a saved checkpoint appear.")
+    fig.text(.09, .038, note, color=MUTED, fontsize=9)
+    save(fig, directory, stem)
 
 
 def plot_archive_evaluations(directory, cohorts):
@@ -343,13 +354,16 @@ def main():
     parser.add_argument("--matched", type=Path, help="Completed native report for the six matched initialization arms.")
     parser.add_argument("--random-traces", type=Path, nargs=2, metavar="REPORT",
                         help="Completed random-initialization training reports at 8,192 and 16,384 decisions.")
+    parser.add_argument("--warm-continuations", type=Path, nargs="+", metavar="REPORT",
+                        help="Ordered warm-start reports after 16,384, with a saved checkpoint in every report.")
     parser.add_argument("--matched-training-seed", type=int, default=211,
                         help="PPO training seed for the matched figure. Defaults to the original paired run’s 211.")
     args = parser.parse_args()
 
     first = read_report(args.results, FIRST_REPORT)
     second = read_report(args.results, SECOND_REPORT)
-    episodes, updates = archive_training(((FIRST_REPORT, first), (SECOND_REPORT, second)))
+    warm_reports = [(FIRST_REPORT, first), (SECOND_REPORT, second)]
+    episodes, updates = archive_training(warm_reports)
     cohorts = paired_archive(first, second, read_report(args.results, HEAD_TO_HEAD))
     matched_run = matched_evaluations(args.matched, args.matched_training_seed) if args.matched is not None else None
     cold = None
@@ -366,8 +380,18 @@ def main():
     write_csv(directory / "ppo-archived-paired-evaluations.csv",
               [row for _, left, right in cohorts for row in (*left, *right)])
     with plt.rc_context({"font.family": "DejaVu Sans", "svg.fonttype": "none", "svg.hashsalt": "th14-ppo-curves"}):
-        plot_training(directory, episodes, first["trained_steps"])
+        plot_training(directory, episodes, [first["trained_steps"]])
         plot_archive_evaluations(directory, cohorts)
+        if args.warm_continuations:
+            traces = list(warm_reports)
+            for path in args.warm_continuations:
+                with path.open(encoding="utf-8") as stream:
+                    traces.append((str(Path(path.parent.name) / path.name), json.load(stream)))
+            continuation_episodes, continuation_updates = archive_training(traces)
+            write_csv(directory / "ppo-warm-continuation-episodes.csv", continuation_episodes)
+            write_csv(directory / "ppo-warm-continuation-updates.csv", continuation_updates)
+            plot_training(directory, continuation_episodes, [report["starting_steps"] for _, report in traces[1:]],
+                          "ppo-warm-continuation")
         if matched_run is not None:
             matched, gains, task = matched_run
             write_csv(directory / "ppo-matched-initialization-evaluations.csv", matched)
