@@ -56,13 +56,16 @@ def checkpoint_manifest(path):
 
 
 def compatibility(report):
-    return {
+    settings = {
         "base_sha256": report["checkpoints"]["base_sha256"],
         "train_limit": report["task"]["train_limit"],
         "seed": report["seed"],
         "ppo_hyperparameters": report["ppo_hyperparameters"],
         "reward": report["reward"],
     }
+    if report.get("initialization", "sft") != "sft":
+        settings["initialization"] = report["initialization"]
+    return settings
 
 
 def read_resume(path, expected):

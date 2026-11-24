@@ -1,4 +1,4 @@
-"""Warm-start full-policy PPO and compare controllers in the native TH14 executable."""
+"""Train full-policy PPO and compare controllers in the native TH14 executable."""
 
 import argparse
 import ctypes
@@ -205,11 +205,15 @@ class RolloutLog(BaseCallback):
         self.rollout_finished = None
 
 
-def warm_start(base, env, seed):
+def new_ppo(base, env, seed):
     width = base.mlp_extractor.policy_net[0].out_features
     encoder = "attention" if hasattr(base.features_extractor, "keys") else "pool"
-    model = PPO(MovementPolicy, env, policy_kwargs=network_kwargs(width, encoder),
-                device="cpu", seed=seed, **PPO_SETTINGS)
+    return PPO(MovementPolicy, env, policy_kwargs=network_kwargs(width, encoder),
+               device="cpu", seed=seed, **PPO_SETTINGS)
+
+
+def warm_start(base, env, seed):
+    model = new_ppo(base, env, seed)
     model.policy.load_state_dict(base.state_dict(), strict=True)
     # Behaviour cloning trains the shared encoder and actor, while PPO needs a fresh value branch.
     model.policy.mlp_extractor.value_net.apply(partial(model.policy.init_weights, gain=np.sqrt(2)))
@@ -254,6 +258,8 @@ def direct_trial(stage, base, policy, deterministic):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", type=Path, required=True)
+    parser.add_argument("--initialization", choices=("sft", "random"), default="sft",
+                        help="Use the base actor weights or use the base only as an architecture and observation template.")
     parser.add_argument("--aim", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--parakit", type=Path, default=Path(__file__).resolve().parents[2] / "parakit")
@@ -267,7 +273,7 @@ def main():
     parser.add_argument("--seed", type=int, default=61)
     parser.add_argument("--eval-seed", type=int, help="First policy sampling seed. Defaults to the training seed.")
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
-    parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint from the same SFT parent.")
+    parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint with the same initialization and configuration.")
     parser.add_argument("--reference-ppo", type=Path, help="Evaluate a second PPO checkpoint with matching lineage.")
     parser.add_argument("--focus-wait", type=int, default=30)
     parser.add_argument("--clock-poll-ms", type=float, default=0.,
@@ -318,6 +324,7 @@ def main():
                     "torch": str(torch.__version__), "stable_baselines3": sb3_version, "device": "cpu",
                     "clock_poll_ms": args.clock_poll_ms},
         "seed": args.seed, "additional_steps": args.steps, "requested_blocks": args.blocks,
+        "initialization": args.initialization,
         "evaluation_arms": args.eval_arms,
         "learned_evaluation_action": args.eval_action,
         "evaluation_first_policy_seed": eval_seed, "native_rng_seed_controlled": False,
@@ -330,7 +337,7 @@ def main():
     if args.reference_ppo:
         report["controllers"]["ppo_reference"] = []
         report["controller_settings"]["ppo_reference"] = report["controller_settings"]["ppo"].copy()
-    warm_exact = True
+    warm_exact = args.initialization == "sft"
     if args.resume:
         try:
             fingerprint, warm_exact, evidence = read_resume(args.resume, compatibility(report))
@@ -363,14 +370,24 @@ def main():
         stage = NormalStageOne(args.parakit, limit=args.train_limit, motion_history=True,
                                history_frames=max(base.motion_spans or (12,)), focus_wait=args.focus_wait)
         env = SurvivalRollout(stage, base, args.reward)
-        model = PPO.load(args.resume, env=env, device="cpu") if args.resume else warm_start(base, env, args.seed)
+        if args.resume:
+            model = PPO.load(args.resume, env=env, device="cpu")
+        elif warm_exact:
+            model = warm_start(base, env, args.seed)
+        else:
+            model = new_ppo(base, env, args.seed)
+            initial = args.out / "initial_policy.pt"
+            torch.save(model.policy.state_dict(), initial)
+            report["checkpoints"]["initial_actor_sha256"] = digest(initial)
         report["starting_steps"] = model.num_timesteps
         report["warm_start_actor_exact"] = warm_exact
+        publish_json(report_path, report)
         if args.steps:
             model.set_logger(configure(str(args.out), ["csv"]))
             model.learn(args.steps, callback=RolloutLog(report, args.out, env, storage),
                         reset_num_timesteps=not args.resume)
         report["trained_steps"] = model.num_timesteps
+        report["actor_head_weight_delta_reference"] = "sft_template"
         report["actor_head_weight_delta_l2"] = {
             name: float(torch.linalg.vector_norm(delta))
             for name, delta in zip(ACTION_NAMES,

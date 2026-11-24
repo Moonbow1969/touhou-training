@@ -1,4 +1,4 @@
-"""Compare frozen SFT checkpoints in the original TH14 1.00b Stage 1."""
+"""Compare frozen SFT and PPO checkpoints in the original TH14 1.00b Stage 1."""
 
 import argparse
 import ctypes
@@ -8,6 +8,7 @@ import os
 import re
 from collections import Counter
 from contextlib import contextmanager
+from copy import deepcopy
 from dataclasses import dataclass
 from hashlib import sha256
 from pathlib import Path
@@ -16,10 +17,11 @@ from time import perf_counter
 
 import numpy as np
 import torch
+from stable_baselines3 import PPO
 from stable_baselines3 import __version__ as sb3_version
 
 from scripts import evaluate_stage_policies, stage_policy, train_full_policy
-from scripts.checkpoint_storage import digest
+from scripts.checkpoint_storage import checkpoint_manifest, digest, read_resume
 from scripts.evaluate_stage_policies import summarize
 from scripts.pretrain_policy import (
     MOTION_INTERVALS,
@@ -104,13 +106,34 @@ def load_arm(path):
     return Arm(policy, history, evidence)
 
 
-def load_arms(selections):
+def load_ppo_arm(path, template):
+    manifest = checkpoint_manifest(path)
+    if manifest is None or manifest["compatibility"].get("base_sha256") != template.provenance["weights_sha256"]:
+        raise ValueError(f"{path.name} needs a checkpoint manifest matching the PPO observation template.")
+    fingerprint, warm_exact, evidence = read_resume(path, manifest["compatibility"])
+    archive = PPO.load(path, device="cpu").policy
+    policy = deepcopy(template.policy)
+    if archive.observation_space != policy.observation_space or archive.action_space != policy.action_space:
+        raise ValueError(f"{path.name} has different observation or action spaces from its template.")
+    policy.load_state_dict(archive.state_dict(), strict=True)
+    policy.eval()
+    provenance = dict(template.provenance, weights_sha256=fingerprint, archive_kind="ppo",
+                      template_sha256=template.provenance["weights_sha256"], native_training_decisions=manifest["steps"],
+                      warm_start_actor_exact=warm_exact, lineage_evidence=evidence,
+                      training_configuration=manifest["compatibility"])
+    return Arm(policy, template.history, provenance)
+
+
+def load_arms(selections, ppo_selections=(), ppo_template=None):
     arms = {}
-    for specification in selections:
-        name, divider, path = specification.partition("=")
-        if not divider or not path or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", name) or name in arms:
-            raise ValueError("Use distinct --policy NAME=CHECKPOINT arguments.")
-        arms[name] = load_arm(Path(path))
+    template = load_arm(ppo_template) if ppo_selections else None
+    for group, loader in ((selections, load_arm),
+                          (ppo_selections, lambda path: load_ppo_arm(path, template))):
+        for specification in group:
+            name, divider, path = specification.partition("=")
+            if not divider or not path or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}", name) or name in arms:
+                raise ValueError("Use distinct NAME=CHECKPOINT arguments across all arms.")
+            arms[name] = loader(Path(path))
     return arms
 
 
@@ -149,7 +172,8 @@ def run_specification(args, arms):
             "stage": 1, "decision_limit": args.limit, "max_misses": args.max_misses, "frames_per_action": 4,
         },
         "controller": {
-            "kind": "sft", "decode": "split_heads" if args.greedy_buttons else "sampled",
+            "kind": "frozen_sft_and_ppo" if any(arm.provenance.get("archive_kind") for arm in arms.values()) else "sft",
+            "decode": "split_heads" if args.greedy_buttons else "sampled",
             "geometry": False, "aim_correction": False,
             "automatic_bomb": False, "native_rng_seed_controlled": False,
             "button_crossover": {
@@ -279,7 +303,9 @@ def run_evaluation(args, arms, path, specification, stage_session=native_stage):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--policy", action="append", required=True, metavar="NAME=CHECKPOINT")
+    parser.add_argument("--policy", action="append", default=[], metavar="NAME=CHECKPOINT")
+    parser.add_argument("--ppo-policy", action="append", default=[], metavar="NAME=ARCHIVE")
+    parser.add_argument("--ppo-template", type=Path, help="SFT checkpoint giving the PPO observation transformation.")
     parser.add_argument("--seeds", nargs="+", type=int, default=list(range(61, 65)), metavar="SEED")
     parser.add_argument("--out", type=Path, required=True, help="Directory for the atomically updated report.json.")
     parser.add_argument("--parakit", type=Path, default=Path(__file__).resolve().parents[2] / "parakit")
@@ -292,6 +318,8 @@ def main():
                         help="Use argmax buttons in these arms and a separate movement RNG in every arm.")
     parser.add_argument("--resume", action="store_true", help="Resume the same run after its last committed episode.")
     args = parser.parse_args()
+    if not (args.policy or args.ppo_policy) or bool(args.ppo_policy) != bool(args.ppo_template):
+        parser.error("Specify at least one arm and provide --ppo-template with --ppo-policy.")
     if args.limit < 1 or args.focus_wait < 0 or len(args.seeds) != len(set(args.seeds)):
         parser.error("Use a positive decision limit, nonnegative focus wait, and distinct policy seeds.")
     if any(not 0 <= seed < 2 ** 63 for seed in args.seeds):
@@ -300,7 +328,7 @@ def main():
         parser.error("The native TH14 1.00b game adapter requires Windows.")
     torch.set_num_threads(1)
     try:
-        arms = load_arms(args.policy)
+        arms = load_arms(args.policy, args.ppo_policy, args.ppo_template)
         if args.greedy_buttons and not set(args.greedy_buttons) < set(arms):
             raise ValueError("Name a subset of arms to use greedy buttons and leave a sampled control.")
         specification = run_specification(args, arms)
