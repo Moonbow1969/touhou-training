@@ -1,0 +1,1749 @@
+{
+  "run": "trial-resume-261123",
+  "task": {
+    "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+    "setting": "TH14 trial 0.01b Normal Reimu A Stage 1",
+    "observation_schema": "trial-bullets-96x7-context-10-v1",
+    "action_schema": "movement9-focus2-shoot2-bomb2",
+    "reward": "one divided by horizon per surviving decision, stage advance earns one, first miss earns zero",
+    "native_ticks_per_decision": 4,
+    "horizon": 3300,
+    "synthetic": false
+  },
+  "environment": "f935c4bb739f302f40deab3af6d6b7790218a9aee9ddd85d816d525b76502c5b",
+  "initial_policy": {
+    "kind": "ppo-resume",
+    "sha256": "30295a24bfa588af04e104a6967a92f907db5e687fc99086789195b8fa16ac8b",
+    "warm_start_actor_exact": false
+  },
+  "learner_device": "cpu",
+  "config": {
+    "environment": "f935c4bb739f302f40deab3af6d6b7790218a9aee9ddd85d816d525b76502c5b",
+    "hidden": 128,
+    "seed": 14,
+    "settings": {
+      "learning_rate": 8e-05,
+      "gamma": 0.997,
+      "gae_lambda": 0.95,
+      "clip_range": 0.15,
+      "ent_coef": 0.004,
+      "n_epochs": 4,
+      "target_kl": 0.03,
+      "n_steps": 256,
+      "batch_size": 64
+    }
+  },
+  "quotas": {
+    "momentum-1": 2,
+    "momentum-2": 2
+  },
+  "updates": [
+    {
+      "round": 1,
+      "steps": 265472,
+      "rollout_policy_sha256": "75391eb77316b4d6574d235511025dbc4030ba45fc251208296bcca4cc079b3f",
+      "collection_seconds": 44.781241139397025,
+      "optimize_seconds": 0.6308232145383954,
+      "rollout_decisions_per_second": 22.866717713616904,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.4156103134155273e-07
+      },
+      "action_counts": [
+        [
+          78,
+          62,
+          76,
+          199,
+          132,
+          90,
+          93,
+          116,
+          178
+        ],
+        [
+          510,
+          514
+        ],
+        [
+          436,
+          588
+        ],
+        [
+          460,
+          564
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 0,
+          "seconds": 30.696361501701176,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 81,
+          "horizontal_responses": 73,
+          "max_projectiles": 28,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 0,
+          "seconds": 30.862660297192633,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 79,
+          "horizontal_responses": 71,
+          "max_projectiles": 30,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 1,
+          "seconds": 13.37649053428322,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 49,
+          "horizontal_responses": 38,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1451,
+              "decisions": 361
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 1,
+          "seconds": 13.491030702367425,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 53,
+          "max_projectiles": 77,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1682,
+              "decisions": 419
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.02531311288476,
+        "train/policy_gradient_loss": -0.003903408236510586,
+        "train/value_loss": 1.38662756796748e-05,
+        "train/approx_kl": 0.0034630775917321444,
+        "train/clip_fraction": 0.017822265625,
+        "train/loss": -0.017321301624178886,
+        "train/explained_variance": 0.9632171392440796,
+        "train/n_updates": 280.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 2,
+      "steps": 266496,
+      "rollout_policy_sha256": "80cfe11fba7580c3920615610bc58849dd698aca464422a85c34bcabbb52e3e9",
+      "collection_seconds": 26.37684196140617,
+      "optimize_seconds": 0.243324164301157,
+      "rollout_decisions_per_second": 38.82193332690422,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.1548399925231934e-07
+      },
+      "action_counts": [
+        [
+          71,
+          47,
+          52,
+          237,
+          188,
+          62,
+          107,
+          95,
+          165
+        ],
+        [
+          550,
+          474
+        ],
+        [
+          409,
+          615
+        ],
+        [
+          416,
+          608
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 2,
+          "seconds": 13.005264007486403,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 46,
+          "horizontal_responses": 43,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1354,
+              "decisions": 337
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 2,
+          "seconds": 13.122253374196589,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 45,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1374,
+              "decisions": 342
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 3,
+          "seconds": 12.191980744712055,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 51,
+          "max_projectiles": 45,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 3,
+          "seconds": 13.247911838814616,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 53,
+          "horizontal_responses": 46,
+          "max_projectiles": 19,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 950,
+              "decisions": 236
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.031162437051535,
+        "train/policy_gradient_loss": -0.007522525847889483,
+        "train/value_loss": 1.660362558197903e-05,
+        "train/approx_kl": 0.004357999190688133,
+        "train/clip_fraction": 0.08154296875,
+        "train/loss": -0.04821421578526497,
+        "train/explained_variance": 0.9462846517562866,
+        "train/n_updates": 284.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 3,
+      "steps": 267520,
+      "rollout_policy_sha256": "df30ad27304968203e8c5e76815d2053598335f93177db8d41c3e23a3a5df657",
+      "collection_seconds": 26.51467141415924,
+      "optimize_seconds": 0.23858351539820433,
+      "rollout_decisions_per_second": 38.62012785318427,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.8998980522155762e-07
+      },
+      "action_counts": [
+        [
+          82,
+          72,
+          82,
+          222,
+          146,
+          73,
+          117,
+          84,
+          146
+        ],
+        [
+          536,
+          488
+        ],
+        [
+          453,
+          571
+        ],
+        [
+          494,
+          530
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 4,
+          "seconds": 12.30650678370148,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 63,
+          "horizontal_responses": 54,
+          "max_projectiles": 46,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 4,
+          "seconds": 13.25406298134476,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 64,
+          "horizontal_responses": 57,
+          "max_projectiles": 36,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1358,
+              "decisions": 338
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 5,
+          "seconds": 13.066137114539742,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 61,
+          "horizontal_responses": 49,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1338,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 5,
+          "seconds": 13.25432507880032,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 50,
+          "horizontal_responses": 44,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1346,
+              "decisions": 335
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.050004348158836,
+        "train/policy_gradient_loss": -0.005530277940124506,
+        "train/value_loss": 9.623322256402389e-06,
+        "train/approx_kl": 0.0032788277603685856,
+        "train/clip_fraction": 0.03662109375,
+        "train/loss": -0.03728239983320236,
+        "train/explained_variance": 0.9710785150527954,
+        "train/n_updates": 288.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 4,
+      "steps": 268544,
+      "rollout_policy_sha256": "20f87d7e20afd8354af603b7b7ef61806a5d1c8dc498bfaeab7dd5878b65bf93",
+      "collection_seconds": 26.01209801994264,
+      "optimize_seconds": 0.24130698665976524,
+      "rollout_decisions_per_second": 39.366297913183786,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.1920928955078125e-07
+      },
+      "action_counts": [
+        [
+          87,
+          80,
+          71,
+          188,
+          193,
+          60,
+          112,
+          100,
+          133
+        ],
+        [
+          595,
+          429
+        ],
+        [
+          408,
+          616
+        ],
+        [
+          434,
+          590
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 6,
+          "seconds": 12.76920819003135,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 44,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1326,
+              "decisions": 330
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 6,
+          "seconds": 12.917540584690869,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 35,
+          "horizontal_responses": 31,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1339,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 7,
+          "seconds": 13.04000835865736,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 37,
+          "horizontal_responses": 34,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1322,
+              "decisions": 329
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 7,
+          "seconds": 13.086266626603901,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 42,
+          "horizontal_responses": 36,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1286,
+              "decisions": 320
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.0286645591259,
+        "train/policy_gradient_loss": -0.005153344674909022,
+        "train/value_loss": 1.2731682446087689e-05,
+        "train/approx_kl": 0.003925867844372988,
+        "train/clip_fraction": 0.03466796875,
+        "train/loss": -0.027276713401079178,
+        "train/explained_variance": 0.9655200242996216,
+        "train/n_updates": 292.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 5,
+      "steps": 269568,
+      "rollout_policy_sha256": "8dec3c4190d02433b47e38f1b0f5503582ff5e9a4883beca7bfdbef8679904b6",
+      "collection_seconds": 25.61941529251635,
+      "optimize_seconds": 0.2590665780007839,
+      "rollout_decisions_per_second": 39.969686595428236,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.1548399925231934e-07
+      },
+      "action_counts": [
+        [
+          79,
+          61,
+          71,
+          221,
+          132,
+          64,
+          141,
+          97,
+          158
+        ],
+        [
+          544,
+          480
+        ],
+        [
+          431,
+          593
+        ],
+        [
+          468,
+          556
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 8,
+          "seconds": 11.633855589665473,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 48,
+          "max_projectiles": 49,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 8,
+          "seconds": 12.43649135529995,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 77,
+          "horizontal_responses": 71,
+          "max_projectiles": 44,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 9,
+          "seconds": 13.13027858082205,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 80,
+          "horizontal_responses": 73,
+          "max_projectiles": 49,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1142,
+              "decisions": 284
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 9,
+          "seconds": 13.174962798133492,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 51,
+          "max_projectiles": 36,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1338,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.042930215597153,
+        "train/policy_gradient_loss": -0.003154645091854036,
+        "train/value_loss": 1.0517805591803153e-05,
+        "train/approx_kl": 0.0019980641081929207,
+        "train/clip_fraction": 0.0048828125,
+        "train/loss": -0.020055528730154037,
+        "train/explained_variance": 0.9526420831680298,
+        "train/n_updates": 296.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 6,
+      "steps": 270592,
+      "rollout_policy_sha256": "b2d9eabdfd5bf68f24d2e9d0585a9b2911488b9e0e5bb44d6278d7c822187e13",
+      "collection_seconds": 26.261530647054315,
+      "optimize_seconds": 0.2401960138231516,
+      "rollout_decisions_per_second": 38.99239590266835,
+      "untrained_snapshot_max_error": {
+        "log_prob": 9.5367431640625e-07,
+        "value": 1.4901161193847656e-07
+      },
+      "action_counts": [
+        [
+          60,
+          65,
+          82,
+          199,
+          172,
+          61,
+          137,
+          99,
+          149
+        ],
+        [
+          552,
+          472
+        ],
+        [
+          468,
+          556
+        ],
+        [
+          492,
+          532
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 10,
+          "seconds": 13.051898187026381,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 48,
+          "max_projectiles": 51,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1386,
+              "decisions": 345
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 10,
+          "seconds": 13.260186624713242,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 63,
+          "horizontal_responses": 54,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1158,
+              "decisions": 288
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 11,
+          "seconds": 12.906874544918537,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 45,
+          "horizontal_responses": 43,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1386,
+              "decisions": 345
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 11,
+          "seconds": 12.99328475818038,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 45,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1374,
+              "decisions": 342
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.059061743319035,
+        "train/policy_gradient_loss": -0.006004533366649412,
+        "train/value_loss": 1.1143017857762061e-05,
+        "train/approx_kl": 0.0034170709550380707,
+        "train/clip_fraction": 0.052734375,
+        "train/loss": -0.027400806546211243,
+        "train/explained_variance": 0.9732304811477661,
+        "train/n_updates": 300.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 7,
+      "steps": 271616,
+      "rollout_policy_sha256": "bd9641c9bfe9f7bb5c17f1328ad6e5d0e20dbfb21737df77a2298b80aef81342",
+      "collection_seconds": 26.287823759019375,
+      "optimize_seconds": 0.23860836774110794,
+      "rollout_decisions_per_second": 38.95339566283667,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 2.0116567611694336e-07
+      },
+      "action_counts": [
+        [
+          81,
+          53,
+          64,
+          198,
+          167,
+          62,
+          132,
+          91,
+          176
+        ],
+        [
+          470,
+          554
+        ],
+        [
+          422,
+          602
+        ],
+        [
+          488,
+          536
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 12,
+          "seconds": 12.435698582790792,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 79,
+          "horizontal_responses": 75,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 12,
+          "seconds": 13.190431975759566,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 71,
+          "horizontal_responses": 58,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1130,
+              "decisions": 281
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 13,
+          "seconds": 13.267530566081405,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 68,
+          "horizontal_responses": 54,
+          "max_projectiles": 38,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1502,
+              "decisions": 374
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 13,
+          "seconds": 13.091310252435505,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 44,
+          "horizontal_responses": 38,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1358,
+              "decisions": 338
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.0474353060126305,
+        "train/policy_gradient_loss": -0.0039995552906475496,
+        "train/value_loss": 1.019241070565613e-05,
+        "train/approx_kl": 0.0026505766436457634,
+        "train/clip_fraction": 0.01171875,
+        "train/loss": -0.002102944068610668,
+        "train/explained_variance": 0.9670607447624207,
+        "train/n_updates": 304.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 8,
+      "steps": 272640,
+      "rollout_policy_sha256": "b78af8d776eda3ebf362745db1238447edb9b01558cf671796f8e28a47d17e85",
+      "collection_seconds": 26.10938103310764,
+      "optimize_seconds": 0.23873516358435154,
+      "rollout_decisions_per_second": 39.21961990219266,
+      "untrained_snapshot_max_error": {
+        "log_prob": 2.384185791015625e-07,
+        "value": 1.7136335372924805e-07
+      },
+      "action_counts": [
+        [
+          77,
+          92,
+          85,
+          182,
+          158,
+          64,
+          122,
+          85,
+          159
+        ],
+        [
+          480,
+          544
+        ],
+        [
+          435,
+          589
+        ],
+        [
+          475,
+          549
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 14,
+          "seconds": 12.401919461786747,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 67,
+          "horizontal_responses": 61,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 14,
+          "seconds": 12.976382776163518,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 61,
+          "horizontal_responses": 59,
+          "max_projectiles": 51,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 15,
+          "seconds": 13.359274649061263,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 69,
+          "horizontal_responses": 60,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1338,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 15,
+          "seconds": 13.125003180466592,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 42,
+          "horizontal_responses": 37,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1418,
+              "decisions": 353
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.052222102880478,
+        "train/policy_gradient_loss": -0.00591542488837149,
+        "train/value_loss": 2.4264777891858103e-05,
+        "train/approx_kl": 0.002333176787942648,
+        "train/clip_fraction": 0.00927734375,
+        "train/loss": -0.02296781912446022,
+        "train/explained_variance": 0.9410561323165894,
+        "train/n_updates": 308.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 9,
+      "steps": 273664,
+      "rollout_policy_sha256": "cef5218b7e3dbd2ca708cf53cd102b78785e47c71134a09c41bc13e250df5de8",
+      "collection_seconds": 26.489517698064446,
+      "optimize_seconds": 0.23882842902094126,
+      "rollout_decisions_per_second": 38.65680046242678,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.7136335372924805e-07
+      },
+      "action_counts": [
+        [
+          81,
+          85,
+          78,
+          155,
+          160,
+          97,
+          117,
+          99,
+          152
+        ],
+        [
+          474,
+          550
+        ],
+        [
+          448,
+          576
+        ],
+        [
+          495,
+          529
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 16,
+          "seconds": 12.465483124367893,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 76,
+          "horizontal_responses": 70,
+          "max_projectiles": 44,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 16,
+          "seconds": 13.394350314512849,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 69,
+          "horizontal_responses": 59,
+          "max_projectiles": 19,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1050,
+              "decisions": 261
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 17,
+          "seconds": 13.163573924452066,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 52,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1414,
+              "decisions": 352
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 17,
+          "seconds": 13.087176165543497,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 62,
+          "horizontal_responses": 55,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1342,
+              "decisions": 334
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.037337891757488,
+        "train/policy_gradient_loss": -0.00718134348426247,
+        "train/value_loss": 1.8607843372819843e-05,
+        "train/approx_kl": 0.003572851186618209,
+        "train/clip_fraction": 0.018310546875,
+        "train/loss": -0.042177628725767136,
+        "train/explained_variance": 0.9303145408630371,
+        "train/n_updates": 312.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 10,
+      "steps": 274688,
+      "rollout_policy_sha256": "0b320aec0a70fe5f6de3d59eee9a46e91f94497956ff0469af1e5e0605d873e8",
+      "collection_seconds": 26.45533596444875,
+      "optimize_seconds": 0.23902280908077955,
+      "rollout_decisions_per_second": 38.70674715210849,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.6391277313232422e-07
+      },
+      "action_counts": [
+        [
+          71,
+          114,
+          139,
+          123,
+          121,
+          117,
+          92,
+          98,
+          149
+        ],
+        [
+          461,
+          563
+        ],
+        [
+          477,
+          547
+        ],
+        [
+          514,
+          510
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 18,
+          "seconds": 13.136768302880228,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 56,
+          "horizontal_responses": 51,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1330,
+              "decisions": 331
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 18,
+          "seconds": 13.208751950412989,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 62,
+          "horizontal_responses": 57,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1374,
+              "decisions": 342
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 19,
+          "seconds": 12.57743761036545,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 67,
+          "horizontal_responses": 58,
+          "max_projectiles": 41,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 19,
+          "seconds": 13.312980310060084,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 74,
+          "horizontal_responses": 64,
+          "max_projectiles": 19,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1042,
+              "decisions": 259
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.0301822274923325,
+        "train/policy_gradient_loss": -0.0045243468703120016,
+        "train/value_loss": 3.387819290878724e-05,
+        "train/approx_kl": 0.0026328181847929955,
+        "train/clip_fraction": 0.013916015625,
+        "train/loss": -0.03224305808544159,
+        "train/explained_variance": 0.8862486481666565,
+        "train/n_updates": 316.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 11,
+      "steps": 275712,
+      "rollout_policy_sha256": "3d8b7e327fa6df6ce4b310a1ac41497c48f093f1511c398161f5f79b841ce986",
+      "collection_seconds": 26.200648240745068,
+      "optimize_seconds": 0.24058458022773266,
+      "rollout_decisions_per_second": 39.083002473486914,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.341104507446289e-07
+      },
+      "action_counts": [
+        [
+          70,
+          62,
+          46,
+          164,
+          159,
+          71,
+          122,
+          112,
+          218
+        ],
+        [
+          459,
+          565
+        ],
+        [
+          393,
+          631
+        ],
+        [
+          454,
+          570
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 20,
+          "seconds": 12.17680261284113,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 68,
+          "horizontal_responses": 63,
+          "max_projectiles": 51,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 20,
+          "seconds": 13.213056615553796,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 69,
+          "horizontal_responses": 67,
+          "max_projectiles": 37,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1514,
+              "decisions": 377
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 21,
+          "seconds": 13.201960738748312,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 71,
+          "horizontal_responses": 60,
+          "max_projectiles": 37,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1514,
+              "decisions": 377
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 21,
+          "seconds": 12.979680367745459,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 51,
+          "horizontal_responses": 48,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1510,
+              "decisions": 376
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -3.977396246045828,
+        "train/policy_gradient_loss": -0.005260334197373595,
+        "train/value_loss": 2.025718853815306e-05,
+        "train/approx_kl": 0.0028159483335912228,
+        "train/clip_fraction": 0.04150390625,
+        "train/loss": -0.03501733019948006,
+        "train/explained_variance": 0.9489542841911316,
+        "train/n_updates": 320.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 12,
+      "steps": 276736,
+      "rollout_policy_sha256": "685200c029621608722a016a30da5760490d81f9edb6dee8ae4962bc806946f2",
+      "collection_seconds": 26.228502992540598,
+      "optimize_seconds": 0.25879388488829136,
+      "rollout_decisions_per_second": 39.04149620324218,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.1175870895385742e-07
+      },
+      "action_counts": [
+        [
+          65,
+          52,
+          72,
+          161,
+          135,
+          73,
+          139,
+          110,
+          217
+        ],
+        [
+          451,
+          573
+        ],
+        [
+          404,
+          620
+        ],
+        [
+          468,
+          556
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 22,
+          "seconds": 11.765892028808594,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 77,
+          "horizontal_responses": 73,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 22,
+          "seconds": 13.068320370279253,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 72,
+          "horizontal_responses": 65,
+          "max_projectiles": 47,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1334,
+              "decisions": 332
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 23,
+          "seconds": 13.265743205323815,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 71,
+          "horizontal_responses": 56,
+          "max_projectiles": 34,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1310,
+              "decisions": 326
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 23,
+          "seconds": 13.15192456357181,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 62,
+          "horizontal_responses": 62,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1338,
+              "decisions": 333
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.004543017596006,
+        "train/policy_gradient_loss": -0.005075680550362449,
+        "train/value_loss": 2.1229208741146977e-05,
+        "train/approx_kl": 0.005554729141294956,
+        "train/clip_fraction": 0.03076171875,
+        "train/loss": -0.011769079603254795,
+        "train/explained_variance": 0.9641223549842834,
+        "train/n_updates": 324.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 13,
+      "steps": 277760,
+      "rollout_policy_sha256": "ebe9c43691cbb4d33dd8f35ed3d8b0bdf1f6618041d0e9f53eba1e305b92d22e",
+      "collection_seconds": 25.54676833283156,
+      "optimize_seconds": 0.25460300128906965,
+      "rollout_decisions_per_second": 40.083347790178266,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.862645149230957e-07
+      },
+      "action_counts": [
+        [
+          95,
+          50,
+          63,
+          193,
+          143,
+          59,
+          126,
+          98,
+          197
+        ],
+        [
+          506,
+          518
+        ],
+        [
+          390,
+          634
+        ],
+        [
+          489,
+          535
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-2",
+          "sequence": 24,
+          "seconds": 12.939671136438847,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 58,
+          "horizontal_responses": 54,
+          "max_projectiles": 75,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1642,
+              "decisions": 409
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 24,
+          "seconds": 13.033947614952922,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 66,
+          "horizontal_responses": 56,
+          "max_projectiles": 50,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1366,
+              "decisions": 340
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 25,
+          "seconds": 12.138431918807328,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 66,
+          "horizontal_responses": 61,
+          "max_projectiles": 47,
+          "episodes": [],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 25,
+          "seconds": 12.507234702818096,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 83,
+          "horizontal_responses": 78,
+          "max_projectiles": 28,
+          "episodes": [],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.01184681430459,
+        "train/policy_gradient_loss": -0.003092146143899299,
+        "train/value_loss": 1.3763573392111539e-05,
+        "train/approx_kl": 0.003207029774785042,
+        "train/clip_fraction": 0.01953125,
+        "train/loss": -0.028824791312217712,
+        "train/explained_variance": 0.9686729311943054,
+        "train/n_updates": 328.0,
+        "train/clip_range": 0.15
+      }
+    },
+    {
+      "round": 14,
+      "steps": 278784,
+      "rollout_policy_sha256": "b6af8fb07437ef7cc855cd8a2afe76c4114bac9b25a6359334f5389f2e492d43",
+      "collection_seconds": 26.308879183605313,
+      "optimize_seconds": 0.24218036886304617,
+      "rollout_decisions_per_second": 38.92222062573147,
+      "untrained_snapshot_max_error": {
+        "log_prob": 4.76837158203125e-07,
+        "value": 1.564621925354004e-07
+      },
+      "action_counts": [
+        [
+          77,
+          89,
+          81,
+          154,
+          150,
+          82,
+          122,
+          109,
+          160
+        ],
+        [
+          468,
+          556
+        ],
+        [
+          396,
+          628
+        ],
+        [
+          453,
+          571
+        ]
+      ],
+      "actor_fragments": [
+        {
+          "worker": "momentum-1",
+          "sequence": 26,
+          "seconds": 13.018165682442486,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 57,
+          "horizontal_responses": 53,
+          "max_projectiles": 45,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1394,
+              "decisions": 347
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 26,
+          "seconds": 13.260292553342879,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 55,
+          "horizontal_responses": 47,
+          "max_projectiles": 35,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1362,
+              "decisions": 339
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-1",
+          "sequence": 27,
+          "seconds": 13.011374356225133,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 54,
+          "horizontal_responses": 52,
+          "max_projectiles": 48,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1354,
+              "decisions": 337
+            }
+          ],
+          "retries": []
+        },
+        {
+          "worker": "momentum-2",
+          "sequence": 27,
+          "seconds": 13.039950803853571,
+          "native_deltas": {
+            "4": 256
+          },
+          "horizontal_commands": 52,
+          "horizontal_responses": 43,
+          "max_projectiles": 46,
+          "episodes": [
+            {
+              "outcome": "miss",
+              "frame": 1382,
+              "decisions": 344
+            }
+          ],
+          "retries": []
+        }
+      ],
+      "losses": {
+        "train/learning_rate": 8e-05,
+        "train/entropy_loss": -4.009278990328312,
+        "train/policy_gradient_loss": -0.0038231498438108247,
+        "train/value_loss": 1.6118249035912413e-05,
+        "train/approx_kl": 0.00287356274202466,
+        "train/clip_fraction": 0.012451171875,
+        "train/loss": -0.02786076068878174,
+        "train/explained_variance": 0.9708001017570496,
+        "train/n_updates": 332.0,
+        "train/clip_range": 0.15
+      }
+    }
+  ],
+  "checkpoint_storage": {
+    "current": {
+      "steps": 278784,
+      "sha256": "f57e6a9c69dea7fa4b0ab84fd760ca17205a5eb84f916cc99be2b46e39e6012f",
+      "bytes": 944578
+    },
+    "previous": {
+      "steps": 277760,
+      "sha256": "61fb36d54164b5cdaaced3eb7e16ddd5f21b1155d828e7840528256e46074875",
+      "bytes": 944578
+    }
+  },
+  "error": ""
+}
