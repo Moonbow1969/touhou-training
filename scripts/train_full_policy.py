@@ -76,10 +76,11 @@ def retry_story_game_over(parakit):
 
 
 class SurvivalRollout(gym.Wrapper):
-    def __init__(self, env, base, reward_mode):
+    def __init__(self, env, base, reward_mode, bomb_cost=0.):
         super().__init__(env)
         self.base = base
         self.reward_mode = reward_mode
+        self.bomb_cost = bomb_cost
         self.observation_space = base.observation_space
         self.step_seconds = 0.
         self.reset_seconds = 0.
@@ -102,6 +103,7 @@ class SurvivalRollout(gym.Wrapper):
         started = perf_counter()
         frame = self.env.last_frame
         before = self.env.snapshot
+        bombs_before = self.env.bombs_used
         observation, _, terminated, truncated, info = self.env.step(action)
         observation = policy_observation(self.base, self.env, observation)
         direction = int(action[0]) % 3 - 1
@@ -124,6 +126,7 @@ class SurvivalRollout(gym.Wrapper):
             reward = 1.
         else:
             reward = 0. if terminated else 1. / self.env.limit
+        reward -= self.bomb_cost * (info["bombs_used"] - bombs_before)
         self.step_seconds += perf_counter() - started
         return observation, reward, terminated or truncated, False, info
 
@@ -273,6 +276,8 @@ def main():
     parser.add_argument("--seed", type=int, default=61)
     parser.add_argument("--eval-seed", type=int, help="First policy sampling seed. Defaults to the training seed.")
     parser.add_argument("--reward", choices=tuple(REWARDS), default="sparse")
+    parser.add_argument("--bomb-cost", type=float, default=0.,
+                        help="Reward cost for each Bomb actually consumed by the native game.")
     parser.add_argument("--resume", type=Path, help="Resume a PPO checkpoint with the same initialization and configuration.")
     parser.add_argument("--reference-ppo", type=Path, help="Evaluate a second PPO checkpoint with matching lineage.")
     parser.add_argument("--focus-wait", type=int, default=30)
@@ -298,6 +303,8 @@ def main():
         parser.error("Evaluation policy sampling seeds must be in [0, 2**63).")
     if not math.isfinite(args.clock_poll_ms) or not 0 <= args.clock_poll_ms <= 4:
         parser.error("The native clock poll interval must be between 0 and 4 ms.")
+    if not math.isfinite(args.bomb_cost) or args.bomb_cost < 0:
+        parser.error("Bomb cost must be finite and nonnegative.")
     try:
         storage = CheckpointStore(args.out, args.checkpoint_budget_mib * MIB, args.min_free_disk_mib * MIB)
         if args.steps:
@@ -312,6 +319,9 @@ def main():
     student = AimHead()
     student.load_state_dict(torch.load(args.aim, map_location="cpu", weights_only=True))
     student.eval()
+    reward_settings = REWARDS[args.reward].copy()
+    if args.bomb_cost:
+        reward_settings["native_bomb_consumed"] = -args.bomb_cost
     report = {
         "task": {"title": "TH14", "version": "1.00b", "difficulty": "Normal", "shot": "Reimu A",
                  "first_stage": 1, "last_stage": 1, "first_miss_ends_trial": True, "frames_per_action": 4,
@@ -329,7 +339,7 @@ def main():
         "learned_evaluation_action": args.eval_action,
         "evaluation_first_policy_seed": eval_seed, "native_rng_seed_controlled": False,
         "ppo_hyperparameters": PPO_SETTINGS,
-        "reward": REWARDS[args.reward],
+        "reward": reward_settings,
         "controller_settings": {arm: {"geometry": arm == "hybrid", "aim_correction": arm == "hybrid",
                                       "automatic_bomb": arm == "hybrid"} for arm in CONTROLLERS},
         "controllers": {arm: [] for arm in CONTROLLERS}, "updates": [], "status": "started",
@@ -369,7 +379,7 @@ def main():
             retry_story_game_over(args.parakit)
         stage = NormalStageOne(args.parakit, limit=args.train_limit, motion_history=True,
                                history_frames=max(base.motion_spans or (12,)), focus_wait=args.focus_wait)
-        env = SurvivalRollout(stage, base, args.reward)
+        env = SurvivalRollout(stage, base, args.reward, args.bomb_cost)
         if args.resume:
             model = PPO.load(args.resume, env=env, device="cpu")
         elif warm_exact:
