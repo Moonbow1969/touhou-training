@@ -367,26 +367,58 @@ def plot_trial_pair(directory, path):
         }
         for seed in seeds for name, budget in zip(names, budgets, strict=True)
     ]
+    plot_frozen_checkpoints(directory, rows, report["task"]["setting"], f"trial-ppo-{budgets[0]}-vs-{budgets[1]}")
 
+
+def plot_stock_pair(directory, path):
+    report = read_report(path.parent, path.name)
+    specification = report["specification"]
+    controller = specification["controller"]
+    if controller["decode"] != "sampled" or any(controller[key] for key in
+                                               ("geometry", "aim_correction", "automatic_bomb")):
+        raise ValueError("The stock figure requires pure sampled policies.")
+    budgets = {name: policy.get("native_training_decisions", 0) for name, policy in specification["policies"].items()}
+    if len(set(budgets.values())) != len(budgets):
+        raise ValueError("The stock figure requires policies at distinct training budgets.")
+    rows = [
+        {
+            "policy_seed": entry["trial"]["policy_seed"],
+            "training_decisions": budgets[entry["trial"]["arm"]],
+            "native_stage_frame": entry["result"]["stage_frame"],
+            "outcome": entry["result"]["outcome"],
+        }
+        for entry in report["completed"]
+    ]
+    if len(rows) != report["matched_blocks"] * len(budgets):
+        raise ValueError("The stock figure requires complete evaluation blocks.")
+    context = "TH14 Steam 1.00b · Normal Reimu A · Stage 1"
+    plot_frozen_checkpoints(directory, rows, context, f"stock-ppo-paired-through-{max(budgets.values())}")
+
+
+def plot_frozen_checkpoints(directory, rows, context, stem):
+    budgets = sorted({row["training_decisions"] for row in rows})
+    seeds = sorted({row["policy_seed"] for row in rows})
+    indexed = {(row["training_decisions"], row["policy_seed"]): row["native_stage_frame"] for row in rows}
+    if not 2 <= len(budgets) <= 3 or len(indexed) != len(rows) or len(indexed) != len(seeds) * len(budgets):
+        raise ValueError("The figure requires two or three budgets with the same paired seed cohort.")
     fig, axis = plt.subplots(figsize=(8.2, 5.25))
     fig.subplots_adjust(left=.13, right=.94, top=.75, bottom=.23)
-    heading(fig, "Paired PPO checkpoint evaluation", f"{report['task']['setting']} · {len(seeds)} paired policy seeds")
+    heading(fig, "Paired PPO checkpoint evaluation", f"{context} · {len(seeds)} paired policy seeds")
     offsets = [(index - (len(seeds) - 1) / 2) * .035 for index in range(len(seeds))]
-    endpoints = [[episodes[name][seed]["native_stage_frame"] for seed in seeds] for name in names]
-    for shift, left, right in zip(offsets, *endpoints, strict=True):
-        axis.plot([shift, 1 + shift], [left, right], color="#ABB8C0", lw=.8, alpha=.8, zorder=2)
-    for index, (values, color) in enumerate(zip(endpoints, (CHECKPOINT, WARM), strict=True)):
+    endpoints = [[indexed[budget, seed] for seed in seeds] for budget in budgets]
+    for shift, *pair in zip(offsets, *endpoints, strict=True):
+        axis.plot([index + shift for index in range(len(budgets))], pair, color="#ABB8C0", lw=.8, alpha=.8, zorder=2)
+    for index, (values, color) in enumerate(zip(endpoints, (SFT, CHECKPOINT, WARM)[-len(budgets):], strict=True)):
         axis.scatter([index + shift for shift in offsets], values, color=color, s=30, linewidth=0, zorder=3)
         axis.hlines(median(values), index - .16, index + .16, color=color, lw=3, zorder=4)
-    axis.set_xticks([0, 1], [f"{budget:,}" for budget in budgets])
-    axis.set_xlim(-.35, 1.35)
+    axis.set_xticks(range(len(budgets)), [f"{budget:,}" if budget else "Frozen SFT\n0" for budget in budgets])
+    axis.set_xlim(-.35, len(budgets) - .65)
     axis.set_ylim(bottom=0)
     axis.set_xlabel("Cumulative native training decisions", color=INK, labelpad=8)
     axis.set_ylabel("Stage 1 endpoint (native frames)", color=INK, labelpad=9)
     style_axis(axis)
     fig.text(.13, .075, "Lines pair policy sampling seeds. Thick bars mark the medians.", color=MUTED, fontsize=9)
     fig.text(.13, .038, "The original game's RNG was uncontrolled.", color=MUTED, fontsize=9)
-    stem = f"trial-ppo-{budgets[0]}-vs-{budgets[1]}"
     write_csv(directory / f"{stem}.csv", rows)
     save(fig, directory, stem)
 
@@ -401,6 +433,7 @@ def main():
     parser.add_argument("--warm-continuations", type=Path, nargs="+", metavar="REPORT",
                         help="Ordered warm-start reports after 16,384, with a saved checkpoint in every report.")
     parser.add_argument("--trial-paired", type=Path, help="Paired frozen checkpoints on the original TH14 trial.")
+    parser.add_argument("--stock-paired", type=Path, help="Paired frozen checkpoints on the Steam TH14 build.")
     parser.add_argument("--matched-training-seed", type=int, default=211,
                         help="PPO training seed for the matched figure. Defaults to the original paired run’s 211.")
     args = parser.parse_args()
@@ -429,6 +462,8 @@ def main():
         plot_archive_evaluations(directory, cohorts)
         if args.trial_paired:
             plot_trial_pair(directory, args.trial_paired)
+        if args.stock_paired:
+            plot_stock_pair(directory, args.stock_paired)
         if args.warm_continuations:
             traces = list(warm_reports)
             for path in args.warm_continuations:
