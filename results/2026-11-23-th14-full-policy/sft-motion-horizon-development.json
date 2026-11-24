@@ -1,0 +1,1359 @@
+{
+  "protocol": {
+    "snapshot_sha256": "60bd5285519b55b2d6b7eb9daed06aed5c7e03782e7072c9fc00fb5f5e053b35",
+    "validation_decisions": 13938,
+    "development_stage1_pairs": 2288,
+    "seeds": [
+      61,
+      97,
+      137
+    ],
+    "checkpoint_selection": "Minimum shared validation NLL",
+    "independent_test_used": false,
+    "native_gameplay_measured": false,
+    "control_context": "Three consecutive recent displacement intervals, nominally covering 12 native frames.",
+    "candidate_context": "Cumulative velocities at 4, 12 and 36 native frames, replacing the recent interval features.",
+    "upcoming_action_repeat_frames": 4
+  },
+  "arms": {
+    "recent_three_intervals": {
+      "native_frame_spans": null,
+      "parameters": 781552,
+      "mean_validation_nll": 1.2779391959025197,
+      "mean_validation_movement_accuracy": 0.7505380972879897,
+      "mean_stage1_accuracy": {
+        "four_tick_movement": 0.7166375291375291,
+        "immediate_starts": 0.028735632183908046,
+        "immediate_turns": 0.014035087719298246,
+        "immediate_idle_holds": 0.9173098125689084,
+        "immediate_active_holds": 0.8224668360146768
+      },
+      "by_seed": {
+        "61": {
+          "validation_nll": 1.2555275829951242,
+          "validation_movement_accuracy": 0.7546993829817764,
+          "selected_epoch": 5,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1647,
+              "denominator": 2288,
+              "accuracy": 0.7198426573426573
+            },
+            "immediate_starts": {
+              "numerator": 2,
+              "denominator": 58,
+              "accuracy": 0.034482758620689655
+            },
+            "immediate_turns": {
+              "numerator": 1,
+              "denominator": 95,
+              "accuracy": 0.010526315789473684
+            },
+            "immediate_idle_holds": {
+              "numerator": 826,
+              "denominator": 907,
+              "accuracy": 0.9106945975744212
+            },
+            "immediate_active_holds": {
+              "numerator": 988,
+              "denominator": 1181,
+              "accuracy": 0.8365791701947503
+            }
+          },
+          "checkpoint_sha256": "fb7cb976381fae7e88844ca8bf79faac1adf6440ef98975273628cc3be22337f",
+          "metrics_sha256": "952af70af4ef04c42ff38ea24a03aaa1a0d75e69481cdfc49a4ee09ee359fdc6",
+          "epoch_trace": null
+        },
+        "97": {
+          "validation_nll": 1.3425482224487544,
+          "validation_movement_accuracy": 0.7497488879322715,
+          "selected_epoch": 4,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1628,
+              "denominator": 2288,
+              "accuracy": 0.7115384615384616
+            },
+            "immediate_starts": {
+              "numerator": 1,
+              "denominator": 58,
+              "accuracy": 0.017241379310344827
+            },
+            "immediate_turns": {
+              "numerator": 1,
+              "denominator": 95,
+              "accuracy": 0.010526315789473684
+            },
+            "immediate_idle_holds": {
+              "numerator": 820,
+              "denominator": 907,
+              "accuracy": 0.9040793825799338
+            },
+            "immediate_active_holds": {
+              "numerator": 976,
+              "denominator": 1181,
+              "accuracy": 0.8264182895850973
+            }
+          },
+          "checkpoint_sha256": "5ff8ee4a561720f8b2e94a645f500d6dfcd122bb69e92f14d5f3e6cc8aa01850",
+          "metrics_sha256": "4e97135286032e41c3707e75612fbc93c20a47548c1ef04a788101ac86af027e",
+          "epoch_trace": null
+        },
+        "137": {
+          "validation_nll": 1.2357417822636805,
+          "validation_movement_accuracy": 0.7471660209499211,
+          "selected_epoch": 1,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1644,
+              "denominator": 2288,
+              "accuracy": 0.7185314685314685
+            },
+            "immediate_starts": {
+              "numerator": 2,
+              "denominator": 58,
+              "accuracy": 0.034482758620689655
+            },
+            "immediate_turns": {
+              "numerator": 2,
+              "denominator": 95,
+              "accuracy": 0.021052631578947368
+            },
+            "immediate_idle_holds": {
+              "numerator": 850,
+              "denominator": 907,
+              "accuracy": 0.9371554575523704
+            },
+            "immediate_active_holds": {
+              "numerator": 950,
+              "denominator": 1181,
+              "accuracy": 0.8044030482641829
+            }
+          },
+          "checkpoint_sha256": "a0872036a2276ca8c99c870851014dfdccd82e49687d62c40ec3dcbbf015ac7e",
+          "metrics_sha256": "76a285c70631b6390d42f0c9df2f89a6280c04ba151f5b1794df61590ffcde73",
+          "epoch_trace": null
+        }
+      }
+    },
+    "four_twelve_thirtysix": {
+      "native_frame_spans": [
+        4,
+        12,
+        36
+      ],
+      "parameters": 781552,
+      "mean_validation_nll": 1.291052543778282,
+      "mean_validation_movement_accuracy": 0.7434112976515043,
+      "mean_stage1_accuracy": {
+        "four_tick_movement": 0.7073135198135199,
+        "immediate_starts": 0.028735632183908046,
+        "immediate_turns": 0.010526315789473684,
+        "immediate_idle_holds": 0.9040793825799338,
+        "immediate_active_holds": 0.8142816821902342
+      },
+      "by_seed": {
+        "61": {
+          "validation_nll": 1.27219216972226,
+          "validation_movement_accuracy": 0.7455158559334194,
+          "selected_epoch": 5,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1613,
+              "denominator": 2288,
+              "accuracy": 0.7049825174825175
+            },
+            "immediate_starts": {
+              "numerator": 2,
+              "denominator": 58,
+              "accuracy": 0.034482758620689655
+            },
+            "immediate_turns": {
+              "numerator": 1,
+              "denominator": 95,
+              "accuracy": 0.010526315789473684
+            },
+            "immediate_idle_holds": {
+              "numerator": 804,
+              "denominator": 907,
+              "accuracy": 0.886438809261301
+            },
+            "immediate_active_holds": {
+              "numerator": 976,
+              "denominator": 1181,
+              "accuracy": 0.8264182895850973
+            }
+          },
+          "checkpoint_sha256": "56cf8cbd942886607987cffc3c82e6586b2cc262fa41c3f2391ef47d7540212e",
+          "metrics_sha256": "dafd420f0dd619b063ae01d4489061009b0cfdb210792d5b58aee0bd0468e5bf",
+          "epoch_trace": [
+            {
+              "epoch": 1,
+              "train_examples": 232697,
+              "train_weighted_objective": 2.085413694381714,
+              "val_loss": 1.3426530295917474,
+              "validation_nll_by_head": {
+                "movement": 0.9675652149127638,
+                "focus": 0.08170427415989824,
+                "shoot": 0.2767677441921445,
+                "bomb": 0.016615796326940928
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8734,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13938,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 2,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7357583584445401,
+                "focus": 0.9890228153250108,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.9998565073898694
+              },
+              "predicted_moving_fraction": 0.4715884631941455,
+              "moving_precision": 0.8355393275521071,
+              "moving_recall": 0.8066980023501763,
+              "active_direction_accuracy": 0.6178025851938895
+            },
+            {
+              "epoch": 2,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.7791279554367065,
+              "val_loss": 1.3370174581615564,
+              "validation_nll_by_head": {
+                "movement": 0.9503331068752999,
+                "focus": 0.08524424021547504,
+                "shoot": 0.27352066111198575,
+                "bomb": 0.027919449958795795
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8782,
+                  "true_positive": 8658
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13938,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 7,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7431482278662649,
+                "focus": 0.985865977902138,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.999497775864543
+              },
+              "predicted_moving_fraction": 0.48572248529200746,
+              "moving_precision": 0.831314623338257,
+              "moving_recall": 0.8266745005875441,
+              "active_direction_accuracy": 0.6418918918918919
+            },
+            {
+              "epoch": 3,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.69902765750885,
+              "val_loss": 1.360769083876575,
+              "validation_nll_by_head": {
+                "movement": 0.9378087419676018,
+                "focus": 0.08539254122441357,
+                "shoot": 0.32957133134616673,
+                "bomb": 0.007996469338392832
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8761,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13864,
+                  "true_positive": 12737
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 2,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7425025111206773,
+                "focus": 0.9870856650882479,
+                "shoot": 0.9171330176495911,
+                "bomb": 0.9998565073898694
+              },
+              "predicted_moving_fraction": 0.49806284976323717,
+              "moving_precision": 0.8242581388648804,
+              "moving_recall": 0.8404817861339601,
+              "active_direction_accuracy": 0.652027027027027
+            },
+            {
+              "epoch": 4,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.6289973258972168,
+              "val_loss": 1.2887527274852812,
+              "validation_nll_by_head": {
+                "movement": 0.906476520982256,
+                "focus": 0.08432919720115886,
+                "shoot": 0.26583556636947697,
+                "bomb": 0.03211144293238946
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8795,
+                  "true_positive": 8659
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13810,
+                  "true_positive": 12666
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 63,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7316688190558186,
+                "focus": 0.9850767685464199,
+                "shoot": 0.9108193428038456,
+                "bomb": 0.9954799827808868
+              },
+              "predicted_moving_fraction": 0.5071746305065289,
+              "moving_precision": 0.8146838308105814,
+              "moving_recall": 0.8459165687426558,
+              "active_direction_accuracy": 0.6430669800235017
+            },
+            {
+              "epoch": 5,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5839753150939941,
+              "val_loss": 1.27219216972226,
+              "validation_nll_by_head": {
+                "movement": 0.8648939840180201,
+                "focus": 0.07362976409831644,
+                "shoot": 0.31848177464762006,
+                "bomb": 0.015186646958303376
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8736,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13617,
+                  "true_positive": 12594
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 12,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7455158559334194,
+                "focus": 0.9888793227148802,
+                "shoot": 0.9143349117520447,
+                "bomb": 0.9991390443392165
+              },
+              "predicted_moving_fraction": 0.5025111206772851,
+              "moving_precision": 0.8233866362078812,
+              "moving_recall": 0.8470916568742656,
+              "active_direction_accuracy": 0.6606933019976499
+            },
+            {
+              "epoch": 6,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5252262353897095,
+              "val_loss": 1.3100687036436964,
+              "validation_nll_by_head": {
+                "movement": 0.9000006664909442,
+                "focus": 0.07434377640866364,
+                "shoot": 0.31372425785056485,
+                "bomb": 0.022000002893523687
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8731,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13252,
+                  "true_positive": 12282
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 30,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7385564643420863,
+                "focus": 0.9892380542402066,
+                "shoot": 0.8957526187401349,
+                "bomb": 0.9978476108480413
+              },
+              "predicted_moving_fraction": 0.5052374802697661,
+              "moving_precision": 0.8206475433115592,
+              "moving_recall": 0.8488542890716804,
+              "active_direction_accuracy": 0.6502643948296122
+            },
+            {
+              "epoch": 7,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.489642858505249,
+              "val_loss": 1.400786287465727,
+              "validation_nll_by_head": {
+                "movement": 0.8514496579815453,
+                "focus": 0.09850119559148032,
+                "shoot": 0.4348789275607688,
+                "bomb": 0.015956506331932734
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8776,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 12886,
+                  "true_positive": 12109
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 20,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7453006170182236,
+                "focus": 0.9861529631223992,
+                "shoot": 0.8971875448414407,
+                "bomb": 0.9985650738986942
+              },
+              "predicted_moving_fraction": 0.4916056823073612,
+              "moving_precision": 0.8298307063631056,
+              "moving_recall": 0.8351938895417156,
+              "active_direction_accuracy": 0.6498237367802585
+            },
+            {
+              "epoch": 8,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.4608983993530273,
+              "val_loss": 1.5437962143056652,
+              "validation_nll_by_head": {
+                "movement": 0.9847164080156318,
+                "focus": 0.07071059151109073,
+                "shoot": 0.4580830186348869,
+                "bomb": 0.030286196144055835
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8730,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13599,
+                  "true_positive": 12542
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 46,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.716386856076912,
+                "focus": 0.989309800545272,
+                "shoot": 0.9081647295164299,
+                "bomb": 0.9966996699669967
+              },
+              "predicted_moving_fraction": 0.545917635241785,
+              "moving_precision": 0.7827572611381259,
+              "moving_recall": 0.8748531139835488,
+              "active_direction_accuracy": 0.6621621621621622
+            },
+            {
+              "epoch": 9,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.4235678911209106,
+              "val_loss": 1.3461734037506887,
+              "validation_nll_by_head": {
+                "movement": 0.8795208919337395,
+                "focus": 0.09759880901494863,
+                "shoot": 0.36584837359016364,
+                "bomb": 0.0032053292118368916
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8895,
+                  "true_positive": 8659
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13386,
+                  "true_positive": 12443
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 3,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7470942746448558,
+                "focus": 0.9779021380398909,
+                "shoot": 0.9092409240924092,
+                "bomb": 0.9997847610848042
+              },
+              "predicted_moving_fraction": 0.5208064284689339,
+              "moving_precision": 0.8136106901777105,
+              "moving_recall": 0.867508813160987,
+              "active_direction_accuracy": 0.6809635722679201
+            },
+            {
+              "epoch": 10,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.396981954574585,
+              "val_loss": 1.2921186498490447,
+              "validation_nll_by_head": {
+                "movement": 0.8528059358524274,
+                "focus": 0.07409703355212519,
+                "shoot": 0.34591985816233023,
+                "bomb": 0.019295822282161788
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8741,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13598,
+                  "true_positive": 12566
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 44,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7519730233892955,
+                "focus": 0.9885205911895537,
+                "shoot": 0.9116802984646291,
+                "bomb": 0.9968431625771272
+              },
+              "predicted_moving_fraction": 0.5062419285406802,
+              "moving_precision": 0.8259637188208617,
+              "moving_recall": 0.8560517038777908,
+              "active_direction_accuracy": 0.6725910693301997
+            },
+            {
+              "epoch": 11,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.3632947206497192,
+              "val_loss": 1.5183007646555717,
+              "validation_nll_by_head": {
+                "movement": 0.8893431828959051,
+                "focus": 0.08164736321058313,
+                "shoot": 0.5292861749468729,
+                "bomb": 0.018024043602210615
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8764,
+                  "true_positive": 8658
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13882,
+                  "true_positive": 12757
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 30,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7431482278662649,
+                "focus": 0.9871574113933133,
+                "shoot": 0.9187114363610274,
+                "bomb": 0.9978476108480413
+              },
+              "predicted_moving_fraction": 0.5185105467068446,
+              "moving_precision": 0.8111249481112495,
+              "moving_recall": 0.8610458284371327,
+              "active_direction_accuracy": 0.674647473560517
+            }
+          ]
+        },
+        "97": {
+          "validation_nll": 1.3511944623328056,
+          "validation_movement_accuracy": 0.7440809298321136,
+          "selected_epoch": 4,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1612,
+              "denominator": 2288,
+              "accuracy": 0.7045454545454546
+            },
+            "immediate_starts": {
+              "numerator": 1,
+              "denominator": 58,
+              "accuracy": 0.017241379310344827
+            },
+            "immediate_turns": {
+              "numerator": 1,
+              "denominator": 95,
+              "accuracy": 0.010526315789473684
+            },
+            "immediate_idle_holds": {
+              "numerator": 808,
+              "denominator": 907,
+              "accuracy": 0.8908489525909592
+            },
+            "immediate_active_holds": {
+              "numerator": 972,
+              "denominator": 1181,
+              "accuracy": 0.8230313293818797
+            }
+          },
+          "checkpoint_sha256": "8172db1a933b113bb5d29c161af2e2fc963fb9f1f4ec366127b58169ef169e55",
+          "metrics_sha256": "0129828703f3810151d7b7243034703b47b1f76d40a30ecad0f4539d978bae8c",
+          "epoch_trace": [
+            {
+              "epoch": 1,
+              "train_examples": 232697,
+              "train_weighted_objective": 2.065211057662964,
+              "val_loss": 1.3863671190736284,
+              "validation_nll_by_head": {
+                "movement": 0.98698311875653,
+                "focus": 0.09686480455922676,
+                "shoot": 0.2913038834965816,
+                "bomb": 0.011215312261289941
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8776,
+                  "true_positive": 8658
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 12607,
+                  "true_positive": 11829
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 2,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7410675850193715,
+                "focus": 0.9862964557325298,
+                "shoot": 0.8770268331180944,
+                "bomb": 0.9998565073898694
+              },
+              "predicted_moving_fraction": 0.47417133017649593,
+              "moving_precision": 0.8347707671357241,
+              "moving_recall": 0.8103701527614571,
+              "active_direction_accuracy": 0.6302878965922444
+            },
+            {
+              "epoch": 2,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.7720963954925537,
+              "val_loss": 1.5407962987918664,
+              "validation_nll_by_head": {
+                "movement": 0.9836899167171833,
+                "focus": 0.06619036158319354,
+                "shoot": 0.43469395728514276,
+                "bomb": 0.05622206320634684
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8731,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13938,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 115,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7433634667814607,
+                "focus": 0.9892380542402066,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.9917491749174917
+              },
+              "predicted_moving_fraction": 0.5009327019658487,
+              "moving_precision": 0.8221140074477227,
+              "moving_recall": 0.8431257344300822,
+              "active_direction_accuracy": 0.657021151586369
+            },
+            {
+              "epoch": 3,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.7024455070495605,
+              "val_loss": 1.4936207782796267,
+              "validation_nll_by_head": {
+                "movement": 0.9933810212858816,
+                "focus": 0.07305806588709209,
+                "shoot": 0.3902077000560917,
+                "bomb": 0.036973991050561476
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8761,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13938,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 37,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7162433634667814,
+                "focus": 0.9872291576983785,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.9973453867125843
+              },
+              "predicted_moving_fraction": 0.5378103027694073,
+              "moving_precision": 0.7768143009605123,
+              "moving_recall": 0.8553172737955347,
+              "active_direction_accuracy": 0.6648061104582844
+            },
+            {
+              "epoch": 4,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.6292389631271362,
+              "val_loss": 1.3511944623328056,
+              "validation_nll_by_head": {
+                "movement": 0.8889834157259773,
+                "focus": 0.08235158132059636,
+                "shoot": 0.36067419607031376,
+                "bomb": 0.019185269215918115
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8736,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13903,
+                  "true_positive": 12734
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 15,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7440809298321136,
+                "focus": 0.9888793227148802,
+                "shoot": 0.913904433921653,
+                "bomb": 0.9989238054240207
+              },
+              "predicted_moving_fraction": 0.490816472951643,
+              "moving_precision": 0.8286800175412952,
+              "moving_recall": 0.8326968272620446,
+              "active_direction_accuracy": 0.6482079905992949
+            },
+            {
+              "epoch": 5,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5775320529937744,
+              "val_loss": 1.365511798708113,
+              "validation_nll_by_head": {
+                "movement": 0.9375446476678387,
+                "focus": 0.0691454503607726,
+                "shoot": 0.3110981592062574,
+                "bomb": 0.04772354147324416
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8733,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13842,
+                  "true_positive": 12758
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 88,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7399196441383269,
+                "focus": 0.989094561630076,
+                "shoot": 0.9217247811737695,
+                "bomb": 0.9936863251542546
+              },
+              "predicted_moving_fraction": 0.5213803989094562,
+              "moving_precision": 0.8052841612770056,
+              "moving_recall": 0.8595769682726204,
+              "active_direction_accuracy": 0.6753819036427732
+            },
+            {
+              "epoch": 6,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5293103456497192,
+              "val_loss": 1.486007013558499,
+              "validation_nll_by_head": {
+                "movement": 0.8752723208868207,
+                "focus": 0.06618686222862455,
+                "shoot": 0.5264025480511978,
+                "bomb": 0.01814528239185592
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8734,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13938,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 20,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7477399913904433,
+                "focus": 0.9890228153250108,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.9985650738986942
+              },
+              "predicted_moving_fraction": 0.5083943176926389,
+              "moving_precision": 0.8202088625458651,
+              "moving_recall": 0.8537015276145711,
+              "active_direction_accuracy": 0.6706815511163338
+            },
+            {
+              "epoch": 7,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.491843342781067,
+              "val_loss": 1.3928805401770314,
+              "validation_nll_by_head": {
+                "movement": 0.922284374108426,
+                "focus": 0.0701269474223177,
+                "shoot": 0.3523037072352895,
+                "bomb": 0.048165511410998244
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8734,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13860,
+                  "true_positive": 12722
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 96,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7366910604103889,
+                "focus": 0.9891663079351414,
+                "shoot": 0.9152676137178936,
+                "bomb": 0.9931123547137323
+              },
+              "predicted_moving_fraction": 0.5236762806715454,
+              "moving_precision": 0.8028497054391013,
+              "moving_recall": 0.8607520564042304,
+              "active_direction_accuracy": 0.6722972972972973
+            },
+            {
+              "epoch": 8,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.4572014808654785,
+              "val_loss": 1.4243565532144318,
+              "validation_nll_by_head": {
+                "movement": 0.8903934151973387,
+                "focus": 0.06826917349240208,
+                "shoot": 0.3879198998240611,
+                "bomb": 0.07777406470062982
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8730,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13882,
+                  "true_positive": 12737
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 317,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7453723633232888,
+                "focus": 0.989309800545272,
+                "shoot": 0.9158415841584159,
+                "bomb": 0.9772564212943033
+              },
+              "predicted_moving_fraction": 0.5158559334194289,
+              "moving_precision": 0.8183588317107093,
+              "moving_recall": 0.86427732079906,
+              "active_direction_accuracy": 0.6705346650998825
+            },
+            {
+              "epoch": 9,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.4277825355529785,
+              "val_loss": 1.5349980713279745,
+              "validation_nll_by_head": {
+                "movement": 0.978206487276031,
+                "focus": 0.07477795819432925,
+                "shoot": 0.45915724670019736,
+                "bomb": 0.022856379157416805
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8747,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13584,
+                  "true_positive": 12599
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 35,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7120103314679294,
+                "focus": 0.9882336059692926,
+                "shoot": 0.9174200028698523,
+                "bomb": 0.9974888793227149
+              },
+              "predicted_moving_fraction": 0.5622040464916057,
+              "moving_precision": 0.7653139356814701,
+              "moving_recall": 0.8808754406580493,
+              "active_direction_accuracy": 0.6805229142185664
+            },
+            {
+              "epoch": 10,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.395381212234497,
+              "val_loss": 1.6364477000966742,
+              "validation_nll_by_head": {
+                "movement": 0.9704885533420816,
+                "focus": 0.07694291842686837,
+                "shoot": 0.5121807575321782,
+                "bomb": 0.07683547079554588
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8778,
+                  "true_positive": 8660
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13925,
+                  "true_positive": 12765
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 285,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7194002008896542,
+                "focus": 0.9864399483426604,
+                "shoot": 0.9167742861242646,
+                "bomb": 0.9795523030563926
+              },
+              "predicted_moving_fraction": 0.5545989381546851,
+              "moving_precision": 0.7778783958602846,
+              "moving_recall": 0.8832256169212691,
+              "active_direction_accuracy": 0.6777320799059929
+            }
+          ]
+        },
+        "137": {
+          "validation_nll": 1.2497709992797803,
+          "validation_movement_accuracy": 0.7406371071889798,
+          "selected_epoch": 1,
+          "stage1": {
+            "four_tick_movement": {
+              "numerator": 1630,
+              "denominator": 2288,
+              "accuracy": 0.7124125874125874
+            },
+            "immediate_starts": {
+              "numerator": 2,
+              "denominator": 58,
+              "accuracy": 0.034482758620689655
+            },
+            "immediate_turns": {
+              "numerator": 1,
+              "denominator": 95,
+              "accuracy": 0.010526315789473684
+            },
+            "immediate_idle_holds": {
+              "numerator": 848,
+              "denominator": 907,
+              "accuracy": 0.9349503858875413
+            },
+            "immediate_active_holds": {
+              "numerator": 937,
+              "denominator": 1181,
+              "accuracy": 0.7933954276037256
+            }
+          },
+          "checkpoint_sha256": "b7cdfdb6405a75121ea4d47e75f83dd6f645ea37c33454addedfc0f2cc3e2aca",
+          "metrics_sha256": "7142bdc407982b68dda74a7b538541445971d51d5f636b8a45a266f4c823ff52",
+          "epoch_trace": [
+            {
+              "epoch": 1,
+              "train_examples": 232697,
+              "train_weighted_objective": 2.0739071369171143,
+              "val_loss": 1.2497709992797803,
+              "validation_nll_by_head": {
+                "movement": 0.9055242205918271,
+                "focus": 0.06554489913023019,
+                "shoot": 0.2565700718415384,
+                "bomb": 0.022131807716184615
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8732,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13791,
+                  "true_positive": 12695
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 0,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7406371071889798,
+                "focus": 0.9891663079351414,
+                "shoot": 0.9163438082938729,
+                "bomb": 1.0
+              },
+              "predicted_moving_fraction": 0.44712297316688193,
+              "moving_precision": 0.8523748395378691,
+              "moving_recall": 0.7802585193889542,
+              "active_direction_accuracy": 0.6041421856639247
+            },
+            {
+              "epoch": 2,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.7880176305770874,
+              "val_loss": 1.3990286402815912,
+              "validation_nll_by_head": {
+                "movement": 0.9026221046661232,
+                "focus": 0.10336231087180904,
+                "shoot": 0.38370758066698746,
+                "bomb": 0.009336644076671537
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8759,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13862,
+                  "true_positive": 12722
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 0,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7472377672549864,
+                "focus": 0.9872291576983785,
+                "shoot": 0.915124121107763,
+                "bomb": 1.0
+              },
+              "predicted_moving_fraction": 0.4695795666523174,
+              "moving_precision": 0.8435446906035141,
+              "moving_recall": 0.810957696827262,
+              "active_direction_accuracy": 0.6329318448883666
+            },
+            {
+              "epoch": 3,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.6987042427062988,
+              "val_loss": 1.3660526809673224,
+              "validation_nll_by_head": {
+                "movement": 0.9057714457080155,
+                "focus": 0.09209907976895772,
+                "shoot": 0.26581076288312216,
+                "bomb": 0.10237139260722705
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8730,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13835,
+                  "true_positive": 12727
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 467,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7458745874587459,
+                "focus": 0.989309800545272,
+                "shoot": 0.9177787343951787,
+                "bomb": 0.96649447553451
+              },
+              "predicted_moving_fraction": 0.4877313818338356,
+              "moving_precision": 0.8318623124448368,
+              "moving_recall": 0.8306404230317274,
+              "active_direction_accuracy": 0.64762044653349
+            },
+            {
+              "epoch": 4,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.6391276121139526,
+              "val_loss": 1.2596596077176485,
+              "validation_nll_by_head": {
+                "movement": 0.8449777320427196,
+                "focus": 0.08017348148402327,
+                "shoot": 0.32138499506817503,
+                "bomb": 0.013123399122730528
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8730,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13551,
+                  "true_positive": 12473
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 15,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7496771416272062,
+                "focus": 0.989309800545272,
+                "shoot": 0.9017075620605539,
+                "bomb": 0.9989238054240207
+              },
+              "predicted_moving_fraction": 0.4752475247524752,
+              "moving_precision": 0.8416364734299517,
+              "moving_recall": 0.8188895417156287,
+              "active_direction_accuracy": 0.6415981198589894
+            },
+            {
+              "epoch": 5,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5898792743682861,
+              "val_loss": 1.5751917489778535,
+              "validation_nll_by_head": {
+                "movement": 1.092304688988876,
+                "focus": 0.07431313214607912,
+                "shoot": 0.387478715772351,
+                "bomb": 0.02109521207054747
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8734,
+                  "true_positive": 8656
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 12961,
+                  "true_positive": 11951
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 33,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.6267039747453006,
+                "focus": 0.9890228153250108,
+                "shoot": 0.8691347395609126,
+                "bomb": 0.9976323719328455
+              },
+              "predicted_moving_fraction": 0.6538958243650452,
+              "moving_precision": 0.6786262892253676,
+              "moving_recall": 0.9084900117508813,
+              "active_direction_accuracy": 0.6659811985898942
+            },
+            {
+              "epoch": 6,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.5292677879333496,
+              "val_loss": 1.364221878566809,
+              "validation_nll_by_head": {
+                "movement": 0.9019111735113623,
+                "focus": 0.07570121441908316,
+                "shoot": 0.372837498294416,
+                "bomb": 0.013771992341947616
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8740,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13489,
+                  "true_positive": 12454
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 11,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7470942746448558,
+                "focus": 0.9887358301047496,
+                "shoot": 0.9034294733821209,
+                "bomb": 0.9992107906442819
+              },
+              "predicted_moving_fraction": 0.5065289137609413,
+              "moving_precision": 0.8223796033994334,
+              "moving_recall": 0.8528202115158637,
+              "active_direction_accuracy": 0.6664218566392479
+            },
+            {
+              "epoch": 7,
+              "train_examples": 232697,
+              "train_weighted_objective": 1.490211009979248,
+              "val_loss": 1.4015756573922016,
+              "validation_nll_by_head": {
+                "movement": 0.8557975792032965,
+                "focus": 0.07926342575942483,
+                "shoot": 0.4156447611797282,
+                "bomb": 0.05086989124975206
+              },
+              "validation_positive_buttons": {
+                "focus": {
+                  "observed": 8731,
+                  "predicted": 8748,
+                  "true_positive": 8657
+                },
+                "shoot": {
+                  "observed": 12765,
+                  "predicted": 13727,
+                  "true_positive": 12638
+                },
+                "bomb": {
+                  "observed": 0,
+                  "predicted": 162,
+                  "true_positive": 0
+                }
+              },
+              "accuracy": {
+                "movement": 0.7478117376955087,
+                "focus": 0.9881618596642273,
+                "shoot": 0.9127564930406085,
+                "bomb": 0.9883770985794231
+              },
+              "predicted_moving_fraction": 0.5075333620318554,
+              "moving_precision": 0.8214588634435963,
+              "moving_recall": 0.8535546415981199,
+              "active_direction_accuracy": 0.6692126909518213
+            }
+          ]
+        }
+      }
+    }
+  }
+}
