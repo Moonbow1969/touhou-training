@@ -52,6 +52,18 @@ On 2,288 fixed Stage 1 development observations, the mean Bomb action probabilit
 
 The Bomb-disabled comparison sampled the 16,384-step PPO models from random and SFT initialization. Both policies spent zero Bombs across the eight paired blocks. Median first miss was **914** frames for random initialization and **1,154** for SFT initialization. The SFT arm won **5/8**, with a median paired gain of **254 frames**. Both arms cleared **0/8**. The trial still shares one training seed and leaves native RNG uncontrolled. [Bomb-disabled evaluation](../../results/2026-11-23-th14-full-policy/stock-ppo-initialization-16384-without-bomb.json)
 
+The Bomb-cost arm trained for 8,192 decisions from the same SFT checkpoint and seed 211 as the archived survival-reward control. All training actions were available, and the cost reduced reward on actual native Bomb consumption. The eight-block frozen comparison measured **954** versus **704** median first-miss frames for the control and cost arms. Bomb consumption was **9** versus **0**. The cost arm won **3/8** with one tie, and both cleared **0/8**. Its median within-pair delta was **−30 frames**. The new training run records 0.25 ms pacing and exact four-tick transitions. The archived control did not log the clock poll interval. [Bomb-cost training](../../results/2026-11-23-th14-full-policy/stock-ppo-bomb-cost-8192-train.json), [frozen reward comparison](../../results/2026-11-23-th14-full-policy/stock-ppo-bomb-cost-8192-matched-eval.json)
+
+### 261123 Practice reset qualification
+
+Only **3/124** episodes in the 65,536-step training segment reached frame 2,422, near the first midboss. Stage 1 Chapter 3 in thprac is the first candidate for a practice start. It skips part of the stage script, so its chapter value and opening frame need to be measured on the prepared game. The reset probe checks the Steam executable, configured opening resources, raw chapter, both clocks, and responses to actions in each horizontal direction across 20 Retries. The simulated reset and failure paths passed. Native Practice qualification remains pending, and its data has yet to enter training. [Completed stock training](../../results/2026-11-23-th14-full-policy/stock-ppo-warm-65536-train.json), [reset probe](../../scripts/probe_th14_practice_resets.py)
+
+Run against the prepared Chapter 3 practice game. Supply the observed raw chapter and the selected starting inventories.
+
+```text
+python -m scripts.probe_th14_practice_resets --pid PID --chapter CHAPTER --expect-lives LIVES --expect-bombs BOMBS --expect-power POWER --parakit PARAKIT_DIR --out runs/th14-chapter3-reset.json
+```
+
 ## Reproduce the two-worker gate
 
 Install PyTorch, Gymnasium, Stable Baselines3 and `requirements-rollout.txt` in the learner and in each actor environment. Build the [verified trial worker](../../tools/rollout-worker-probe/README.md) for each host. Start the learner with a private endpoint and use SSH forwarding for remote actors.
