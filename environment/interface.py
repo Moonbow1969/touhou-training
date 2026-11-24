@@ -241,14 +241,23 @@ def _sleep(k: int = 0, *, poll_interval: float = 0.0):
 def _press_and_release(key):
     require_game_focus()
     keyboard.press(key)
-    _sleep(4)
-    keyboard.release(key)
+    try:
+        _sleep(4)
+    finally:
+        keyboard.release(key)
     _sleep(3)
 
 
 def _get_focus():
-    _game_window.activate()
-    time.sleep(0.2)
+    if has_game_focus():
+        return
+    try:
+        _game_window.activate()
+    except gw.PyGetWindowException as error:
+        if not has_game_focus():
+            raise RuntimeError("TH14 could not acquire keyboard focus. No game action was sent.") from error
+    else:
+        time.sleep(0.2)
     require_game_focus()
 
 

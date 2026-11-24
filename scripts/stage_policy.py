@@ -175,7 +175,7 @@ class NormalStageOne(gym.Env):
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
         game = self.game
-        game.require_game_focus()
+        self.wait_for_focus()
         self.release()
         if self.reset_count or not self.prepared:
             self.retry()

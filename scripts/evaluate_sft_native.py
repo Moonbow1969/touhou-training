@@ -45,9 +45,10 @@ class Arm:
 class HeadSampler:
     """Sample movement independently of the focus, shoot and Bomb decode."""
 
-    def __init__(self, policy, seed, greedy_buttons):
+    def __init__(self, policy, seed, greedy_buttons, *, without_bomb=False):
         self.policy = policy
         self.greedy_buttons = greedy_buttons
+        self.without_bomb = without_bomb
         self.movement_rng = torch.Generator().manual_seed(seed)
         self.button_rng = torch.Generator().manual_seed(seed ^ (1 << 62))
 
@@ -60,6 +61,9 @@ class HeadSampler:
             bits = [head.argmax(dim=-1).item() for head in buttons]
         else:
             bits = [torch.multinomial(head.softmax(dim=-1), 1, generator=self.button_rng).item() for head in buttons]
+        if self.without_bomb:
+            # Draw the Bomb bit before masking it so later focus and shoot draws stay paired.
+            bits[-1] = 0
         return np.asarray([direction, *bits], dtype=np.int64), None
 
 
@@ -165,6 +169,7 @@ def trial_schedule(arms, seeds):
 
 def run_specification(args, arms):
     sources = (evaluate_stage_policies, stage_policy, train_full_policy)
+    split_heads = bool(args.greedy_buttons or args.without_bomb)
     return {
         "schema": 1,
         "task": {
@@ -173,14 +178,15 @@ def run_specification(args, arms):
         },
         "controller": {
             "kind": "frozen_sft_and_ppo" if any(arm.provenance.get("archive_kind") for arm in arms.values()) else "sft",
-            "decode": "split_heads" if args.greedy_buttons else "sampled",
+            "decode": "split_heads" if split_heads else "sampled",
             "geometry": False, "aim_correction": False,
             "automatic_bomb": False, "native_rng_seed_controlled": False,
             "button_crossover": {
                 "movement_rng": "independent torch.Generator seeded with the policy seed",
                 "sampled_button_rng": "independent torch.Generator with the policy seed XOR 2^62",
                 "greedy_button_arms": sorted(args.greedy_buttons),
-            } if args.greedy_buttons else None,
+                "without_bomb_arms": sorted(args.without_bomb),
+            } if split_heads else None,
         },
         "runtime": {
             "runner_sha256": digest(Path(__file__)),
@@ -277,8 +283,9 @@ def run_evaluation(args, arms, path, specification, stage_session=native_stage):
                 print(json.dumps(dict(status="trial", **trial)), flush=True)
                 arm = arms[trial["arm"]]
                 stage.motion_history = arm.history
-                if args.greedy_buttons:
-                    actor = HeadSampler(arm.policy, trial["policy_seed"], trial["arm"] in args.greedy_buttons)
+                if args.greedy_buttons or args.without_bomb:
+                    actor = HeadSampler(arm.policy, trial["policy_seed"], trial["arm"] in args.greedy_buttons,
+                                        without_bomb=trial["arm"] in args.without_bomb)
                 else:
                     torch.manual_seed(trial["policy_seed"])
                     actor = arm.policy
@@ -314,8 +321,11 @@ def main():
     parser.add_argument("--focus-wait", type=int, default=30)
     parser.add_argument("--retry-game-over", action="store_true",
                         help="Recover a verified Normal Reimu A Stage 1 Retry menu before entering.")
-    parser.add_argument("--greedy-buttons", nargs="+", default=[], metavar="ARM",
-                        help="Use argmax buttons in these arms and a separate movement RNG in every arm.")
+    crossover = parser.add_mutually_exclusive_group()
+    crossover.add_argument("--greedy-buttons", nargs="+", default=[], metavar="ARM",
+                           help="Use argmax buttons in these arms and a separate movement RNG in every arm.")
+    crossover.add_argument("--without-bomb", nargs="+", default=[], metavar="ARM",
+                           help="Mask Bomb in these arms while keeping movement, focus and shoot sampling paired.")
     parser.add_argument("--resume", action="store_true", help="Resume the same run after its last committed episode.")
     args = parser.parse_args()
     if not (args.policy or args.ppo_policy) or bool(args.ppo_policy) != bool(args.ppo_template):
@@ -331,6 +341,8 @@ def main():
         arms = load_arms(args.policy, args.ppo_policy, args.ppo_template)
         if args.greedy_buttons and not set(args.greedy_buttons) < set(arms):
             raise ValueError("Name a subset of arms to use greedy buttons and leave a sampled control.")
+        if not set(args.without_bomb) <= set(arms):
+            raise ValueError("Use --without-bomb only with declared arms.")
         specification = run_specification(args, arms)
         if args.resume:
             if not args.out.is_dir():
