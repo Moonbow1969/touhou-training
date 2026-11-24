@@ -27,3 +27,25 @@ python -m scripts.plot_th14_ppo_curves
 The random arm completed both training segments. Its two reports include each PPO update, each completed training episode, checkpoint fingerprints and native timing. The combined on-policy figure shows the policies changing through training. The frozen-policy figure supplies the comparison at fixed budgets.
 
 [Combined training rollout figure](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-on-policy.svg), [first random training segment](../../results/2026-11-23-th14-full-policy/ppo-random-training-8192.json), [second random training segment](../../results/2026-11-23-th14-full-policy/ppo-random-training-16384.json)
+
+## Frozen-policy results
+
+All 48 scored episodes completed. The runner retained 33 finished episodes after an interruption during foreground recovery and retried the incomplete trial. The result records the restart.
+
+| Online decisions | SFT initialization, median endpoint | Random initialization, median endpoint | SFT initialization wins in 8 pairs |
+| ---: | ---: | ---: | ---: |
+| 0 | 550 | 1,276 | 2 |
+| 8,192 | 1,274 | 992 | 4 |
+| 16,384 | 1,538 | 1,156 | 6 |
+
+The slope between the first two checkpoint medians was +88.4 frames per 1,000 online decisions for SFT initialization and −34.7 for random initialization. The second interval was +32.2 versus +20.0. At 16,384 decisions the median paired endpoint difference was +296 frames for the SFT initialization. All arms recorded zero no-miss clears. The random actor used 24 Bombs in its eight zero-budget episodes and the SFT actor used one. First-miss survival includes any benefit from spending Bombs.
+
+The absolute panel connects the median endpoint at each budget. The relative panel takes each sampling seed's difference from its own zero-budget outcome and plots the median of those differences. The slope figures above use changes in the absolute medians. This experiment estimates online learning for the fixed checkpoints and recipe. Training-seed and cross-game generalization remain unmeasured.
+
+[PNG figure](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-curve.png), [SVG figure](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-curve.svg), [episode CSV](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-evaluations.csv), [paired-gain CSV](../../results/2026-11-23-th14-full-policy/figures/ppo-matched-initialization-gains.csv), [full report](../../results/2026-11-23-th14-full-policy/ppo-initialization-matched.json)
+
+```sh
+data=results/2026-11-23-th14-full-policy
+python -m scripts.plot_th14_ppo_curves --matched "$data/ppo-initialization-matched.json" \
+  --random-traces "$data/ppo-random-training-8192.json" "$data/ppo-random-training-16384.json"
+```

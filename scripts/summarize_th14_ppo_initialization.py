@@ -59,6 +59,10 @@ def summarize(cells):
             frames = [row["stage_frame"] for row in rows]
             center = median(frames)
             initial = by_budget[0]["median_furthest_stage_frame"] if budget else center
+            matched_gains = {
+                seed: frame - cells[f"{init}-0", seed]["stage_frame"]
+                for seed, frame in zip(SAMPLING_SEEDS, frames, strict=True)
+            }
             by_budget[budget] = {
                 "median_furthest_stage_frame": center,
                 "median_change_from_zero": center - initial,
@@ -66,6 +70,8 @@ def summarize(cells):
                     (center - previous) / 8.192 if previous is not None else None
                 ),
                 "per_seed_furthest_stage_frames": dict(zip(SAMPLING_SEEDS, frames, strict=True)),
+                "median_paired_gain_from_own_zero": median(matched_gains.values()),
+                "per_seed_gain_from_own_zero": matched_gains,
                 "clears": sum(row["outcome"] == "advanced_stage" for row in rows),
                 "bombs_used": sum(row["bombs_used"] for row in rows),
             }
@@ -76,6 +82,11 @@ def summarize(cells):
     for budget in BUDGETS:
         deltas = [cells[f"sft-{budget}", seed]["stage_frame"] - cells[f"random-{budget}", seed]["stage_frame"]
                   for seed in SAMPLING_SEEDS]
+        gain_deltas = {
+            seed: arms["sft"][budget]["per_seed_gain_from_own_zero"][seed]
+            - arms["random"][budget]["per_seed_gain_from_own_zero"][seed]
+            for seed in SAMPLING_SEEDS
+        }
         paired[budget] = {
             "sft_minus_random_median_frame": arms["sft"][budget]["median_furthest_stage_frame"]
             - arms["random"][budget]["median_furthest_stage_frame"],
@@ -83,6 +94,8 @@ def summarize(cells):
             "sft_minus_random_median_gain_from_own_zero": arms["sft"][budget]["median_change_from_zero"]
             - arms["random"][budget]["median_change_from_zero"],
             "per_seed_sft_minus_random_frames": dict(zip(SAMPLING_SEEDS, deltas, strict=True)),
+            "sft_minus_random_median_paired_gain": median(gain_deltas.values()),
+            "per_seed_sft_minus_random_gain_from_own_zero": gain_deltas,
             "sft_wins": sum(delta > 0 for delta in deltas),
             "ties": sum(delta == 0 for delta in deltas),
             "random_wins": sum(delta < 0 for delta in deltas),

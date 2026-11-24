@@ -1,0 +1,3440 @@
+{
+  "specification": {
+    "schema": 1,
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "stage": 1,
+      "decision_limit": 3300,
+      "max_misses": 1,
+      "frames_per_action": 4
+    },
+    "controller": {
+      "kind": "frozen_sft_and_ppo",
+      "decode": "sampled",
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "native_rng_seed_controlled": false,
+      "button_crossover": null
+    },
+    "runtime": {
+      "runner_sha256": "412a793f62a4dd06fe8f67afe78fdc705863c2beac55fb4cce8755b75e1b15a1",
+      "source_sha256": {
+        "scripts.evaluate_stage_policies": "20549bcd4cf237500f4f53ff6b20c4ada46c73128c8120746c30bd9e04c63f7a",
+        "scripts.stage_policy": "ddbf5dd32348301f436422b5bf5911decb8d0e593ec232763b508cf01dcf5372",
+        "scripts.train_full_policy": "cdbea585829e71eeda6eac10324becf3894a5e17b24271aefa54680a3b0907d3"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0",
+      "device": "cpu"
+    },
+    "policies": {
+      "sft-0": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f"
+      },
+      "random-0": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "8cd130df4f83e431712f3976bb6de0cf4ec73976ce8383d141f2442aa4bccf71",
+        "metadata_sha256": null
+      },
+      "sft-8192": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "500ff73f519022310f4ed608c1f4f5c0c9aad5fcaa716e01ae3ef6d3ca3ac9bf",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "archive_kind": "ppo",
+        "template_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "native_training_decisions": 8192,
+        "warm_start_actor_exact": true,
+        "lineage_evidence": "embedded_manifest",
+        "training_configuration": {
+          "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "ppo_hyperparameters": {
+            "batch_size": 64,
+            "clip_range": 0.15,
+            "ent_coef": 0.004,
+            "gae_lambda": 0.95,
+            "gamma": 0.997,
+            "learning_rate": 8e-05,
+            "n_epochs": 4,
+            "n_steps": 256
+          },
+          "reward": {
+            "alive_step": "1 / train_limit",
+            "miss_or_native_end": 0,
+            "stage_clear": 1
+          },
+          "seed": 211,
+          "train_limit": 3300
+        }
+      },
+      "random-8192": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "abcdd28b30e8e9df3aa76bd89d9a9048b1661ff3943b5c7ee2619b8f5ef4771b",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "archive_kind": "ppo",
+        "template_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "native_training_decisions": 8192,
+        "warm_start_actor_exact": false,
+        "lineage_evidence": "embedded_manifest",
+        "training_configuration": {
+          "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "initialization": "random",
+          "ppo_hyperparameters": {
+            "batch_size": 64,
+            "clip_range": 0.15,
+            "ent_coef": 0.004,
+            "gae_lambda": 0.95,
+            "gamma": 0.997,
+            "learning_rate": 8e-05,
+            "n_epochs": 4,
+            "n_steps": 256
+          },
+          "reward": {
+            "alive_step": "1 / train_limit",
+            "miss_or_native_end": 0,
+            "stage_clear": 1
+          },
+          "seed": 211,
+          "train_limit": 3300
+        }
+      },
+      "sft-16384": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "d387a429bca1934b14a313e46101c91d4437556ea1445e46e567fa80c4717d19",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "archive_kind": "ppo",
+        "template_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "native_training_decisions": 16384,
+        "warm_start_actor_exact": true,
+        "lineage_evidence": "embedded_manifest",
+        "training_configuration": {
+          "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "ppo_hyperparameters": {
+            "batch_size": 64,
+            "clip_range": 0.15,
+            "ent_coef": 0.004,
+            "gae_lambda": 0.95,
+            "gamma": 0.997,
+            "learning_rate": 8e-05,
+            "n_epochs": 4,
+            "n_steps": 256
+          },
+          "reward": {
+            "alive_step": "1 / train_limit",
+            "miss_or_native_end": 0,
+            "stage_clear": 1
+          },
+          "seed": 211,
+          "train_limit": 3300
+        }
+      },
+      "random-16384": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "b374924907988da86f5166260e5a6169e7151fe40534b8ad187cd11a293b30e6",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "archive_kind": "ppo",
+        "template_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "native_training_decisions": 16384,
+        "warm_start_actor_exact": false,
+        "lineage_evidence": "embedded_manifest",
+        "training_configuration": {
+          "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "initialization": "random",
+          "ppo_hyperparameters": {
+            "batch_size": 64,
+            "clip_range": 0.15,
+            "ent_coef": 0.004,
+            "gae_lambda": 0.95,
+            "gamma": 0.997,
+            "learning_rate": 8e-05,
+            "n_epochs": 4,
+            "n_steps": 256
+          },
+          "reward": {
+            "alive_step": "1 / train_limit",
+            "miss_or_native_end": 0,
+            "stage_clear": 1
+          },
+          "seed": 211,
+          "train_limit": 3300
+        }
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "order": 1,
+        "arm": "sft-0",
+        "policy_seed": 901
+      },
+      {
+        "block": 1,
+        "order": 2,
+        "arm": "random-0",
+        "policy_seed": 901
+      },
+      {
+        "block": 1,
+        "order": 3,
+        "arm": "sft-8192",
+        "policy_seed": 901
+      },
+      {
+        "block": 1,
+        "order": 4,
+        "arm": "random-8192",
+        "policy_seed": 901
+      },
+      {
+        "block": 1,
+        "order": 5,
+        "arm": "sft-16384",
+        "policy_seed": 901
+      },
+      {
+        "block": 1,
+        "order": 6,
+        "arm": "random-16384",
+        "policy_seed": 901
+      },
+      {
+        "block": 2,
+        "order": 1,
+        "arm": "random-0",
+        "policy_seed": 902
+      },
+      {
+        "block": 2,
+        "order": 2,
+        "arm": "sft-8192",
+        "policy_seed": 902
+      },
+      {
+        "block": 2,
+        "order": 3,
+        "arm": "random-8192",
+        "policy_seed": 902
+      },
+      {
+        "block": 2,
+        "order": 4,
+        "arm": "sft-16384",
+        "policy_seed": 902
+      },
+      {
+        "block": 2,
+        "order": 5,
+        "arm": "random-16384",
+        "policy_seed": 902
+      },
+      {
+        "block": 2,
+        "order": 6,
+        "arm": "sft-0",
+        "policy_seed": 902
+      },
+      {
+        "block": 3,
+        "order": 1,
+        "arm": "sft-8192",
+        "policy_seed": 903
+      },
+      {
+        "block": 3,
+        "order": 2,
+        "arm": "random-8192",
+        "policy_seed": 903
+      },
+      {
+        "block": 3,
+        "order": 3,
+        "arm": "sft-16384",
+        "policy_seed": 903
+      },
+      {
+        "block": 3,
+        "order": 4,
+        "arm": "random-16384",
+        "policy_seed": 903
+      },
+      {
+        "block": 3,
+        "order": 5,
+        "arm": "sft-0",
+        "policy_seed": 903
+      },
+      {
+        "block": 3,
+        "order": 6,
+        "arm": "random-0",
+        "policy_seed": 903
+      },
+      {
+        "block": 4,
+        "order": 1,
+        "arm": "random-8192",
+        "policy_seed": 904
+      },
+      {
+        "block": 4,
+        "order": 2,
+        "arm": "sft-16384",
+        "policy_seed": 904
+      },
+      {
+        "block": 4,
+        "order": 3,
+        "arm": "random-16384",
+        "policy_seed": 904
+      },
+      {
+        "block": 4,
+        "order": 4,
+        "arm": "sft-0",
+        "policy_seed": 904
+      },
+      {
+        "block": 4,
+        "order": 5,
+        "arm": "random-0",
+        "policy_seed": 904
+      },
+      {
+        "block": 4,
+        "order": 6,
+        "arm": "sft-8192",
+        "policy_seed": 904
+      },
+      {
+        "block": 5,
+        "order": 1,
+        "arm": "sft-16384",
+        "policy_seed": 905
+      },
+      {
+        "block": 5,
+        "order": 2,
+        "arm": "random-16384",
+        "policy_seed": 905
+      },
+      {
+        "block": 5,
+        "order": 3,
+        "arm": "sft-0",
+        "policy_seed": 905
+      },
+      {
+        "block": 5,
+        "order": 4,
+        "arm": "random-0",
+        "policy_seed": 905
+      },
+      {
+        "block": 5,
+        "order": 5,
+        "arm": "sft-8192",
+        "policy_seed": 905
+      },
+      {
+        "block": 5,
+        "order": 6,
+        "arm": "random-8192",
+        "policy_seed": 905
+      },
+      {
+        "block": 6,
+        "order": 1,
+        "arm": "random-16384",
+        "policy_seed": 906
+      },
+      {
+        "block": 6,
+        "order": 2,
+        "arm": "sft-0",
+        "policy_seed": 906
+      },
+      {
+        "block": 6,
+        "order": 3,
+        "arm": "random-0",
+        "policy_seed": 906
+      },
+      {
+        "block": 6,
+        "order": 4,
+        "arm": "sft-8192",
+        "policy_seed": 906
+      },
+      {
+        "block": 6,
+        "order": 5,
+        "arm": "random-8192",
+        "policy_seed": 906
+      },
+      {
+        "block": 6,
+        "order": 6,
+        "arm": "sft-16384",
+        "policy_seed": 906
+      },
+      {
+        "block": 7,
+        "order": 1,
+        "arm": "sft-0",
+        "policy_seed": 907
+      },
+      {
+        "block": 7,
+        "order": 2,
+        "arm": "random-0",
+        "policy_seed": 907
+      },
+      {
+        "block": 7,
+        "order": 3,
+        "arm": "sft-8192",
+        "policy_seed": 907
+      },
+      {
+        "block": 7,
+        "order": 4,
+        "arm": "random-8192",
+        "policy_seed": 907
+      },
+      {
+        "block": 7,
+        "order": 5,
+        "arm": "sft-16384",
+        "policy_seed": 907
+      },
+      {
+        "block": 7,
+        "order": 6,
+        "arm": "random-16384",
+        "policy_seed": 907
+      },
+      {
+        "block": 8,
+        "order": 1,
+        "arm": "random-0",
+        "policy_seed": 908
+      },
+      {
+        "block": 8,
+        "order": 2,
+        "arm": "sft-8192",
+        "policy_seed": 908
+      },
+      {
+        "block": 8,
+        "order": 3,
+        "arm": "random-8192",
+        "policy_seed": 908
+      },
+      {
+        "block": 8,
+        "order": 4,
+        "arm": "sft-16384",
+        "policy_seed": 908
+      },
+      {
+        "block": 8,
+        "order": 5,
+        "arm": "random-16384",
+        "policy_seed": 908
+      },
+      {
+        "block": 8,
+        "order": 6,
+        "arm": "sft-0",
+        "policy_seed": 908
+      }
+    ]
+  },
+  "status": "complete",
+  "pending": null,
+  "completed": [
+    {
+      "trial": {
+        "block": 1,
+        "order": 1,
+        "arm": "sft-0",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 286,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 40,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 67,
+        "first_miss_frame": 286,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -112.3125,
+        "x_max": 32.874999046325684,
+        "horizontal_commands_while_active": 31,
+        "horizontal_responses": 31,
+        "action_counts": {
+          "movement": [
+            10,
+            9,
+            10,
+            2,
+            20,
+            3,
+            5,
+            6,
+            2
+          ],
+          "focus": [
+            67,
+            0
+          ],
+          "shoot": [
+            2,
+            65
+          ],
+          "bomb": [
+            67,
+            0
+          ]
+        },
+        "seconds": 5.757298399927095
+      }
+    },
+    {
+      "trial": {
+        "block": 1,
+        "order": 2,
+        "arm": "random-0",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 1162,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 132,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 286,
+        "first_miss_frame": 1162,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -132.92968368530273,
+        "x_max": 130.6171875,
+        "horizontal_commands_while_active": 194,
+        "horizontal_responses": 172,
+        "action_counts": {
+          "movement": [
+            26,
+            28,
+            39,
+            29,
+            30,
+            37,
+            33,
+            32,
+            32
+          ],
+          "focus": [
+            150,
+            136
+          ],
+          "shoot": [
+            150,
+            136
+          ],
+          "bomb": [
+            161,
+            125
+          ]
+        },
+        "seconds": 20.362279399996623
+      }
+    },
+    {
+      "trial": {
+        "block": 1,
+        "order": 3,
+        "arm": "sft-8192",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 1482,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 2767,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 366,
+        "first_miss_frame": 1482,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 241,
+        "horizontal_responses": 220,
+        "action_counts": {
+          "movement": [
+            28,
+            20,
+            16,
+            37,
+            67,
+            10,
+            63,
+            35,
+            90
+          ],
+          "focus": [
+            300,
+            66
+          ],
+          "shoot": [
+            38,
+            328
+          ],
+          "bomb": [
+            366,
+            0
+          ]
+        },
+        "seconds": 25.713234100025147
+      }
+    },
+    {
+      "trial": {
+        "block": 1,
+        "order": 4,
+        "arm": "random-8192",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 1066,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 58,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 262,
+        "first_miss_frame": 1066,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 14.90625,
+        "horizontal_commands_while_active": 161,
+        "horizontal_responses": 124,
+        "action_counts": {
+          "movement": [
+            11,
+            7,
+            21,
+            63,
+            23,
+            12,
+            37,
+            68,
+            20
+          ],
+          "focus": [
+            140,
+            122
+          ],
+          "shoot": [
+            172,
+            90
+          ],
+          "bomb": [
+            211,
+            51
+          ]
+        },
+        "seconds": 18.746311999857426
+      }
+    },
+    {
+      "trial": {
+        "block": 1,
+        "order": 5,
+        "arm": "sft-16384",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 2342,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 38933,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 581,
+        "first_miss_frame": 2342,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 130.25780868530273,
+        "horizontal_commands_while_active": 323,
+        "horizontal_responses": 303,
+        "action_counts": {
+          "movement": [
+            12,
+            19,
+            41,
+            62,
+            28,
+            15,
+            98,
+            207,
+            99
+          ],
+          "focus": [
+            512,
+            69
+          ],
+          "shoot": [
+            116,
+            465
+          ],
+          "bomb": [
+            571,
+            10
+          ]
+        },
+        "seconds": 40.046075500082225
+      }
+    },
+    {
+      "trial": {
+        "block": 1,
+        "order": 6,
+        "arm": "random-16384",
+        "policy_seed": 901
+      },
+      "result": {
+        "stage_frame": 990,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 79,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 243,
+        "first_miss_frame": 990,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": 0.0,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 120,
+        "horizontal_responses": 99,
+        "action_counts": {
+          "movement": [
+            8,
+            9,
+            19,
+            8,
+            31,
+            20,
+            21,
+            82,
+            45
+          ],
+          "focus": [
+            205,
+            38
+          ],
+          "shoot": [
+            137,
+            106
+          ],
+          "bomb": [
+            194,
+            49
+          ]
+        },
+        "seconds": 17.446265100035816
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 1,
+        "arm": "random-0",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 1218,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 114,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 300,
+        "first_miss_frame": 1218,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -51.78124809265137,
+        "x_max": 89.84374809265137,
+        "horizontal_commands_while_active": 187,
+        "horizontal_responses": 167,
+        "action_counts": {
+          "movement": [
+            34,
+            47,
+            31,
+            33,
+            30,
+            36,
+            29,
+            33,
+            27
+          ],
+          "focus": [
+            150,
+            150
+          ],
+          "shoot": [
+            141,
+            159
+          ],
+          "bomb": [
+            151,
+            149
+          ]
+        },
+        "seconds": 21.27919270005077
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 2,
+        "arm": "sft-8192",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 554,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 1322,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 134,
+        "first_miss_frame": 554,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 0.0,
+        "horizontal_commands_while_active": 80,
+        "horizontal_responses": 61,
+        "action_counts": {
+          "movement": [
+            20,
+            21,
+            14,
+            8,
+            18,
+            1,
+            24,
+            13,
+            15
+          ],
+          "focus": [
+            111,
+            23
+          ],
+          "shoot": [
+            12,
+            122
+          ],
+          "bomb": [
+            134,
+            0
+          ]
+        },
+        "seconds": 10.212819499894977
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 3,
+        "arm": "random-8192",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 954,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 63,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 234,
+        "first_miss_frame": 954,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 6.500000238418579,
+        "horizontal_commands_while_active": 136,
+        "horizontal_responses": 114,
+        "action_counts": {
+          "movement": [
+            17,
+            16,
+            18,
+            54,
+            20,
+            10,
+            29,
+            59,
+            11
+          ],
+          "focus": [
+            120,
+            114
+          ],
+          "shoot": [
+            140,
+            94
+          ],
+          "bomb": [
+            171,
+            63
+          ]
+        },
+        "seconds": 16.87863909988664
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 4,
+        "arm": "sft-16384",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 1762,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 4544,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 436,
+        "first_miss_frame": 1762,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 153.0,
+        "horizontal_commands_while_active": 219,
+        "horizontal_responses": 200,
+        "action_counts": {
+          "movement": [
+            5,
+            3,
+            0,
+            49,
+            20,
+            12,
+            55,
+            191,
+            101
+          ],
+          "focus": [
+            406,
+            30
+          ],
+          "shoot": [
+            68,
+            368
+          ],
+          "bomb": [
+            422,
+            14
+          ]
+        },
+        "seconds": 30.34605020005256
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 5,
+        "arm": "random-16384",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 1346,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 199,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 332,
+        "first_miss_frame": 1346,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -10.234374761581421,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 160,
+        "horizontal_responses": 120,
+        "action_counts": {
+          "movement": [
+            13,
+            22,
+            17,
+            12,
+            40,
+            26,
+            19,
+            108,
+            75
+          ],
+          "focus": [
+            268,
+            64
+          ],
+          "shoot": [
+            161,
+            171
+          ],
+          "bomb": [
+            251,
+            81
+          ]
+        },
+        "seconds": 23.412181799998507
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 6,
+        "arm": "sft-0",
+        "policy_seed": 902
+      },
+      "result": {
+        "stage_frame": 618,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 2339,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 150,
+        "first_miss_frame": 618,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -160.43750381469727,
+        "x_max": 99.21875381469727,
+        "horizontal_commands_while_active": 77,
+        "horizontal_responses": 77,
+        "action_counts": {
+          "movement": [
+            22,
+            11,
+            10,
+            9,
+            39,
+            22,
+            10,
+            22,
+            5
+          ],
+          "focus": [
+            112,
+            38
+          ],
+          "shoot": [
+            1,
+            149
+          ],
+          "bomb": [
+            150,
+            0
+          ]
+        },
+        "seconds": 11.278792799916118
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 1,
+        "arm": "sft-8192",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 950,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 1388,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 233,
+        "first_miss_frame": 950,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 83.09374809265137,
+        "horizontal_commands_while_active": 139,
+        "horizontal_responses": 125,
+        "action_counts": {
+          "movement": [
+            20,
+            7,
+            19,
+            14,
+            52,
+            7,
+            49,
+            32,
+            33
+          ],
+          "focus": [
+            216,
+            17
+          ],
+          "shoot": [
+            27,
+            206
+          ],
+          "bomb": [
+            232,
+            1
+          ]
+        },
+        "seconds": 16.81233280012384
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 2,
+        "arm": "random-8192",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 990,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 52,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 243,
+        "first_miss_frame": 990,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 0.0,
+        "horizontal_commands_while_active": 138,
+        "horizontal_responses": 107,
+        "action_counts": {
+          "movement": [
+            13,
+            8,
+            19,
+            55,
+            16,
+            6,
+            33,
+            78,
+            15
+          ],
+          "focus": [
+            117,
+            126
+          ],
+          "shoot": [
+            163,
+            80
+          ],
+          "bomb": [
+            183,
+            60
+          ]
+        },
+        "seconds": 17.47876189998351
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 3,
+        "arm": "sft-16384",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 1618,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 4453,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 400,
+        "first_miss_frame": 1618,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 0.0,
+        "horizontal_commands_while_active": 185,
+        "horizontal_responses": 165,
+        "action_counts": {
+          "movement": [
+            4,
+            2,
+            4,
+            40,
+            11,
+            9,
+            58,
+            199,
+            73
+          ],
+          "focus": [
+            370,
+            30
+          ],
+          "shoot": [
+            92,
+            308
+          ],
+          "bomb": [
+            387,
+            13
+          ]
+        },
+        "seconds": 27.945618799887598
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 4,
+        "arm": "random-16384",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 1346,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 175,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 332,
+        "first_miss_frame": 1346,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -37.875,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 155,
+        "horizontal_responses": 113,
+        "action_counts": {
+          "movement": [
+            8,
+            15,
+            19,
+            14,
+            36,
+            22,
+            26,
+            124,
+            68
+          ],
+          "focus": [
+            273,
+            59
+          ],
+          "shoot": [
+            182,
+            150
+          ],
+          "bomb": [
+            251,
+            81
+          ]
+        },
+        "seconds": 23.411623199936002
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 5,
+        "arm": "sft-0",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 350,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 73,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 83,
+        "first_miss_frame": 350,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 23.6484375,
+        "horizontal_commands_while_active": 34,
+        "horizontal_responses": 33,
+        "action_counts": {
+          "movement": [
+            10,
+            7,
+            9,
+            4,
+            38,
+            5,
+            3,
+            3,
+            4
+          ],
+          "focus": [
+            66,
+            17
+          ],
+          "shoot": [
+            7,
+            76
+          ],
+          "bomb": [
+            83,
+            0
+          ]
+        },
+        "seconds": 6.811902000103146
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 6,
+        "arm": "random-0",
+        "policy_seed": 903
+      },
+      "result": {
+        "stage_frame": 1002,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 94,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 246,
+        "first_miss_frame": 1002,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -83.79687309265137,
+        "x_max": 27.648436546325684,
+        "horizontal_commands_while_active": 159,
+        "horizontal_responses": 141,
+        "action_counts": {
+          "movement": [
+            24,
+            26,
+            21,
+            29,
+            25,
+            26,
+            34,
+            35,
+            26
+          ],
+          "focus": [
+            118,
+            128
+          ],
+          "shoot": [
+            124,
+            122
+          ],
+          "bomb": [
+            120,
+            126
+          ]
+        },
+        "seconds": 17.67856699996628
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 1,
+        "arm": "random-8192",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 994,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 70,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 244,
+        "first_miss_frame": 994,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 0.6328125,
+        "horizontal_commands_while_active": 150,
+        "horizontal_responses": 105,
+        "action_counts": {
+          "movement": [
+            25,
+            4,
+            19,
+            61,
+            25,
+            8,
+            31,
+            63,
+            8
+          ],
+          "focus": [
+            126,
+            118
+          ],
+          "shoot": [
+            169,
+            75
+          ],
+          "bomb": [
+            183,
+            61
+          ]
+        },
+        "seconds": 17.512080800021067
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 2,
+        "arm": "sft-16384",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 1418,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 245,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 350,
+        "first_miss_frame": 1418,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 196,
+        "horizontal_responses": 186,
+        "action_counts": {
+          "movement": [
+            4,
+            3,
+            16,
+            47,
+            8,
+            9,
+            48,
+            141,
+            74
+          ],
+          "focus": [
+            350,
+            0
+          ],
+          "shoot": [
+            67,
+            283
+          ],
+          "bomb": [
+            337,
+            13
+          ]
+        },
+        "seconds": 24.64477530005388
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 3,
+        "arm": "random-16384",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 1274,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 123,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 314,
+        "first_miss_frame": 1274,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -31.656249046325684,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 160,
+        "horizontal_responses": 121,
+        "action_counts": {
+          "movement": [
+            15,
+            6,
+            25,
+            17,
+            39,
+            15,
+            19,
+            108,
+            70
+          ],
+          "focus": [
+            256,
+            58
+          ],
+          "shoot": [
+            175,
+            139
+          ],
+          "bomb": [
+            244,
+            70
+          ]
+        },
+        "seconds": 22.228269000072032
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 4,
+        "arm": "sft-0",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 794,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 174,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 194,
+        "first_miss_frame": 794,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 41.937500953674316,
+        "horizontal_commands_while_active": 96,
+        "horizontal_responses": 93,
+        "action_counts": {
+          "movement": [
+            11,
+            9,
+            18,
+            21,
+            55,
+            16,
+            21,
+            32,
+            11
+          ],
+          "focus": [
+            54,
+            140
+          ],
+          "shoot": [
+            7,
+            187
+          ],
+          "bomb": [
+            193,
+            1
+          ]
+        },
+        "seconds": 14.178137500071898
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 5,
+        "arm": "random-0",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 1714,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 4822,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 424,
+        "first_miss_frame": 1714,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -130.46874618530273,
+        "x_max": 122.625,
+        "horizontal_commands_while_active": 299,
+        "horizontal_responses": 272,
+        "action_counts": {
+          "movement": [
+            62,
+            38,
+            62,
+            52,
+            47,
+            42,
+            44,
+            38,
+            39
+          ],
+          "focus": [
+            224,
+            200
+          ],
+          "shoot": [
+            216,
+            208
+          ],
+          "bomb": [
+            217,
+            207
+          ]
+        },
+        "seconds": 29.612152200192213
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 6,
+        "arm": "sft-8192",
+        "policy_seed": 904
+      },
+      "result": {
+        "stage_frame": 1262,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 1673,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 311,
+        "first_miss_frame": 1262,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 163.6875,
+        "horizontal_commands_while_active": 224,
+        "horizontal_responses": 197,
+        "action_counts": {
+          "movement": [
+            23,
+            13,
+            49,
+            26,
+            54,
+            5,
+            74,
+            19,
+            48
+          ],
+          "focus": [
+            311,
+            0
+          ],
+          "shoot": [
+            27,
+            284
+          ],
+          "bomb": [
+            310,
+            1
+          ]
+        },
+        "seconds": 22.010863299947232
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 1,
+        "arm": "sft-16384",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 510,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 268,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 123,
+        "first_miss_frame": 510,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 0.0,
+        "horizontal_commands_while_active": 59,
+        "horizontal_responses": 52,
+        "action_counts": {
+          "movement": [
+            5,
+            29,
+            6,
+            9,
+            11,
+            3,
+            26,
+            23,
+            11
+          ],
+          "focus": [
+            105,
+            18
+          ],
+          "shoot": [
+            38,
+            85
+          ],
+          "bomb": [
+            123,
+            0
+          ]
+        },
+        "seconds": 9.443980799987912
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 2,
+        "arm": "random-16384",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 1042,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 1102,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 256,
+        "first_miss_frame": 1042,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -38.429686546325684,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 124,
+        "horizontal_responses": 102,
+        "action_counts": {
+          "movement": [
+            6,
+            11,
+            19,
+            8,
+            36,
+            15,
+            19,
+            83,
+            59
+          ],
+          "focus": [
+            215,
+            41
+          ],
+          "shoot": [
+            140,
+            116
+          ],
+          "bomb": [
+            191,
+            65
+          ]
+        },
+        "seconds": 18.344033000059426
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 3,
+        "arm": "sft-0",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 1078,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 2595,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 265,
+        "first_miss_frame": 1078,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -114.65625,
+        "x_max": 161.34375,
+        "horizontal_commands_while_active": 122,
+        "horizontal_responses": 122,
+        "action_counts": {
+          "movement": [
+            16,
+            39,
+            27,
+            18,
+            80,
+            15,
+            23,
+            23,
+            24
+          ],
+          "focus": [
+            167,
+            98
+          ],
+          "shoot": [
+            6,
+            259
+          ],
+          "bomb": [
+            265,
+            0
+          ]
+        },
+        "seconds": 18.96077169990167
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 4,
+        "arm": "random-0",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 1054,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 104,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 259,
+        "first_miss_frame": 1054,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -34.6171875,
+        "x_max": 86.03125190734863,
+        "horizontal_commands_while_active": 164,
+        "horizontal_responses": 146,
+        "action_counts": {
+          "movement": [
+            20,
+            37,
+            34,
+            24,
+            28,
+            25,
+            35,
+            28,
+            28
+          ],
+          "focus": [
+            130,
+            129
+          ],
+          "shoot": [
+            132,
+            127
+          ],
+          "bomb": [
+            112,
+            147
+          ]
+        },
+        "seconds": 18.54457279993221
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 5,
+        "arm": "sft-8192",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 1286,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 4566,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 317,
+        "first_miss_frame": 1286,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 159.40625381469727,
+        "horizontal_commands_while_active": 217,
+        "horizontal_responses": 198,
+        "action_counts": {
+          "movement": [
+            41,
+            22,
+            15,
+            24,
+            55,
+            5,
+            50,
+            20,
+            85
+          ],
+          "focus": [
+            316,
+            1
+          ],
+          "shoot": [
+            29,
+            288
+          ],
+          "bomb": [
+            316,
+            1
+          ]
+        },
+        "seconds": 22.410572999855503
+      }
+    },
+    {
+      "trial": {
+        "block": 5,
+        "order": 6,
+        "arm": "random-8192",
+        "policy_seed": 905
+      },
+      "result": {
+        "stage_frame": 1358,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 112,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 335,
+        "first_miss_frame": 1358,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 5.6093748807907104,
+        "horizontal_commands_while_active": 210,
+        "horizontal_responses": 163,
+        "action_counts": {
+          "movement": [
+            18,
+            14,
+            35,
+            77,
+            30,
+            10,
+            51,
+            79,
+            21
+          ],
+          "focus": [
+            165,
+            170
+          ],
+          "shoot": [
+            220,
+            115
+          ],
+          "bomb": [
+            252,
+            83
+          ]
+        },
+        "seconds": 23.661215499974787
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 1,
+        "arm": "random-16384",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 1174,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 148,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 289,
+        "first_miss_frame": 1174,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -19.984375476837158,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 143,
+        "horizontal_responses": 120,
+        "action_counts": {
+          "movement": [
+            8,
+            15,
+            20,
+            12,
+            35,
+            19,
+            22,
+            94,
+            64
+          ],
+          "focus": [
+            233,
+            56
+          ],
+          "shoot": [
+            154,
+            135
+          ],
+          "bomb": [
+            228,
+            61
+          ]
+        },
+        "seconds": 20.543609200045466
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 2,
+        "arm": "sft-0",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 482,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 258,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 116,
+        "first_miss_frame": 482,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -142.90625381469727,
+        "x_max": 127.18749618530273,
+        "horizontal_commands_while_active": 69,
+        "horizontal_responses": 69,
+        "action_counts": {
+          "movement": [
+            17,
+            7,
+            16,
+            15,
+            35,
+            9,
+            5,
+            4,
+            8
+          ],
+          "focus": [
+            78,
+            38
+          ],
+          "shoot": [
+            4,
+            112
+          ],
+          "bomb": [
+            116,
+            0
+          ]
+        },
+        "seconds": 8.977785999886692
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 3,
+        "arm": "random-0",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 1490,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 819,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 368,
+        "first_miss_frame": 1490,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 50.07812690734863,
+        "horizontal_commands_while_active": 247,
+        "horizontal_responses": 222,
+        "action_counts": {
+          "movement": [
+            45,
+            45,
+            41,
+            36,
+            42,
+            40,
+            52,
+            34,
+            33
+          ],
+          "focus": [
+            178,
+            190
+          ],
+          "shoot": [
+            177,
+            191
+          ],
+          "bomb": [
+            183,
+            185
+          ]
+        },
+        "seconds": 25.81021389993839
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 4,
+        "arm": "sft-8192",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 1310,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 5035,
+        "misses": 1,
+        "bombs_used": 2,
+        "steps": 323,
+        "first_miss_frame": 1310,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 177.40625381469727,
+        "horizontal_commands_while_active": 234,
+        "horizontal_responses": 227,
+        "action_counts": {
+          "movement": [
+            12,
+            12,
+            30,
+            33,
+            53,
+            9,
+            88,
+            21,
+            65
+          ],
+          "focus": [
+            313,
+            10
+          ],
+          "shoot": [
+            22,
+            301
+          ],
+          "bomb": [
+            321,
+            2
+          ]
+        },
+        "seconds": 22.898849199991673
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 5,
+        "arm": "random-8192",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 1286,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 361,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 317,
+        "first_miss_frame": 1286,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 5.6562498807907104,
+        "horizontal_commands_while_active": 190,
+        "horizontal_responses": 132,
+        "action_counts": {
+          "movement": [
+            19,
+            16,
+            25,
+            68,
+            27,
+            14,
+            46,
+            83,
+            19
+          ],
+          "focus": [
+            153,
+            164
+          ],
+          "shoot": [
+            199,
+            118
+          ],
+          "bomb": [
+            246,
+            71
+          ]
+        },
+        "seconds": 22.426788700046018
+      }
+    },
+    {
+      "trial": {
+        "block": 6,
+        "order": 6,
+        "arm": "sft-16384",
+        "policy_seed": 906
+      },
+      "result": {
+        "stage_frame": 490,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 53,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 118,
+        "first_miss_frame": 490,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 127.18749618530273,
+        "horizontal_commands_while_active": 76,
+        "horizontal_responses": 75,
+        "action_counts": {
+          "movement": [
+            0,
+            6,
+            15,
+            16,
+            6,
+            2,
+            29,
+            28,
+            16
+          ],
+          "focus": [
+            111,
+            7
+          ],
+          "shoot": [
+            36,
+            82
+          ],
+          "bomb": [
+            117,
+            1
+          ]
+        },
+        "seconds": 9.110212399857119
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 1,
+        "arm": "sft-0",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 418,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 105,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 100,
+        "first_miss_frame": 418,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -58.40625,
+        "x_max": 163.18749618530273,
+        "horizontal_commands_while_active": 35,
+        "horizontal_responses": 35,
+        "action_counts": {
+          "movement": [
+            12,
+            6,
+            15,
+            2,
+            44,
+            4,
+            3,
+            14,
+            0
+          ],
+          "focus": [
+            54,
+            46
+          ],
+          "shoot": [
+            4,
+            96
+          ],
+          "bomb": [
+            100,
+            0
+          ]
+        },
+        "seconds": 7.942587899975479
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 2,
+        "arm": "random-0",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 1334,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 844,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 329,
+        "first_miss_frame": 1334,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -48.14843559265137,
+        "x_max": 68.42968940734863,
+        "horizontal_commands_while_active": 207,
+        "horizontal_responses": 193,
+        "action_counts": {
+          "movement": [
+            32,
+            46,
+            31,
+            37,
+            37,
+            45,
+            38,
+            37,
+            26
+          ],
+          "focus": [
+            156,
+            173
+          ],
+          "shoot": [
+            150,
+            179
+          ],
+          "bomb": [
+            162,
+            167
+          ]
+        },
+        "seconds": 23.209905200172216
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 3,
+        "arm": "sft-8192",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 734,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 366,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 179,
+        "first_miss_frame": 734,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 97.34375381469727,
+        "horizontal_commands_while_active": 107,
+        "horizontal_responses": 94,
+        "action_counts": {
+          "movement": [
+            10,
+            14,
+            18,
+            19,
+            41,
+            4,
+            28,
+            15,
+            30
+          ],
+          "focus": [
+            129,
+            50
+          ],
+          "shoot": [
+            19,
+            160
+          ],
+          "bomb": [
+            179,
+            0
+          ]
+        },
+        "seconds": 13.176588299917057
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 4,
+        "arm": "random-8192",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 978,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 67,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 240,
+        "first_miss_frame": 978,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 2.7421875,
+        "horizontal_commands_while_active": 148,
+        "horizontal_responses": 115,
+        "action_counts": {
+          "movement": [
+            11,
+            12,
+            17,
+            67,
+            21,
+            11,
+            33,
+            57,
+            11
+          ],
+          "focus": [
+            115,
+            125
+          ],
+          "shoot": [
+            152,
+            88
+          ],
+          "bomb": [
+            172,
+            68
+          ]
+        },
+        "seconds": 17.27632819977589
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 5,
+        "arm": "sft-16384",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 1458,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 2479,
+        "misses": 1,
+        "bombs_used": 2,
+        "steps": 360,
+        "first_miss_frame": 1458,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 61.21093940734863,
+        "horizontal_commands_while_active": 177,
+        "horizontal_responses": 159,
+        "action_counts": {
+          "movement": [
+            4,
+            20,
+            15,
+            32,
+            16,
+            12,
+            57,
+            145,
+            59
+          ],
+          "focus": [
+            349,
+            11
+          ],
+          "shoot": [
+            77,
+            283
+          ],
+          "bomb": [
+            352,
+            8
+          ]
+        },
+        "seconds": 25.276489400072023
+      }
+    },
+    {
+      "trial": {
+        "block": 7,
+        "order": 6,
+        "arm": "random-16384",
+        "policy_seed": 907
+      },
+      "result": {
+        "stage_frame": 1138,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 121,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 280,
+        "first_miss_frame": 1138,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -31.937499046325684,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 129,
+        "horizontal_responses": 99,
+        "action_counts": {
+          "movement": [
+            10,
+            14,
+            20,
+            7,
+            39,
+            22,
+            16,
+            95,
+            57
+          ],
+          "focus": [
+            218,
+            62
+          ],
+          "shoot": [
+            136,
+            144
+          ],
+          "bomb": [
+            203,
+            77
+          ]
+        },
+        "seconds": 19.942538999952376
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 1,
+        "arm": "random-0",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 1646,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 3606,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 407,
+        "first_miss_frame": 1646,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -121.11718368530273,
+        "x_max": 39.757813453674316,
+        "horizontal_commands_while_active": 255,
+        "horizontal_responses": 237,
+        "action_counts": {
+          "movement": [
+            32,
+            49,
+            46,
+            52,
+            48,
+            39,
+            43,
+            52,
+            46
+          ],
+          "focus": [
+            207,
+            200
+          ],
+          "shoot": [
+            206,
+            201
+          ],
+          "bomb": [
+            212,
+            195
+          ]
+        },
+        "seconds": 28.443033799994737
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 2,
+        "arm": "sft-8192",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 1298,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 2514,
+        "misses": 1,
+        "bombs_used": 1,
+        "steps": 320,
+        "first_miss_frame": 1298,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 94.84375190734863,
+        "horizontal_commands_while_active": 186,
+        "horizontal_responses": 172,
+        "action_counts": {
+          "movement": [
+            21,
+            14,
+            20,
+            38,
+            79,
+            7,
+            47,
+            39,
+            55
+          ],
+          "focus": [
+            318,
+            2
+          ],
+          "shoot": [
+            18,
+            302
+          ],
+          "bomb": [
+            316,
+            4
+          ]
+        },
+        "seconds": 22.609435699880123
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 3,
+        "arm": "random-8192",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 978,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 1083,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 240,
+        "first_miss_frame": 978,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 4.8828123807907104,
+        "horizontal_commands_while_active": 137,
+        "horizontal_responses": 107,
+        "action_counts": {
+          "movement": [
+            8,
+            5,
+            20,
+            62,
+            28,
+            9,
+            26,
+            69,
+            13
+          ],
+          "focus": [
+            116,
+            124
+          ],
+          "shoot": [
+            162,
+            78
+          ],
+          "bomb": [
+            188,
+            52
+          ]
+        },
+        "seconds": 17.27563240006566
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 4,
+        "arm": "sft-16384",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 1930,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 6977,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 478,
+        "first_miss_frame": 1930,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 91.7578125,
+        "horizontal_commands_while_active": 240,
+        "horizontal_responses": 210,
+        "action_counts": {
+          "movement": [
+            10,
+            6,
+            12,
+            52,
+            28,
+            8,
+            68,
+            203,
+            91
+          ],
+          "focus": [
+            427,
+            51
+          ],
+          "shoot": [
+            108,
+            370
+          ],
+          "bomb": [
+            466,
+            12
+          ]
+        },
+        "seconds": 33.19311499991454
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 5,
+        "arm": "random-16384",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 966,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 71,
+        "misses": 1,
+        "bombs_used": 3,
+        "steps": 237,
+        "first_miss_frame": 966,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -39.624999046325684,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 107,
+        "horizontal_responses": 93,
+        "action_counts": {
+          "movement": [
+            7,
+            9,
+            15,
+            10,
+            35,
+            18,
+            15,
+            85,
+            43
+          ],
+          "focus": [
+            200,
+            37
+          ],
+          "shoot": [
+            135,
+            102
+          ],
+          "bomb": [
+            184,
+            53
+          ]
+        },
+        "seconds": 17.042673300020397
+      }
+    },
+    {
+      "trial": {
+        "block": 8,
+        "order": 6,
+        "arm": "sft-0",
+        "policy_seed": 908
+      },
+      "result": {
+        "stage_frame": 1678,
+        "native_stage": 1,
+        "native_pause_state": 2,
+        "stages_cleared": 0,
+        "score": 3245,
+        "misses": 1,
+        "bombs_used": 0,
+        "steps": 415,
+        "first_miss_frame": 1678,
+        "first_miss_stage": 1,
+        "outcome": "miss",
+        "start_frame": 18,
+        "x_start": 0.0,
+        "x_min": -183.99999618530273,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 192,
+        "horizontal_responses": 189,
+        "action_counts": {
+          "movement": [
+            20,
+            28,
+            24,
+            49,
+            109,
+            48,
+            26,
+            84,
+            27
+          ],
+          "focus": [
+            300,
+            115
+          ],
+          "shoot": [
+            5,
+            410
+          ],
+          "bomb": [
+            415,
+            0
+          ]
+        },
+        "seconds": 28.99181029992178
+      }
+    }
+  ],
+  "restarts": [
+    {
+      "block": 6,
+      "order": 4,
+      "arm": "sft-8192",
+      "policy_seed": 906
+    }
+  ],
+  "matched_blocks": 8,
+  "matched_summary": {
+    "sft-0": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 550.0,
+      "median_furthest_frame": 550.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 656,
+      "horizontal_responses": 649,
+      "horizontal_response_fraction": 0.989329268292683,
+      "left_actions": 334,
+      "right_actions": 332,
+      "idle_actions": 420,
+      "median_x_range": 242.7968773841858
+    },
+    "random-0": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 1276.0,
+      "median_furthest_frame": 1276.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 1712,
+      "horizontal_responses": 1550,
+      "horizontal_response_fraction": 0.905373831775701,
+      "left_actions": 875,
+      "right_actions": 852,
+      "idle_actions": 287,
+      "median_x_range": 151.2499966621399
+    },
+    "sft-8192": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 1274.0,
+      "median_furthest_frame": 1274.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 1428,
+      "horizontal_responses": 1294,
+      "horizontal_response_fraction": 0.9061624649859944,
+      "left_actions": 797,
+      "right_actions": 650,
+      "idle_actions": 419,
+      "median_x_range": 312.375
+    },
+    "random-8192": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 992.0,
+      "median_furthest_frame": 992.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 1270,
+      "horizontal_responses": 967,
+      "horizontal_response_fraction": 0.7614173228346457,
+      "left_actions": 915,
+      "right_actions": 372,
+      "idle_actions": 190,
+      "median_x_range": 189.24608981609344
+    },
+    "sft-16384": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 1538.0,
+      "median_furthest_frame": 1538.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 1475,
+      "horizontal_responses": 1350,
+      "horizontal_response_fraction": 0.9152542372881356,
+      "left_actions": 790,
+      "right_actions": 703,
+      "idle_actions": 128,
+      "median_x_range": 293.4726505279541
+    },
+    "random-16384": {
+      "trials": 8,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 1156.0,
+      "median_furthest_frame": 1156.0,
+      "outcomes": {
+        "miss": 8
+      },
+      "horizontal_commands_while_active": 1098,
+      "horizontal_responses": 867,
+      "horizontal_response_fraction": 0.7896174863387978,
+      "left_actions": 320,
+      "right_actions": 792,
+      "idle_actions": 291,
+      "median_x_range": 215.79687023162842
+    }
+  },
+  "error": null,
+  "analysis": {
+    "training_seed": 211,
+    "sampling_seeds": [
+      901,
+      902,
+      903,
+      904,
+      905,
+      906,
+      907,
+      908
+    ],
+    "online_decision_budgets": [
+      0,
+      8192,
+      16384
+    ],
+    "primary_metric": "Median furthest recorded Stage 1 frame across the eight evaluation episodes.",
+    "by_initialization": {
+      "sft": {
+        "0": {
+          "median_furthest_stage_frame": 550.0,
+          "median_change_from_zero": 0.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": null,
+          "per_seed_furthest_stage_frames": {
+            "901": 286,
+            "902": 618,
+            "903": 350,
+            "904": 794,
+            "905": 1078,
+            "906": 482,
+            "907": 418,
+            "908": 1678
+          },
+          "median_paired_gain_from_own_zero": 0.0,
+          "per_seed_gain_from_own_zero": {
+            "901": 0,
+            "902": 0,
+            "903": 0,
+            "904": 0,
+            "905": 0,
+            "906": 0,
+            "907": 0,
+            "908": 0
+          },
+          "clears": 0,
+          "bombs_used": 1
+        },
+        "8192": {
+          "median_furthest_stage_frame": 1274.0,
+          "median_change_from_zero": 724.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": 88.37890625,
+          "per_seed_furthest_stage_frames": {
+            "901": 1482,
+            "902": 554,
+            "903": 950,
+            "904": 1262,
+            "905": 1286,
+            "906": 1310,
+            "907": 734,
+            "908": 1298
+          },
+          "median_paired_gain_from_own_zero": 392.0,
+          "per_seed_gain_from_own_zero": {
+            "901": 1196,
+            "902": -64,
+            "903": 600,
+            "904": 468,
+            "905": 208,
+            "906": 828,
+            "907": 316,
+            "908": -380
+          },
+          "clears": 0,
+          "bombs_used": 6
+        },
+        "16384": {
+          "median_furthest_stage_frame": 1538.0,
+          "median_change_from_zero": 988.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": 32.2265625,
+          "per_seed_furthest_stage_frames": {
+            "901": 2342,
+            "902": 1762,
+            "903": 1618,
+            "904": 1418,
+            "905": 510,
+            "906": 490,
+            "907": 1458,
+            "908": 1930
+          },
+          "median_paired_gain_from_own_zero": 832.0,
+          "per_seed_gain_from_own_zero": {
+            "901": 2056,
+            "902": 1144,
+            "903": 1268,
+            "904": 624,
+            "905": -568,
+            "906": 8,
+            "907": 1040,
+            "908": 252
+          },
+          "clears": 0,
+          "bombs_used": 18
+        }
+      },
+      "random": {
+        "0": {
+          "median_furthest_stage_frame": 1276.0,
+          "median_change_from_zero": 0.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": null,
+          "per_seed_furthest_stage_frames": {
+            "901": 1162,
+            "902": 1218,
+            "903": 1002,
+            "904": 1714,
+            "905": 1054,
+            "906": 1490,
+            "907": 1334,
+            "908": 1646
+          },
+          "median_paired_gain_from_own_zero": 0.0,
+          "per_seed_gain_from_own_zero": {
+            "901": 0,
+            "902": 0,
+            "903": 0,
+            "904": 0,
+            "905": 0,
+            "906": 0,
+            "907": 0,
+            "908": 0
+          },
+          "clears": 0,
+          "bombs_used": 24
+        },
+        "8192": {
+          "median_furthest_stage_frame": 992.0,
+          "median_change_from_zero": -284.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": -34.66796875,
+          "per_seed_furthest_stage_frames": {
+            "901": 1066,
+            "902": 954,
+            "903": 990,
+            "904": 994,
+            "905": 1358,
+            "906": 1286,
+            "907": 978,
+            "908": 978
+          },
+          "median_paired_gain_from_own_zero": -234.0,
+          "per_seed_gain_from_own_zero": {
+            "901": -96,
+            "902": -264,
+            "903": -12,
+            "904": -720,
+            "905": 304,
+            "906": -204,
+            "907": -356,
+            "908": -668
+          },
+          "clears": 0,
+          "bombs_used": 24
+        },
+        "16384": {
+          "median_furthest_stage_frame": 1156.0,
+          "median_change_from_zero": -120.0,
+          "frames_gained_per_1000_decisions_since_previous_checkpoint": 20.01953125,
+          "per_seed_furthest_stage_frames": {
+            "901": 990,
+            "902": 1346,
+            "903": 1346,
+            "904": 1274,
+            "905": 1042,
+            "906": 1174,
+            "907": 1138,
+            "908": 966
+          },
+          "median_paired_gain_from_own_zero": -184.0,
+          "per_seed_gain_from_own_zero": {
+            "901": -172,
+            "902": 128,
+            "903": 344,
+            "904": -440,
+            "905": -12,
+            "906": -316,
+            "907": -196,
+            "908": -680
+          },
+          "clears": 0,
+          "bombs_used": 24
+        }
+      }
+    },
+    "paired_by_budget": {
+      "0": {
+        "sft_minus_random_median_frame": -726.0,
+        "sft_minus_random_median_paired_frame": -764.0,
+        "sft_minus_random_median_gain_from_own_zero": 0.0,
+        "per_seed_sft_minus_random_frames": {
+          "901": -876,
+          "902": -600,
+          "903": -652,
+          "904": -920,
+          "905": 24,
+          "906": -1008,
+          "907": -916,
+          "908": 32
+        },
+        "sft_minus_random_median_paired_gain": 0.0,
+        "per_seed_sft_minus_random_gain_from_own_zero": {
+          "901": 0,
+          "902": 0,
+          "903": 0,
+          "904": 0,
+          "905": 0,
+          "906": 0,
+          "907": 0,
+          "908": 0
+        },
+        "sft_wins": 2,
+        "ties": 0,
+        "random_wins": 6
+      },
+      "8192": {
+        "sft_minus_random_median_frame": 282.0,
+        "sft_minus_random_median_paired_frame": -8.0,
+        "sft_minus_random_median_gain_from_own_zero": 1008.0,
+        "per_seed_sft_minus_random_frames": {
+          "901": 416,
+          "902": -400,
+          "903": -40,
+          "904": 268,
+          "905": -72,
+          "906": 24,
+          "907": -244,
+          "908": 320
+        },
+        "sft_minus_random_median_paired_gain": 642.0,
+        "per_seed_sft_minus_random_gain_from_own_zero": {
+          "901": 1292,
+          "902": 200,
+          "903": 612,
+          "904": 1188,
+          "905": -96,
+          "906": 1032,
+          "907": 672,
+          "908": 288
+        },
+        "sft_wins": 4,
+        "ties": 0,
+        "random_wins": 4
+      },
+      "16384": {
+        "sft_minus_random_median_frame": 382.0,
+        "sft_minus_random_median_paired_frame": 296.0,
+        "sft_minus_random_median_gain_from_own_zero": 1108.0,
+        "per_seed_sft_minus_random_frames": {
+          "901": 1352,
+          "902": 416,
+          "903": 272,
+          "904": 144,
+          "905": -532,
+          "906": -684,
+          "907": 320,
+          "908": 964
+        },
+        "sft_minus_random_median_paired_gain": 974.0,
+        "per_seed_sft_minus_random_gain_from_own_zero": {
+          "901": 2228,
+          "902": 1016,
+          "903": 924,
+          "904": 1064,
+          "905": -556,
+          "906": 324,
+          "907": 1236,
+          "908": 932
+        },
+        "sft_wins": 6,
+        "ties": 0,
+        "random_wins": 2
+      }
+    }
+  }
+}
