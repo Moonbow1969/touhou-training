@@ -189,3 +189,9 @@ Ran the same SFT, aiming checkpoint and control configuration with `--adaptive-m
 | Adaptive speed | 3 | Stage 4, 16,923 | 0 | 4 | 14 | 115,348,500 |
 
 Run `20261123T133150Z-overnight-th14-title-equal-hard-adaptive-cac5c922` used the slow estimate for 773 decisions and switched speed estimates 30 times. The first Stage 2 records showed two bombs used in the fixed-speed run and zero in the adaptive run, before the first adaptive change. Each arm has one trial and the underlying game trajectories differed from the early stages. Keep fixed speed as the default. Both original replay files were saved and decoded through their terminal stages.
+
+## 261124 Recorded Normal story clear with one continue
+
+The TH14 1.00b run used Normal Reimu A, the title-balanced SFT checkpoint, geometric dodge, learned aim and emergency Bomb. The world model scored forecasts in shadow mode. The controller took over at Stage 1 frame 18, cleared the first five stages and reached Game Over at Stage 6 frame 14,183. The native menu accepted one continue. The controller resumed at Stage 6 frame 14,385 and cleared it at frame 30,820. The game entered Ending No. 07. The native counter recorded **one continue** and the two policy traces recorded **eight misses and 30 Bombs** in total. [Run and capture verification](../../results/2026-11-24-th14-normal-story-capture.json)
+
+The local MP4 contains the live first credit, the native Continue selection, the remaining boss fight and the ending. The edit joins the two captures while the Game Over menu is idle, with the setup and extended menu wait removed. The video has no audio track. No new native replay file was produced by this continued run.
