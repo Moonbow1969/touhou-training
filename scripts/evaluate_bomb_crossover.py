@@ -10,7 +10,7 @@ from stable_baselines3.common.distributions import MultiCategoricalDistribution
 
 from scripts import evaluate_full_credit as credit
 from scripts.checkpoint_storage import digest
-from scripts.evaluate_sft_native import Arm, load_arms, output_lock
+from scripts.evaluate_sft_native import Arm, load_arm, load_arms, output_lock
 from scripts.pretrain_policy import ACTION_WIDTHS, predict_heads, read_shard
 
 
@@ -121,6 +121,8 @@ def main():
     parser.add_argument("--ppo211", type=Path, default=PPO211)
     parser.add_argument("--ppo397", type=Path, default=PPO397)
     parser.add_argument("--ppo-template", type=Path, default=TEMPLATE)
+    parser.add_argument("--distilled-policy", type=Path,
+                        help="Compare a single-network student against the exact two-network crossover.")
     parser.add_argument("--verify-only", action="store_true", help="Check archived observations without opening the game.")
     parser.add_argument("--seeds", type=int, nargs="+", default=list(range(1401, 1407)))
     parser.add_argument("--out", required=True, type=Path)
@@ -134,6 +136,8 @@ def main():
         parser.error("Use valid timing settings and distinct seeds.")
     if any(not 0 <= s < 2**63 for s in args.seeds) or (args.verify_only and args.resume):
         parser.error("Use seeds in [0, 2**63) and resume only native runs.")
+    if args.verify_only and args.distilled_policy:
+        parser.error("Verification checks the exact two-network crossover.")
     torch.set_num_threads(1)
     arms = crossover_arms(args)
     if args.verify_only:
@@ -144,8 +148,11 @@ def main():
         return
     if os.name != "nt":
         parser.error("The native adapter requires Windows.")
+    if args.distilled_policy:
+        arms = {SPLICE: arms[SPLICE], "distilled": load_arm(args.distilled_policy)}
     spec = credit.run_specification(args, arms)
-    spec["controller"]["kind"] = "pure_frozen_ppo_bomb_crossover"
+    spec["controller"]["kind"] = ("single_network_distillation_vs_crossover" if args.distilled_policy
+                                  else "pure_frozen_ppo_bomb_crossover")
     spec["runtime"]["source_sha256"][__name__] = digest(Path(__file__))
     if not args.resume:
         args.out.mkdir(parents=True, exist_ok=False)

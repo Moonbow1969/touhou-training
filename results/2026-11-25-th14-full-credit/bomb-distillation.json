@@ -1,0 +1,494 @@
+{
+  "status": "experimental single-network actor warm start",
+  "source_sha256": {
+    "ppo211": "d387a429bca1934b14a313e46101c91d4437556ea1445e46e567fa80c4717d19",
+    "ppo397": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36"
+  },
+  "candidate_sha256": "77d87ee9bd9797dae9a142d2e6a5c231fc207dc054da4e5b02814d97eb6267b5",
+  "script_sha256": "4be4c080b2315c60a272669e56ccc2f790625698a3232c58a2f75975b4aa2384",
+  "config": {
+    "readout": "weighted ridge on PPO211 minus PPO397 Bernoulli Bomb log odds, centered two-row update",
+    "ridge": 1e-05,
+    "sample_weight": "50% stage1, 50% later; each half uniform and half teacher p*(1-p)",
+    "calibration": "training Stage 1 mean probability intercept, after fixed regression; no held-out fitting or selection",
+    "train_credit_ids": [
+      "th14_ud0864",
+      "th14_ud05e0",
+      "th14_ud0613"
+    ],
+    "held_out_credit_ids": [
+      "th14_ud06d6",
+      "th14_ud068f"
+    ],
+    "sealed_test_used": false,
+    "native_game_used": false,
+    "held_out_note": "Toshi is historical development data; Aria is in an expanded SFT training pool but excluded here and from the original parent."
+  },
+  "calibration_fit": {
+    "stage1_training_mean_teacher_p": 0.006407082436199269,
+    "stage1_intercept_adjustment": 0.0031171858099852115
+  },
+  "training_fit": {
+    "stage1": {
+      "samples": 6746,
+      "teacher_entropy": 0.03246239761451149,
+      "parent_cross_entropy": 0.05081542627002027,
+      "distilled_cross_entropy": 0.03250398823782659,
+      "parent_kl": 0.01835302865550878,
+      "distilled_kl": 4.159062331510199e-05,
+      "fraction_kl_removed": 0.9977338550439947,
+      "distilled_mean_absolute_probability_error": 0.0005536066142611915,
+      "calibration": {
+        "all": {
+          "count": 6746,
+          "ppo211": 0.006407082436199269,
+          "ppo397": 0.00025545389130228214,
+          "distilled": 0.00640708115973214
+        },
+        "teacher_top_decile": {
+          "count": 675,
+          "ppo211": 0.034540322078437415,
+          "ppo397": 0.0010016169513255716,
+          "distilled": 0.03410474216158118
+        },
+        "teacher_p_ge_0.05": {
+          "count": 90,
+          "ppo211": 0.08909340085639725,
+          "ppo397": 0.0029326696152078614,
+          "distilled": 0.08767222435204636
+        }
+      }
+    },
+    "later": {
+      "samples": 38372,
+      "teacher_entropy": 0.05664094976097777,
+      "parent_cross_entropy": 0.1068616035644069,
+      "distilled_cross_entropy": 0.056792200073994686,
+      "parent_kl": 0.050220653803429126,
+      "distilled_kl": 0.00015125031301691655,
+      "fraction_kl_removed": 0.9969882846685164,
+      "distilled_mean_absolute_probability_error": 0.0015706180599440625,
+      "calibration": {
+        "all": {
+          "count": 38372,
+          "ppo211": 0.01644390100481908,
+          "ppo397": 0.0008968667401839697,
+          "distilled": 0.01655863795987458
+        },
+        "teacher_top_decile": {
+          "count": 3838,
+          "ppo211": 0.11460686491019777,
+          "ppo397": 0.005842359082576162,
+          "distilled": 0.11483884758380583
+        },
+        "teacher_p_ge_0.05": {
+          "count": 2744,
+          "ppo211": 0.14326459031154234,
+          "ppo397": 0.007438455177737314,
+          "distilled": 0.14333289256803858
+        }
+      }
+    }
+  },
+  "held_out": {
+    "th14_ud06d6_stage1": {
+      "samples": 2288,
+      "teacher_entropy": 0.019329062157187757,
+      "parent_cross_entropy": 0.026589121058498706,
+      "distilled_cross_entropy": 0.019369564046029773,
+      "parent_kl": 0.007260058901310949,
+      "distilled_kl": 4.050188884201569e-05,
+      "fraction_kl_removed": 0.9944212726931593,
+      "distilled_mean_absolute_probability_error": 0.00039785731721455887,
+      "calibration": {
+        "all": {
+          "count": 2288,
+          "ppo211": 0.0033538219629783523,
+          "ppo397": 0.00020412006492321778,
+          "distilled": 0.003270131946505254
+        },
+        "teacher_top_decile": {
+          "count": 229,
+          "ppo211": 0.017846302243769593,
+          "ppo397": 0.0007548484527095191,
+          "distilled": 0.016887748691430133
+        },
+        "teacher_p_ge_0.05": {
+          "count": 14,
+          "ppo211": 0.0656334904246332,
+          "ppo397": 0.0023875909899593152,
+          "distilled": 0.05790974001901467
+        }
+      }
+    },
+    "th14_ud068f_stage1": {
+      "samples": 2166,
+      "teacher_entropy": 0.02941915198859175,
+      "parent_cross_entropy": 0.04664665625171098,
+      "distilled_cross_entropy": 0.02946185493314186,
+      "parent_kl": 0.01722750426311923,
+      "distilled_kl": 4.2702944550110367e-05,
+      "fraction_kl_removed": 0.9975212344227057,
+      "distilled_mean_absolute_probability_error": 0.0005433037066977097,
+      "calibration": {
+        "all": {
+          "count": 2166,
+          "ppo211": 0.0056234876311067605,
+          "ppo397": 0.00017037237785118249,
+          "distilled": 0.005697942175519954
+        },
+        "teacher_top_decile": {
+          "count": 217,
+          "ppo211": 0.028807308276132117,
+          "ppo397": 0.0005636674280486742,
+          "distilled": 0.029059959196037856
+        },
+        "teacher_p_ge_0.05": {
+          "count": 10,
+          "ppo211": 0.13927831205612287,
+          "ppo397": 0.002605640684309996,
+          "distilled": 0.14034777931245615
+        }
+      }
+    },
+    "th14_ud068f_stage2": {
+      "samples": 2756,
+      "teacher_entropy": 0.012285829849518362,
+      "parent_cross_entropy": 0.01753769360449522,
+      "distilled_cross_entropy": 0.012306273556756606,
+      "parent_kl": 0.0052518637549768595,
+      "distilled_kl": 2.044370723824386e-05,
+      "fraction_kl_removed": 0.9961073424231787,
+      "distilled_mean_absolute_probability_error": 0.00020720499801020833,
+      "calibration": {
+        "all": {
+          "count": 2756,
+          "ppo211": 0.001829630945984529,
+          "ppo397": 8.073382023645546e-05,
+          "distilled": 0.0019056548287895245
+        },
+        "teacher_top_decile": {
+          "count": 276,
+          "ppo211": 0.007970104739251381,
+          "ppo397": 0.00015393385740883212,
+          "distilled": 0.008408803413211173
+        },
+        "teacher_p_ge_0.05": {
+          "count": 0
+        }
+      }
+    },
+    "th14_ud068f_stage3": {
+      "samples": 3320,
+      "teacher_entropy": 0.03822357019099558,
+      "parent_cross_entropy": 0.06912563497497122,
+      "distilled_cross_entropy": 0.03832068488386293,
+      "parent_kl": 0.03090206478397564,
+      "distilled_kl": 9.711469286734914e-05,
+      "fraction_kl_removed": 0.9968573396779069,
+      "distilled_mean_absolute_probability_error": 0.0009588908161593088,
+      "calibration": {
+        "all": {
+          "count": 3320,
+          "ppo211": 0.00832854818637782,
+          "ppo397": 0.0001477474504286772,
+          "distilled": 0.008390849456759946
+        },
+        "teacher_top_decile": {
+          "count": 332,
+          "ppo211": 0.04602392255493609,
+          "ppo397": 0.0004651544933850864,
+          "distilled": 0.044947541935189544
+        },
+        "teacher_p_ge_0.05": {
+          "count": 59,
+          "ppo211": 0.14323978444812746,
+          "ppo397": 0.0016185429686454693,
+          "distilled": 0.13935768263089668
+        }
+      }
+    },
+    "th14_ud068f_stage4": {
+      "samples": 4132,
+      "teacher_entropy": 0.03318880660341555,
+      "parent_cross_entropy": 0.0545187506640395,
+      "distilled_cross_entropy": 0.03330495781030896,
+      "parent_kl": 0.021329944060623954,
+      "distilled_kl": 0.00011615120689341396,
+      "fraction_kl_removed": 0.9945545470460078,
+      "distilled_mean_absolute_probability_error": 0.000986829380460305,
+      "calibration": {
+        "all": {
+          "count": 4132,
+          "ppo211": 0.0080600453079579,
+          "ppo397": 0.0004666273036552435,
+          "distilled": 0.00812773444802347
+        },
+        "teacher_top_decile": {
+          "count": 414,
+          "ppo211": 0.052491389079758546,
+          "ppo397": 0.0024275606125712386,
+          "distilled": 0.05220318749555608
+        },
+        "teacher_p_ge_0.05": {
+          "count": 77,
+          "ppo211": 0.18421298495075084,
+          "ppo397": 0.007756962259608013,
+          "distilled": 0.18099136693509635
+        }
+      }
+    },
+    "th14_ud068f_stage5": {
+      "samples": 4273,
+      "teacher_entropy": 0.04593023001752765,
+      "parent_cross_entropy": 0.07799530236003752,
+      "distilled_cross_entropy": 0.04605227433152311,
+      "parent_kl": 0.03206507234250987,
+      "distilled_kl": 0.00012204431399546328,
+      "fraction_kl_removed": 0.9961938550241889,
+      "distilled_mean_absolute_probability_error": 0.0012003631070857685,
+      "calibration": {
+        "all": {
+          "count": 4273,
+          "ppo211": 0.009933963921224797,
+          "ppo397": 0.00042175525611407185,
+          "distilled": 0.009845749958485393
+        },
+        "teacher_top_decile": {
+          "count": 428,
+          "ppo211": 0.053014161018707144,
+          "ppo397": 0.0010051589355039579,
+          "distilled": 0.05248413079283481
+        },
+        "teacher_p_ge_0.05": {
+          "count": 136,
+          "ppo211": 0.09943963896644807,
+          "ppo397": 0.0017779360012741474,
+          "distilled": 0.09786776508058291
+        }
+      }
+    },
+    "th14_ud068f_stage6": {
+      "samples": 5211,
+      "teacher_entropy": 0.07323575606436962,
+      "parent_cross_entropy": 0.14290323967343393,
+      "distilled_cross_entropy": 0.0735226622717963,
+      "parent_kl": 0.06966748360906432,
+      "distilled_kl": 0.0002869062074266765,
+      "fraction_kl_removed": 0.9958817773721147,
+      "distilled_mean_absolute_probability_error": 0.0024099281786972454,
+      "calibration": {
+        "all": {
+          "count": 5211,
+          "ppo211": 0.02080816321326897,
+          "ppo397": 0.0008461165110105002,
+          "distilled": 0.020847848514677754
+        },
+        "teacher_top_decile": {
+          "count": 522,
+          "ppo211": 0.12880897982304873,
+          "ppo397": 0.002624839478480901,
+          "distilled": 0.1283855061869495
+        },
+        "teacher_p_ge_0.05": {
+          "count": 545,
+          "ppo211": 0.12551758574027175,
+          "ppo397": 0.002552588513153032,
+          "distilled": 0.12509130440057523
+        }
+      }
+    }
+  },
+  "gates": "both held-out Stage 1 credits independently: remove >=80% parent-to-teacher KL, mean within \u00b120% of teacher, top teacher decile mean within \u00b125%. Native play is a separate gate.",
+  "passes_offline_stage1_gate": true,
+  "unchanged_non_bomb_state_tensors": true,
+  "exact_non_bomb_logits_on_heldout_rows": 24146,
+  "warm_start_check": {
+    "fresh_ppo_steps": 0,
+    "optimizer_states": 0,
+    "actor_exact_after_critic_reset": true,
+    "method": "scripts.train_full_policy.warm_start"
+  },
+  "data": [
+    {
+      "stem": "th14_ud0864",
+      "stage": 1,
+      "player": "8DRabbit",
+      "split": "train",
+      "pairs": 2415,
+      "npz_sha256": "f82187abb79d0d7fe0643866c558a6365873fafbcfeea2d59b9bb72aa5a7752e",
+      "replay_sha256": "6b6d2a8033f2e4becadf5d565a67172e5322856f6f1b98d25e44f21f9f908fe3"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 1,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 2281,
+      "npz_sha256": "f01a92d7732d9c0c9607ade85abb1e6c3ffb340dc17d6ae693884805c746d21c",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 2,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 2725,
+      "npz_sha256": "157ef7f47dabeb31953af81d0f725901a37f698a24dc23d3d8e5073e8e640172",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 3,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 3248,
+      "npz_sha256": "d3e1b24befd8aaf4170c83100a7350dfad444588489d2e4182286193c159e7b0",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 4,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 3890,
+      "npz_sha256": "b05a810de7b5fa4dd8834266f6e7e2f93796ae619d9ade4c5dbdabd396ece73e",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 5,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 4441,
+      "npz_sha256": "948ccf2fe4fc7621c199e3cf029e51c334e3eadea290b21d263c2eb11016bd51",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud05e0",
+      "stage": 6,
+      "player": "A.U",
+      "split": "train",
+      "pairs": 5850,
+      "npz_sha256": "45a72d63e9d27843887c32ec9e84ef6146c5313b76c8ec6e7cac7a89a3cb3de8",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 1,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 2050,
+      "npz_sha256": "fac4fc843c10a4be1bf1453789dfdc492074142feeec5414bfb42a56b1940a27",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 2,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 2532,
+      "npz_sha256": "17abb1b606218e5b05a2fbaef9d5d533d9a513e0b6d64a26374112e6f49cf5c3",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 3,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 3050,
+      "npz_sha256": "04eb61de12e38cb357032c6f740ffa48a7ce4e483dbd7161ce9ca46c03b7eb4f",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 4,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 4041,
+      "npz_sha256": "b0566141fedd97d604c7fcd0006249e65207734ee47c0e3ef6d8273a1946109e",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 5,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 4057,
+      "npz_sha256": "d9037813b714af23db8dd9f4b498f1ccf5530db9c3749b94c2453a160421c0ac",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud0613",
+      "stage": 6,
+      "player": "Alice",
+      "split": "train",
+      "pairs": 4538,
+      "npz_sha256": "4dcca4c3de87ab76b1d7f8cfc8353d9901dadcfd92dfae18fe1f012224b8e36a",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "stem": "th14_ud06d6",
+      "stage": 1,
+      "player": "Toshi",
+      "split": "validation",
+      "pairs": 2288,
+      "npz_sha256": "0ca2971753b6a2750b026355641481eaa3008a5df4c95e28e515281983b254c8",
+      "replay_sha256": "e57f8ab86c289062165105737cc0c03d9cbb921901b8e0b96ab0a963c46cf9c1"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 1,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 2166,
+      "npz_sha256": "9670bc07c3092f5ec90dd1536dfce9a2116ab9d51ca56602bd85906522db328b",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 2,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 2756,
+      "npz_sha256": "e4580774e287e959c7114f1504175118aa15235ce047f7af6b8fdf4fdb5308d3",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 3,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 3320,
+      "npz_sha256": "1493fba7c8ac1ea5b64ad2096bc2430dffd411bb511ad7192d155cb30bee8ed8",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 4,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 4132,
+      "npz_sha256": "23581706b428a7883475c1e193656949e7a850473d59f51f684cc39a99fbc100",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 5,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 4273,
+      "npz_sha256": "31c99c97c4024cad52d8ca5099428121171f1d32e4981aadb69b0d3eceadf427",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    },
+    {
+      "stem": "th14_ud068f",
+      "stage": 6,
+      "player": "Aria",
+      "split": "train",
+      "pairs": 5211,
+      "npz_sha256": "74b912587366da5fc6d81f87d13eb13b9e53060285be7ea5174efbcf1c14d412",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    }
+  ]
+}
