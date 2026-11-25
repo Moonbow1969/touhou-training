@@ -1,0 +1,282 @@
+{
+  "parent_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+  "runner_sha256": "9b901fd68063831c40b124f33a3b6e3e97ad119492785c34c64645b8ab336194",
+  "config": {
+    "objective": "immediate next-tick direction CE + KL(parent || head); event4 gives starts and active turns 4x CE",
+    "trainable": "first 9 weights/bias rows of final actor layer; frozen pretrained actor features",
+    "optimizer": "full-batch Adam",
+    "steps": 100,
+    "learning_rate": 0.0008,
+    "parent_kl": 0.75,
+    "device": "CPU",
+    "threads": 2,
+    "torch": "2.5.1+cu124",
+    "seed": 211,
+    "checkpoint_selection": "final fixed update"
+  },
+  "candidate_gate": "each held-out replay: +2 percentage points or more in BOTH start and turn exact direction vs parent; idle false-move increase <=2pp and four-tick NLL increase <=0.02",
+  "holdout_scope": "Toshi is repeatedly used project development data; Aria is in an expanded project's training pool, excluded by whole replay from this experiment and the historical parent. Sealed test unopened.",
+  "data": [
+    {
+      "replay": "th14_ud0864",
+      "player": "8DRabbit",
+      "source_split": "train",
+      "pairs": 2415,
+      "npz_sha256": "f82187abb79d0d7fe0643866c558a6365873fafbcfeea2d59b9bb72aa5a7752e",
+      "replay_sha256": "6b6d2a8033f2e4becadf5d565a67172e5322856f6f1b98d25e44f21f9f908fe3"
+    },
+    {
+      "replay": "th14_ud05e0",
+      "player": "A.U",
+      "source_split": "train",
+      "pairs": 2281,
+      "npz_sha256": "f01a92d7732d9c0c9607ade85abb1e6c3ffb340dc17d6ae693884805c746d21c",
+      "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172"
+    },
+    {
+      "replay": "th14_ud0613",
+      "player": "Alice",
+      "source_split": "train",
+      "pairs": 2050,
+      "npz_sha256": "fac4fc843c10a4be1bf1453789dfdc492074142feeec5414bfb42a56b1940a27",
+      "replay_sha256": "4356b957df23cb19234e8a51fed8723e173f07c269658e662733bb2b0e804158"
+    },
+    {
+      "replay": "th14_ud06d6",
+      "player": "Toshi",
+      "source_split": "validation",
+      "pairs": 2288,
+      "npz_sha256": "0ca2971753b6a2750b026355641481eaa3008a5df4c95e28e515281983b254c8",
+      "replay_sha256": "e57f8ab86c289062165105737cc0c03d9cbb921901b8e0b96ab0a963c46cf9c1"
+    },
+    {
+      "replay": "th14_ud068f",
+      "player": "Aria",
+      "source_split": "train",
+      "pairs": 2166,
+      "npz_sha256": "9670bc07c3092f5ec90dd1536dfce9a2116ab9d51ca56602bd85906522db328b",
+      "replay_sha256": "a96196e830e62fefa75da91c2056c7ea035a2183e6c9b56e33854633c42d5722"
+    }
+  ],
+  "roles": {
+    "train": [
+      "th14_ud0864",
+      "th14_ud05e0",
+      "th14_ud0613"
+    ],
+    "held_out": [
+      "th14_ud06d6",
+      "th14_ud068f"
+    ]
+  },
+  "train_event_counts": {
+    "starts": 147,
+    "turns": 197
+  },
+  "held_out": {
+    "th14_ud06d6": {
+      "parent": {
+        "slices": {
+          "starts": {
+            "n": 58,
+            "correct": 2,
+            "accuracy": 0.034482758620689655
+          },
+          "turns": {
+            "n": 95,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 907,
+            "correct": 880,
+            "accuracy": 0.9702315325248071
+          },
+          "active_holds": {
+            "n": 1181,
+            "correct": 922,
+            "accuracy": 0.7806943268416596
+          },
+          "stops": {
+            "n": 47,
+            "correct": 4,
+            "accuracy": 0.0851063829787234
+          }
+        },
+        "idle_false_move_rate": 0.029768467475192906,
+        "first_tick_nll": 0.7848551869392395,
+        "four_tick_nll": 0.9992533922195435,
+        "modal_accuracy": 0.7281468510627747
+      },
+      "uniform": {
+        "slices": {
+          "starts": {
+            "n": 58,
+            "correct": 2,
+            "accuracy": 0.034482758620689655
+          },
+          "turns": {
+            "n": 95,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 907,
+            "correct": 874,
+            "accuracy": 0.9636163175303197
+          },
+          "active_holds": {
+            "n": 1181,
+            "correct": 946,
+            "accuracy": 0.8010160880609652
+          },
+          "stops": {
+            "n": 47,
+            "correct": 2,
+            "accuracy": 0.0425531914893617
+          }
+        },
+        "idle_false_move_rate": 0.03638368246968027,
+        "first_tick_nll": 0.7093381285667419,
+        "four_tick_nll": 0.972059428691864,
+        "modal_accuracy": 0.7298951148986816
+      },
+      "event4": {
+        "slices": {
+          "starts": {
+            "n": 58,
+            "correct": 2,
+            "accuracy": 0.034482758620689655
+          },
+          "turns": {
+            "n": 95,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 907,
+            "correct": 870,
+            "accuracy": 0.9592061742006616
+          },
+          "active_holds": {
+            "n": 1181,
+            "correct": 949,
+            "accuracy": 0.8035563082133785
+          },
+          "stops": {
+            "n": 47,
+            "correct": 2,
+            "accuracy": 0.0425531914893617
+          }
+        },
+        "idle_false_move_rate": 0.040793825799338435,
+        "first_tick_nll": 0.7499352097511292,
+        "four_tick_nll": 0.9682223200798035,
+        "modal_accuracy": 0.7298951148986816
+      }
+    },
+    "th14_ud068f": {
+      "parent": {
+        "slices": {
+          "starts": {
+            "n": 46,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "turns": {
+            "n": 20,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 1278,
+            "correct": 1229,
+            "accuracy": 0.9616588419405321
+          },
+          "active_holds": {
+            "n": 782,
+            "correct": 658,
+            "accuracy": 0.8414322250639387
+          },
+          "stops": {
+            "n": 40,
+            "correct": 3,
+            "accuracy": 0.075
+          }
+        },
+        "idle_false_move_rate": 0.03834115805946792,
+        "first_tick_nll": 0.622875988483429,
+        "four_tick_nll": 0.7890726327896118,
+        "modal_accuracy": 0.8282548189163208
+      },
+      "uniform": {
+        "slices": {
+          "starts": {
+            "n": 46,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "turns": {
+            "n": 20,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 1278,
+            "correct": 1225,
+            "accuracy": 0.9585289514866979
+          },
+          "active_holds": {
+            "n": 782,
+            "correct": 675,
+            "accuracy": 0.8631713554987213
+          },
+          "stops": {
+            "n": 40,
+            "correct": 2,
+            "accuracy": 0.05
+          }
+        },
+        "idle_false_move_rate": 0.04147104851330208,
+        "first_tick_nll": 0.4984174966812134,
+        "four_tick_nll": 0.6947544813156128,
+        "modal_accuracy": 0.8310249447822571
+      },
+      "event4": {
+        "slices": {
+          "starts": {
+            "n": 46,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "turns": {
+            "n": 20,
+            "correct": 0,
+            "accuracy": 0.0
+          },
+          "idle_holds": {
+            "n": 1278,
+            "correct": 1219,
+            "accuracy": 0.9538341158059468
+          },
+          "active_holds": {
+            "n": 782,
+            "correct": 677,
+            "accuracy": 0.8657289002557544
+          },
+          "stops": {
+            "n": 40,
+            "correct": 2,
+            "accuracy": 0.05
+          }
+        },
+        "idle_false_move_rate": 0.04616588419405321,
+        "first_tick_nll": 0.559265673160553,
+        "four_tick_nll": 0.7259736657142639,
+        "modal_accuracy": 0.8291782140731812
+      }
+    }
+  },
+  "promote_to_native_screen": false,
+  "candidate_sha256": "b465c90e1a6f2e1e3d2f141ae55fd0134841d4fa03eebd517b627730e32b926d"
+}

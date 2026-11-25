@@ -1,0 +1,71 @@
+{
+  "task": {
+    "title": "TH14",
+    "version": "1.00b",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "first_stage": 1,
+    "last_stage": 1,
+    "start_frame": 30,
+    "decision_limit": 3300,
+    "frames_per_action": 4,
+    "all_native_lives": true,
+    "allows_continue": false,
+    "expected_start_resources": {
+      "lives": 2,
+      "bombs": 3,
+      "power": 100,
+      "life_fragments": 0,
+      "bomb_fragments": 0
+    }
+  },
+  "credits": 12,
+  "midboss_reference_frame": 2422,
+  "stage2_arrivals": 0,
+  "endpoint_semantics": {
+    "game_over": "Observed native Game Over after exhausting the credit.",
+    "clear": "Observed Stage 2 arrival. The plot uses the last recorded Stage 1 frame.",
+    "time_limit": "Right-censored at the last observed Stage 1 frame."
+  },
+  "arms": {
+    "sft": {
+      "credits": 4,
+      "stage2_arrivals": 0,
+      "game_overs": 4,
+      "game_over_right_censored": 0,
+      "first_misses_observed": 4,
+      "first_miss_censored": 0,
+      "median_observed_first_miss_frame": 978.0,
+      "median_observed_game_over_frame": 2321.5,
+      "crossed_midboss_reference_frame": 2,
+      "deaths": 12,
+      "actual_bombs_consumed": 2
+    },
+    "ppo211": {
+      "credits": 4,
+      "stage2_arrivals": 0,
+      "game_overs": 4,
+      "game_over_right_censored": 0,
+      "first_misses_observed": 4,
+      "first_miss_censored": 0,
+      "median_observed_first_miss_frame": 1504.0,
+      "median_observed_game_over_frame": 4775.5,
+      "crossed_midboss_reference_frame": 4,
+      "deaths": 12,
+      "actual_bombs_consumed": 34
+    },
+    "ppo397": {
+      "credits": 4,
+      "stage2_arrivals": 0,
+      "game_overs": 4,
+      "game_over_right_censored": 0,
+      "first_misses_observed": 4,
+      "first_miss_censored": 0,
+      "median_observed_first_miss_frame": 1252.0,
+      "median_observed_game_over_frame": 5039.0,
+      "crossed_midboss_reference_frame": 4,
+      "deaths": 12,
+      "actual_bombs_consumed": 1
+    }
+  }
+}
