@@ -1,5 +1,7 @@
 # State-conditioned SFT and pure-policy PPO
 
+The stock survival pilots motivated a separate clear-objective and practice-start experiment. [TH14 training protocol](th14-training-protocol.md)
+
 ## Current evidence
 
 The raw corpus contains 2,000 decoded replays across TH13, TH14, TH16 and TH17, with 209,326,603 native input frames. The action-only prior trained on over 45 million four-frame windows per epoch. The state-conditioned policy needs an observation paired with each label. The legacy parent used 147,560 training decisions, including one target-configuration TH14 Normal Reimu A Stage 1 shard with 2,415 decisions. The intermediate width-ablation snapshot had 168,136 decisions. The expanded comparison used 232,697 training decisions after adding 64,561 native TH14 pairs across 18 stages. The latest snapshot adds a full Hard Marisa B replay and reaches 259,361 training decisions from TH13, TH14 and TH17. [First capture tranche](../results/2026-11-23-th14-full-policy/sft-expanded-admitted-captures.json), [Hard capture and updated manifest](../results/2026-11-23-th14-full-policy/sft-hard-marisa-b-admission.json)
