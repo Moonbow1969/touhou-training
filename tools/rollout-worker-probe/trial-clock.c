@@ -5,6 +5,11 @@
 #include <string.h>
 #include <windows.h>
 
+#ifdef TRIAL_CONTACT_TELEMETRY
+/* Verified against the SHA-pinned trial's player-state getter and writes. */
+enum { PLAYER_CONTACT_STATE = 0x684, GAME_BOMBS = 0x4f1f90 };
+#endif
+
 /* Addresses for the unmodified TH14 0.01b trial at image base 0x400000. */
 enum {
     CLOCK_POINTER = 0x4d7c40, THREAD_POINTER = 0x4d7c78,
@@ -31,6 +36,10 @@ struct State {
     uint32_t stage;
     int32_t lives;
     float position[2];
+#ifdef TRIAL_CONTACT_TELEMETRY
+    uint32_t player_state;
+    int32_t bombs;
+#endif
 };
 
 struct Entity {
@@ -71,6 +80,10 @@ static int snapshot(const struct Target *game, struct State *state) {
            && read_memory(game, GAME_STATE, &state->mode, sizeof(state->mode))
            && read_memory(game, GAME_STAGE, &state->stage, sizeof(state->stage))
            && read_memory(game, GAME_LIVES, &state->lives, sizeof(state->lives))
+#ifdef TRIAL_CONTACT_TELEMETRY
+           && read_field(game, PLAYER_POINTER, PLAYER_CONTACT_STATE, &state->player_state, sizeof(state->player_state))
+           && read_memory(game, GAME_BOMBS, &state->bombs, sizeof(state->bombs))
+#endif
            && isfinite(state->position[0]) && isfinite(state->position[1])
            && fabsf(state->position[0]) <= 250.0f && fabsf(state->position[1]) <= 520.0f;
 }
@@ -125,10 +138,15 @@ static int emit_state(const struct Target *game, const struct State *state, uint
     if (count < 0)
         return 0;
     printf("{\"ticks\":%lu,\"frame\":%lu,\"delta\":%lu,\"mode\":%lu,\"stage\":%lu,"
-           "\"lives\":%ld,\"player\":[%.4f,%.4f],\"bullet_count\":%d,\"bullets\":[",
+           "\"lives\":%ld,\"player\":[%.4f,%.4f],\"bullet_count\":%d,",
            (unsigned long)state->clock, (unsigned long)state->frame, (unsigned long)delta,
            (unsigned long)state->mode, (unsigned long)state->stage, (long)state->lives,
            state->position[0], state->position[1], count);
+#ifdef TRIAL_CONTACT_TELEMETRY
+    printf("\"contact_schema\":1,\"player_state\":%lu,\"bombs\":%ld,\"held\":%u,",
+           (unsigned long)state->player_state, (long)state->bombs, game->held);
+#endif
+    fputs("\"bullets\":[", stdout);
     for (int i = 0; i < count && i < MAX_ENTITIES; i++) {
         const struct Entity *b = &entities[i];
         printf("%s[%.4f,%.4f,%.4f,%.4f,%.4f,%d]", i ? "," : "",

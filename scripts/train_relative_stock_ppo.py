@@ -3,6 +3,7 @@
 import argparse
 from copy import deepcopy
 import json
+import os
 from pathlib import Path
 import shutil
 from time import perf_counter
@@ -91,16 +92,33 @@ class LiveActor:
 
 
 class HitRecorder:
-    def __init__(self,actor):
+    def __init__(self,actor,target):
         self.actor=actor
+        self.target=target
         self.rewards=[]
         self.bootstrap=0.
+        self.spells=set()
+        self.landmarks=[]
 
     def before_step(self,env,observation):
-        return env.snapshot.player_state
+        return env.snapshot.player_state, env.snapshot.stage
 
     def after_step(self,env,before,action,info,terminated,truncated,deaths,bombs):
-        self.rewards.append(-.015 if before==1 and env.snapshot.player_state==4 else 0.)
+        state,stage=before
+        snap=env.snapshot
+        reward=-.015 if state==1 and snap.player_state==4 else 0.
+        if self.target=="stage3":
+            if stage==1 and info["native_stage"]==2:
+                reward+=.5+.03*env.game.read_game_val("lives")+.01*env.game.read_game_val("bombs")
+                self.landmarks.append(dict(kind="stage2_entry",decision=len(self.rewards)+1))
+            # Credit each distinct Stage 2 spell once, even if a boss later times out.
+            if (snap.stage==2 and snap.spell_id is not None and snap.boss is not None and snap.boss.vulnerable
+                    and snap.boss.hp>0 and snap.spell_id not in self.spells):
+                self.spells.add(snap.spell_id)
+                reward+=.06
+                self.landmarks.append(dict(kind="first_vulnerable_spell",spell=snap.spell_id,stage=2,
+                                           frame=env.last_frame,decision=len(self.rewards)+1))
+        self.rewards.append(reward)
 
     @torch.inference_mode()
     def finish(self,outcome,observation):
@@ -177,7 +195,10 @@ def main():
     parser.add_argument("--updates",type=int,default=1)
     parser.add_argument("--seed",type=int,default=3501)
     parser.add_argument("--temperature",type=float,default=.55)
-    parser.add_argument("--continue-from",type=Path,help="Start a fresh run with a published PPO model and optimizer.")
+    init=parser.add_mutually_exclusive_group()
+    init.add_argument("--continue-from",type=Path,help="Start a fresh run with a compatible published PPO model and optimizer.")
+    init.add_argument("--warm-policy",type=Path,help="Transfer learned actor weights to a fresh objective and critic.")
+    parser.add_argument("--target",choices=("stage2","stage3"),default="stage2")
     parser.add_argument("--menu-references",nargs=2,type=Path)
     parser.add_argument("--menu-crop",nargs=4,type=int,action="append")
     parser.add_argument("--verify-only",action="store_true")
@@ -202,7 +223,7 @@ def main():
         original=model.actor(x,ev,hp,raw)[:3]
         for first,second in zip(current,original):
             torch.testing.assert_close(first,second,atol=0,rtol=0)
-    args.target="stage2"; args.limit=story.LIMITS[args.target]; args.start_frame=30; args.focus_wait=90
+    args.limit=story.LIMITS[args.target]; args.start_frame=30; args.focus_wait=90
     args.parakit=Path(__file__).resolve().parents[2]/"parakit"
     spec=dict(student_sha256=digest(args.student),risk_sha256=digest(args.risk),source_sha256=digest(Path(__file__)),
               temperature=args.temperature,seed=args.seed,credits_per_update=args.credits_per_update,updates=args.updates,
@@ -211,26 +232,41 @@ def main():
                           gamma=1.,gae_lambda=.995),native_start="fresh Normal Reimu A Stage 1, frame 30, two spares, three Bombs",
               initialization="All three actor logits exactly equal the frozen joint move/focus, Shoot and Bomb student. "
                              "New trainable movement residual sees 18 learned risk scores and five current context scalars.",
-              runtime_route=False,geometry=False,automatic_bomb=False,aim_override=False)
+              runtime_route=False,geometry=False,automatic_bomb=False,aim_override=False,target=args.target)
+    if args.target=="stage3":
+        spec["reward"]=dict(stage2_entry=.5,stage2_spare_life=.03,stage2_bomb=.01,
+                            first_vulnerable_stage2_spell=.06,stage3_entry=1.5,stage3_spare_life=.1,
+                            stage3_bomb=.02,native_hit_onset=-.015,gamma=1.,gae_lambda=.995)
+    starting_steps=0
+    parent=args.continue_from or args.warm_policy
+    if parent:
+        prior=json.loads(parent.with_name("report.json").read_text(encoding="utf-8"))
+        payload=torch.load(parent,map_location="cpu",weights_only=True)
+        key_fields=(("student_sha256","risk_sha256","temperature","source_sha256","reward") if args.continue_from else
+                    ("student_sha256","risk_sha256"))
+        if (prior["status"]!="complete" or prior["updates"][-1]["sha256"]!=digest(parent)
+                or payload["schema"]!="relative-stock-ppo-v1" or prior["specification"]!=payload["specification"]
+                or any(payload["specification"][k]!=spec[k] for k in key_fields)):
+            raise ValueError("Prior full-credit PPO checkpoint or optimization contract changed.")
+        critic=deepcopy(model.value.state_dict())
+        model.load_state_dict(payload["state_dict"])
+        if args.continue_from:
+            optim.load_state_dict(payload["optimizer"])
+            starting_steps=int(payload["steps"])
+        else:
+            model.value.load_state_dict(critic)
+            anchor=deepcopy(model).eval().requires_grad_(False)
+            spec["parent_native_steps"]=payload["steps"]
+            spec["initialization"]="Warm-started all actor and residual weights from the prior PPO phase. Fresh critic and optimizer."
+        spec["parent_checkpoint_sha256"]=prior["updates"][-1]["sha256"]
     if args.verify_only:
+        with torch.no_grad():
+            current=model.heads(x,ev,hp,raw,risks)[0]
         dummy_actions=torch.stack([h.argmax(1) for h in current],1)
         oldp=sum(Categorical(logits=h/args.temperature).log_prob(a) for h,a in zip(current,dummy_actions.T))
         update(model,anchor,optim,(x,ev,hp,raw,risks,dummy_actions,oldp,torch.arange(8).float(),torch.ones(8)),args.temperature)
         print(json.dumps(spec))
         return
-    starting_steps=0
-    if args.continue_from:
-        prior=json.loads(args.continue_from.with_name("report.json").read_text(encoding="utf-8"))
-        payload=torch.load(args.continue_from,map_location="cpu",weights_only=True)
-        key_fields=("student_sha256","risk_sha256","temperature","source_sha256","reward")
-        if (prior["status"]!="complete" or prior["updates"][-1]["sha256"]!=digest(args.continue_from)
-                or payload["schema"]!="relative-stock-ppo-v1" or prior["specification"]!=payload["specification"]
-                or any(payload["specification"][k]!=spec[k] for k in key_fields)):
-            raise ValueError("Prior full-credit PPO checkpoint or optimization contract changed.")
-        model.load_state_dict(payload["state_dict"])
-        optim.load_state_dict(payload["optimizer"])
-        starting_steps=int(payload["steps"])
-        spec["parent_checkpoint_sha256"]=prior["updates"][-1]["sha256"]
     if not args.out or shutil.disk_usage(args.out.resolve().parent).free<20*1024**3:
         parser.error("Select a fresh output directory with at least 20 GiB free.")
     args.out.mkdir(parents=True,exist_ok=False)
@@ -252,7 +288,7 @@ def main():
                         idx=epoch*args.credits_per_update+j
                         trial=dict(block=epoch+1,order=j+1,arm="online",policy_seed=args.seed+idx)
                         runner.rows=[]
-                        rec=HitRecorder(runner)
+                        rec=HitRecorder(runner,args.target)
                         def reset(stage,trial):
                             return native_story_restart.reset(stage,trial,start_frame=30,menu=menu)
                         def progress(row):
@@ -261,20 +297,31 @@ def main():
                         result=story.story_credit(env,arm,trial,args,reset,progress,transition_recorder=rec)
                         if result["target_reached"]:
                             resource=result["stage_records"][-1]["entry"]["resources"]
-                            rec.rewards[-1]+=1+.1*resource["lives"]+.02*resource["bombs"]
+                            terminal_bonus=1.5 if args.target=="stage3" else 1.
+                            rec.rewards[-1]+=terminal_bonus+.1*resource["lives"]+.02*resource["bombs"]
                         batch.append(pack(runner.rows,rec.rewards,rec.bootstrap))
                         buffer_info=publish_tensors(args.out/f"credit-{idx+1:03d}.pt",
                             dict(schema="relative-stock-ppo-on-policy-v1",steps=len(rec.rewards),fields=[
                                 "state","event","hp","stock","learned_contact","action","old_log_probability","advantage","value_target"],
                                 tensors=batch[-1],observed_rewards=rec.rewards,bootstrap=rec.bootstrap))
                         log["steps"]+=len(rec.rewards)
-                        log["episodes"].append(dict(trial=trial,result=result,native_return=sum(rec.rewards),buffer=buffer_info))
+                        log["episodes"].append(dict(trial=trial,result=result,native_return=sum(rec.rewards),
+                                                    buffer=buffer_info,landmarks=rec.landmarks))
                         log["in_progress"]=None
                         publish_json(path,log)
                     update_metrics=update(model,anchor,optim,tuple(torch.cat(chunk) for chunk in zip(*batch)),args.temperature)
-                    checkpoint=args.out/"policy.pt"
+                    checkpoint=args.out/f"policy-update-{epoch+1:03d}.pt"
                     artifact=publish_tensors(checkpoint,dict(schema="relative-stock-ppo-v1",state_dict=model.state_dict(),
                                     optimizer=optim.state_dict(),steps=log["steps"],specification=spec))
+                    latest=args.out/"policy-latest.tmp"
+                    try:
+                        try:
+                            os.link(checkpoint,latest)
+                        except OSError:
+                            shutil.copyfile(checkpoint,latest)
+                        latest.replace(args.out/"policy.pt")
+                    finally:
+                        latest.unlink(missing_ok=True)
                     log["updates"].append(dict(epoch=epoch+1,steps=log["steps"],**artifact,**update_metrics))
                     publish_json(path,log)
             log["status"]="complete"
