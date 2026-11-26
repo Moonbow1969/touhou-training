@@ -21,6 +21,13 @@ static int native(int fd,int32_t *out){
  for(int i=0;i<7;i++){if(pread(fd,out,84,0)==84 && out[0]>0 && out[0]==out[20])return 1;hold_ms(2);}
  return 0;
 }
+struct observation_label {
+ int64_t start_ns, end_ns;
+ int32_t before[15], after[15];
+};
+static void player_label(int fd,int32_t *row){
+ if(fd<0 || pread(fd,row,15*sizeof(*row),0)!=15*(ssize_t)sizeof(*row) || row[0]!=row[14])memset(row,0,15*sizeof(*row));
+}
 static int mask(const int *action){
  int move=action[0],x=move%3-1,y=move/3-1;
  return (x<0?64:x>0?128:0)|(y<0?16:y>0?32:0)|(action[1]?8:0)|(action[2]?1:0)|(action[3]?2:0);
@@ -35,13 +42,27 @@ int main(int argc,char**argv){
  int fd=open("/capture/telemetry.bin",O_RDONLY);if(fd<0)return 5;
  FILE *devnull=fopen("/dev/null","wb"), *trace=fopen("steps.bin","wb"),*meta=fopen("events.tsv","w");
  if(!trace||!meta||!devnull)return 6;
+ const int record_frames=access("/capture/lib/record-original-frames",F_OK)==0;
+ FILE *pixels=record_frames?fopen("observations.u8","wb"):devnull;
+ FILE *labels=record_frames?fopen("observation-labels.bin","wb"):NULL;
+ int player=record_frames?open("/capture/xy-latest.bin",O_RDONLY):-1;
+ if(!pixels||(record_frames&&!labels))return 6;
  int32_t pre[21],post[21]; unsigned char frame[112][96];int old=0,done=0,s2=0;
  if(!native(fd,pre)||pre[4]!=2||pre[5]!=2||pre[3]!=1||pre[6]!=0||pre[7]!=0||pre[2]!=2)return 7;
  int64_t beginning=now_ns();
  fprintf(meta,"step\tevent\tstage\tspares\tbombs\tstage_frame\tseconds\n");
  for(int n=0;!done&&n<25000;n++){
   if(!native(fd,pre))break;
-  capture(d,devnull,devnull,frame);
+  struct observation_label label={0};
+  if(record_frames){
+   if(player<0 && n%10==0)player=open("/capture/xy-latest.bin",O_RDONLY);
+   label.start_ns=now_ns();player_label(player,label.before);
+  }
+  capture(d,pixels,devnull,frame);
+  if(record_frames){
+   player_label(player,label.after);label.end_ns=now_ns();
+   if(fwrite(&label,sizeof(label),1,labels)!=1)return 9;
+  }
   int a[4];actor_step(&frame[0][0],a);int next=mask(a);
   int64_t t=now_ns();control(d,old,next);old=next;int xheld=held(d);
   do {hold_ms(8);if(!native(fd,post))return 8;}
@@ -83,5 +104,7 @@ int main(int argc,char**argv){
   }
   if(age>cap){fprintf(meta,"%d\ttechnical_timeout\t%d\t%d\t%d\t%d\t%.3f\n",n,post[3],post[4],post[5],post[11],age);break;}
  }
- control(d,old,0);fclose(trace);fclose(meta);fclose(devnull);close(fd);XCloseDisplay(d);printf("terminal=%d stage2=%d\n",done,s2);return done?0:10;
+ control(d,old,0);fclose(trace);fclose(meta);
+ if(record_frames){fclose(pixels);fclose(labels);if(player>=0)close(player);}
+ fclose(devnull);close(fd);XCloseDisplay(d);printf("terminal=%d stage2=%d\n",done,s2);return done?0:10;
 }

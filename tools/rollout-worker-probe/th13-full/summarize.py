@@ -16,7 +16,7 @@ def wilson(wins,n):
     scale=1+z*z/n
     mid=(p+z*z/(2*n))/scale
     half=z*math.sqrt((p*(1-p)+z*z/(4*n))/n)/scale
-    return [max(0.,mid-half),min(1.,mid+half)]
+    return [0. if wins==0 else max(0.,mid-half),1. if wins==n else min(1.,mid+half)]
 
 
 def score(root):

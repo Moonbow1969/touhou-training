@@ -30,9 +30,19 @@ for w in $lanes; do
 done
 for w in $lanes; do
     docker exec -e DISPLAY=:66 "$prefix$w" sh -eu -c '
-        timeout 60 xdotool search --sync --onlyvisible --class th13 >/dev/null
-        xdotool mousemove 427 364 click 1 mousemove 507 449 click 1
-        window=$(timeout 35 xdotool search --sync --onlyvisible --name "Ten Desires. ver 0.01a" | tail -1)
+        # The Wine process exposes an invisible IME before its resolution dialog becomes actionable.
+        # Wait for the actual 208x154 modal and retry until the title window exists.
+        window=""
+        for attempt in $(seq 1 85); do
+            window=$(xdotool search --onlyvisible --name "Ten Desires. ver 0.01a" 2>/dev/null | tail -1)
+            test -z "$window" || break
+            if xwininfo -root -tree 2>/dev/null | grep -q "208x154+408+316"; then
+                xdotool mousemove 427 364 click 1; sleep .12
+                xdotool mousemove 507 449 click 1
+            fi
+            sleep .7
+        done
+        test -n "$window"
         xdotool windowfocus --sync "$window"
         sleep 16
         for screen in title difficulty character; do

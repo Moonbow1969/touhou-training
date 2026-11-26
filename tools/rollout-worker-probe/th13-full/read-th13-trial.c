@@ -16,6 +16,21 @@ static int32_t scalar(HANDLE p, uintptr_t at) {
     get(p, at, &v, sizeof(v));
     return v;
 }
+static int write_player_label(FILE *file,HANDLE process,uintptr_t base,const int32_t *state) {
+    uint32_t player=0;
+    float position[2], bounds[6];
+    if (!get(process,base+0xbcb20,&player,sizeof(player)) || player<65536 ||
+        !get(process,player+0x550,position,sizeof(position)) ||
+        !get(process,player+0x5a0,bounds,sizeof(bounds))) return 1;
+    int32_t row[15]={0};
+    row[0]=state[0]; row[1]=(int32_t)GetTickCount(); row[2]=state[11];
+    row[3]=state[3]; row[4]=state[4]; row[5]=state[5];
+    memcpy(row+6,position,sizeof(position));
+    memcpy(row+8,bounds,2*sizeof(float)); memcpy(row+10,bounds+3,2*sizeof(float));
+    row[12]=state[10]; row[13]=state[2]; row[14]=state[0];
+    rewind(file);
+    return fwrite(row,sizeof(row),1,file)==1 && !fflush(file);
+}
 static DWORD pid_of_game(void) {
     PROCESSENTRY32 proc = {0}; proc.dwSize=sizeof(proc);
     HANDLE snapshot=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
@@ -41,6 +56,13 @@ int main(void) {
     if (!p || scalar(p,base)==-999) return 3;
     FILE *state=fopen("Z:/capture/telemetry.bin","wb+");
     if (!state) return 4;
+    FILE *marker=fopen("Z:/capture/lib/record-original-frames","rb");
+    FILE *player_state=NULL;
+    if(marker) {
+        fclose(marker);
+        player_state=fopen("Z:/capture/xy-latest.bin","wb+");
+        if(!player_state)return 4;
+    }
     for (int id=1;;++id) {
         int32_t r[21]={0};
         int32_t stock[28]={0};
@@ -53,7 +75,9 @@ int main(void) {
         r[20]=id;
         rewind(state);
         if (fwrite(r,sizeof(r),1,state)!=1 || fflush(state)) break;
+        if (player_state && !write_player_label(player_state,p,base,r)) break;
         Sleep(12);
     }
+    if(player_state)fclose(player_state);
     fclose(state);CloseHandle(p);return 0;
 }
