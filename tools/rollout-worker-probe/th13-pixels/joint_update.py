@@ -17,8 +17,11 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--initial",type=Path,required=True)
     p.add_argument("--credits",type=Path,required=True)
+    p.add_argument("--credits-per-title",type=int,default=4)
     p.add_argument("--out",type=Path,required=True)
     args=p.parse_args()
+    if args.credits_per_title<2:
+        p.error("A leave-one-credit-out baseline requires at least two credits per title.")
     weights=np.load(args.initial,allow_pickle=False)["weights"]
     if weights.shape!=(3,85):
         raise ValueError("Expected the shared left/neutral/right pixel actor.")
@@ -30,8 +33,8 @@ def main():
     batch={}
     for title in (12,13):
         entries=[r for r in manifest if r["title"]==title]
-        if len(entries)!=4 or len({e["episode"] for e in entries})!=4:
-            raise ValueError("Each title needs its four preassigned training credits.")
+        if len(entries)!=args.credits_per_title or len({e["episode"] for e in entries})!=len(entries):
+            raise ValueError("The preassigned per-title credit counts do not match.")
         scores=[]
         trials=[]
         returns=[]

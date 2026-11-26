@@ -1,0 +1,108 @@
+{
+  "mode": "evaluate",
+  "host": "accelerator",
+  "lane": "a",
+  "status": "complete",
+  "difficulty": 1,
+  "horizon": 540,
+  "game_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+  "source_sha256": "ce309daf8d088b44a479780886873c7aa26dff5eaf7d1db5cacbd6d49e9c9e60",
+  "worker_sources": {
+    "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+    "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+    "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+    "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+    "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+    "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+  },
+  "sft_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+  "seed": 613,
+  "reward": "1/horizon for each non-injury decision, -1 on first native life decrement",
+  "controls": "Sampled movement and focus, continuous Shoot, no Bomb. Shared observed fields only.",
+  "observed_motion_sign": true,
+  "failed_attempts": [],
+  "updates": [],
+  "credits": [
+    {
+      "arm": "alternative_sft",
+      "seed": 19832,
+      "trace": "19832-alternative_sft-try1.jsonl.gz",
+      "sha256": "f6bb203b802620f358631f84d362f6596a04ffcef12abb00c6cfc4cef2ef0726",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 13493,
+      "decisions": 131,
+      "resumed_wall_ms": 11451,
+      "first_miss": true,
+      "peak_bullets": 9,
+      "horizontal_requested": 30,
+      "horizontal_responses": 30,
+      "move_focus_counts": [
+        [
+          2,
+          24,
+          6,
+          0,
+          19,
+          10,
+          7,
+          10,
+          0
+        ],
+        [
+          3,
+          11,
+          5,
+          3,
+          18,
+          5,
+          3,
+          4,
+          1
+        ]
+      ]
+    },
+    {
+      "arm": "sft",
+      "seed": 19832,
+      "trace": "19832-sft-try1.jsonl.gz",
+      "sha256": "4d603c26c07f8bcbec6391cc244d5ac70fa702c8a3cf3fe0b5a2ca27488a44e5",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 13749,
+      "decisions": 126,
+      "resumed_wall_ms": 10924,
+      "first_miss": true,
+      "peak_bullets": 8,
+      "horizontal_requested": 29,
+      "horizontal_responses": 29,
+      "move_focus_counts": [
+        [
+          3,
+          15,
+          4,
+          3,
+          46,
+          6,
+          0,
+          6,
+          0
+        ],
+        [
+          7,
+          3,
+          0,
+          1,
+          23,
+          2,
+          4,
+          2,
+          1
+        ]
+      ]
+    }
+  ],
+  "alternative_sft_sha256": "3169327b728c060c5cc721bd4b1f48b4349da0440756337c598e69f09f4d83d3"
+}

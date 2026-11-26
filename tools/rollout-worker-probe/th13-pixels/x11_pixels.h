@@ -28,8 +28,12 @@ static void hold_ms(long ms) {
     struct timespec ts = {ms / 1000, ms % 1000 * 1000000};
     while (nanosleep(&ts, &ts) && (ts.tv_sec || ts.tv_nsec)) {}
 }
+#ifndef PLAYFIELD_LEFT
+#define PLAYFIELD_LEFT 35
+#define PLAYFIELD_TOP 38
+#endif
 static void capture(Display *d, FILE *pixels, FILE *clocklog, unsigned char frame[112][96]) {
-    XImage *im = XGetImage(d, XDefaultRootWindow(d), 35, 38, 384, 448, ~0UL, 2);
+    XImage *im = XGetImage(d, XDefaultRootWindow(d), PLAYFIELD_LEFT, PLAYFIELD_TOP, 384, 448, ~0UL, 2);
     if (!im) exit(3);
     fprintf(clocklog, "%lld\n", (long long)now_ns());
     for (int y=0; y<112; y++) {

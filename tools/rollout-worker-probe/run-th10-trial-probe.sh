@@ -97,6 +97,18 @@ for index in 1 2 3 4 5 6 7 8; do
 done
 test -n "$active"
 
+if test "$mode" = pixel-credit; then
+    cd /capture
+    xdotool windowfocus --sync "$game"
+    wine /tmp/th10-observe.exe --pixel-credit >native.csv & sampler=$!
+    sleep .25
+    printf '%s\n' "$(date +%s%3N)" >actor-start.utc-ms
+    /tools/pixel-actor /tools/weights.bin "$2" 40 340
+    scrot -a 0,0,640,480 endpoint.png
+    wait "$sampler"
+    exit 0
+fi
+
 if test "$wire" -eq 1; then
     sleep 1.5
     xdotool windowfocus --sync "$game"

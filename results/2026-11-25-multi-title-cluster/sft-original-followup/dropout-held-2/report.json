@@ -1,0 +1,188 @@
+{
+  "mode": "evaluate",
+  "host": "momentum",
+  "lane": "b",
+  "status": "complete",
+  "difficulty": 2,
+  "horizon": 540,
+  "game_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+  "source_sha256": "ba2c14541b8dcebeb217daa10cdb6ca6628ccc2c4cf913433e7ac41eb688cc96",
+  "worker_sources": {
+    "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+    "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+    "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+    "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+    "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+    "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+  },
+  "sft_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+  "seed": 613,
+  "reward": "1/horizon for each non-injury decision, -1 on first native life decrement",
+  "controls": "Sampled movement and focus, continuous Shoot, no Bomb. Shared observed fields only.",
+  "observed_motion_sign": true,
+  "failed_attempts": [],
+  "updates": [],
+  "credits": [
+    {
+      "arm": "sft",
+      "seed": 19832,
+      "trace": "19832-sft-try1.jsonl.gz",
+      "sha256": "292de0d22480cfea514b571d40a43837d98ceaf6d0bb245e018f4b72f2c74149",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 10611,
+      "decisions": 54,
+      "resumed_wall_ms": 4657,
+      "first_miss": true,
+      "peak_bullets": 10,
+      "horizontal_requested": 12,
+      "horizontal_responses": 12,
+      "move_focus_counts": [
+        [
+          1,
+          10,
+          4,
+          0,
+          23,
+          3,
+          2,
+          3,
+          0
+        ],
+        [
+          3,
+          0,
+          0,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "arm": "alternative_sft",
+      "seed": 19832,
+      "trace": "19832-alternative_sft-try1.jsonl.gz",
+      "sha256": "f99dde1c450d9aa5d137ecfc0694c9c8d1b11487c060859c5a857cae8956e2ae",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 5307,
+      "decisions": 51,
+      "resumed_wall_ms": 4401,
+      "first_miss": true,
+      "peak_bullets": 10,
+      "horizontal_requested": 19,
+      "horizontal_responses": 19,
+      "move_focus_counts": [
+        [
+          1,
+          12,
+          4,
+          2,
+          13,
+          8,
+          0,
+          3,
+          0
+        ],
+        [
+          3,
+          4,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "arm": "alternative_sft",
+      "seed": 19831,
+      "trace": "19831-alternative_sft-try1.jsonl.gz",
+      "sha256": "530b5702946c5979f369c4217088e2b68de5ba8f01ad4e288cc13418f563b585",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 13939,
+      "decisions": 170,
+      "resumed_wall_ms": 14728,
+      "first_miss": true,
+      "peak_bullets": 42,
+      "horizontal_requested": 65,
+      "horizontal_responses": 65,
+      "move_focus_counts": [
+        [
+          8,
+          16,
+          4,
+          12,
+          46,
+          23,
+          10,
+          28,
+          10
+        ],
+        [
+          3,
+          0,
+          0,
+          1,
+          2,
+          0,
+          2,
+          2,
+          3
+        ]
+      ]
+    },
+    {
+      "arm": "sft",
+      "seed": 19831,
+      "trace": "19831-sft-try1.jsonl.gz",
+      "sha256": "4acc2ef673b28d7b0bcb19d1f3f036e93267bf3b6ee44dfd6eccbbdb45aa400e",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 407,
+      "decisions": 47,
+      "resumed_wall_ms": 4064,
+      "first_miss": true,
+      "peak_bullets": 7,
+      "horizontal_requested": 5,
+      "horizontal_responses": 5,
+      "move_focus_counts": [
+        [
+          0,
+          0,
+          0,
+          2,
+          31,
+          1,
+          1,
+          11,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "alternative_sft_sha256": "3169327b728c060c5cc721bd4b1f48b4349da0440756337c598e69f09f4d83d3"
+}

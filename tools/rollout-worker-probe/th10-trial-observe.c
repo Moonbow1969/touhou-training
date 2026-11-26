@@ -25,13 +25,14 @@ static unsigned held(void) {
 
 int main(int argc, char **argv) {
     const int check_only = argc == 2 && !strcmp(argv[1], "--check");
+    const int pixel_credit = argc == 2 && !strcmp(argv[1], "--pixel-credit");
     DWORD pid = 0;
     HANDLE game = th10_process(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ, &pid);
     uint16_t dos = 0;
     if (!game || !th10_read(game, TH10_IMAGE, &dos, sizeof(dos)) || dos != 0x5a4d)
         return 1;
     unsigned accepted = 0;
-    const uint64_t stop = GetTickCount64() + 14500;
+    const uint64_t stop = GetTickCount64() + (pixel_credit ? 42000 : 14500);
     puts("utc_ms,stage,difficulty,character,shot,lives,x,y,score,held_mask");
     while (GetTickCount64() < stop) {
         struct Th10State state;

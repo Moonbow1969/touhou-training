@@ -1,0 +1,46 @@
+{
+  "common_actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+  "estimand": "Equal title gradient of normalized TH12 restricted first stock-loss time of 40s and TH13 settled 60s stock return divided by 3. TH12 suffix after observed first stock loss has zero causal reward and is excluded from its score-function sum.",
+  "credits_per_title": 8,
+  "rate": 0.18,
+  "joint_norm_bound": 2,
+  "per_title_max_forward_kl": 0.01,
+  "evaluation": "Two crossed held pairs per game with shared controller seeds, current parent vs new joint weights. Keep per-game quota and timing fixed across frozen arms. Report outcomes by title separately; TH12 first-life time restricted to 40 wall seconds, TH13 settled spares by 60 wall seconds. Uncontrolled native RNG. Do not combine old and new native clocks or treat two pairs as a policy promotion.",
+  "actors": {
+    "12": "Steam Deck, 2 lanes",
+    "13": "Entropy, 2 lanes"
+  },
+  "seeds": {
+    "12": [
+      122711,
+      122712,
+      122713,
+      122714,
+      122715,
+      122716,
+      122717,
+      122718
+    ],
+    "13": [
+      917701,
+      917702,
+      917703,
+      917704,
+      917705,
+      917706,
+      917707,
+      917708
+    ]
+  },
+  "evaluation_seeds": {
+    "12": [
+      122721,
+      122722
+    ],
+    "13": [
+      917721,
+      917722
+    ]
+  },
+  "architecture": "Same 255 parameters, samples left/neutral/right from original pixel crops, shoot held. No automatic bomb, aim assistance or geometric controller."
+}
