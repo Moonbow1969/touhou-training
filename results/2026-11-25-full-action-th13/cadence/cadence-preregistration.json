@@ -1,0 +1,77 @@
+{
+  "preregistered_utc": "2026-11-26T06:49:33.500427+00:00",
+  "host": "Endeavour",
+  "title": "TH13 official Trial 0.01a, Normal Reimu",
+  "policy_sha256": "6cee156a59339339145b441445ba86d2537620d2359be8de8075fae10e0aae58",
+  "goal": "Compare native action hold at four versus eight ticks using the identical frozen human-replay SFT, with the eight-tick hold matching replay SFT history and age semantics.",
+  "n_per_arm": 6,
+  "allocation": [
+    {
+      "seed": 734001,
+      "ticks": 4,
+      "enqueue_index": 1
+    },
+    {
+      "seed": 734001,
+      "ticks": 8,
+      "enqueue_index": 2
+    },
+    {
+      "seed": 734002,
+      "ticks": 8,
+      "enqueue_index": 3
+    },
+    {
+      "seed": 734002,
+      "ticks": 4,
+      "enqueue_index": 4
+    },
+    {
+      "seed": 734003,
+      "ticks": 4,
+      "enqueue_index": 5
+    },
+    {
+      "seed": 734003,
+      "ticks": 8,
+      "enqueue_index": 6
+    },
+    {
+      "seed": 734004,
+      "ticks": 8,
+      "enqueue_index": 7
+    },
+    {
+      "seed": 734004,
+      "ticks": 4,
+      "enqueue_index": 8
+    },
+    {
+      "seed": 734005,
+      "ticks": 4,
+      "enqueue_index": 9
+    },
+    {
+      "seed": 734005,
+      "ticks": 8,
+      "enqueue_index": 10
+    },
+    {
+      "seed": 734006,
+      "ticks": 8,
+      "enqueue_index": 11
+    },
+    {
+      "seed": 734006,
+      "ticks": 4,
+      "enqueue_index": 12
+    }
+  ],
+  "assignment": "Fresh controller seeds matched across arms. Alternate arm order across seeds. Observe current 733xxx cohort completion before enabling any runs. Same original host, placement, renderer, settings and terminal ranking gate for both arms. Original game RNG uncontrolled.",
+  "controls": "Only configured number of native ticks changes. Both arms use a 350 ms wall watchdog *since the most recent advancing stage tick* during original time stops. Release on native stage/menu transition and final stock loss. No geometry, aim, auto Bomb or Continue. Preserve full gameplay through ranking. Both heads and RNG are reset once at original credit start.",
+  "primary": "Full-credit original Stage 2 arrival count per arm; ranking active lives and Bombs plus inventory at first arrival if observed.",
+  "secondary": "For each pair compare original stage counter at ranking. Report all six paired differences, percentile bootstrap with 100,000 draws and paired sign count. Wall time and input frequency are diagnostics.",
+  "instrumentation": "Persist per-decision requested ticks, native frame at control application and at release, observed advancing gap, guard status, stage transition status and hold seconds. Report exact-target and near-target rates, overshoots and guard-triggered holds separately.",
+  "stopping": "Complete every fixed seed without Continues. Infrastructure failures before action are rerun in the same assignment and remain in technical logs. Preserve endpoints and full raw behavior traces.",
+  "original_arms": "SFT, PPO1, PPO2 on 731001-12 and PPO2, PPO3 on 733001-12 are unchanged."
+}

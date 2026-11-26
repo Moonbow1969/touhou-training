@@ -44,3 +44,14 @@ python "$src/pack_observations.py" "$credit" "$credit/rollout.npz" "$credit/obse
 Use the `stable` mask when training coordinate supervision. It checks an unchanged native tick and player position across the acquisition, agreement with the center of the hitbox, and a capture time below 18 ms. All images still carry the exact sampled action and row number for policy analysis.
 
 The current collector validates genuine stock exhaustion and ranking transition. A full retail-story ending requires separate executable calibration and ending recognition. The supplied trial and its assets are installed by the user.
+
+## Four-versus-eight-tick SFT comparison
+
+The cadence decision journal is enabled by placing `4` or `8` in `/capture/lib/decision-ticks` before the original credit starts. Both comparison arms use the same 350 ms guard for a stopped native stage clock. Each row records the native tick immediately after applying the keyboard input and again when the actor releases its hold. Reason 0 denotes the assigned native tick count, 1 a stopped clock, 2 a menu, stage or counter transition, and 3 the last-life debit. The original pre-action stocks, actions and PPO logs remain in `rollout.npz`.
+
+The frozen comparison driver accepts an SSH host, image name, game directory, private capture root and fixed seed registration. It verifies the runtime layers and configuration, original game files and the benchmark actor binaries. It then validates the Normal/Reimu stock, two independent keyboard combinations and a successful Bomb debit in an isolated preflight. The measured protocol uses 12 independent processes and all 12 receipt files are required to calculate the paired comparison.
+
+```sh
+python tools/rollout-worker-probe/th13-full/cadence_driver.py --host momentum --workers 4 --checkpoint policy.bin --registration cadence-preregistration.json --output cadence
+python tools/rollout-worker-probe/th13-full/cadence_report.py cadence cadence-preregistration.json
+```

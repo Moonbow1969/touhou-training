@@ -47,6 +47,13 @@ int main(int argc,char**argv){
  FILE *labels=record_frames?fopen("observation-labels.bin","wb"):NULL;
  int player=record_frames?open("/capture/xy-latest.bin",O_RDONLY):-1;
  if(!pixels||(record_frames&&!labels))return 6;
+ FILE *cadence_config=fopen("/capture/lib/decision-ticks","r"),*cadence_trace=NULL;
+ int decision_ticks=4;
+ if(cadence_config){
+  if(fscanf(cadence_config,"%d",&decision_ticks)!=1 || (decision_ticks!=4&&decision_ticks!=8))return 11;
+  fclose(cadence_config);cadence_trace=fopen("cadence.bin","wb");
+  if(!cadence_trace)return 11;
+ }
  int32_t pre[21],post[21]; unsigned char frame[112][96];int old=0,done=0,s2=0;
  if(!native(fd,pre)||pre[4]!=2||pre[5]!=2||pre[3]!=1||pre[6]!=0||pre[7]!=0||pre[2]!=2)return 7;
  int64_t beginning=now_ns();
@@ -65,9 +72,25 @@ int main(int argc,char**argv){
   }
   int a[4];actor_step(&frame[0][0],a);int next=mask(a);
   int64_t t=now_ns();control(d,old,next);old=next;int xheld=held(d);
-  do {hold_ms(8);if(!native(fd,post))return 8;}
-  while(post[2]==2 && post[3]==pre[3] && post[11]>=pre[11] && post[11]-pre[11]<4 && now_ns()-t<350000000);
+  int32_t at_control[21];
+  if(cadence_trace){if(!native(fd,at_control))return 8;}
+  else memcpy(at_control,pre,sizeof(at_control));
+  int last_tick=at_control[11],reason=0;
+  int64_t tick_changed=t;
+  for(;;){
+   hold_ms(8);if(!native(fd,post))return 8;
+   int64_t current=now_ns();
+   if(post[11]!=last_tick){last_tick=post[11];tick_changed=current;}
+   if(post[2]!=2||post[3]!=at_control[3]||post[11]<at_control[11]){reason=2;break;}
+   if(cadence_trace && post[4]<0){reason=3;break;}
+   if(post[11]-at_control[11]>=decision_ticks)break;
+   if(current-(cadence_trace?tick_changed:t)>=350000000){reason=1;break;}
+  }
   const float elapsed=(float)(now_ns()-t)/1e9f;
+  if(cadence_trace){
+   int32_t timing[8]={decision_ticks,at_control[11],post[11],reason,at_control[3],post[3],post[2],(int32_t)(elapsed*1e6f)};
+   if(fwrite(timing,sizeof(timing),1,cadence_trace)!=1)return 9;
+  }
   /* Hold no keys while the original transitions or displays a terminal menu. */
   int consumed=post[10];
   int inactive=post[2]!=2;
@@ -106,5 +129,6 @@ int main(int argc,char**argv){
  }
  control(d,old,0);fclose(trace);fclose(meta);
  if(record_frames){fclose(pixels);fclose(labels);if(player>=0)close(player);}
+ if(cadence_trace)fclose(cadence_trace);
  fclose(devnull);close(fd);XCloseDisplay(d);printf("terminal=%d stage2=%d\n",done,s2);return done?0:10;
 }

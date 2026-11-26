@@ -16,6 +16,10 @@ The per-arm Wilson 95% interval for 0/12 is 0 to 24.25%. Relative to SFT, PPO2 r
 
 The uninterrupted 4:18 original recording starts with all three lives and ends on the ranking screen at 366,130 points with one unused Bomb. The delivered stream contains 3,096 frames at 12 fps. [PPO2 seed 731012](ppo2-731012-full-credit-12fps.mp4) · [Decoding and endpoint receipt](ppo2-731012-video.json)
 
+## Fresh PPO2 and PPO3 comparison
+
+After eight independent TH13 PPO2 training credits contributed 12,368 decisions to the third three-title update, both frozen checkpoints played seeds 733001–733012 on Endeavour. All 24 reached the original ranking in Stage 1, with zero lives left. Mean Bomb inventory was 1.08 for PPO2 and 1.58 for PPO3. The paired mean difference in native ranking ticks was −380 for PPO3, with a 95% bootstrap interval from −1,434 to +695 and four wins in twelve pairs. The experiment gives no measurable Stage 2 gain from this update. [Fresh paired results](fresh-paired-native-progress.json) · [Fresh figure](fresh-held-full-credits.png) · [Original timestamps for all 80 Endeavour credits](native-credit-timestamps.json)
+
 ## Training-only diagnostics
 
 Eight additional PPO2 credits contributed 12,368 one-to-one pre-action images and 11,405 stable original player positions. Recomputing all 84 visual features from the saved images matched the deployed actor to within 3×10⁻⁸. In the conservative interior, 98.2% of sampled up commands and 98.2% of sampled down commands moved Reimu over one native pixel in the requested direction. Across all qualified decisions, 1,556 of 3,226 down requests occurred while she was already at the lower boundary. [Original movement measurements](ppo2-training-physical-motion.json) · [Complete-data hashes](complete-ppo2-training-pixels-manifest.json) · [64-frame coordinate fixture](original-player-coordinates-fixture.npz)
