@@ -4,6 +4,8 @@ Open research for training agents across the original Touhou Project games. The 
 
 ## Current result
 
+Five Linux hosts have run the original TH10, TH12, TH13 and TH14 trials. The cluster report includes captured game clients, a 72-credit closed-loop comparison across three machines, and a replay transfer experiment for TH13, TH14 and TH17. [Multi-title cluster results](results/2026-11-25-multi-title-cluster/README.md)
+
 Two TH14 1.00b Normal Reimu A story trials cleared all six stages with zero continues. The first scored 296,778,700 with six misses and 23 bombs. Replacing the base SFT checkpoint with the expanded, title-balanced policy scored 253,575,700 with five misses and 22 bombs. Both runs used geometric dodging, learned boss aim, and emergency bombing. The world model scored forecasts in shadow mode. Separate native PPO comparisons measured Stage 1 performance.
 
 The fixed-speed Hard pilot with the expanded checkpoint cleared four stages and ended in Stage 5 at frame 16,912 with zero continues. The speed-calibration follow-up ended in Stage 4. Fixed speed remains the default.

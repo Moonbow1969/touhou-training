@@ -19,6 +19,7 @@ from scripts.checkpoint_storage import digest
 from scripts.evaluate_bomb_crossover import DATA
 from scripts.evaluate_sft_native import Arm, output_lock
 from scripts.train_full_policy import publish_json
+from scripts import th14_inventory_reward as inventory
 
 
 class ProjectilePolicy(nn.Module):
@@ -92,7 +93,7 @@ class LiveActor:
 
 
 class HitRecorder:
-    def __init__(self,actor,target,bomb_cost=0.):
+    def __init__(self,actor,target,bomb_cost=0.,shape_inventory=False):
         self.actor=actor
         self.target=target
         self.rewards=[]
@@ -101,8 +102,12 @@ class HitRecorder:
         self.landmarks=[]
         self.bomb_cost=bomb_cost
         self.bombs_spent=[]
+        self.shape_inventory=shape_inventory
+        self.inventory=None
 
     def before_step(self,env,observation):
+        if self.shape_inventory and self.inventory is None:
+            self.inventory=inventory.InventoryReward(inventory.read_inventory(env.game))
         return env.snapshot.player_state, env.snapshot.stage
 
     def after_step(self,env,before,action,info,terminated,truncated,deaths,bombs):
@@ -112,6 +117,10 @@ class HitRecorder:
             raise ValueError("The native Bomb-consumption counter decreased inside a credit.")
         self.bombs_spent.append(int(bombs))
         reward=(-.015 if state==1 and snap.player_state==4 else 0.)-self.bomb_cost*bombs
+        if self.inventory is not None:
+            # Truncation keeps the live potential and bootstraps the shaped critic.
+            stock=None if terminated else inventory.read_inventory(env.game)
+            reward+=self.inventory.advance(stock,terminal=terminated)
         if self.target=="stage3":
             if stage==1 and info["native_stage"]==2:
                 reward+=.5+.03*env.game.read_game_val("lives")+.01*env.game.read_game_val("bombs")
@@ -201,6 +210,7 @@ def main():
     parser.add_argument("--seed",type=int,default=3501)
     parser.add_argument("--temperature",type=float,default=.55)
     parser.add_argument("--bomb-cost",type=float,default=0.,help="Cost per confirmed native Bomb consumed.")
+    parser.add_argument("--inventory-shaping",action="store_true",help="Add a centered TH14 inventory potential at gamma=1.")
     init=parser.add_mutually_exclusive_group()
     init.add_argument("--continue-from",type=Path,help="Start a fresh run with a compatible published PPO model and optimizer.")
     init.add_argument("--warm-policy",type=Path,help="Transfer learned actor weights to a fresh objective and critic.")
@@ -246,6 +256,10 @@ def main():
                             stage3_bomb=.02,native_hit_onset=-.015,gamma=1.,gae_lambda=.995)
     if args.bomb_cost:
         spec["reward"]["native_bomb_consumed"]=-args.bomb_cost
+    if args.inventory_shaping:
+        spec["reward"]["inventory_potential"]=dict(life=inventory.LIFE_VALUE,bomb=inventory.BOMB_VALUE,
+            life_pieces_per_life=3,bomb_pieces_per_bomb=8,absorbing_terminal=0.,center_on_fresh_credit=True,
+            source_sha256=digest(Path(inventory.__file__)))
     starting_steps=0
     parent=args.continue_from or args.warm_policy
     if parent:
@@ -297,7 +311,7 @@ def main():
                         idx=epoch*args.credits_per_update+j
                         trial=dict(block=epoch+1,order=j+1,arm="online",policy_seed=args.seed+idx)
                         runner.rows=[]
-                        rec=HitRecorder(runner,args.target,args.bomb_cost)
+                        rec=HitRecorder(runner,args.target,args.bomb_cost,args.inventory_shaping)
                         def reset(stage,trial):
                             return native_story_restart.reset(stage,trial,start_frame=30,menu=menu)
                         def progress(row):
@@ -318,7 +332,8 @@ def main():
                         log["steps"]+=len(rec.rewards)
                         log["episodes"].append(dict(trial=trial,result=result,native_return=sum(rec.rewards),
                                                     buffer=buffer_info,landmarks=rec.landmarks,
-                                                    native_bomb_penalty=-sum(rec.bombs_spent)*args.bomb_cost))
+                                                    native_bomb_penalty=-sum(rec.bombs_spent)*args.bomb_cost,
+                                                    inventory_shaping=rec.inventory.report() if rec.inventory else None))
                         log["in_progress"]=None
                         publish_json(path,log)
                     update_metrics=update(model,anchor,optim,tuple(torch.cat(chunk) for chunk in zip(*batch)),args.temperature)

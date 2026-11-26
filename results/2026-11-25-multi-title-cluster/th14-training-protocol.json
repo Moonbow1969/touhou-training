@@ -1,0 +1,26 @@
+{
+  "schema": "th14-trial-native-intervention-v1",
+  "population": "Official TH14 0.01b Normal Reimu A Stage 1. Eligible active observations have at least one active bullet within 112 native units and stage frame at least 105. The cohort starts with two stored lives; at most one confirmed injury per episode.",
+  "estimand": "Probability of an observed native state 4 within 12 ticks followed by loss of one stored life, conditional on the initial observation and uniformly assigned held movement and Focus, with Shoot on and Bomb off.",
+  "labeling": "Use exactly the chosen action's factual binary outcome. Other action labels remain unknown. Fit unweighted Bernoulli BCE. Uniform assignment needs no importance correction within this eligibility distribution.",
+  "model_inputs": "The exact nearest 96 initial projectile fields, absolute player x/y, previous held Focus, and the fixed Reimu A identity. Future frames, future positions, frame number, episode, host, inventory, and labels never enter the learner.",
+  "holdout": "The 384-window pilot is development plumbing only. Fit solely to the independent, sealed training-only manifest with at least 20,000 accepted windows. Score the 4,272-window reserved cohort once after freezing all fits; its observations and labels are never opened by fit. Scope is trial-only.",
+  "seed_split": "Group all rows from each worker action-sampler seed, with episodes nested inside. Sort seeds by SHA256 within host and assign approximately 20 percent to development with at least one train and development seed where host support allows. If no host repeats, split whole seeds in a single pooled group. Never use a random row split.",
+  "variants": ["frozen_random", "frozen_pretrained_raw", "frozen_pretrained_dev_intercept", "scratch_action", "pretrained_action", "pretrained_agnostic", "development_prevalence", "constant_velocity_diagnostic"],
+  "training": {
+    "architecture": "Frozen 12-tick architecture. Action-specific fits supervise one of the first 18 logits; the action-agnostic fit supervises only logit 19.",
+    "optimizer": "AdamW",
+    "weight_decay": 0.0001,
+    "batch_size": 320,
+    "max_epochs": 24,
+    "patience": 6,
+    "max_grad_norm": 1.0,
+    "scratch_lr": 0.0007,
+    "pretrained_lr": 0.0003,
+    "base_seed": 41101,
+    "selection": "Smallest unweighted grouped validation BCE, with earlier checkpoint retained on exact ties. Freeze an intercept-only calibration for all fitted variants and the source prior on validation. This calibration does not change AP."
+  },
+  "diagnostic_geometry": "Initial measured projectile circles and velocities only, empirical four-tick player speeds applied under the selected 12-tick held action, projectile updates before player movement, and validation-intercept calibration. It is an offline diagnostic comparator.",
+  "evaluation": "AP, Brier, negative log likelihood and reliability bins on natural prevalence. Include per-action/intervention and per-host metrics, factual versus uniform and recorded-focus action averaging, observed label frequencies, and 600 paired bootstrap draws resampling whole episodes within host. Include primary pretrained-action deltas against calibrated source prior, matched agnostic fit, and own uniform action average.",
+  "transfer": "A positive trial result justifies a new stock transfer evaluation. It does not estimate native full-build effects or stage clears. No selection of model or coefficient on reserved scores."
+}

@@ -1,0 +1,53 @@
+{
+  "status": "complete",
+  "plan_sha256": "42f236271bf1dff91cd027ad43b9ad1b880faa0f6e0bfea2daa757fe9d5e0bfa",
+  "training_manifest_sha256": "3102fa4e2c2dfe31bdf2e7f922bbfaab410299490dbb1048fe7e34139be100fd",
+  "fixed_cohort": {
+    "arms": {
+      "uniform": {
+        "credits": 36,
+        "injuries": 35,
+        "cutoff_straddles": 0,
+        "restricted_mean_survival_frames": 826.1388888888889,
+        "median_achieved_frame": 694.0
+      },
+      "lowest_risk_four": {
+        "credits": 36,
+        "injuries": 17,
+        "cutoff_straddles": 0,
+        "restricted_mean_survival_frames": 1419.2222222222222,
+        "median_achieved_frame": 1702.0
+      }
+    },
+    "pairs": 36,
+    "control_minus_risk_injury_rate": 0.5,
+    "risk_minus_control_restricted_survival_frames": 593.0833333333334,
+    "host_stratified_paired_bootstrap_95": {
+      "injury_rate": [
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "survival_frames": [
+        404.88194444444446,
+        770.3868055555556
+      ]
+    },
+    "by_host": {
+      "accelerator": {
+        "pairs": 12,
+        "control_minus_risk_injury_rate": 0.4166666666666667,
+        "risk_minus_control_restricted_survival_frames": 479.25
+      },
+      "entropy": {
+        "pairs": 12,
+        "control_minus_risk_injury_rate": 0.5833333333333334,
+        "risk_minus_control_restricted_survival_frames": 845.5
+      },
+      "momentum": {
+        "pairs": 12,
+        "control_minus_risk_injury_rate": 0.5,
+        "risk_minus_control_restricted_survival_frames": 454.5
+      }
+    }
+  }
+}
