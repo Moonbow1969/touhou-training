@@ -2,6 +2,7 @@
 
 import argparse
 from collections import Counter
+from contextlib import contextmanager
 from functools import partial
 import json
 import os
@@ -10,7 +11,7 @@ from pathlib import Path
 import torch
 
 from scripts import checkpoint_storage, evaluate_bomb_crossover as crossover
-from scripts import evaluate_full_credit as credit, evaluate_stage_policies, pretrain_policy
+from scripts import evaluate_credit_story, evaluate_full_credit as credit, evaluate_stage_policies, native_story_restart, pretrain_policy
 from scripts.checkpoint_storage import digest
 from scripts.evaluate_sft_native import Arm, load_arm, load_ppo_arm, output_lock
 from scripts.full_credit_reset import fresh_credit_reset
@@ -135,6 +136,11 @@ def run_specification(args, arms):
         prefix_failure_counted=True, suffix_seed_xor=SUFFIX_SEED_BIT,
     )
     sources = (credit, crossover, evaluate_stage_policies, pretrain_policy, checkpoint_storage)
+    if args.menu_references:
+        sources += (evaluate_credit_story, native_story_restart)
+        specification["restart_menu"] = dict(
+            reference_sha256=[digest(p) for p in args.menu_references],
+            crops=args.menu_crop, max_error=.035)
     specification["runtime"].update(
         runner_sha256=digest(Path(__file__)),
         source_sha256=dict(specification["runtime"]["source_sha256"],
@@ -172,14 +178,29 @@ def paired_results(report, names):
 
 
 def run_comparison(args, arms, specification):
+    menu = (native_story_restart.GameOverMenu(*args.menu_references, args.menu_crop, .035)
+            if args.menu_references else None)
+
+    @contextmanager
+    def story_stage(settings, policies):
+        with evaluate_credit_story.native_session(settings, policies, menu, None) as (stage, preparation):
+            stage.comparison_preparation = preparation
+            yield stage
+
     def reset(env, trial):
-        observation, info = fresh_credit_reset(env, trial, start_frame=args.start_frame)
+        if menu:
+            observation, info = native_story_restart.reset(env, trial, start_frame=args.start_frame, menu=menu)
+            info = dict(info, session_preparation=env.comparison_preparation)
+            env.comparison_preparation = None
+        else:
+            observation, info = fresh_credit_reset(env, trial, start_frame=args.start_frame)
         handoff = arms[trial["arm"]].policy.begin_credit(env, trial)
         return observation, dict(info, suffix_handoff=handoff)
 
     path = args.out / "report.json"
     try:
-        report = credit.run_evaluation(args, arms, path, specification, reset_callback=reset)
+        report = credit.run_evaluation(args, arms, path, specification, reset_callback=reset,
+                                       stage_session=story_stage if menu else credit.native_stage)
     finally:
         for arm in arms.values():
             arm.policy.environment = None
@@ -202,11 +223,15 @@ def main():
     parser.add_argument("--seeds", type=int, nargs="+", default=list(range(2401, 2405)))
     parser.add_argument("--limit", type=int, default=3300, help="Decision cap for a complete Stage 1 credit.")
     parser.add_argument("--focus-wait", type=int, default=90)
+    parser.add_argument("--menu-references", type=Path, nargs=2, metavar=("DEFAULT", "RETRY"))
+    parser.add_argument("--menu-crop", type=int, nargs=4, action="append")
     parser.add_argument("--out", type=Path)
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--verify-only", action="store_true", help="Validate frozen assets and show the schedule offline.")
-    parser.set_defaults(start_frame=START_FRAME)
+    parser.set_defaults(start_frame=START_FRAME, target="stage2")
     args = parser.parse_args()
+    if bool(args.menu_references) != bool(args.menu_crop) or args.menu_crop and len(args.menu_crop) < 2:
+        parser.error("Supply both menu references and at least two crops together.")
     if not args.verify_only and (args.out is None or os.name != "nt"):
         parser.error("Native evaluation requires Windows and --out.")
     if args.limit <= (HANDOFF_FRAME - START_FRAME) // 4 + 1 or args.focus_wait < 0:

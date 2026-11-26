@@ -248,10 +248,12 @@ def specification(args, prefix, student, template):
                 prefix=dict(provenance=prefix.provenance, policy_seed_rotation=args.prefix_seeds))
 
 
-def train(args, prefix, student, expected, resume):
+def train(args, prefix, student, expected, resume, *, rollout_class=BossRollout, stage_session=native_stage,
+          extra_sources=()):
     started = perf_counter()
     previous_manifest, previous_hash = resume if resume else ({}, None)
-    sources = (evaluate_bomb_crossover, evaluate_full_credit, full_credit_reset, stage_policy, train_full_policy)
+    sources = (evaluate_bomb_crossover, evaluate_full_credit, full_credit_reset, stage_policy, train_full_policy,
+               *extra_sources)
     log = dict(status="started", specification=expected, starting_steps=previous_manifest.get("steps", 0),
                requested_additional_steps=args.steps, resume_checkpoint_sha256=previous_hash,
                checkpoints=dict(base_sha256=expected["base_sha256"],
@@ -266,8 +268,8 @@ def train(args, prefix, student, expected, resume):
                prefix_attempts=[], episodes=[], updates=[], current=None)
     publish_json(args.out / "report.json", log)
     try:
-        with native_stage(args, {"prefix": prefix, "student": student}) as stage:
-            env = BossRollout(stage, prefix, student, args, log, log["prefix_attempt_cursor"])
+        with stage_session(args, {"prefix": prefix, "student": student}) as stage:
+            env = rollout_class(stage, prefix, student, args, log, log["prefix_attempt_cursor"])
             storage = CheckpointStore(args.out, args.checkpoint_budget_mib * MIB, args.disk_reserve_mib * MIB)
             model = PPO.load(args.resume, env=env, device="cpu") if resume else warm_start(student.policy, env, args.seed)
             model.gamma = PPO_SETTINGS["gamma"]

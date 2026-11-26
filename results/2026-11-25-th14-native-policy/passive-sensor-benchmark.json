@@ -1,0 +1,79 @@
+{
+  "status": "verified_offline",
+  "implementation_sha256": "0aeb918d27c3afb2ee461d7b018be0db1bcd946a6c49e52853a6768600ca325e",
+  "archived_credit_sha256": "c86120842e56e3764c794c068997af5e8c5c01510b567e8494afcac0bf6dbf28",
+  "original_credit_bytes": 1392211,
+  "sensor_only_npz_bytes": 141745,
+  "projected_growth_fraction": 0.10181287175578989,
+  "cpu_compression_seconds": 0.008792300010100007,
+  "saved_record_sampling": {
+    "schema": "th14-stock-near-player-sensors-v1",
+    "observed_rows": 4475,
+    "omitted_for_memory_limit": 0,
+    "raw_bytes": 563092,
+    "sensor_wall_ms": 358.7973,
+    "sensor_us_per_decision": 80.17816759776537,
+    "by_source": {
+      "projectiles": {
+        "attempted": 4475,
+        "failed": 0,
+        "wall_ms": 132.0711
+      },
+      "bodies": {
+        "attempted": 3432,
+        "failed": 0,
+        "wall_ms": 92.1578
+      },
+      "straight_lasers": {
+        "attempted": 3432,
+        "failed": 0,
+        "wall_ms": 107.9513
+      },
+      "stock": {
+        "attempted": 4475,
+        "failed": 0,
+        "wall_ms": 15.9342
+      }
+    }
+  },
+  "stress_cpu_sampling": {
+    "schema": "th14-stock-near-player-sensors-v1",
+    "observed_rows": 1000,
+    "omitted_for_memory_limit": 0,
+    "raw_bytes": 263848,
+    "sensor_wall_ms": 448.8012,
+    "sensor_us_per_decision": 448.8012,
+    "by_source": {
+      "projectiles": {
+        "attempted": 1000,
+        "failed": 0,
+        "wall_ms": 366.0705
+      },
+      "bodies": {
+        "attempted": 1000,
+        "failed": 0,
+        "wall_ms": 35.1265
+      },
+      "straight_lasers": {
+        "attempted": 1000,
+        "failed": 0,
+        "wall_ms": 38.7932
+      },
+      "stock": {
+        "attempted": 1000,
+        "failed": 0,
+        "wall_ms": 5.2033
+      }
+    }
+  },
+  "synthetic_one_row_combined_archive_bytes": 10960,
+  "limitations": "Archived projectile fields are supplemented by synthetic body/laser and fragment reads. CPU time covers filtering, buffering, and local fake-reader stubs only. Native ReadProcessMemory overhead is not measured here and is timed separately by source in new live credits.",
+  "checks": [
+    "one 32-byte resource read per valid row",
+    "dangerous projectile beyond actor rank 96 retained",
+    "long beam crossing player retained despite far origin",
+    "ragged per-sensor row caps",
+    "optional failure flags and bounded memory",
+    "durable combined archive and resume recovery"
+  ]
+}

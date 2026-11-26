@@ -1,0 +1,474 @@
+{
+  "scope": "Offline frozen actor responses on the 2201 development state tape. These counterfactual actions were never executed.",
+  "development_credit_sha256": "c86120842e56e3764c794c068997af5e8c5c01510b567e8494afcac0bf6dbf28",
+  "stage1_reference_and_action_equality": 2110,
+  "counts": {
+    "count_stage1": 2110,
+    "count_stage2": 2365,
+    "stage1_matches_log": 2110,
+    "vulnerable": 1112,
+    "original_fire": 1112,
+    "exact_fire": 1112
+  },
+  "stage2_counterfactual_at_lethal_hits": [
+    {
+      "native_frame": 230,
+      "raw_spell": -1,
+      "native_bomb_stock": 0,
+      "original_ref": 230,
+      "exact_ref": 230,
+      "known_phase": null,
+      "phase_tail": false,
+      "live_bullets": 5.0,
+      "old_reference_bullets": 5.0,
+      "exact_reference_bullets": 5.0,
+      "original_distance": 4.164238452911377,
+      "exact_target_distance_on_old_tape": 4.164238387467299,
+      "original_action": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "exact_action": [
+        7,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "native_frame": 3882,
+      "raw_spell": 12,
+      "native_bomb_stock": 0,
+      "original_ref": 3881,
+      "exact_ref": 3353,
+      "known_phase": "spell12",
+      "phase_tail": true,
+      "live_bullets": 181.0,
+      "old_reference_bullets": 0.0,
+      "exact_reference_bullets": 221.0,
+      "original_distance": 1.7048084735870361,
+      "exact_target_distance_on_old_tape": 117.6994027770001,
+      "original_action": [
+        5,
+        0,
+        1,
+        0
+      ],
+      "exact_action": [
+        7,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "native_frame": 7822,
+      "raw_spell": 16,
+      "native_bomb_stock": 0,
+      "original_ref": 7973,
+      "exact_ref": 7845,
+      "known_phase": "spell16",
+      "phase_tail": false,
+      "live_bullets": 25.0,
+      "old_reference_bullets": 0.0,
+      "exact_reference_bullets": 25.0,
+      "original_distance": 5.294102668762207,
+      "exact_target_distance_on_old_tape": 68.41409883218468,
+      "original_action": [
+        1,
+        0,
+        1,
+        0
+      ],
+      "exact_action": [
+        8,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "native_frame": 9410,
+      "raw_spell": 20,
+      "native_bomb_stock": 0,
+      "original_ref": 9561,
+      "exact_ref": 8921,
+      "known_phase": "spell20",
+      "phase_tail": false,
+      "live_bullets": 75.0,
+      "old_reference_bullets": 48.0,
+      "exact_reference_bullets": 75.0,
+      "original_distance": 3.895806312561035,
+      "exact_target_distance_on_old_tape": 7.671688038709685,
+      "original_action": [
+        6,
+        1,
+        1,
+        0
+      ],
+      "exact_action": [
+        3,
+        1,
+        1,
+        0
+      ]
+    }
+  ],
+  "stage2_exact_alignment": [
+    {
+      "credit": 1,
+      "events": [
+        {
+          "phase": "mid_nonspell",
+          "native_frame": 2282,
+          "reference_interval": [
+            2281,
+            2761
+          ],
+          "raw_max_hp": 12000,
+          "raw_spell": null
+        },
+        {
+          "phase": "spell12",
+          "native_frame": 2906,
+          "reference_interval": [
+            2761,
+            3361
+          ],
+          "raw_max_hp": 12000,
+          "raw_spell": 12
+        },
+        {
+          "phase": "main_nonspell1",
+          "native_frame": 6982,
+          "reference_interval": [
+            7033,
+            7509
+          ],
+          "raw_max_hp": 12400,
+          "raw_spell": null
+        },
+        {
+          "phase": "spell16",
+          "native_frame": 7486,
+          "reference_interval": [
+            7509,
+            7941
+          ],
+          "raw_max_hp": 12400,
+          "raw_spell": 16
+        },
+        {
+          "phase": "main_nonspell2",
+          "native_frame": 8214,
+          "reference_interval": [
+            7941,
+            8549
+          ],
+          "raw_max_hp": 12900,
+          "raw_spell": null
+        },
+        {
+          "phase": "spell20",
+          "native_frame": 9038,
+          "reference_interval": [
+            8549,
+            9129
+          ],
+          "raw_max_hp": 12900,
+          "raw_spell": 20
+        }
+      ],
+      "phase_tail_counts": {
+        "mid_nonspell": 38,
+        "spell12": 190,
+        "main_nonspell1": 9,
+        "spell16": 76,
+        "main_nonspell2": 56
+      }
+    }
+  ],
+  "stage2_macro_encounters": [
+    {
+      "credit": 1,
+      "stage": 2,
+      "events": [
+        {
+          "kind": "opening_stage_clock_reset",
+          "previous_frame": 28,
+          "native_frame": 2
+        },
+        {
+          "kind": "vulnerable_boss_onset",
+          "encounter": 0,
+          "native_frame": 2282,
+          "reference_visible_frame": 2281,
+          "previous_offset": 0
+        },
+        {
+          "kind": "observable_boss_exit",
+          "encounter": 0,
+          "native_last_visible": 4254,
+          "native_confirmation": 4350,
+          "reference_last_visible": 3357,
+          "new_offset": -897
+        },
+        {
+          "kind": "vulnerable_boss_onset",
+          "encounter": 1,
+          "native_frame": 7450,
+          "reference_visible_frame": 7033,
+          "previous_offset": -897
+        }
+      ],
+      "tail_decisions": 249,
+      "active_without_alignment": 117
+    }
+  ],
+  "fresh_credit_specification": {
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "stock_story": true,
+      "target": "ending",
+      "start_frame": 30,
+      "decision_limit": 45000,
+      "frames_per_action": 4,
+      "all_native_lives": true,
+      "native_rng_seed_controlled": false
+    },
+    "controller": {
+      "frozen": true,
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "allows_continue": false,
+      "policy_unchanged_between_stages": true,
+      "kind": "frozen_demo_exact_stage1_stage2_phase",
+      "stage3_plus": "macro encounter alignment",
+      "learned_bomb_transfer_stage1_to_later": true
+    },
+    "runtime": {
+      "runner_sha256": "164a17c5569d995ab0268cd72bd11b7a9531b5d5cb96f2fabf50c8e1c29808ef",
+      "source_sha256": {
+        "scripts.evaluate_full_credit": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+        "scripts.native_story_restart": "c29a39a57bfecaa8582bc3779811dc8b0e4bcfe9fe922fa73d598f50f7c25209",
+        "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725",
+        "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+        "scripts.evaluate_demo_route_encounters": "66e7d0066214029fc2aa7ea8cc4083e266045cbabfb1d7b53de67479fde1b758",
+        "scripts.evaluate_demo_route_phase": "ed330b7aef82730fb85b559fa6bf43ddd9750358d1de2da175f404e4add11eb4",
+        "scripts.evaluate_credit_story": "398e81f704eaa8fa22b433b67156be672cc1c8cf2159bcc990e88d9118779e2c",
+        "scripts.train_demo_route": "cd7c6a92729cc123b00608089fadec35f0c9dea906979b2d26618db2d957740b",
+        "scripts.fit_randomized_bomb_value": "04657178ccc70c2573e42e362f194d18d1a1a8cc605dacf818f868003c59bba8",
+        "scripts.train_native_bomb_timing": "3185b4c6587c0b7e06acf52b48b83f7cac802f26fb7b1c8c7ad69b89614616f5",
+        "scripts.native_story_transitions": "401ae8ab842f9dc02fac3ac0d3f16ed4f856f0f2cd797f37b87f877109c9f5cf",
+        "scripts.native_credit_transitions": "b29ae7922e658b5364bfb4062abf9aef92ee6e4e90e364bb38841cef1811c5f0"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0"
+    },
+    "policies": {
+      "stage2_exact_phase": {
+        "model_sha256": "d659bac965dd558fbaa1dbad0e12f63f5c2b8e0b226c1d42c0942f3d1e2a769b",
+        "route_sha256": "8092e337b03fc6dd43d91b2030db23fbbad9fb3be265f31b1c1e463d3256373c",
+        "train_replay": "th14_ud0613",
+        "stage1_phase_knots": {
+          "midboss": [
+            2423,
+            3055
+          ],
+          "nonspell1": [
+            5699,
+            6251
+          ],
+          "spell4": [
+            6251,
+            6971
+          ],
+          "nonspell2": [
+            6971,
+            7560
+          ],
+          "spell8": [
+            7560,
+            8264
+          ]
+        },
+        "later_stages_verified_train_sources": {
+          "2": {
+            "source_sha256": "17abb1b606218e5b05a2fbaef9d5d533d9a513e0b6d64a26374112e6f49cf5c3",
+            "visible_boss_intervals": [
+              [
+                2281,
+                3357
+              ],
+              [
+                7033,
+                10205
+              ]
+            ]
+          },
+          "3": {
+            "source_sha256": "04eb61de12e38cb357032c6f740ffa48a7ce4e483dbd7161ce9ca46c03b7eb4f",
+            "visible_boss_intervals": [
+              [
+                3124,
+                4124
+              ],
+              [
+                8521,
+                12238
+              ]
+            ]
+          },
+          "4": {
+            "source_sha256": "b0566141fedd97d604c7fcd0006249e65207734ee47c0e3ef6d8273a1946109e",
+            "visible_boss_intervals": [
+              [
+                5001,
+                6257
+              ],
+              [
+                10793,
+                16321
+              ]
+            ]
+          },
+          "5": {
+            "source_sha256": "d9037813b714af23db8dd9f4b498f1ccf5530db9c3749b94c2453a160421c0ac",
+            "visible_boss_intervals": [
+              [
+                4792,
+                6120
+              ],
+              [
+                10556,
+                16444
+              ]
+            ]
+          },
+          "6": {
+            "source_sha256": "4dcca4c3de87ab76b1d7f8cfc8353d9901dadcfd92dfae18fe1f012224b8e36a",
+            "visible_boss_intervals": [
+              [
+                4195,
+                5743
+              ],
+              [
+                6159,
+                18320
+              ]
+            ]
+          }
+        },
+        "method": "causal vulnerable onset/confirmed visible exit; nondecreasing within encounter",
+        "later_scope": "Stage 2\u20136 macro encounters only; no inferred spell or HP phase IDs.",
+        "learned_bomb_sha256": "51f89c4f816dc89f6bfd0b3e672625b1a4a6c116f0a01cdb3759332cad0b81f8",
+        "independent_shoot": {
+          "hidden": 512,
+          "encoder": "pool",
+          "motion_history": true,
+          "retain_recent_motion": false,
+          "stage_clock": true,
+          "motion_spans": null,
+          "factorized_movement": false,
+          "weights_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f"
+        },
+        "stage2_phase_intervals": {
+          "mid_nonspell": [
+            2281,
+            2761
+          ],
+          "spell12": [
+            2761,
+            3361
+          ],
+          "main_nonspell1": [
+            7033,
+            7509
+          ],
+          "spell16": [
+            7509,
+            7941
+          ],
+          "main_nonspell2": [
+            7941,
+            8549
+          ],
+          "spell20": [
+            8549,
+            9129
+          ]
+        },
+        "stage2_visible_knot_brackets": {
+          "spell12_visible_hp_1900": [
+            2757,
+            2761
+          ],
+          "spell16_visible_hp_1400": [
+            7505,
+            7509
+          ],
+          "post_spell16_clipped_reset": [
+            7937,
+            7941
+          ],
+          "spell20_visible_hp_1900": [
+            8545,
+            8549
+          ],
+          "post_spell20_clipped_reset_unlabeled": [
+            9125,
+            9129
+          ]
+        },
+        "stage2_raw_ids": [
+          {
+            "max_hp": 12000,
+            "spell_id": null,
+            "phase": "mid_nonspell"
+          },
+          {
+            "max_hp": 12000,
+            "spell_id": 12,
+            "phase": "spell12"
+          },
+          {
+            "max_hp": 12400,
+            "spell_id": null,
+            "phase": "main_nonspell1"
+          },
+          {
+            "max_hp": 12400,
+            "spell_id": 16,
+            "phase": "spell16"
+          },
+          {
+            "max_hp": 12900,
+            "spell_id": null,
+            "phase": "main_nonspell2"
+          },
+          {
+            "max_hp": 12900,
+            "spell_id": 20,
+            "phase": "spell20"
+          }
+        ],
+        "development_native_credit_sha256": "c86120842e56e3764c794c068997af5e8c5c01510b567e8494afcac0bf6dbf28",
+        "development_audit_sha256": "680af5d605b615b571019572fc0fff3a9a05c81edf7294bac34a694cf6a46968",
+        "development_tape_role": "Established raw phase identities only. Not an evaluation of this variant.",
+        "learned_bomb_training_anchor": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36",
+        "learned_bomb_training_stage": 1,
+        "stage2_tail_target": "Last in-phase replay position with a four-frame action lookahead.",
+        "beyond_phase": "After the demonstration's aligned phase would end, hold its last active neural position/Focus target and use independent frozen Shoot for real vulnerable combat.",
+        "stage2_unknown_phase": "Continue from the observed post-spell20 HP reset with encounter bounds. No unobserved spell ID assigned."
+      }
+    }
+  }
+}

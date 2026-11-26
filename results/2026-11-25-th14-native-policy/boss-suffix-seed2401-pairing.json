@@ -1,0 +1,152 @@
+{
+  "status": "complete",
+  "matched_blocks": 1,
+  "arms": {
+    "distillation_init": {
+      "handoffs": 1,
+      "before_handoff_outcomes": {}
+    },
+    "ppo512": {
+      "handoffs": 0,
+      "before_handoff_outcomes": {
+        "game_over": 1
+      }
+    },
+    "ppo4608": {
+      "handoffs": 1,
+      "before_handoff_outcomes": {}
+    }
+  },
+  "stage2_clear_pairs": {
+    "ppo512": {
+      "reference": "distillation_init",
+      "matched_blocks": 1,
+      "both_clear": 0,
+      "both_without_clear": 1,
+      "challenger_only_clear": 0,
+      "reference_only_clear": 0
+    },
+    "ppo4608": {
+      "reference": "distillation_init",
+      "matched_blocks": 1,
+      "both_clear": 0,
+      "both_without_clear": 1,
+      "challenger_only_clear": 0,
+      "reference_only_clear": 0
+    }
+  },
+  "by_block": {
+    "1": {
+      "policy_seed": 2401,
+      "arms": {
+        "distillation_init": {
+          "outcome": "game_over",
+          "stage2_clear": false,
+          "stage2_entry": null,
+          "terminal_frame": 6983,
+          "failure_frame": 6983,
+          "deaths": 3,
+          "bombs_consumed": 4,
+          "handoff": {
+            "requested_frame": 5000,
+            "prefix_seed": 2401,
+            "suffix_seed": 4611686018427390305,
+            "reached": true,
+            "stage_frame": 5002,
+            "native_stage_frame": 5002,
+            "overshoot_frames": 2,
+            "native_stage": 1,
+            "native_pause_state": 2,
+            "native_continues": 0,
+            "player_state": 1,
+            "prefix_decisions": 1243,
+            "suffix_first_decision": 1244,
+            "prefix_lives_lost": 2,
+            "prefix_bombs_consumed": 3,
+            "resources": {
+              "lives": 0,
+              "bombs": 3,
+              "power": 112,
+              "life_fragments": 0,
+              "bomb_fragments": 0
+            },
+            "held_keys_before_release": [
+              "right",
+              "shift",
+              "up",
+              "z"
+            ],
+            "boss": null,
+            "first_suffix_action": {
+              "movement": 2,
+              "focus": 1,
+              "shoot": 1,
+              "bomb": 0
+            }
+          }
+        },
+        "ppo512": {
+          "outcome": "game_over",
+          "stage2_clear": false,
+          "stage2_entry": null,
+          "terminal_frame": 4970,
+          "failure_frame": 4970,
+          "deaths": 3,
+          "bombs_consumed": 4,
+          "handoff": {
+            "requested_frame": 5000,
+            "prefix_seed": 2401,
+            "suffix_seed": 4611686018427390305,
+            "reached": false
+          }
+        },
+        "ppo4608": {
+          "outcome": "game_over",
+          "stage2_clear": false,
+          "stage2_entry": null,
+          "terminal_frame": 7742,
+          "failure_frame": 7742,
+          "deaths": 3,
+          "bombs_consumed": 6,
+          "handoff": {
+            "requested_frame": 5000,
+            "prefix_seed": 2401,
+            "suffix_seed": 4611686018427390305,
+            "reached": true,
+            "stage_frame": 5002,
+            "native_stage_frame": 5002,
+            "overshoot_frames": 2,
+            "native_stage": 1,
+            "native_pause_state": 2,
+            "native_continues": 0,
+            "player_state": 1,
+            "prefix_decisions": 1243,
+            "suffix_first_decision": 1244,
+            "prefix_lives_lost": 1,
+            "prefix_bombs_consumed": 3,
+            "resources": {
+              "lives": 1,
+              "bombs": 0,
+              "power": 123,
+              "life_fragments": 0,
+              "bomb_fragments": 0
+            },
+            "held_keys_before_release": [
+              "right",
+              "shift",
+              "up",
+              "z"
+            ],
+            "boss": null,
+            "first_suffix_action": {
+              "movement": 2,
+              "focus": 1,
+              "shoot": 1,
+              "bomb": 0
+            }
+          }
+        }
+      }
+    }
+  }
+}
