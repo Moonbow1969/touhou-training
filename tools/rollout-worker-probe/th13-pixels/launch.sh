@@ -22,7 +22,7 @@ done
 printf '%s  %s\n' 09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6 "$game/th13.exe" | sha256sum -c -
 test -f "$game/th13tr.dat" && test -f "$game/thbgm_tr.dat"
 mkdir -p "$capture/a" "$capture/b"
-gcc -Wall -Wextra -Werror -O2 "$src/pixel-capture.c" -o "$capture/pixel-capture" -l:libX11.so.6 -l:libXtst.so.6
+gcc -std=c99 -Wall -Wextra -Werror -O2 "$src/pixel-capture.c" -o "$capture/pixel-capture" -l:libX11.so.6 -l:libXtst.so.6
 for w in $lanes; do
     docker run -d --name "$prefix$w" --network none --cpus 2 --memory 1100m --pids-limit 192 \
         -v "$game:/input:ro" -v "$capture/$w:/capture" -v "$src/run-th13.sh:/run-th13.sh:ro" \
@@ -34,12 +34,12 @@ for w in $lanes; do
         xdotool mousemove 427 364 click 1 mousemove 507 449 click 1
         window=$(timeout 35 xdotool search --sync --onlyvisible --name "Ten Desires. ver 0.01a" | tail -1)
         xdotool windowfocus --sync "$window"
-        sleep 5
+        sleep 16
         for screen in title difficulty character; do
             scrot --overwrite "/capture/$screen.png"
-            xdotool keydown z; sleep .15; xdotool keyup z; sleep 1.4
+            xdotool keydown z; sleep .25; xdotool keyup z; sleep 3
         done
-        sleep 7
+        sleep 9
         scrot --overwrite /capture/first-stage.png
         xdotool keydown Escape; sleep .18; xdotool keyup Escape; sleep .8
     ' &

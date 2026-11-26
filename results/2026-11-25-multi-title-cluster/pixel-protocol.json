@@ -1,0 +1,20 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "split": "Whole fresh native credits. TH10 1-3 train, 4 dev, 5 test. TH12/13 1-8 train, 9-10 dev, 11-12 test for each lane.",
+  "optimizer_steps": 600,
+  "seed": 709,
+  "checkpoint": "final",
+  "models": [
+    "action",
+    "time_title_only"
+  ],
+  "comparators": [
+    "copy",
+    "shuffled_action"
+  ],
+  "endpoint": "Uniform episode mean pixel MSE on the whole playfield. Bottom half is a secondary measure. No return or survival learning."
+}

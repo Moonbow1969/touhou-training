@@ -35,3 +35,19 @@ Values average two optimization seeds. The transfer comparison holds total train
 ![Held original replay results](title-transfer.png)
 
 [Training logs and split fingerprints](transfer-matrix-live.json) · [Direction-change counts and previous-action baseline](switches.json) · [Switch-sampled fits](switch-training25.json) · [Switch-sampled evaluation](switches25.json)
+
+## A common observation stream on three games
+
+The first shared pixel cohort contains 53 fresh original-game credits and 4,000 executed transitions. TH10 supplied 5 × 32, TH12 supplied 24 × 80, and TH13 supplied 24 × 80. The fixed split contains 35 training, 9 development, and 9 test credits. The two Steam Deck lanes captured gameplay simultaneously for 58.32 seconds. The movie displays a training credit from each title at its measured elapsed time and overlays its logged action. [Three original rollout traces on video](three-original-rollouts.mp4) · [Three-title source hashes](three-title-episodes.json) · [TH10 episodes](th10-accelerator-episodes.json) · [TH12 episodes](th12-deck-episodes.json)
+
+On the nine held credits, a one-step predictor conditioned only on elapsed time, title and current image beat frame copying on all three titles. Adding the executed controls failed to improve whole-image prediction. A second diagnostic trained to infer the horizontal key from the current and successor images was only slightly more accurate than using the current image alone. This limits the case for using these full-image dynamics losses to steer a player.
+
+| Held game | Mean pixel MSE, copy | Time and title model | With action | Horizontal input decoded, current → image pair |
+| --- | ---: | ---: | ---: | ---: |
+| TH10, 1 credit | .013019 | .004563 | .004654 | 8/32 → 13/32 |
+| TH12, 4 credits | .004778 | .002435 | .002474 | 104/320 → 108/320 |
+| TH13, 4 credits | .002755 | .002351 | .002378 | 112/320 → 118/320 |
+
+Four further TH13 credits from Entropy used the frozen policies and new controller seeds. Current-image versus paired-image decoding there was 116/320 versus 124/320. These were separate episodes on a second physical host. [Fixed protocol](pixel-protocol.json) · [Dynamics and shuffled-action scores](pixel-dynamics.json) · [Input-decoding confusion matrices](pixel-controls.json) · [External host results](th13-frozen-entropy.json)
+
+The reward adapters were exercised separately. Four TH12 credits had two confirmed stored-life drops each, and remained playable at the 60-second time limit with zero spares. A TH13 credit displayed an active death trance at the boundary, so the collector also saves follow-up frames to distinguish an imminent loss from a settled one. [TH12 stock-drop timings](th12-first-stock-loss.json) · [TH13 60-second crossed controls](../2026-11-25-multititle/th13-60s-resource-probe.json)

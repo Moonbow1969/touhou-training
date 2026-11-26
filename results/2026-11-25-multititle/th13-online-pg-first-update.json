@@ -1,0 +1,65 @@
+{
+  "build": "original TH13 official 0.01a trial",
+  "title": "Ten Desires",
+  "difficulty": "Normal",
+  "shot": "Hakurei Reimu",
+  "host": "Endeavour",
+  "status": "first_update_deployed_second_batch_collecting",
+  "algorithm": "on-policy credit-level REINFORCE",
+  "decision_hold_ms": 340,
+  "horizon_wall_seconds": 60,
+  "post_horizon_followup_seconds": [
+    3,
+    7,
+    12
+  ],
+  "native_ticks_qualified": false,
+  "training_ids": [
+    "pg-01-a",
+    "pg-01-b",
+    "pg-02-a",
+    "pg-02-b"
+  ],
+  "returns": [
+    -1.0,
+    -1.0,
+    0.0,
+    -1.0
+  ],
+  "decisions_per_credit": [
+    172,
+    172,
+    172,
+    172
+  ],
+  "opt": {
+    "estimator": "mean over credits of leave-one-other-credit-out advantage times sum of categorical score functions",
+    "episodes": [
+      "pg-01-a",
+      "pg-01-b",
+      "pg-02-a",
+      "pg-02-b"
+    ],
+    "returns": [
+      -1.0,
+      -1.0,
+      0.0,
+      -1.0
+    ],
+    "baseline": [
+      -0.6666666666666666,
+      -0.6666666666666666,
+      -1.0,
+      -0.6666666666666666
+    ],
+    "gradient_norm_before_clip": 1.1030309726179917,
+    "gradient_clip": 2.0,
+    "learning_rate": 0.18,
+    "empirical_forward_kl": 0.0018039347379746385,
+    "moved": true,
+    "frozen_parent_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+    "weights_sha256": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+    "feature_contract": "bias, 42 current mean 16x16 bins, 42 abs pixel temporal difference means; 112x96 grayscale scaled /255; three logits in left,neutral,right order"
+  },
+  "selection_rule": "two prespecified four-credit updates. Test displayed candidate vs initial in two fresh crossed blocks; classify unresolved endpoint as censored. A small evaluation cannot establish promotion."
+}

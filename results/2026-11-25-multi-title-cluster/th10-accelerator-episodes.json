@@ -1,0 +1,144 @@
+{
+  "status": "complete",
+  "title": "TH10 Mountain of Faith",
+  "version": "official trial 0.02a",
+  "official_source": "https://www16.big.or.jp/~zun/html/th10dl.html",
+  "binary_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+  "runtime_image": "sha256:e9bb0cd2e582e8b6f841aff4c37f801c83e367cd3457d012f6c69aef0139a475",
+  "setting": "Normal Reimu A Stage 1",
+  "source_hashes": {
+    "th10-trial-observe.c": "1b24a7d1723bb86f85b411409b113ba38b7d5da43047e193e661b4537f985532",
+    "run-th10-trial-probe.sh": "ad565a198bcff133e8f1c445b65e942f54dda0ce6ffc4a57304a2542149bff88"
+  },
+  "crop_xyxy": [
+    32,
+    16,
+    416,
+    464
+  ],
+  "obs_schema": "uint8 [N+1,112,96], Pillow grayscale and box downsample",
+  "action_schema": "int8 [N,4], dx dy shoot focus; Z fixed; wall-clock held actions",
+  "monotonic_clock": "Linux /proc/uptime at acquisition, 10ms precision, converted to nanoseconds",
+  "native_fields": "UTC-nearest sampled snapshots of actual player/score/lives; clock is not frame-locked",
+  "seed_scope": "Movement/focus RNG only; ordinary fresh native start per episode.",
+  "planned_episode_splits": {
+    "1": "train",
+    "2": "train",
+    "3": "train",
+    "4": "dev",
+    "5": "test"
+  },
+  "episodes": {
+    "2": {
+      "file": "th10-002a-seed-02-train.npz",
+      "split": "train",
+      "seed": 2,
+      "sha256": "6a6a3697e0160003ba2310e3324250b0b603357d556c0335ffd6bb12bc3bf851",
+      "transitions": 32,
+      "frames": 33,
+      "native_samples": 581,
+      "max_alignment_ms": 17,
+      "frame_gap_ms": 180.0,
+      "x_span": [
+        -59.15999984741211,
+        116.88999938964844
+      ],
+      "y_span": [
+        323.4100036621094,
+        432.0
+      ],
+      "score_first": 0,
+      "score_last": 306,
+      "input_archive_sha256": "e94975782023d846c20476064fea8eb15ba94765992cc032b2897e90c8d8a147"
+    },
+    "1": {
+      "file": "th10-002a-seed-01-train.npz",
+      "split": "train",
+      "seed": 1,
+      "sha256": "e056285b8ffed5f2f3c653a88e62fb590d284a925f390913a05c7fb3df2f940a",
+      "transitions": 32,
+      "frames": 33,
+      "native_samples": 580,
+      "max_alignment_ms": 13,
+      "frame_gap_ms": 190.0,
+      "x_span": [
+        -136.4499969482422,
+        26.760000228881836
+      ],
+      "y_span": [
+        359.510009765625,
+        432.0
+      ],
+      "score_first": 0,
+      "score_last": 508,
+      "input_archive_sha256": "503c75243dadb34aec93ac9b38d974a80c49d1a86a1841b18c39e9a853d65cf5"
+    },
+    "3": {
+      "file": "th10-002a-seed-03-train.npz",
+      "split": "train",
+      "seed": 3,
+      "sha256": "6584608664a004bc182d25686f251234f4665be85d63f34190933150160a796e",
+      "transitions": 32,
+      "frames": 33,
+      "native_samples": 569,
+      "max_alignment_ms": 13,
+      "frame_gap_ms": 195.0,
+      "x_span": [
+        -105.6500015258789,
+        4.570000171661377
+      ],
+      "y_span": [
+        332.94000244140625,
+        432.0
+      ],
+      "score_first": 0,
+      "score_last": 509,
+      "input_archive_sha256": "82ed05245a06cbf84caa941129e8089c8df9abb6842a8d59e3148ef71423270a"
+    },
+    "4": {
+      "file": "th10-002a-seed-04-dev.npz",
+      "split": "dev",
+      "seed": 4,
+      "sha256": "5778639431892717c28edbe4c0b653f0c12a8ecb2e8987d2ea1fc4d302cbeaa0",
+      "transitions": 32,
+      "frames": 33,
+      "native_samples": 583,
+      "max_alignment_ms": 13,
+      "frame_gap_ms": 170.0,
+      "x_span": [
+        -84.3499984741211,
+        22.350000381469727
+      ],
+      "y_span": [
+        340.9700012207031,
+        409.0
+      ],
+      "score_first": 0,
+      "score_last": 407,
+      "input_archive_sha256": "1350b7b467c637d67864110af3f19ae1f424d98f126b3bc217d22a5ac81aa65d"
+    },
+    "5": {
+      "file": "th10-002a-seed-05-test.npz",
+      "split": "test",
+      "seed": 5,
+      "sha256": "6bc8454d19482a08d401e9b922a0cc33a1d6874c4d153d5e00b3eabd46af91f5",
+      "transitions": 32,
+      "frames": 33,
+      "native_samples": 561,
+      "max_alignment_ms": 10,
+      "frame_gap_ms": 190.0,
+      "x_span": [
+        -123.01000213623047,
+        23.579999923706055
+      ],
+      "y_span": [
+        367.8399963378906,
+        432.0
+      ],
+      "score_first": 0,
+      "score_last": 612,
+      "input_archive_sha256": "dfc2990f01aa32248d32aa7ab3327b9ff549c4d2f338b8bdcf2eced0e43598ec"
+    }
+  },
+  "errors": {}
+}
