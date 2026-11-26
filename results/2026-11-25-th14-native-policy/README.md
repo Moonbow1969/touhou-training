@@ -21,3 +21,11 @@ All four full credits ended in Stage 1. The fitted head passed the boss spell wi
 ## Where the original late-stage curriculum failed
 
 The fixed learned crossover was scheduled to hand control to an online PPO learner at frame 7600. It died at 7482, 7406, 5270 and 6170 in the four attempted prefixes. No learner transitions or updates occurred. A subsequent run selected frame 5000. [Rejected prefixes](rejected-7600-prefix.json) · [Reference action trace](reference-steps.csv)
+
+## Testing the movement anchor
+
+The same fitted linear Bomb value function was applied on every stage and every decision. Its base action came from PPO-397 or independently trained PPO-211. All four complete credits ended in Stage 1. The Game Over frames on policy seeds 1901 and 1902 were 10,168 and 10,069 for PPO-397, and 8,284 and 8,268 for PPO-211. Both movement actors exhausted all three starting lives on both seeds. These trials were scored at ordinary stock speed. A failed menu-image verification between credits required reacquisition of a verified new Stage 1 credit before the remaining trials. [Native results](bomb-value-story-transfer.json)
+
+The retained native observation/action archives contain full boss HP and vulnerability. On 1,750 right-wall observations of the first PPO-397 credit, inward movement had mean probability 0.0152 under PPO-397, 0.3743 under PPO-211 and 0.0909 under their 50:50 parameter interpolation. These are per-observation probabilities. No native clearance was measured for the interpolated actor. [Wall probe](native-wall-probes.json)
+
+The frozen human-data TH14 training split had 85,416 rows and 591 Bomb-positive four-tick chunks. All 85,416 training rows excluded the native hit state due to the movement-controllability filter. Future captures can retain aligned hit and recovery windows separately. A raw cadence-rejected archive was used only to verify extraction. [Input alignment audit](human-hit-window-audit.json)

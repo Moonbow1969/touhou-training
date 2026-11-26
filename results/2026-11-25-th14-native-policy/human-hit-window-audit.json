@@ -1,0 +1,91 @@
+{
+  "frozen_stock_TH14_split": {
+    "train": {
+      "shards": 25,
+      "rows": 85416,
+      "observed_hit_rows": 0,
+      "bomb_positive_chunks": 591
+    },
+    "validation": {
+      "shards": 1,
+      "rows": 2288,
+      "observed_hit_rows": 0,
+      "bomb_positive_chunks": 0
+    }
+  },
+  "mechanism": {
+    "movement_filter": "replays.collect_stage.align applies keep &= eligible after checking the replay offset.",
+    "native_eligibility": "ReplayProcess controllable requires native player_state == 1 and no dialogue/ending.",
+    "movement_bomb_target": "scripts.pretrain_policy.label_actions reduces X to any pressed tick within the upcoming action chunk.",
+    "effect": "The stock TH14 observations used by movement SFT do not start in observed state 4. Bomb-positive chunks can start in active state 1. Stock structured actor inputs omit raw player_state and previous X, even when Snapshot captures them separately."
+  },
+  "archival_check": {
+    "replay": "th14_ud05e0.rpy",
+    "native_stage": 6,
+    "replay_sha256": "05178d405329a8e8e3bed699307adb8be280c1bb0bf21ecbdf8a22d43ab6e172",
+    "raw_capture_sha256": "53e78e8b8d12badb8dc4396bbb2bd315e670f3a703d7337aecb8d95c6197bd89",
+    "raw_snapshot_count": 6097,
+    "raw_state_counts": {
+      "1": 5996,
+      "4": 11,
+      "2": 30,
+      "0": 60
+    },
+    "ordinary_movement_pairs": 5845,
+    "ordinary_movement_paired_hit_rows": 0,
+    "alignment_offset": -1,
+    "movement_word_agreement": 0.9956733369388859,
+    "native_capture_admitted": false,
+    "rejection": "Fast-forward capture failed the 99% exact-clock gate.",
+    "exact_four_tick_fraction": 0.9857283464566929,
+    "raw_inventory_available": false,
+    "sidecar_extraction": {
+      "context_rows": 71,
+      "observed_hit_rows": 11,
+      "aligned_rows": 71,
+      "aligned_hit_rows": 11,
+      "aligned_hit_rows_with_upcoming_x_edge": 3,
+      "aligned_context_rows_with_upcoming_x_edge": 3
+    },
+    "distinct_aligned_upcoming_x_press_ticks_in_hit_rows": 3,
+    "aligned_hit_x_edge_examples": [
+      {
+        "native_observation_frame": 2666,
+        "native_global_tick": 250769,
+        "previous_replay_x_held": 0,
+        "current_native_x_held": false,
+        "upcoming_replay_x_press_indices": [
+          2666
+        ],
+        "upcoming_native_x_press_frames": [
+          2667
+        ]
+      },
+      {
+        "native_observation_frame": 13976,
+        "native_global_tick": 262079,
+        "previous_replay_x_held": 0,
+        "current_native_x_held": false,
+        "upcoming_replay_x_press_indices": [
+          13979
+        ],
+        "upcoming_native_x_press_frames": [
+          13980
+        ]
+      },
+      {
+        "native_observation_frame": 21616,
+        "native_global_tick": 269719,
+        "previous_replay_x_held": 0,
+        "current_native_x_held": false,
+        "upcoming_replay_x_press_indices": [
+          21616
+        ],
+        "upcoming_native_x_press_frames": [
+          21617
+        ]
+      }
+    ],
+    "interpretation": "Archived native state + matching replay command timing; inventory consumption remains unmeasured here."
+  }
+}

@@ -18,6 +18,7 @@ import win32process
 
 
 from environment.structured import StateReader, load_parakit_offsets
+from . import hit_recovery
 from .inspect_rpy import DECODER_VERSION, PAIRED_DIRECTORY, ROOT, action_streams
 
 
@@ -144,10 +145,11 @@ def has_control(reader, thread_pointer, player_state):
 
 
 def collect_stage(game, reader, expected, stage, rank, stride, progress_every=0, *,
-                  fast_forward=False, record_clock=False):
+                  fast_forward=False, record_clock=False, record_hit_recovery=False):
     snapshots, labels, times, native = [], [], [], []
     controllable = []
     global_ticks = []
+    hit_inventory = []
     last_active = perf_counter()
     first_active = None
     last_frame = -1
@@ -190,8 +192,10 @@ def collect_stage(game, reader, expected, stage, rank, stride, progress_every=0,
         if snapshot.difficulty != rank:
             raise RuntimeError(f"Difficulty mismatch {snapshot.difficulty} vs expected {rank}.")
         times.append(frame)
-        if record_clock:
+        if record_clock or record_hit_recovery:
             global_ticks.append(game.clock(reader))
+        if record_hit_recovery:
+            hit_inventory.append([snapshot.lives, *[game.read_game_val(field) for field in hit_recovery.INVENTORY[1:]]])
         native.append(reader.read_uint(reader.offsets.statics.input, relative=True))
         snapshots.append(snapshot.observation)
         labels.append((snapshot.player_state, snapshot.bullets))
@@ -215,8 +219,10 @@ def collect_stage(game, reader, expected, stage, rank, stride, progress_every=0,
         "bullet_count": np.asarray(labels)[:, 1],
         "controllable": np.asarray(controllable, dtype=np.bool_),
     }
-    if record_clock:
+    if record_clock or record_hit_recovery:
         observations["global_tick"] = np.asarray(global_ticks, dtype=np.int64)
+    if record_hit_recovery:
+        observations["hit_recovery_inventory"] = np.asarray(hit_inventory, dtype=np.int32)
     return observations, last_active - first_active
 
 
@@ -311,6 +317,8 @@ def main():
                         help="Measure stock TH14 replay fast-forward in a fresh, separate capture directory.")
     parser.add_argument("--fast-forward-through-stage", type=int,
                         help="Return to stock speed after this stage while keeping the replay running.")
+    parser.add_argument("--hit-recovery-sidecar", action="store_true",
+                        help="Save aligned human hit/recovery observations separately from the movement shards.")
     args = parser.parse_args()
     if args.progress_every < 0:
         parser.error("Capture progress interval must be nonnegative.")
@@ -323,6 +331,8 @@ def main():
         manifest_path = ROOT / "multigame-corpus.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     row = next(entry for entry in manifest if entry["name"] == args.filename)
+    if args.hit_recovery_sidecar and (row["title"], row["version"]) != (14, "1.00b"):
+        parser.error("The hit/recovery sidecar uses the stock TH14 1.00b native player-state contract.")
     if args.fast_forward and (row["title"] != 14 or row["version"] != "1.00b" or args.stride != 4
                               or args.out is None or args.out.exists() or args.wait_for_stage <= 0):
         parser.error("Fast-forward requires stock TH14 1.00b, a four-tick stride, a fresh output and a stage wait.")
@@ -353,13 +363,17 @@ def main():
     game = ReplayProcess(row["title"], args.pid)
     holding_fast_key = False
     try:
-        if args.fast_forward:
+        if args.fast_forward or args.hit_recovery_sidecar:
             game.require_stock_th14()
         if args.start_selected:
             game.start_selected_replay()
         reader = StateReader(game, game.offsets, 96)
         if args.wait_for_stage:
             wait_for_stage(game, reader, requested[0], args.wait_for_stage)
+        elif args.hit_recovery_sidecar and args.start_selected:
+            wait_for_stage(game, reader, requested[0], 6)
+        if args.hit_recovery_sidecar and not args.fast_forward:
+            game.require_th14_playback()
         if args.fast_forward:
             game.require_foreground()
             game.require_th14_playback()
@@ -373,10 +387,17 @@ def main():
                 print(f"Continuing the replay at stock speed from Stage {stage}.", flush=True)
             observations, elapsed = collect_stage(game, reader, words[stage], stage, rank, args.stride,
                                                   args.progress_every, fast_forward=holding_fast_key,
-                                                  record_clock=args.fast_forward)
+                                                  record_clock=args.fast_forward,
+                                                  record_hit_recovery=args.hit_recovery_sidecar)
             timing = capture_timing(observations, args.stride, holding_fast_key) if args.fast_forward else {}
+            movement_observations = observations
+            if args.hit_recovery_sidecar:
+                event_only = {"hit_recovery_inventory"}
+                if not args.fast_forward:
+                    event_only.add("global_tick")
+                movement_observations = {name: values for name, values in observations.items() if name not in event_only}
             try:
-                paired, summary = align(args.filename, observations, words[stage], args.stride, elapsed)
+                paired, summary = align(args.filename, movement_observations, words[stage], args.stride, elapsed)
                 if holding_fast_key and timing["exact_four_tick_fraction"] < .99:
                     raise AlignmentError("Fast-forward capture failed the 99% exact-clock gate.", summary)
             except AlignmentError as error:
@@ -390,8 +411,20 @@ def main():
                 print(f"Stage {stage} rejected. Raw evidence saved to {prefix.name}; continuing replay.", flush=True)
                 continue
             prefix = output / f"{Path(args.filename).stem}-stage{stage}"
-            save_stage(prefix, paired, dict(row, **summary, **timing, stage=stage, stride=args.stride,
-                                           decoder=DECODER_VERSION))
+            metadata = dict(row, **summary, **timing, stage=stage, stride=args.stride, decoder=DECODER_VERSION)
+            save_stage(prefix, paired, metadata)
+            if args.hit_recovery_sidecar:
+                windows = hit_recovery.build_windows(observations, words[stage], summary["offset"],
+                                                     args.stride, CONTROL_BITS)
+                sidecar_path = output / "hit-recovery" / prefix.with_suffix(".npz").name
+                event_metadata = hit_recovery.publish_sidecar(
+                    sidecar_path, windows, dict(metadata, executable_sha256=TH14_STEAM_100B)
+                )
+                print(json.dumps(dict(hit_recovery_sidecar=sidecar_path.name, stage=stage,
+                                      observed_hit_rows=event_metadata["observed_hit_rows"],
+                                      aligned_hit_rows=event_metadata["aligned_hit_rows"],
+                                      aligned_hit_rows_with_upcoming_x_edge=event_metadata[
+                                          "aligned_hit_rows_with_upcoming_x_edge"])), flush=True)
     finally:
         try:
             if holding_fast_key:
