@@ -8,7 +8,7 @@ test "$(/input/th12-full-actor status)" = score_ranking
 wineserver -k || true
 sleep 1
 cd /tmp/th12-game
-wine th12.exe >> /capture/full-relaunch.log 2>&1 </dev/null &
+wine th12.exe >> /capture/full-relaunch.log 2>&1 </dev/null 8>&- 9>&- &
 configured=0
 for attempt in $(seq 1 60); do
   w=$(xdotool search --onlyvisible --name 'Undefined Fantastic Object.*0\.02a' 2>/dev/null | tail -1)

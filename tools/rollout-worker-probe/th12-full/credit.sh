@@ -18,7 +18,7 @@ if test -s "/capture/full/$label/outcome.txt" && grep -q '^game_over ' "/capture
     exit 0
 fi
 # The display belongs to exactly one active credit, including reset and evidence capture.
-exec 8>/capture/active-credit.lock
+exec 8>/capture/active-credit-v2.lock
 flock -x 8
 sh /input/th12-full-reset.sh "$label"
 cd "/capture/full/$label"
@@ -60,4 +60,6 @@ case "$(/input/th12-full-actor status)" in
         done ;;
 esac
 cat outcome.txt
+flock -u 8
+flock -u 9
 exit "$rc"

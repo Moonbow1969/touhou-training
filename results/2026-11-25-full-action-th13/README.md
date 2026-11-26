@@ -25,4 +25,3 @@ Across the 20 training credits, all 60 initial lives were lost, no extra lives w
 ## Reproduction
 
 The per-arm trace ZIPs store one folder per seed containing the scoring receipt, original event journal, decision arrays, behavior log-probabilities and a separate final native stock snapshot. These can reproduce the terminal outcomes and train-only PPO batches. The original game is installed separately. [Worker build and capture](../../tools/rollout-worker-probe/th13-full/README.md) · [Input calibration](input-calibration.json) · [Six-lane throughput](rollout-performance.json)
-
