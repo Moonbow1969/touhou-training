@@ -1,0 +1,196 @@
+{
+  "design": "All data are PPO2 training-rollout credits. Model selection and probability thresholds use a separate entire credit. Test uses two untouched entire credits, one on each host. Detection matches each predicted local maximum to the nearest unmatched ground-truth bullet within 12 native pixels, at most 96 predictions. Native labels precede the camera observation; timing residual and grayscale downsampling affect localization.",
+  "split": {
+    "train": [
+      710201,
+      710202,
+      710203,
+      710204,
+      710205
+    ],
+    "validation": [
+      710206
+    ],
+    "test": [
+      710207,
+      710208
+    ]
+  },
+  "train_subsample": 2,
+  "train_frames": 814,
+  "validation_frames": 276,
+  "test_frames": 552,
+  "candidates": "3x3 peaks on an 8-native-pixel grid; at most 96 per frame. A fixed prior estimated from training positions and an empty predictor are controls.",
+  "parameter_count": 4993,
+  "train_history": [
+    {
+      "epoch": 2,
+      "loss": 0.06407685968704539,
+      "validation": {
+        "tp": 176,
+        "fp": 6799,
+        "fn": 1055,
+        "precision": 0.025232974910394265,
+        "recall": 0.1429731925264013,
+        "f1": 0.04289544235924933
+      },
+      "threshold": 0.33485525846481323
+    },
+    {
+      "epoch": 4,
+      "loss": 0.04133358288382429,
+      "validation": {
+        "tp": 294,
+        "fp": 4111,
+        "fn": 937,
+        "precision": 0.06674233825198637,
+        "recall": 0.2388302193338749,
+        "f1": 0.10432931156848829
+      },
+      "threshold": 0.3785766735672951
+    },
+    {
+      "epoch": 6,
+      "loss": 0.037601345591704735,
+      "validation": {
+        "tp": 351,
+        "fp": 2876,
+        "fn": 880,
+        "precision": 0.10876975519057949,
+        "recall": 0.2851340373679935,
+        "f1": 0.15746971736204576
+      },
+      "threshold": 0.38283513486385345
+    },
+    {
+      "epoch": 8,
+      "loss": 0.0294163682491173,
+      "validation": {
+        "tp": 365,
+        "fp": 695,
+        "fn": 866,
+        "precision": 0.3443396226415094,
+        "recall": 0.2965069049553209,
+        "f1": 0.3186381492797905
+      },
+      "threshold": 0.48992179036140443
+    },
+    {
+      "epoch": 10,
+      "loss": 0.025397038613549028,
+      "validation": {
+        "tp": 429,
+        "fp": 631,
+        "fn": 802,
+        "precision": 0.4047169811320755,
+        "recall": 0.34849715678310317,
+        "f1": 0.37450894805761675
+      },
+      "threshold": 0.46935042142868044
+    },
+    {
+      "epoch": 12,
+      "loss": 0.023217645089350255,
+      "validation": {
+        "tp": 568,
+        "fp": 1022,
+        "fn": 663,
+        "precision": 0.3572327044025157,
+        "recall": 0.4614134849715678,
+        "f1": 0.40269408011343494
+      },
+      "threshold": 0.5288359344005584
+    }
+  ],
+  "selected_epoch": 12,
+  "learned_threshold": 0.5288359344005584,
+  "fixed_spatial_prior_threshold": 0.011488405987620354,
+  "validation_prior": {
+    "tp": 26,
+    "fp": 526,
+    "fn": 1205,
+    "precision": 0.04710144927536232,
+    "recall": 0.021121039805036556,
+    "f1": 0.029164329781267526
+  },
+  "test": {
+    "learned": {
+      "tp": 1191,
+      "fp": 2309,
+      "fn": 1904,
+      "precision": 0.3402857142857143,
+      "recall": 0.38481421647819064,
+      "f1": 0.3611827141774071
+    },
+    "fixed_spatial_prior": {
+      "tp": 30,
+      "fp": 1074,
+      "fn": 3065,
+      "precision": 0.02717391304347826,
+      "recall": 0.009693053311793215,
+      "f1": 0.01428911645629912
+    },
+    "empty": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 3095,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "by_test_seed": {
+    "710207": {
+      "learned": {
+        "tp": 560,
+        "fp": 1057,
+        "fn": 917,
+        "precision": 0.3463203463203463,
+        "recall": 0.3791469194312796,
+        "f1": 0.36199095022624433
+      },
+      "fixed_spatial_prior": {
+        "tp": 12,
+        "fp": 578,
+        "fn": 1465,
+        "precision": 0.020338983050847456,
+        "recall": 0.008124576844955992,
+        "f1": 0.011611030478955007
+      },
+      "empty": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1477,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "710208": {
+      "learned": {
+        "tp": 631,
+        "fp": 1252,
+        "fn": 987,
+        "precision": 0.3351035581518853,
+        "recall": 0.3899876390605686,
+        "f1": 0.3604684375892602
+      },
+      "fixed_spatial_prior": {
+        "tp": 18,
+        "fp": 496,
+        "fn": 1600,
+        "precision": 0.03501945525291829,
+        "recall": 0.011124845488257108,
+        "f1": 0.016885553470919325
+      },
+      "empty": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1618,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    }
+  }
+}

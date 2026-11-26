@@ -97,6 +97,26 @@ for index in 1 2 3 4 5 6 7 8; do
 done
 test -n "$active"
 
+if test "$mode" = full-credit || test "$mode" = full-paired; then
+    cd /capture
+    i686-w64-mingw32-gcc-posix -O2 /tools/th10-full-stock.c -o /tmp/th10-stock.exe
+    xdotool windowfocus --sync "$game"
+    rich=
+    if test "$mode" = full-paired; then
+        i686-w64-mingw32-gcc-posix -O2 /tools/th10-paired-targets.c -o /tmp/th10-paired.exe
+        wine /tmp/th10-paired.exe & rich=$!
+    fi
+    wine /tmp/th10-stock.exe >native.csv & observer=$!
+    /tools/full-actor /input/actor.bin "$2" "$3" || touch actor-failed
+    touch actor-closed
+    wait "$observer" || true
+    if test -n "$rich"; then wait "$rich"; fi
+    sleep 1.7
+    wine /tmp/th10-stock.exe --endpoint >settled-inventory.csv
+    scrot -a 0,0,640,480 /capture/endpoint.png
+    exit 0
+fi
+
 if test "$mode" = pixel-credit; then
     cd /capture
     xdotool windowfocus --sync "$game"

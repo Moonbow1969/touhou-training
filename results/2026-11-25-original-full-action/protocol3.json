@@ -1,0 +1,109 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      710201,
+      710202,
+      710203,
+      710204,
+      710205,
+      710206,
+      710207,
+      710208
+    ],
+    "12": [
+      720201,
+      720202,
+      720203,
+      720204,
+      720205,
+      720206,
+      720207,
+      720208
+    ],
+    "13": [
+      730201,
+      730202,
+      730203,
+      730204,
+      730205,
+      730206,
+      730207,
+      730208
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      713001,
+      713002,
+      713003,
+      713004,
+      713005,
+      713006,
+      713007,
+      713008,
+      713009,
+      713010,
+      713011,
+      713012
+    ],
+    "12": [
+      723001,
+      723002,
+      723003,
+      723004,
+      723005,
+      723006,
+      723007,
+      723008,
+      723009,
+      723010,
+      723011,
+      723012
+    ],
+    "13": [
+      733001,
+      733002,
+      733003,
+      733004,
+      733005,
+      733006,
+      733007,
+      733008,
+      733009,
+      733010,
+      733011,
+      733012
+    ]
+  },
+  "initialization": "Full-policy PPO2 checkpoint. All 24 training trajectories must be independent, completed native credits from this policy. Hold the three-game PPO reward, architecture and hyperparameters fixed to measure one further update.",
+  "arms": [
+    "frozen_joint_ppo2",
+    "frozen_joint_ppo3"
+  ],
+  "eval": "Original full starting stock Normal. Separate native Game Over or ending per credit. Record whether Stage 2 was reached, first-entry stocks conditional on reach, last-playable and terminal resources, deaths, confirmed Bombs and elapsed/decisions. No continue. TH10 uses power rather than discrete Bomb stock. Exclude technical partials as censored and retry exact controller seed, retain original attempt. Native RNG uncontrolled. Match identical seeds and lanes where practical. Report n/d and Wilson 95% CI, paired discordances by title without pooling ranks or endpoints.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": -0.03
+  },
+  "ppo": {
+    "seed": 48213,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025
+  },
+  "round": 3
+}

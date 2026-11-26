@@ -61,6 +61,6 @@ static int th10_read_state(HANDLE game, struct Th10State *state) {
     state->lives = (int32_t)options[2];
     state->difficulty = options[3];
     return state->score <= 999999999 && state->difficulty <= 4 && isfinite(state->xy[0])
-        && fabsf(state->xy[0]) <= 200.f && state->xy[1] >= 0.f && state->xy[1] <= 450.f;
+        && fabsf(state->xy[0]) <= 200.f && state->xy[1] >= -512.f && state->xy[1] <= 1024.f;
 }
 #endif
