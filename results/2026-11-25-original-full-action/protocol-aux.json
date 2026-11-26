@@ -1,0 +1,87 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      710101,
+      710102,
+      710103,
+      710104,
+      710105,
+      710106,
+      710107,
+      710108
+    ],
+    "12": [
+      720101,
+      720102,
+      720103,
+      720104,
+      720105,
+      720106,
+      720107,
+      720108
+    ],
+    "13": [
+      730101,
+      730102,
+      730103,
+      730104,
+      730105,
+      730106,
+      730107,
+      730108
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      714001,
+      714002,
+      714003,
+      714004,
+      714005,
+      714006
+    ],
+    "12": [
+      724001,
+      724002,
+      724003,
+      724004,
+      724005,
+      724006
+    ]
+  },
+  "initialization": "Exact frozen checkpoint from first completed PPO round. All 24 trajectories must be new and carry this checkpoint SHA.",
+  "arms": [
+    "ppo2",
+    "ppo2-aux"
+  ],
+  "eval": "Exploratory held original full credits in TH10 and TH12, fixed 6 controller seeds each, within-host matching. Same full-credit 3-title behavior batch as PPO2. No TH13 native outcome is inferred from this pilot. Added training-only binary probe of next eight decision outcomes on the image columns; balanced positives and negatives within each title. Common policy still acts from unmodified screen, controller history and clock.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": -0.03
+  },
+  "ppo": {
+    "seed": 48212,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025,
+    "visual_loss_aux": {
+      "coefficient": 0.15,
+      "horizon": 8
+    }
+  },
+  "round": 2
+}

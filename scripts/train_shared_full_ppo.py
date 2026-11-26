@@ -9,6 +9,7 @@ import torch
 from torch.nn import functional as F
 from scripts.checkpoint_storage import digest
 from scripts.train_portable_full_sft import FullActor,WIDTHS
+from scripts.probe_native_loss_risk import loss_targets
 
 
 def likelihood(model,x,action):
@@ -74,14 +75,30 @@ def main():
     torch.manual_seed(config['seed']);torch.set_num_threads(2)
     model=FullActor.from_bin(args.parent);reference=FullActor.from_bin(args.parent).eval()
     by_title=defaultdict(list);quality=[]
+    aux_config=config.get("visual_loss_aux")
     for r in rows:
         arrays,metrics=read_credit(r,args.manifest,reference,parent_sha,config['gamma'],config['gae_lambda'])
+        if aux_config:
+            with np.load(args.manifest.parent/r["file"],allow_pickle=False) as trace:
+                target,losses=loss_targets(trace,int(r["title"]),aux_config["horizon"])
+            known=(np.arange(len(target))+aux_config["horizon"]<=len(target))|target
+            if not np.any(losses):
+                raise ValueError("Missing native loss events for auxiliary training.")
+            arrays=(*arrays,torch.tensor(np.where(known,target,-1),dtype=torch.float32))
         by_title[int(r['title'])].append(arrays);quality.append(metrics)
     data={}
     for t,credits in by_title.items():
-        x,a,lp,adv,ret=map(torch.cat,zip(*credits))
-        data[t]=(x,a,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret)
-    opt=torch.optim.Adam(model.parameters(),lr=config['lr'],eps=1e-5)
+        x,a,lp,adv,ret,*extra=map(torch.cat,zip(*credits))
+        data[t]=(x,a,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret,*extra)
+    parameters=list(model.parameters())
+    if aux_config:
+        # The probe uses no additional RNG draws. The paired PPO comparison keeps
+        # the same shuffle, original policy initialization and optimizer settings.
+        risk_weights=torch.nn.Parameter(torch.zeros(model.output.in_features))
+        risk_bias=torch.nn.Parameter(torch.zeros(()))
+        parameters.extend((risk_weights,risk_bias))
+        prevalences={t:bank[-1][bank[-1]>=0].mean() for t,bank in data.items()}
+    opt=torch.optim.Adam(parameters,lr=config['lr'],eps=1e-5)
     history=[]
     for epoch in range(config['epochs']):
         prior={k:v.clone() for k,v in model.state_dict().items()}
@@ -91,15 +108,25 @@ def main():
         for k in range(chunks):
             per_title=[]
             for t,v in data.items():
-                x,a,lp,adv,ret=[val[order[t][k]] for val in v]
+                x,a,lp,adv,ret,*extra=[val[order[t][k]] for val in v]
                 now,value,entropy=likelihood(model,x,a)
                 ratio=(now.sum(1)-lp).exp()
                 surrogate=torch.minimum(ratio*adv,ratio.clamp(1-config['clip'],1+config['clip'])*adv)
                 loss=-surrogate.mean()+config['vf']*F.smooth_l1_loss(value,ret)-config['entropy']*entropy.mean()
+                if aux_config:
+                    screen_only=torch.zeros_like(x)
+                    screen_only[:,:84]=x[:,:84]
+                    risk=model.encode(screen_only)@risk_weights+risk_bias
+                    target=extra[0]
+                    prevalence=prevalences[t]
+                    valid=target>=0
+                    weights=valid*torch.where(target>0,.5/prevalence,.5/(1-prevalence))
+                    aux_loss=F.binary_cross_entropy_with_logits(risk,target.clamp_min(0),weight=weights,reduction="sum")
+                    loss=loss+aux_config["coefficient"]*aux_loss/valid.sum().clamp_min(1)
                 per_title.append(loss)
             loss=torch.stack(per_title).mean()
             opt.zero_grad(set_to_none=True);loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(),.5);opt.step();losses.append(loss.item())
+            torch.nn.utils.clip_grad_norm_(parameters,.5);opt.step();losses.append(loss.item())
         kl={}
         with torch.no_grad():
             for t,(x,*_) in data.items():

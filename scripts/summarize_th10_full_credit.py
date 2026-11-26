@@ -42,10 +42,10 @@ def read_arm(directories, expected_seeds=range(711001,711013)):
     return out
 
 
-def summarize(arms,design=None):
+def summarize(arms,design=None,baseline='SFT'):
     groups={}
     paired={}
-    base=arms['SFT']
+    base=arms[baseline]
     for name,items in arms.items():
         rows=[items[s] for s in sorted(items)]
         if len(set(r['policy_sha256'] for r in rows))!=1:raise ValueError("Changed policy within evaluation")
@@ -61,7 +61,7 @@ def summarize(arms,design=None):
             losses_with_at_least_one_power=sum(s['before_power']>=1 for s in event),
             losses_with_power_and_no_recent_bomb=sum(s['before_power']>=1 and not s['bomb_in_preceding_half_second'] for s in event),
             decisions=sum(r['steps'] for r in rows),decisions_matching_native_input=sum(r['native_inputs_matching'] for r in rows))
-        if name!='SFT':
+        if name!=baseline:
             blocks=[]
             for r in rows:
                 parent=base[r['seed']]
@@ -74,7 +74,7 @@ def summarize(arms,design=None):
             paired[name]=dict(pairs=blocks,mean_survival_delta_s=float(v.mean()),positive=int((v>0).sum()),
                  paired_resampled_95pct_interval_for_mean_s=np.quantile(rng.choice(v,(10000,len(v))).mean(1),[.025,.975]).tolist())
     return dict(design=design or '12 unique controller seeds per frozen arm. Same native TH10 Normal trial and host within each pair; native RNG uncontrolled. All lives and no Continue. First six controller seeds played SFT before PPO1, final six PPO1 before SFT. TH10 has Power-paid spirit strikes; spare count -1 means last life was lost. Real-time survival is sensitive to game speed and is a secondary measure.',n_per_arm=len(base),
-        group=groups,paired_versus_sft=paired,credits={name:[group[s] for s in sorted(group)] for name,group in arms.items()})
+        group=groups,**{f"paired_versus_{baseline.lower()}":paired},credits={name:[group[s] for s in sorted(group)] for name,group in arms.items()})
 
 
 def draw(arms,out):

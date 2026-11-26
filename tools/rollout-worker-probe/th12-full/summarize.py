@@ -49,9 +49,24 @@ def summarize(raw, output, stage2_step=None):
                 rewards[t,2]=-.03*(old_b-observed_b)
             inventory[1]=observed_b
             events.append(dict(step=t,event="bombs",prior=old_b,current=observed_b,cost=float(rewards[t,2])))
+    stage2_spares = None
+    stage2_bombs = None
+    stage2_stock_source = None
     if stage2_step is not None:
         if not 0<=stage2_step<n:raise ValueError("Invalid verified stage transition.")
         rewards[stage2_step,3]=2
+        # Report the HUD at the verified action, supporting each resource independently.
+        # A loading fade or a changing reserve cannot certify the inventory at entry.
+        scan = slice(stage2_step, stage2_step + 3)
+        if len(valid[scan]) == 3 and valid[scan].all():
+            spares, bombs = map(int, observed[stage2_step])
+            if spares >= 0 and np.all(observed[scan, 0] == spares):
+                stage2_spares = spares
+            if bombs >= 0 and np.all(observed[scan, 1] == bombs):
+                stage2_bombs = bombs
+        stage2_stock_source = ("native HUD at the verified Stage 2 action, confirmed by the next two active observations"
+                               if stage2_spares is not None or stage2_bombs is not None
+                               else "entry HUD obscured or unstable")
     rewards[-1,4]=-1
     terminated=np.zeros(n,dtype=bool); terminated[-1]=True
     if inventory[0]!=0:raise ValueError("Native spare stock before Game Over requires review.")
@@ -76,6 +91,8 @@ def summarize(raw, output, stage2_step=None):
     report=dict(title=12,game="TH12 UFO official trial 0.02a",episode=episode,seed=int(seed),mode=mode,
                 lane=episode.split('-')[-1],policy_sha256=fingerprint,actions=n,seconds=float(wall),
                 native_outcome=end,stage2_reached=stage2_step is not None,stage2_step=stage2_step,
+                stage2_remaining_spare_lives=stage2_spares,stage2_remaining_bombs=stage2_bombs,
+                stage2_stock_source=stage2_stock_source,
                 stage2_review="Review the time-stamped original color progression and terminal screen for each credit.",
                 remaining_spare_lives=inventory[0],remaining_bombs=inventory[1],initial_spares=2,initial_bombs=2,
                 event_history=events,move_counts=np.bincount(action[:,0],minlength=9).tolist(),

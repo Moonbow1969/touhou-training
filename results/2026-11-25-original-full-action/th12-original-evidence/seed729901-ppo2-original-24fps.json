@@ -1,0 +1,81 @@
+{
+  "title": 12,
+  "game": "TH12 UFO official trial 0.02a",
+  "episode": "showcase-ppo2-729901-alpha",
+  "seed": 729901,
+  "mode": "held",
+  "lane": "alpha",
+  "policy_sha256": "40f3d17e181f9ddd681f4c3ceaf7d217395a8412abb4720afd9f3c9491cf4987",
+  "actions": 343,
+  "seconds": 42.563473,
+  "native_outcome": "game_over",
+  "stage2_reached": false,
+  "stage2_step": null,
+  "stage2_review": "Review the time-stamped original color progression and terminal screen for each credit.",
+  "remaining_spare_lives": 0,
+  "remaining_bombs": 2,
+  "initial_spares": 2,
+  "initial_bombs": 2,
+  "event_history": [
+    {
+      "step": 154,
+      "event": "spares",
+      "prior": 2,
+      "current": 1
+    },
+    {
+      "step": 254,
+      "event": "spares",
+      "prior": 1,
+      "current": 0
+    }
+  ],
+  "move_counts": [
+    21,
+    34,
+    18,
+    26,
+    109,
+    53,
+    23,
+    45,
+    14
+  ],
+  "key_positive_counts": [
+    107,
+    329,
+    0
+  ],
+  "reward_parts": [
+    0.041820477694272995,
+    -2.0,
+    0.0,
+    0.0,
+    -1.0
+  ],
+  "reward_parts_order": [
+    "valid survival",
+    "spare stock differential",
+    "actual same-life bomb spending",
+    "verified stage progression",
+    "game over"
+  ],
+  "trajectory": "showcase-ppo2-729901-alpha.npz",
+  "trajectory_sha256": "5294086691071cd57e21484e54f09660e026669b4040bbb5abc9348b7e325d5f",
+  "native_masks_verified": 343,
+  "actor_seed_only": true,
+  "game_rng_controlled": false,
+  "screenshot_count": 29,
+  "median_control_ms": 123.9006095,
+  "use": "Independent original TH12 Normal showcase, excluded from every training/benchmark split.",
+  "frame_rate": 24,
+  "video_frames": 1046,
+  "duration_s": 43.583333333333336,
+  "video_sha256": "af4cda12a29f68d8bfd04bdaabe59d6599cb535852f7b400b0006e7bf9352e96",
+  "capture_sha256": "b95fe30ebcae7a321c2f6dd50538bb42c0ddd944fe837abfa72d512dce2ca22e",
+  "video_bytes": 7768700,
+  "complete_ground_truth": "Original 24 FPS X11 gameplay capture through native Score Ranking. The recording process continued after credit end; the interrupted MP4 trailer was reconstructed from H.264 payload and the recording clipped to the original terminal.",
+  "color_reference_frames": 29,
+  "median_reference_time_abs_error_s": 0.07333333355685312,
+  "reference_matching_measure": "Within 24 FPS footage, compare every fourth capture against the independent timestamped camera by downsampled playfield mean absolute error."
+}

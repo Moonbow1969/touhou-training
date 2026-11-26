@@ -192,5 +192,32 @@
         "f1": 0.0
       }
     }
-  }
+  },
+  "test_within_64_native_pixels_of_player": {
+    "learned": {
+      "tp": 129,
+      "fp": 216,
+      "fn": 257,
+      "precision": 0.3739130434782609,
+      "recall": 0.33419689119170987,
+      "f1": 0.35294117647058826
+    },
+    "fixed_spatial_prior": {
+      "tp": 0,
+      "fp": 10,
+      "fn": 386,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "empty": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 386,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "radius_metric": "Secondary, same frozen thresholds and match tolerance. Include predictions and true bullet centers within 64 native game pixels of the measured player. Ground truth player coordinates used only at scoring time."
 }

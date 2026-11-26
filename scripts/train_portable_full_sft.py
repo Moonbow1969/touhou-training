@@ -20,8 +20,11 @@ class FullActor(nn.Module):
         self.second=nn.Linear(96,96)
         self.output=nn.Linear(96,16)
 
+    def encode(self,x):
+        return torch.tanh(self.second(torch.tanh(self.first(x))))
+
     def forward(self,x):
-        y=self.output(torch.tanh(self.second(torch.tanh(self.first(x)))))
+        y=self.output(self.encode(x))
         return y[:,:15].split(WIDTHS,dim=-1),y[:,15]
 
     def export(self,path,magic=b'THFULL01'):
