@@ -1,0 +1,894 @@
+{
+  "kind": "train",
+  "host": "Entropy",
+  "lane_cpu_cap": 3,
+  "horizon_seconds": 60,
+  "hold_ms": 340,
+  "training_seeds": [
+    917701,
+    917702,
+    917703,
+    917704,
+    917705,
+    917706,
+    917707,
+    917708
+  ],
+  "held_pair_seeds": [
+    917721,
+    917722
+  ],
+  "held_cross_lane_theta1": [
+    "a",
+    "b"
+  ],
+  "allocation_frozen_before_sampling": true,
+  "receipts": [
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-1-a-917701",
+      "lane": "a",
+      "batch": 1,
+      "seed": 917701,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.023
+      },
+      "recovered_ingestion_error": "ValueError: could not convert string to float: 'full'",
+      "behavior": "th13-entropy-joint2-train-1-a-917701/behavior.npz",
+      "sha256": "d92f6c4b9d2d6968cb71ed1847712c0b2a4c19258232a54c2d55573e10879f16",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.001787557,
+      "cadence_median_ms": 342.33615050000003,
+      "cadence_p95_ms": 343.06349825,
+      "raw_archive_bytes": 3427987,
+      "action_counts": [
+        24,
+        132,
+        20
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.023
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.287
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2749
+        },
+        "settle-7": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2945
+        },
+        "settle-12": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3163
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": null,
+          "cpu_stat": null,
+          "cpu_pressure": [
+            "some avg10=1.86 avg60=1.63 avg300=2.27 total=25563846378",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ],
+          "quota_evidence": "Fixed Docker quota reverified. Pressure was captured at collection; cgroup counters were not saved in the first pair."
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": null,
+          "cpu_stat": null,
+          "cpu_pressure": [
+            "some avg10=1.40 avg60=1.16 avg300=1.95 total=25564674211",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ],
+          "quota_evidence": "Fixed Docker quota reverified. Pressure was captured at collection; cgroup counters were not saved in the first pair."
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-1-b-917702",
+      "lane": "b",
+      "batch": 1,
+      "seed": 917702,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0204
+      },
+      "recovered_ingestion_error": "ValueError: could not convert string to float: 'full'",
+      "behavior": "th13-entropy-joint2-train-1-b-917702/behavior.npz",
+      "sha256": "58c15e896b2cec6c6b142f5339368993ccaadb4501e757df30a1798e908f1206",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.001563584,
+      "cadence_median_ms": 342.2452065,
+      "cadence_p95_ms": 342.9873765,
+      "raw_archive_bytes": 3424686,
+      "action_counts": [
+        22,
+        129,
+        25
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0204
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2846
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.297
+        },
+        "settle-7": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3074
+        },
+        "settle-12": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3202
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": null,
+          "cpu_stat": null,
+          "cpu_pressure": [
+            "some avg10=1.86 avg60=1.63 avg300=2.27 total=25563848791",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ],
+          "quota_evidence": "Fixed Docker quota reverified. Pressure was captured at collection; cgroup counters were not saved in the first pair."
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": null,
+          "cpu_stat": null,
+          "cpu_pressure": [
+            "some avg10=1.40 avg60=1.16 avg300=1.95 total=25564687109",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ],
+          "quota_evidence": "Fixed Docker quota reverified. Pressure was captured at collection; cgroup counters were not saved in the first pair."
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-2-a-917703",
+      "lane": "a",
+      "batch": 2,
+      "seed": 917703,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.023
+      },
+      "behavior": "th13-entropy-joint2-train-2-a-917703/behavior.npz",
+      "sha256": "7ae455d5d2e3b2cfe7d1f5994d96f3d0b3c1b7b2c33674b373b820a61f768270",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.002279733,
+      "cadence_median_ms": 342.34056350000003,
+      "cadence_p95_ms": 343.550473,
+      "raw_archive_bytes": 3447030,
+      "action_counts": [
+        18,
+        134,
+        24
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.023
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3542
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3118
+        },
+        "settle-7": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3214
+        },
+        "settle-12": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2848
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562715.62,
+          "cpu_stat": {
+            "usage_usec": 738478346,
+            "user_usec": 719044050,
+            "system_usec": 19434295,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 2719,
+            "nr_throttled": 217,
+            "throttled_usec": 1080353,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.67 avg60=1.00 avg300=1.73 total=25565530227",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562787.97,
+          "cpu_stat": {
+            "usage_usec": 950296620,
+            "user_usec": 927236772,
+            "system_usec": 23059847,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 3443,
+            "nr_throttled": 340,
+            "throttled_usec": 1651658,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.19 avg60=0.92 avg300=1.57 total=25566548117",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-2-b-917704",
+      "lane": "b",
+      "batch": 2,
+      "seed": 917704,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0252
+      },
+      "behavior": "th13-entropy-joint2-train-2-b-917704/behavior.npz",
+      "sha256": "cfa3d514dcde16627e89d2fc8d29bfbeb75d311d6133248c5ca01a0de06ae91f",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.002680369,
+      "cadence_median_ms": 342.50417749999997,
+      "cadence_p95_ms": 343.5038445,
+      "raw_archive_bytes": 3435783,
+      "action_counts": [
+        31,
+        118,
+        27
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0252
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3339
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2933
+        },
+        "settle-7": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2288
+        },
+        "settle-12": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3318
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562715.88,
+          "cpu_stat": {
+            "usage_usec": 836511309,
+            "user_usec": 815504331,
+            "system_usec": 21006978,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 3077,
+            "nr_throttled": 200,
+            "throttled_usec": 1157719,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.67 avg60=1.00 avg300=1.73 total=25565533914",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562788.17,
+          "cpu_stat": {
+            "usage_usec": 1047250921,
+            "user_usec": 1022173240,
+            "system_usec": 25077680,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 3800,
+            "nr_throttled": 309,
+            "throttled_usec": 1717853,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.19 avg60=0.92 avg300=1.57 total=25566551692",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-3-a-917705",
+      "lane": "a",
+      "batch": 3,
+      "seed": 917705,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0252
+      },
+      "behavior": "th13-entropy-joint2-train-3-a-917705/behavior.npz",
+      "sha256": "9c425bdafa4f90647d287044b5b430155f340e55cf0c543e6290e00cba556b67",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.002794538,
+      "cadence_median_ms": 342.34988150000004,
+      "cadence_p95_ms": 343.51410625,
+      "raw_archive_bytes": 3474733,
+      "action_counts": [
+        33,
+        119,
+        24
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0252
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3192
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3221
+        },
+        "settle-7": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.4872
+        },
+        "settle-12": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2859
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562797.44,
+          "cpu_stat": {
+            "usage_usec": 976706909,
+            "user_usec": 952917055,
+            "system_usec": 23789854,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 3537,
+            "nr_throttled": 355,
+            "throttled_usec": 1995920,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=1.83 avg60=1.23 avg300=1.62 total=25566918451",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562869.82,
+          "cpu_stat": {
+            "usage_usec": 1188207757,
+            "user_usec": 1160752277,
+            "system_usec": 27455480,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 4261,
+            "nr_throttled": 488,
+            "throttled_usec": 2368613,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=2.56 avg60=1.20 avg300=1.49 total=25567902152",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-3-b-917706",
+      "lane": "b",
+      "batch": 3,
+      "seed": 917706,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0254
+      },
+      "behavior": "th13-entropy-joint2-train-3-b-917706/behavior.npz",
+      "sha256": "e4066f00e56c4c459259c704cca64d8afeb2f7f4493c274eaed60122b02be73d",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.00204871,
+      "cadence_median_ms": 342.416428,
+      "cadence_p95_ms": 343.45835925,
+      "raw_archive_bytes": 3400041,
+      "action_counts": [
+        33,
+        115,
+        28
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0254
+        },
+        "endpoint": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3181
+        },
+        "settle-3": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3333
+        },
+        "settle-7": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3236
+        },
+        "settle-12": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3268
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562797.39,
+          "cpu_stat": {
+            "usage_usec": 1072717389,
+            "user_usec": 1046814036,
+            "system_usec": 25903353,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 3892,
+            "nr_throttled": 318,
+            "throttled_usec": 2043894,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=1.83 avg60=1.23 avg300=1.62 total=25566912954",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562869.75,
+          "cpu_stat": {
+            "usage_usec": 1284846528,
+            "user_usec": 1255295036,
+            "system_usec": 29551492,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 4616,
+            "nr_throttled": 465,
+            "throttled_usec": 2503399,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=2.56 avg60=1.20 avg300=1.49 total=25567901914",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-4-a-917707",
+      "lane": "a",
+      "batch": 4,
+      "seed": 917707,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0261
+      },
+      "behavior": "th13-entropy-joint2-train-4-a-917707/behavior.npz",
+      "sha256": "6c4a0dcebc54a3bc65ea36e4f50dfc8dc1e2f17e03811a29d120679426a4027e",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.001756857,
+      "cadence_median_ms": 342.27705349999997,
+      "cadence_p95_ms": 343.5675005,
+      "raw_archive_bytes": 3391719,
+      "action_counts": [
+        30,
+        117,
+        29
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0261
+        },
+        "endpoint": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3395
+        },
+        "settle-3": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3439
+        },
+        "settle-7": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2747
+        },
+        "settle-12": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3075
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562879.3,
+          "cpu_stat": {
+            "usage_usec": 1212047192,
+            "user_usec": 1183528551,
+            "system_usec": 28518640,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 4356,
+            "nr_throttled": 497,
+            "throttled_usec": 2743515,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=1.36 avg60=1.13 avg300=1.47 total=25568073277",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562951.58,
+          "cpu_stat": {
+            "usage_usec": 1424249546,
+            "user_usec": 1392070761,
+            "system_usec": 32178785,
+            "nice_usec": 5000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 5079,
+            "nr_throttled": 640,
+            "throttled_usec": 3056468,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.78 avg60=1.21 avg300=1.42 total=25569265448",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    },
+    {
+      "title": 13,
+      "episode": "th13-entropy-joint2-train-4-b-917708",
+      "lane": "b",
+      "batch": 4,
+      "seed": 917708,
+      "actor_label": "theta1",
+      "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+      "worker_binary_sha256": "3a246229018b9039b6301f7617356e6f3e9aa46c8d5bd0cc0ccb1d1b24fa4703",
+      "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+      "difficulty": "Normal",
+      "character": "Reimu",
+      "horizon_seconds": 60,
+      "hold_ms": 340,
+      "shoot": 1,
+      "bomb": 0,
+      "game_rng_controlled": false,
+      "state": "awaiting_visual_grade",
+      "starting_stock": {
+        "spare_lives": 2,
+        "bombs": 2,
+        "score_zero": true,
+        "opening_background_fraction": 0.0228
+      },
+      "behavior": "th13-entropy-joint2-train-4-b-917708/behavior.npz",
+      "sha256": "a5a9cd36fe1fcf777e963856b1866cc3a398fc2fac787af45f7b6e78566f3f81",
+      "score_decisions": 176,
+      "observed_x_key_matches": 176,
+      "key_evidence": "XQueryKeymap confirms effective XTest keyboard state at each onset; this worker uses original pixels for game state.",
+      "capture_wall_seconds": 60.000970416,
+      "cadence_median_ms": 342.4319285,
+      "cadence_p95_ms": 343.9672375,
+      "raw_archive_bytes": 3404905,
+      "action_counts": [
+        27,
+        125,
+        24
+      ],
+      "hud": {
+        "start": {
+          "spare_lives": 2,
+          "bombs": 2,
+          "score_zero": true,
+          "opening_background_fraction": 0.0228
+        },
+        "endpoint": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2997
+        },
+        "settle-3": {
+          "spare_lives": 1,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2678
+        },
+        "settle-7": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.2428
+        },
+        "settle-12": {
+          "spare_lives": 0,
+          "bombs": 2,
+          "score_zero": false,
+          "opening_background_fraction": 0.3354
+        }
+      },
+      "cpu": [
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562879.28,
+          "cpu_stat": {
+            "usage_usec": 1309030909,
+            "user_usec": 1278513684,
+            "system_usec": 30517225,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 4711,
+            "nr_throttled": 480,
+            "throttled_usec": 2873788,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=1.36 avg60=1.13 avg300=1.47 total=25568071891",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        },
+        {
+          "cgroup_cpu_max": "300000 100000",
+          "host_uptime": 7562951.64,
+          "cpu_stat": {
+            "usage_usec": 1519887753,
+            "user_usec": 1485537251,
+            "system_usec": 34350502,
+            "nice_usec": 4000,
+            "core_sched.force_idle_usec": 0,
+            "nr_periods": 5435,
+            "nr_throttled": 579,
+            "throttled_usec": 3309747,
+            "nr_bursts": 0,
+            "burst_usec": 0
+          },
+          "cpu_pressure": [
+            "some avg10=0.78 avg60=1.21 avg300=1.42 total=25569275197",
+            "full avg10=0.00 avg60=0.00 avg300=0.00 total=0"
+          ]
+        }
+      ]
+    }
+  ]
+}

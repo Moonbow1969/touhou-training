@@ -46,7 +46,13 @@ def main():
             seen.add(digest)
             with np.load(path,allow_pickle=False) as z:
                 action=z["action" if "action" in z else "action_index"].astype(int)
-                x=features(z["obs"][:-1])
+                if "obs" in z:
+                    x=features(z["obs"][:-1])
+                else:
+                    sums=z["grid_sums"]
+                    if sums.dtype!=np.uint16 or sums.shape!=(len(action),84) or (sums>65280).any():
+                        raise ValueError("Invalid exact per-action pixel grid sums.")
+                    x=np.column_stack((np.ones(len(action)),sums.astype(np.float64)/65280.))
                 prob=categorical(x,weights)
                 if not np.array_equal(action,action.clip(0,2)) or len(action)!=len(x) or len(x)==0:
                     raise ValueError("Invalid action stream.")

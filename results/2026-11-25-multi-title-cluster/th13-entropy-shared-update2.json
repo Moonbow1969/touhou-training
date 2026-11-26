@@ -1,0 +1,174 @@
+{
+  "deployment": {
+    "host": "Entropy",
+    "lanes": [
+      "a",
+      "b"
+    ],
+    "cpu_quota_per_lane": 3,
+    "memory_mib_per_lane": 1100,
+    "clock": "Original TH13 real-time clock on isolated displays, with separate monotonic input/observation timestamps",
+    "input_integrity": "Effective X keyboard state independently checked after action submission. The game observation and reward came from native rendered pixels.",
+    "title": "TH13 Ten Desires",
+    "version": "Official trial 0.01a",
+    "native_difficulty": "Normal",
+    "character": "Reimu",
+    "hold_ms": 340,
+    "horizon_seconds": 60,
+    "shoot": 1,
+    "bomb": 0
+  },
+  "train_seal": {
+    "host": "Entropy",
+    "mode": "train",
+    "credits": 8,
+    "manifest_sha256": "8bf12a57176f7913fb23eeb3899a9a1aab1655c5bd459510dac1f7cb05dd5a05",
+    "original_source_sha256": "cd383abfcd1e31fddfc98e95274598bf24f44396db2fcf1b21fa16dabc391a54",
+    "decisions": 1408,
+    "observed_x_key_matches": 1408,
+    "raw_archive_bytes": 27406884,
+    "median_cadence_ms": 342.34522250000003,
+    "raw_spare_delta_hist": {
+      "-1": 6,
+      "0": 2
+    },
+    "status": "complete"
+  },
+  "held_seal": {
+    "host": "Entropy",
+    "mode": "held",
+    "credits": 4,
+    "manifest_sha256": "7d57a87b6dc1aa980db5907d79cfb865e069bb327f717104c8e9e6604c12e237",
+    "original_source_sha256": "86b0979895c2954eb34508c927e544176fe695c5c3643fad6c449be29064e4dc",
+    "decisions": 701,
+    "observed_x_key_matches": 701,
+    "raw_archive_bytes": 13577106,
+    "median_cadence_ms": 342.579242,
+    "raw_spare_delta_hist": {
+      "-1": 3,
+      "0": 1
+    },
+    "status": "complete"
+  },
+  "score_statistic_transport": {
+    "raw_bytes": 15339693,
+    "reduced_bytes": 17486,
+    "reduction_ratio": 877.255690266499,
+    "maximum_abs_gradient_with_full_trace": 9.303224857148962e-12,
+    "detail": "Transport ratio concerns the score-function statistic. Exact empirical KL still used behavior trajectories."
+  },
+  "host_baseline": {
+    "cpu_stat_credits": 10,
+    "median_cpu_cores": 2.9179440442534896,
+    "median_throttled_seconds": 0.447732,
+    "initial_live_boss_clock_range_game_seconds_per_12s_wall": [
+      7.9,
+      8.0
+    ]
+  },
+  "raw_train_spare_deltas": [
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    0,
+    0,
+    -1
+  ],
+  "held_crossover": [
+    {
+      "seed": 917721,
+      "arms": {
+        "theta1": {
+          "seed": 917721,
+          "lane": "a",
+          "episode": "th13-entropy-joint2-held-1-a-917721",
+          "actor_label": "theta1",
+          "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+          "score_decisions": 175,
+          "capture_wall_seconds": 60.001788228,
+          "observed_x_key_matches": 175,
+          "raw_settled_spare_delta": -1,
+          "scaled_return": -0.3333333333333333,
+          "evidence_frame": "th13-entropy-joint2-held-1-a-917721/endpoint.webp",
+          "evidence_sha256": "41e6acde2b4aa36831f8f9dd66e2e34609d162cc2dec95df61ea1056b007a8da",
+          "visual_evidence": "One spare at cutoff and all follow-ups with the original boss timer advancing. At cutoff a just-respawned player is visible; no further debit follows.",
+          "sha256": "15154ab8ac56ba5d3612f4a0c4f0dfab9edb72299f08e127155f999e47fa881c",
+          "cadence_median_ms": 342.499736,
+          "cadence_p95_ms": 346.5670726
+        },
+        "theta2": {
+          "seed": 917721,
+          "lane": "b",
+          "episode": "th13-entropy-joint2-held-1-b-917721",
+          "actor_label": "theta2",
+          "actor_sha256": "b97691cd475fa3d549dfa4a41dce63200341dd80e60cae6a302ccc844b974279",
+          "score_decisions": 175,
+          "capture_wall_seconds": 60.002557097,
+          "observed_x_key_matches": 175,
+          "raw_settled_spare_delta": -1,
+          "scaled_return": -0.3333333333333333,
+          "evidence_frame": "th13-entropy-joint2-held-1-b-917721/endpoint.webp",
+          "evidence_sha256": "4096b8b203fdf113f22f7b16be9dbb9972ff87cd0105f723a96c3617883f572b",
+          "visual_evidence": "Ordinary active player and one spare at cutoff, +3, and +7 seconds. A new life debit first visible at +12 does not enter the fixed-horizon reward.",
+          "sha256": "27a998f96d56994098b6ff850565f2f04ff9ef9f860ae6b8985677bd8b6aa43b",
+          "cadence_median_ms": 342.638583,
+          "cadence_p95_ms": 345.3505029
+        }
+      },
+      "common_controller_decisions": 175,
+      "changed_actions": 1,
+      "theta2_minus_theta1_spares": 0
+    },
+    {
+      "seed": 917722,
+      "arms": {
+        "theta2": {
+          "seed": 917722,
+          "lane": "a",
+          "episode": "th13-entropy-joint2-held-2-a-917722",
+          "actor_label": "theta2",
+          "actor_sha256": "b97691cd475fa3d549dfa4a41dce63200341dd80e60cae6a302ccc844b974279",
+          "score_decisions": 175,
+          "capture_wall_seconds": 60.001173789,
+          "observed_x_key_matches": 175,
+          "raw_settled_spare_delta": -1,
+          "scaled_return": -0.3333333333333333,
+          "evidence_frame": "th13-entropy-joint2-held-2-a-917722/endpoint.webp",
+          "evidence_sha256": "dd47cadba16958fefc9731605e91f7d1aadda3e2d423d98ceddc5a9b227197fa",
+          "visual_evidence": "Ordinary active Reimu and one spare at cutoff and every follow-up. Native boss timer continues.",
+          "sha256": "856f2eb8b99c8c07e2350deebe27ad87731013572ca979e11694f999ac1aeb33",
+          "cadence_median_ms": 342.676665,
+          "cadence_p95_ms": 344.6839031
+        },
+        "theta1": {
+          "seed": 917722,
+          "lane": "b",
+          "episode": "th13-entropy-joint2-held-2-b-917722",
+          "actor_label": "theta1",
+          "actor_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+          "score_decisions": 176,
+          "capture_wall_seconds": 60.00264052,
+          "observed_x_key_matches": 176,
+          "raw_settled_spare_delta": 0,
+          "scaled_return": 0.0,
+          "evidence_frame": "th13-entropy-joint2-held-2-b-917722/endpoint.webp",
+          "evidence_sha256": "28ed2b60415aa127dd5c6571ae059cf70621b974a66428c0adb10be7c16a435b",
+          "visual_evidence": "Ordinary active Reimu and both spares at cutoff and every follow-up. Native boss timer continues.",
+          "sha256": "41c531abca16a3333f238685c3c7ff58170f681ecccd6fd27ec18eda44c5b0e7",
+          "cadence_median_ms": 342.519901,
+          "cadence_p95_ms": 344.54382625
+        }
+      },
+      "common_controller_decisions": 175,
+      "changed_actions": 2,
+      "theta2_minus_theta1_spares": -1
+    }
+  ],
+  "theta2_sha256": "b97691cd475fa3d549dfa4a41dce63200341dd80e60cae6a302ccc844b974279",
+  "theta1_sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+  "controls": "Shared controller seed per pair. Original game randomness independently initialized. Controller lanes reversed for the second pair.",
+  "qualification": "The rollout uses a 60-second wall horizon. Original boss clocks in the first pair advanced about eight game seconds over 12 wall seconds.",
+  "exclusions": "The first pair's local CPU-stat parser initially failed. The original archived behavior/HUD was recovered and validated without resampling. Contemporaneous host pressure was saved and lane caps were reverified; cgroup usage counters for that pair are unavailable. New contacts first visible after the horizon were excluded from stock credit."
+}
