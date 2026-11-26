@@ -14,8 +14,9 @@ from time import perf_counter
 
 
 class TrialWorker:
-    def __init__(self, command):
+    def __init__(self, command, shutdown_timeout=6):
         self.command = command
+        self.shutdown_timeout = shutdown_timeout
         self.output = Queue()
 
     def __enter__(self):
@@ -52,7 +53,7 @@ class TrialWorker:
         except OSError:
             pass
         try:
-            self.process.wait(timeout=6)
+            self.process.wait(timeout=self.shutdown_timeout)
         except subprocess.TimeoutExpired:
             self.process.kill()
             self.process.wait()

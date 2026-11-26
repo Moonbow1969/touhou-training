@@ -1,0 +1,10 @@
+{
+  "purpose": "Assess dependence on last movement with matched training rows, physical observation and optimizer budget.",
+  "train": "TH13, TH14 and TH17. Frozen parent versus exactly 0.30 probability of masking both observed prior displacement signs during SFT. Retain true inputs in evaluation. Seed 613, 2400 batches of 256, isolated masking generator.",
+  "held": "Same four reserved player replays as prior development, identified in the parent manifest. Report majority movement accuracy conditional on true observed prior movement differing from the target, including starts from rest and direction changes. Compare exact persistence and report title-specific NLL. This reuses the development cohort and does not consume final titles.",
+  "native": "Preselect two fresh actor seeds on two independent native TH10 trial instances, Normal and Hard. Evaluate parent and new SFT at a 540-control first-loss limit with swapped policy order within each lane. Native RNG uncontrolled.",
+  "native_seeds": [
+    19831,
+    19832
+  ]
+}

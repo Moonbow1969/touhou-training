@@ -1,0 +1,98 @@
+{
+  "train_titles": [
+    13,
+    14,
+    17
+  ],
+  "observed_titles_exclude": [
+    10
+  ],
+  "steps": 2400,
+  "seed": 613,
+  "observed_motion_sign": true,
+  "history_dropout": 0.3,
+  "manifest_sha256": "c56b402c59984c1de4b29f9cceff4707ac67a049df8120b551c67495009ef92b",
+  "weights_sha256": "3169327b728c060c5cc721bd4b1f48b4349da0440756337c598e69f09f4d83d3",
+  "train_draws": 614400,
+  "samples": {
+    "13": 26262,
+    "14": 89645,
+    "17": 100443
+  },
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.890016555786133
+    },
+    {
+      "step": 200,
+      "loss": 1.9926960468292236
+    },
+    {
+      "step": 400,
+      "loss": 1.5623505115509033
+    },
+    {
+      "step": 600,
+      "loss": 1.588858962059021
+    },
+    {
+      "step": 800,
+      "loss": 1.4079134464263916
+    },
+    {
+      "step": 1000,
+      "loss": 1.5856152772903442
+    },
+    {
+      "step": 1200,
+      "loss": 1.5030832290649414
+    },
+    {
+      "step": 1400,
+      "loss": 1.485831618309021
+    },
+    {
+      "step": 1600,
+      "loss": 1.5075957775115967
+    },
+    {
+      "step": 1800,
+      "loss": 1.380619764328003
+    },
+    {
+      "step": 2000,
+      "loss": 1.4362298250198364
+    },
+    {
+      "step": 2200,
+      "loss": 1.4634690284729004
+    },
+    {
+      "step": 2400,
+      "loss": 1.4103169441223145
+    }
+  ],
+  "held": {
+    "13": {
+      "n": 20576,
+      "move_nll": 0.8703534603118896,
+      "moving_accuracy": 0.7339115738868713,
+      "focus_accuracy": 0.980414092540741
+    },
+    "14": {
+      "n": 22435,
+      "move_nll": 1.0221238136291504,
+      "moving_accuracy": 0.6918267011642456,
+      "focus_accuracy": 0.9642968773841858
+    },
+    "17": {
+      "n": 51421,
+      "move_nll": 1.1593384742736816,
+      "moving_accuracy": 0.564724326133728,
+      "focus_accuracy": 0.9820889830589294
+    }
+  },
+  "observations": "Player position, focus, spare lives, active projectile count, relative XY and velocity. Fields unavailable in the TH10 reader are masked on both sides.",
+  "objective": "Human movement distribution and expert focus cross-entropy. Fixed Shoot on, Bomb off in the downstream game."
+}

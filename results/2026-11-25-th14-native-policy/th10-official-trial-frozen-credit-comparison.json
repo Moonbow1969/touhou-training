@@ -1,0 +1,133 @@
+{
+  "title": "TH10 Mountain of Faith",
+  "game_version": "official trial 0.02a",
+  "stage_cap": "Stage 2 entry or Game Over",
+  "comparison": "One actor-seed paired smoke trial on the same Accelerator host with independently started, uncontrolled native game RNG.",
+  "actor_seed": 19611,
+  "pairs": 1,
+  "native_rank": "Normal",
+  "continue_commands": 0,
+  "shoot": 1,
+  "bomb": 0,
+  "original_pairs": {
+    "sft": {
+      "policy_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+      "outcome": "stock-game-over",
+      "decisions": 363,
+      "stage_reached": 1,
+      "raw_native_score": 110628,
+      "controller_seconds": 41.37497489992529,
+      "verified_game_consumed_masks": 363,
+      "life_loss_decisions": [
+        159,
+        265,
+        363
+      ],
+      "absolute_waypoints_at_loss": [
+        [
+          144.41,
+          47.9
+        ],
+        [
+          -15.77,
+          32.0
+        ],
+        [
+          85.0,
+          432.0
+        ]
+      ],
+      "median_player_y": 351.0,
+      "decisions_player_y_below_180": 108,
+      "focus_commands": 89,
+      "capture_summary_sha256": "a7b85a8904fadfdaeaa359d7c2059095ba50861db482a1e2f760080dd037e39b",
+      "capture_summary": "th10-official-trial-motion-sft-credit.json"
+    },
+    "ppo": {
+      "policy_sha256": "e2ec4f93e5841ff25d39f443da3c457260a408198c14e6e4bead446a31f60365",
+      "outcome": "stock-game-over",
+      "decisions": 356,
+      "stage_reached": 1,
+      "raw_native_score": 131264,
+      "controller_seconds": 40.13355899997987,
+      "verified_game_consumed_masks": 356,
+      "life_loss_decisions": [
+        164,
+        276,
+        356
+      ],
+      "absolute_waypoints_at_loss": [
+        [
+          -101.49,
+          341.2
+        ],
+        [
+          -97.12,
+          89.08
+        ],
+        [
+          184.0,
+          432.0
+        ]
+      ],
+      "median_player_y": 406.77665,
+      "decisions_player_y_below_180": 99,
+      "focus_commands": 42,
+      "capture_summary_sha256": "0aaa86fa4b228317632402f897768d48d5eda553ef54d0424643633fa6d1bce7",
+      "capture_summary": "th10-official-trial-motion-ppo-credit.json",
+      "representative_video": {
+        "video": "representative-native-ppo.mp4",
+        "video_sha256": "e5321486091fbc95a9a7754f6ac3cded9339cfa4d5a7a20ac8d1feeae1fc6a8f",
+        "native_canvases": 199,
+        "captured_wall_seconds": 46.25567674636841,
+        "encoded_output_fps": 15
+      }
+    }
+  },
+  "difference_ppo_minus_sft": {
+    "decisions": -7,
+    "raw_native_score": 20636,
+    "controller_seconds": -1.241415899945423
+  },
+  "sft_recorded_repeat": {
+    "policy_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+    "outcome": "stock-game-over",
+    "decisions": 385,
+    "stage_reached": 1,
+    "raw_native_score": 184737,
+    "controller_seconds": 45.271012200042605,
+    "verified_game_consumed_masks": 385,
+    "life_loss_decisions": [
+      172,
+      228,
+      385
+    ],
+    "absolute_waypoints_at_loss": [
+      [
+        -41.46,
+        32.0
+      ],
+      [
+        31.0,
+        432.0
+      ],
+      [
+        145.91,
+        405.48
+      ]
+    ],
+    "median_player_y": 281.03,
+    "decisions_player_y_below_180": 134,
+    "focus_commands": 75,
+    "capture_summary_sha256": "92c5e71d9f22ce106f61ac359f1b388e514e509bfe3cd6a3fd315366032c581b",
+    "capture_summary": "th10-official-trial-motion-sft-video-repeat-credit.json",
+    "representative_video": {
+      "video": "representative-native-sft.mp4",
+      "video_sha256": "efe49f404b4734989fa7213b8de0b337741766f380fb0f9129240765958a12a7",
+      "native_canvases": 260,
+      "captured_wall_seconds": 60.399386167526245,
+      "encoded_output_fps": 15
+    }
+  },
+  "sft_video_repeat_note": "Separate post-comparison credit used only to capture representative live footage."
+}

@@ -1,0 +1,5 @@
+{
+  "reason": "Argmax of 3-title SFT approximately matches observed movement persistence on held trajectories. The 30% displacement-mask ablation worsened movement NLL in all three development titles.",
+  "intervention": "One full 2400-step SFT fit. Fixed 256 examples per batch, titles equal in expectation. Sample hold/start/turn/stop 40/20/25/15 within title from native prior displacement sign and next majority expert movement. Keep all experts as soft action targets. Seed 613, same optimizer and architecture. Judge native SFT before additional PPO.",
+  "evaluation": "Measure held replay movement-change directions, persistence, ordinary movement NLL, and fresh paired Normal/Hard TH10 original first-life restricted means by 540 decisions. Repeat opportunity with independent controller seeds 19871 and 19872. Normal and Hard on different hosts; comparisons are within rank. Each credit retains actual controls and life changes."
+}

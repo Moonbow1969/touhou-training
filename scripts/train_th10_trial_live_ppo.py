@@ -83,7 +83,7 @@ class NativeTH10(gym.Env):
                 fallback=str(exc)
         if not reused:
             self.close()
-            self.pipe = TrialWorker(self.worker["command"]).__enter__()
+            self.pipe = TrialWorker(self.worker["command"], shutdown_timeout=24).__enter__()
             self.state = self.pipe.read(timeout=84)
         if (self.state["stage"], self.state["lives"], self.state["score"], self.state["held"]) != (1,2,0,0):
             raise RuntimeError("Native TH10 did not start with untouched Stage 1 inventory.")

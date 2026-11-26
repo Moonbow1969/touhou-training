@@ -60,6 +60,17 @@ def heads(model, b, c):
     return model.action_net(model.mlp_extractor.forward_actor(feat)).split([9,2],dim=1)
 
 
+def movement_groups(context, target):
+    previous=(context[:,8].long()+1)*3+context[:,7].long()+1
+    move=target[:,0]
+    masks=(previous==move,(previous==4)&(move!=4),
+           (previous!=4)&(move!=4)&(move!=previous),(previous!=4)&(move==4))
+    pools=[torch.where(mask)[0] for mask in masks]
+    if any(len(pool)==0 for pool in pools):
+        raise ValueError("A required expert transition group is empty.")
+    return pools
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("--manifest",type=Path,required=True)
@@ -68,7 +79,15 @@ def main():
     p.add_argument("--steps",type=int,default=2400)
     p.add_argument("--seed",type=int,default=613)
     p.add_argument("--motion-sign",action="store_true",help="Include the observed direction of the last displacement.")
+    p.add_argument("--history-dropout",type=float,default=0.,
+                   help="Training probability of replacing both displacement signs with zero.")
+    p.add_argument("--balance-changes",action="store_true",
+                   help="Sample hold/start/turn/stop groups within each title at 40/20/25/15 percent.")
     args=p.parse_args()
+    if not 0 <= args.history_dropout < 1 or (args.history_dropout and not args.motion_sign):
+        p.error("Displacement masking requires --motion-sign and probability in [0,1).")
+    if args.balance_changes and not args.motion_sign:
+        p.error("Transition groups require observed displacement signs.")
     manifest=json.loads(args.manifest.read_bytes())
     fit=manifest["train_manifest"]
     hold=manifest["evaluation_manifest"]
@@ -81,14 +100,25 @@ def main():
     torch.manual_seed(args.seed)
     rng=np.random.default_rng(args.seed)
     model=MultiInputActorCriticPolicy(OBS,ACT,lambda _: .0003,**POLICY_KWARGS).cuda()
+    masking_rng=torch.Generator(device="cuda").manual_seed(args.seed+1)
+    pools={t:movement_groups(v[1],v[2]) for t,v in train.items()} if args.balance_changes else {}
+    group_rng=np.random.default_rng(args.seed+2)
     opt=torch.optim.AdamW(model.parameters(),lr=.0003)
     history=[]
     for step in range(1,args.steps+1):
         groups=[]
         for t,n in zip(sorted(train),rng.multinomial(256,[1/3]*3)):
-            idx=torch.randint(len(train[t][0]),(int(n),),device="cuda")
+            if args.balance_changes:
+                counts=group_rng.multinomial(int(n),[.40,.20,.25,.15])
+                idx=torch.cat([pool[torch.randint(len(pool),(int(k),),device="cuda")]
+                               for pool,k in zip(pools[t],counts)])
+            else:
+                idx=torch.randint(len(train[t][0]),(int(n),),device="cuda")
             groups.append([v[idx] for v in train[t]])
         b,c,y,soft=map(torch.cat,zip(*groups))
+        if args.history_dropout:
+            mask=torch.rand(len(c),device=c.device,generator=masking_rng)<args.history_dropout
+            c[mask,7:9]=0
         move,focus=heads(model,b,c)
         loss=-(soft*move.log_softmax(1)).sum(1).mean()+F.cross_entropy(focus,y[:,1])
         opt.zero_grad(set_to_none=True)
@@ -109,7 +139,8 @@ def main():
                          moving_accuracy=(m.argmax(1)[truth[:,0]!=4]==truth[truth[:,0]!=4,0]).float().mean().item(),
                          focus_accuracy=(f.argmax(1)==truth[:,1]).float().mean().item())
     report=dict(train_titles=sorted(train),observed_titles_exclude=[10],steps=args.steps,seed=args.seed,
-                observed_motion_sign=args.motion_sign,
+                observed_motion_sign=args.motion_sign,history_dropout=args.history_dropout,
+                balance_changes=args.balance_changes,
                 manifest_sha256=digest(args.manifest),weights_sha256=digest(weights),train_draws=args.steps*256,
                 samples={t:len(v[0]) for t,v in train.items()},history=history,held=held,
                 observations="Player position, focus, spare lives, active projectile count, relative XY and velocity. Fields unavailable in the TH10 reader are masked on both sides.",

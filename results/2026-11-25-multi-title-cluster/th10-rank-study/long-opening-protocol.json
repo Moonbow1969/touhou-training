@@ -1,0 +1,31 @@
+{
+  "arms": [
+    "sft",
+    "mixed_4096"
+  ],
+  "controller_seeds": [
+    19671,
+    19672
+  ],
+  "horizon": 540,
+  "assignments": {
+    "momentum-1": [
+      "momentum",
+      1
+    ],
+    "momentum-2": [
+      "momentum",
+      2
+    ],
+    "accelerator-1": [
+      "accelerator",
+      1
+    ],
+    "accelerator-2": [
+      "accelerator",
+      2
+    ]
+  },
+  "rationale": "Six of eight credits reached the 220-decision ceiling on the earlier independent Normal evaluation.",
+  "comparison": "Matched controllers within host and rank, rotate first arm both by host and seed. Same pair of controller seeds on both machines. Native RNG is uncontrolled. The two training hosts are repeats on new credits rather than held machines."
+}

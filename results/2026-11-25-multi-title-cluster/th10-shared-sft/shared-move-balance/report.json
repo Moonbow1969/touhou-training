@@ -1,0 +1,99 @@
+{
+  "train_titles": [
+    13,
+    14,
+    17
+  ],
+  "observed_titles_exclude": [
+    10
+  ],
+  "steps": 2400,
+  "seed": 613,
+  "observed_motion_sign": true,
+  "history_dropout": 0.0,
+  "balance_changes": true,
+  "manifest_sha256": "c56b402c59984c1de4b29f9cceff4707ac67a049df8120b551c67495009ef92b",
+  "weights_sha256": "83a7497fe70eb94e71ae56817291eeb7bc3b688785da8a8a6b20dc40a785faf6",
+  "train_draws": 614400,
+  "samples": {
+    "13": 26262,
+    "14": 89645,
+    "17": 100443
+  },
+  "history": [
+    {
+      "step": 1,
+      "loss": 2.8894381523132324
+    },
+    {
+      "step": 200,
+      "loss": 1.9861375093460083
+    },
+    {
+      "step": 400,
+      "loss": 1.6825889348983765
+    },
+    {
+      "step": 600,
+      "loss": 1.519247055053711
+    },
+    {
+      "step": 800,
+      "loss": 1.6061629056930542
+    },
+    {
+      "step": 1000,
+      "loss": 1.5627214908599854
+    },
+    {
+      "step": 1200,
+      "loss": 1.6119214296340942
+    },
+    {
+      "step": 1400,
+      "loss": 1.6810190677642822
+    },
+    {
+      "step": 1600,
+      "loss": 1.653028130531311
+    },
+    {
+      "step": 1800,
+      "loss": 1.5699840784072876
+    },
+    {
+      "step": 2000,
+      "loss": 1.4474155902862549
+    },
+    {
+      "step": 2200,
+      "loss": 1.4809236526489258
+    },
+    {
+      "step": 2400,
+      "loss": 1.5563013553619385
+    }
+  ],
+  "held": {
+    "13": {
+      "n": 20576,
+      "move_nll": 0.9495939016342163,
+      "moving_accuracy": 0.67991042137146,
+      "focus_accuracy": 0.980414092540741
+    },
+    "14": {
+      "n": 22435,
+      "move_nll": 1.1465727090835571,
+      "moving_accuracy": 0.6008975505828857,
+      "focus_accuracy": 0.9642968773841858
+    },
+    "17": {
+      "n": 51421,
+      "move_nll": 1.1868525743484497,
+      "moving_accuracy": 0.5501874685287476,
+      "focus_accuracy": 0.9820889830589294
+    }
+  },
+  "observations": "Player position, focus, spare lives, active projectile count, relative XY and velocity. Fields unavailable in the TH10 reader are masked on both sides.",
+  "objective": "Human movement distribution and expert focus cross-entropy. Fixed Shoot on, Bomb off in the downstream game."
+}

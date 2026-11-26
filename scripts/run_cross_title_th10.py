@@ -3,6 +3,7 @@ import argparse
 import gzip
 import json
 from pathlib import Path
+from time import sleep
 
 import numpy as np
 import torch
@@ -39,7 +40,8 @@ def run(args):
     args.out.mkdir(exist_ok=False)
     worker=json.loads(args.workers.read_bytes())[args.lane]
     motion_sign=json.loads(args.sft.with_name("report.json").read_bytes()).get("observed_motion_sign",False)
-    log=dict(mode=args.mode,host="Momentum",lane=args.lane,status="running",horizon=args.horizon,
+    log=dict(mode=args.mode,host=worker.get("host","unspecified"),lane=args.lane,status="running",
+             difficulty=worker.get("difficulty",1),horizon=args.horizon,
              game_sha256=worker["executable_sha256"],source_sha256=digest(Path(__file__)),
              worker_sources=worker["sources"],sft_sha256=digest(args.sft),seed=args.seed,
              reward="1/horizon for each non-injury decision, -1 on first native life decrement",
@@ -77,10 +79,12 @@ def run(args):
         for block,seed in enumerate(args.eval_seeds):
             second="ppo" if args.ppo else "alternative_sft" if args.other_sft else "random"
             arms=["sft",second]
-            if block%2:
+            if (block+args.order_offset)%2:
                 arms.reverse()
             for arm in arms:
                 for retry in range(1,4):
+                    if retry>1:
+                        sleep(3*(retry-1))
                     trace=args.out/f"{seed}-{arm}-try{retry}.jsonl.gz"
                     with gzip.open(trace,"wt",encoding="utf-8") as stream:
                         env=SharedNative(worker,args.horizon,stream)
@@ -134,6 +138,7 @@ def main():
     p.add_argument("--updates",type=int,default=2,choices=range(1,9))
     p.add_argument("--horizon",type=int,default=220,choices=range(128,541))
     p.add_argument("--eval-seeds",type=int,nargs="+",default=[19111,19112])
+    p.add_argument("--order-offset",type=int,choices=(0,1),default=0)
     args=p.parse_args()
     try:
         run(args)

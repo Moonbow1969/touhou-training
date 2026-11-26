@@ -1,0 +1,418 @@
+{
+  "report": {
+    "status": "complete",
+    "title": "TH10 Mountain of Faith",
+    "version": "official trial 0.02a",
+    "host": "Accelerator",
+    "difficulty": "Normal",
+    "shot": "Reimu A",
+    "actor_seed": 19611,
+    "executable_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+    "worker_sources": {
+      "th10-trial-state.h": "03d38ffef75cccccd981974203b7b31017dfc5b1cce337627368aa8d493dae7a",
+      "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+      "th10-trial-step.c": "69f7c7c22c72b3429f568c55a2f01a8dc16d3f2751b5faac46ae298079127d4b",
+      "run-th10-trial-probe.sh": "d93d622134f2b1c732941ffef2864611468824a034ce427e4c60d0d65f060ff2",
+      "serve-th10-trial.sh": "1cbd08a87b835393145c5ed442896fb73f078f4efcdf63f89641639a0e8119bd",
+      "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+    },
+    "runner_sha256": "ff71c2f69b8b460c5aa1fb4caafb158427540b61e6b0781f8d3f8d863f219854",
+    "policy_sha256": "e2ec4f93e5841ff25d39f443da3c457260a408198c14e6e4bead446a31f60365",
+    "sft_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+    "policy": "Frozen stochastic two-host live PPO from three-title SFT",
+    "train_titles": [
+      13,
+      14,
+      17
+    ],
+    "training_draws": 614400,
+    "game_rng_controlled": false,
+    "unpaused": true,
+    "cadence": "Continuous native clock with 85 ms nominal holds plus runner overhead",
+    "max_decisions": 1800,
+    "shoot": 1,
+    "bomb": 0,
+    "continue_command_count": 0,
+    "outcome": "negative_lives_awaiting_visual_verification",
+    "life_decrements": [
+      {
+        "decision": 164,
+        "before": 2,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 1,
+        "score": 22478,
+        "position": [
+          -101.49,
+          341.2
+        ],
+        "bullet_count": 31,
+        "held": 32,
+        "observed_held": 32,
+        "native_input_bits": 65537,
+        "time_ms": 85
+      },
+      {
+        "decision": 276,
+        "before": 1,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 0,
+        "score": 123697,
+        "position": [
+          -97.12,
+          89.08
+        ],
+        "bullet_count": 3,
+        "held": 36,
+        "observed_held": 36,
+        "native_input_bits": 1114129,
+        "time_ms": 85
+      },
+      {
+        "decision": 356,
+        "before": 0,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": -1,
+        "score": 131264,
+        "position": [
+          184.0,
+          432.0
+        ],
+        "bullet_count": 59,
+        "held": 33,
+        "observed_held": 33,
+        "native_input_bits": 4259905,
+        "time_ms": 85
+      }
+    ],
+    "native_stage_entries": [
+      {
+        "decision": 0,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 2,
+        "score": 0,
+        "position": [
+          0.0,
+          400.0
+        ],
+        "bullet_count": 0,
+        "held": 0,
+        "observed_held": 0,
+        "native_input_bits": 0,
+        "time_ms": 0
+      }
+    ],
+    "screenshots": [
+      {
+        "decision": 0,
+        "file": "decision-0000.png",
+        "sha256": "0676c91352fa4ff0dc9dac0bb214851f140b0ff39489578138f4a4c72d070a13",
+        "bytes": 417714
+      },
+      {
+        "decision": 160,
+        "file": "decision-0160.png",
+        "sha256": "204c073d6c271d64f185aa2b7ec077e5f89eaf71f1e7f874698ba09a14ff5c0b",
+        "bytes": 558861
+      },
+      {
+        "decision": 164,
+        "file": "decision-0164.png",
+        "sha256": "95c5ef5f12c1dc6768b542169fe69060e9ff546c2cc01cf3e5fe6dd8705a7f67",
+        "bytes": 559823
+      },
+      {
+        "decision": 276,
+        "file": "decision-0276.png",
+        "sha256": "bd66db4bcb00ec2c32338ce52041a8d75dd2ff0149aca48f03f3142fd4283890",
+        "bytes": 559604
+      },
+      {
+        "decision": 320,
+        "file": "decision-0320.png",
+        "sha256": "6acf21c9f09e31f39946ee8957f23a056ccb90eac3ac6345700a3e088fe17acc",
+        "bytes": 553647
+      },
+      {
+        "decision": 356,
+        "file": "decision-0356.png",
+        "sha256": "9b749a8788e5fb0f8db44518539b15f2565a2b2f19f532dc171c8b9cf4604c86",
+        "bytes": 559768
+      },
+      {
+        "decision": null,
+        "file": "settled-1.png",
+        "sha256": "425be369ffd5992a5f77af0ee3d942fc4942fb74e8f0d6731a733513dbfa210b",
+        "bytes": 123603
+      },
+      {
+        "decision": null,
+        "file": "settled-2.png",
+        "sha256": "425be369ffd5992a5f77af0ee3d942fc4942fb74e8f0d6731a733513dbfa210b",
+        "bytes": 123603
+      },
+      {
+        "decision": null,
+        "file": "settled-3.png",
+        "sha256": "ef4457b1bf5a82b2617210d72a79c470f545316d11912ebe075476aa31821895",
+        "bytes": 123689
+      }
+    ],
+    "errors": [],
+    "actor_offscreen_policy": "Retain last valid actor observation during native respawn.",
+    "offscreen_readouts": [
+      {
+        "decision": 166,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 1,
+        "score": 22478,
+        "position": [
+          0.0,
+          474.6667
+        ],
+        "bullet_count": 29,
+        "held": 32,
+        "observed_held": 32,
+        "native_input_bits": 65537,
+        "time_ms": 77
+      },
+      {
+        "decision": 167,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 1,
+        "score": 22682,
+        "position": [
+          0.0,
+          466.6667
+        ],
+        "bullet_count": 3,
+        "held": 32,
+        "observed_held": 32,
+        "native_input_bits": 65537,
+        "time_ms": 73
+      },
+      {
+        "decision": 168,
+        "stage": 1,
+        "difficulty": 1,
+        "lives": 1,
+        "score": 22988,
+        "position": [
+          0.0,
+          457.3333
+        ],
+        "bullet_count": 0,
+        "held": 32,
+        "observed_held": 32,
+        "native_input_bits": 65537,
+        "time_ms": 83
+      }
+    ],
+    "hold_outliers": [
+      {
+        "decision": 40,
+        "measured_ms": 59
+      },
+      {
+        "decision": 89,
+        "measured_ms": 62
+      },
+      {
+        "decision": 125,
+        "measured_ms": 61
+      },
+      {
+        "decision": 130,
+        "measured_ms": 64
+      },
+      {
+        "decision": 184,
+        "measured_ms": 58
+      },
+      {
+        "decision": 190,
+        "measured_ms": 60
+      },
+      {
+        "decision": 192,
+        "measured_ms": 61
+      },
+      {
+        "decision": 193,
+        "measured_ms": 57
+      },
+      {
+        "decision": 202,
+        "measured_ms": 57
+      },
+      {
+        "decision": 220,
+        "measured_ms": 59
+      },
+      {
+        "decision": 234,
+        "measured_ms": 57
+      },
+      {
+        "decision": 244,
+        "measured_ms": 59
+      },
+      {
+        "decision": 245,
+        "measured_ms": 65
+      },
+      {
+        "decision": 247,
+        "measured_ms": 68
+      },
+      {
+        "decision": 265,
+        "measured_ms": 62
+      },
+      {
+        "decision": 270,
+        "measured_ms": 62
+      },
+      {
+        "decision": 280,
+        "measured_ms": 65
+      },
+      {
+        "decision": 313,
+        "measured_ms": 66
+      },
+      {
+        "decision": 314,
+        "measured_ms": 57
+      },
+      {
+        "decision": 315,
+        "measured_ms": 61
+      },
+      {
+        "decision": 326,
+        "measured_ms": 65
+      }
+    ],
+    "opening": {
+      "stage": 1,
+      "difficulty": 1,
+      "lives": 2,
+      "score": 0,
+      "position": [
+        0.0,
+        400.0
+      ],
+      "bullet_count": 0,
+      "held": 0,
+      "observed_held": 0,
+      "native_input_bits": 0,
+      "time_ms": 0
+    },
+    "last_acknowledged": {
+      "decision": 356,
+      "stage": 1,
+      "difficulty": 1,
+      "lives": -1,
+      "score": 131264,
+      "position": [
+        184.0,
+        432.0
+      ],
+      "bullet_count": 59,
+      "held": 33,
+      "observed_held": 33,
+      "native_input_bits": 4259905,
+      "time_ms": 85
+    },
+    "startup_to_endpoint_control_seconds": 40.13355899997987,
+    "decisions": 356,
+    "game_resumed_seconds": 29.499,
+    "median_hold_ms": 85.0,
+    "wall_seconds": 72.44499370013364,
+    "trace_sha256": "5d85add339d44ab1f00d27fbd376c76422f05a4bef04675211815e07d8ce5619",
+    "native_inputs_matched": 356,
+    "actual_motion_decisions": 242,
+    "final_native": {
+      "stage": 1,
+      "difficulty": 1,
+      "lives": -1,
+      "score": 131264,
+      "position": [
+        184.0,
+        432.0
+      ],
+      "bullet_count": 59,
+      "held": 33,
+      "observed_held": 33,
+      "native_input_bits": 4259905,
+      "time_ms": 85
+    },
+    "move_focus_counts": [
+      [
+        11,
+        41,
+        16,
+        26,
+        97,
+        37,
+        24,
+        47,
+        15
+      ],
+      [
+        1,
+        2,
+        0,
+        10,
+        16,
+        5,
+        1,
+        7,
+        0
+      ]
+    ]
+  },
+  "source_sha256": "ff31825d3b4e56a2b389324566485718ffdb542aac1f6d0d215d84fbf3e1dd2f",
+  "scope": "One independently started official 0.02a trial credit. Shows continuous native play with fixed Shoot and no Bomb. Cannot estimate a clear rate or substantiate retail 1CC.",
+  "audited_decisions": 356,
+  "audited_consumed_input_matches": 356,
+  "visual_endpoint": {
+    "classification": "stock-game-over",
+    "visible_evidence": "Original Game Over text is visible after native stage 1 life stock reached minus one. All keys were released.",
+    "figure": "figures/th10-trial-motion-ppo-credit-endpoint.png",
+    "sha256": "ef4457b1bf5a82b2617210d72a79c470f545316d11912ebe075476aa31821895"
+  },
+  "earlier_technical_censors": [
+    {
+      "source_sha256": "326056f12949ea024f478e2e4efd94faaf0762be1b794e9f1a23e277ba6daee9",
+      "decisions": 201,
+      "resumed_seconds": 17.371,
+      "raw_stage": 1,
+      "remaining_lives": 1,
+      "settled_3_sha256": "329111eead997301b8be106bb3433aa1e929a1f73d048827ad16346f9ed3e25f",
+      "outcome": "Diagnostic stopped after first miss. Image confirmed play was active after respawn."
+    },
+    {
+      "source_sha256": "7cea7cb3db0d66a0b84e8e0331837d5a2e2a82bf13001f076f146f74b85217f5",
+      "decisions": 47,
+      "resumed_seconds": 4.019,
+      "raw_stage": 1,
+      "remaining_lives": 2,
+      "outcome": "Diagnostic closed after 47 decisions. Identical settled captures indicated a frozen private game. No lives were lost."
+    },
+    {
+      "source_sha256": "8ddefccdc914fa208bb6aa7b55ea1c341e68485ea3079846092f5a5d11805a11",
+      "decisions": 33,
+      "resumed_seconds": 2.778,
+      "raw_stage": 1,
+      "remaining_lives": 2,
+      "outcome": "The locked-clock hold guard censored the controller in its first unpaused-clock trial. No lives were lost."
+    }
+  ]
+}
