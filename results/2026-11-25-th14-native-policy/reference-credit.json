@@ -1,0 +1,315 @@
+{
+  "specification": {
+    "schema": 1,
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "first_stage": 1,
+      "last_stage": 1,
+      "start_frame": 30,
+      "decision_limit": 3300,
+      "frames_per_action": 4,
+      "all_native_lives": true,
+      "allows_continue": false,
+      "expected_start_resources": {
+        "lives": 2,
+        "bombs": 3,
+        "power": 100,
+        "life_fragments": 0,
+        "bomb_fragments": 0
+      }
+    },
+    "controller": {
+      "kind": "frozen_sft_and_ppo",
+      "decode": "sampled",
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "native_rng_seed_controlled": false,
+      "bomb_accounting": "inventory decreases on steps without life loss"
+    },
+    "runtime": {
+      "runner_sha256": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+      "source_sha256": {
+        "scripts.audit_th14_clear_objective": "a9974c613ac35d12c6c7ff550dec998cda916262e635b1b09cf02ea90fd2e664",
+        "scripts.evaluate_sft_native": "6efa28d4ba8bf12e01dec5be16ca7fd1978cf27f5c019effaa4bf6c462a62546",
+        "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+        "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0",
+      "device": "cpu"
+    },
+    "policies": {
+      "ppo397_with_ppo211_bomb": {
+        "kind": "frozen_logit_crossover",
+        "movement_focus_shoot": "ppo397",
+        "bomb": "ppo211",
+        "source_sha256": {
+          "ppo211": "d387a429bca1934b14a313e46101c91d4437556ea1445e46e567fa80c4717d19",
+          "ppo397": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36"
+        },
+        "stage_clock": true,
+        "native_training_decisions_after_composition": 0
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "order": 1,
+        "arm": "ppo397_with_ppo211_bomb",
+        "policy_seed": 1601
+      }
+    ]
+  },
+  "completed": [
+    {
+      "trial": {
+        "block": 1,
+        "order": 1,
+        "arm": "ppo397_with_ppo211_bomb",
+        "policy_seed": 1601
+      },
+      "result": {
+        "stage_frame": 7466,
+        "native_stage": 1,
+        "native_pause_state": 1,
+        "stages_cleared": 0,
+        "score": 28854,
+        "misses": 3,
+        "bombs_used": 3,
+        "steps": 1860,
+        "first_miss_frame": 1554,
+        "first_miss_stage": 1,
+        "outcome": "game_over",
+        "decision_count": 1860,
+        "deaths": 3,
+        "actual_bombs_consumed": 3,
+        "native_continues": 0,
+        "start_frame": 30,
+        "reset_info": {
+          "fresh_credit_reset": {
+            "route": "prepared_opening",
+            "before": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 6,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "start_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "reset_seconds": 0.38221370009705424,
+        "stage2_entry": null,
+        "stage2_lives": null,
+        "stage2_bombs": null,
+        "boss_phase_events": [
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 9000,
+            "entry": {
+              "frame": 2422,
+              "hp": 9000,
+              "resources": {
+                "lives": 1,
+                "bombs": 3,
+                "power": 113,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "exit": {
+              "frame": 3866,
+              "last_observed_hp": 0,
+              "observed_native_stage": 1,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 113,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 40,
+            "entry": {
+              "frame": 5562,
+              "hp": 40,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 127,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "exit": {
+              "frame": 5662,
+              "last_observed_hp": 40,
+              "observed_native_stage": 1,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 127,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          },
+          {
+            "stage": 1,
+            "spell_id": null,
+            "max_hp": 11300,
+            "entry": {
+              "frame": 5662,
+              "hp": 11300,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 127,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "exit": {
+              "frame": 7466,
+              "last_observed_hp": 2024,
+              "observed_native_stage": 1,
+              "resources": {
+                "lives": -1,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        ],
+        "edge_decisions": 1369,
+        "x_min": 0.0,
+        "x_max": 183.99999618530273,
+        "horizontal_commands_while_active": 458,
+        "horizontal_responses": 135,
+        "action_counts": {
+          "movement": [
+            16,
+            135,
+            118,
+            8,
+            1175,
+            273,
+            8,
+            73,
+            54
+          ],
+          "focus": [
+            11,
+            1849
+          ],
+          "shoot": [
+            62,
+            1798
+          ],
+          "bomb": [
+            1843,
+            17
+          ]
+        },
+        "seconds": 124.21627640002407,
+        "terminal_resources": {
+          "lives": -1,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "native_game_screen": 7,
+        "native_terminal_stage_frame": 7466,
+        "native_adapter_outcome": "native_end",
+        "failure_frame": 7466,
+        "stopped_before_continue": true,
+        "game_over": true,
+        "reached_goal": false
+      }
+    }
+  ],
+  "restarts": [],
+  "interrupted_attempts": [],
+  "pending": null,
+  "in_progress": null,
+  "error": null,
+  "matched_blocks": 1,
+  "matched_summary": {
+    "ppo397_with_ppo211_bomb": {
+      "trials": 1,
+      "clears": 0,
+      "censored_first_miss": 0,
+      "median_first_miss_frame": 1554,
+      "median_furthest_frame": 7466,
+      "outcomes": {
+        "game_over": 1
+      },
+      "horizontal_commands_while_active": 458,
+      "horizontal_responses": 135,
+      "horizontal_response_fraction": 0.29475982532751094,
+      "left_actions": 32,
+      "right_actions": 445,
+      "idle_actions": 1175,
+      "median_x_range": 183.99999618530273,
+      "game_overs": 1,
+      "time_limits": 0,
+      "stage2_entries": 0,
+      "median_stage2_lives": null,
+      "median_stage2_bombs": null,
+      "deaths": 3,
+      "actual_bombs_consumed": 3,
+      "edge_decisions": 1369
+    }
+  },
+  "status": "complete"
+}

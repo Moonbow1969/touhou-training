@@ -1,0 +1,4288 @@
+{
+  "specification": {
+    "schema": 1,
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "first_stage": 1,
+      "last_stage": 1,
+      "start_frame": 30,
+      "decision_limit": 3300,
+      "frames_per_action": 4,
+      "all_native_lives": true,
+      "allows_continue": false,
+      "expected_start_resources": {
+        "lives": 2,
+        "bombs": 3,
+        "power": 100,
+        "life_fragments": 0,
+        "bomb_fragments": 0
+      }
+    },
+    "controller": {
+      "kind": "isolated_randomized_native_bomb_interventions",
+      "decode": "sampled",
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "native_rng_seed_controlled": false,
+      "bomb_accounting": "inventory decreases on steps without life loss"
+    },
+    "runtime": {
+      "runner_sha256": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+      "source_sha256": {
+        "scripts.audit_th14_clear_objective": "a9974c613ac35d12c6c7ff550dec998cda916262e635b1b09cf02ea90fd2e664",
+        "scripts.evaluate_sft_native": "6efa28d4ba8bf12e01dec5be16ca7fd1978cf27f5c019effaa4bf6c462a62546",
+        "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+        "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725",
+        "__main__": "3185b4c6587c0b7e06acf52b48b83f7cac802f26fb7b1c8c7ad69b89614616f5"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0",
+      "device": "cpu"
+    },
+    "policies": {
+      "ppo397": {
+        "hidden": 512,
+        "encoder": "pool",
+        "motion_history": true,
+        "retain_recent_motion": false,
+        "stage_clock": true,
+        "motion_spans": null,
+        "factorized_movement": false,
+        "weights_sha256": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36",
+        "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f",
+        "archive_kind": "ppo",
+        "template_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+        "native_training_decisions": 16384,
+        "warm_start_actor_exact": true,
+        "lineage_evidence": "embedded_manifest",
+        "training_configuration": {
+          "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "ppo_hyperparameters": {
+            "batch_size": 64,
+            "clip_range": 0.15,
+            "ent_coef": 0.004,
+            "gae_lambda": 0.95,
+            "gamma": 0.997,
+            "learning_rate": 8e-05,
+            "n_epochs": 4,
+            "n_steps": 256
+          },
+          "reward": {
+            "alive_step": "1 / train_limit",
+            "miss_or_native_end": 0,
+            "stage_clear": 1
+          },
+          "seed": 397,
+          "train_limit": 3300
+        }
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1602
+      },
+      {
+        "block": 2,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1603
+      },
+      {
+        "block": 3,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1604
+      },
+      {
+        "block": 4,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1605
+      }
+    ],
+    "intervention": {
+      "schema": "th14-stock-1.00b-normal-reimu-a-stage1-bomb-intervention-v1",
+      "observation": [
+        "raw_native_player_state",
+        "previous_bomb_key_held",
+        "native_bomb_stock"
+      ],
+      "rare_player_states": [
+        4
+      ],
+      "rare_enrollment_probability": 1.0,
+      "other_enrollment_probability": 0.002,
+      "assignment_probability": 0.5,
+      "assignment_seed": 404,
+      "label_native_frames": 16,
+      "followup_bomb_bit": 0,
+      "requires_positive_native_bomb_stock": true,
+      "bomb_counting": "Native adapter inventory decreases on steps without a life loss."
+    }
+  },
+  "completed": [
+    {
+      "trial": {
+        "block": 1,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1602
+      },
+      "result": {
+        "reset": {
+          "fresh_credit_reset": {
+            "route": "prepared_opening",
+            "before": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 6,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "opening_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "outcome": "game_over",
+        "decision_count": 1715,
+        "stage_frame": 6886,
+        "first_miss_frame": 2250,
+        "deaths": 3,
+        "actual_bombs_consumed": 6,
+        "rare_enrollment_opportunities": 3,
+        "windows": [
+          {
+            "features": [
+              1,
+              0,
+              3
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 60,
+            "before": {
+              "global_tick": 3982281,
+              "stage_frame": 270,
+              "lives": 2,
+              "bombs": 3,
+              "player_state": 1
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 0,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3982281,
+                  "stage_frame": 270,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982285,
+                  "stage_frame": 274,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982285,
+                  "stage_frame": 274,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982289,
+                  "stage_frame": 278,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982289,
+                  "stage_frame": 278,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982293,
+                  "stage_frame": 282,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982293,
+                  "stage_frame": 282,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982297,
+                  "stage_frame": 286,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              2
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 228,
+            "before": {
+              "global_tick": 3982953,
+              "stage_frame": 942,
+              "lives": 2,
+              "bombs": 2,
+              "player_state": 1
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3982953,
+                  "stage_frame": 942,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982957,
+                  "stage_frame": 946,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982957,
+                  "stage_frame": 946,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982961,
+                  "stage_frame": 950,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982961,
+                  "stage_frame": 950,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982965,
+                  "stage_frame": 954,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3982965,
+                  "stage_frame": 954,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3982969,
+                  "stage_frame": 958,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              1
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 424,
+            "before": {
+              "global_tick": 3983737,
+              "stage_frame": 1726,
+              "lives": 2,
+              "bombs": 1,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3983737,
+                  "stage_frame": 1726,
+                  "lives": 2,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3983741,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3983741,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3983745,
+                  "stage_frame": 1734,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3983745,
+                  "stage_frame": 1734,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3983749,
+                  "stage_frame": 1738,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3983749,
+                  "stage_frame": 1738,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3983753,
+                  "stage_frame": 1742,
+                  "lives": 2,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  8,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 755,
+            "before": {
+              "global_tick": 3985061,
+              "stage_frame": 3050,
+              "lives": 1,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 1,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3985061,
+                  "stage_frame": 3050,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3985065,
+                  "stage_frame": 3054,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985065,
+                  "stage_frame": 3054,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3985069,
+                  "stage_frame": 3058,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985069,
+                  "stage_frame": 3058,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3985073,
+                  "stage_frame": 3062,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985073,
+                  "stage_frame": 3062,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3985077,
+                  "stage_frame": 3066,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 899,
+            "before": {
+              "global_tick": 3985637,
+              "stage_frame": 3626,
+              "lives": 0,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3985637,
+                  "stage_frame": 3626,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3985641,
+                  "stage_frame": 3630,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985641,
+                  "stage_frame": 3630,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3985645,
+                  "stage_frame": 3634,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985645,
+                  "stage_frame": 3634,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3985649,
+                  "stage_frame": 3638,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3985649,
+                  "stage_frame": 3638,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3985653,
+                  "stage_frame": 3642,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              2
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1106,
+            "before": {
+              "global_tick": 3986465,
+              "stage_frame": 4454,
+              "lives": 0,
+              "bombs": 2,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 4,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3986465,
+                  "stage_frame": 4454,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3986469,
+                  "stage_frame": 4458,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3986469,
+                  "stage_frame": 4458,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3986473,
+                  "stage_frame": 4462,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  8,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3986473,
+                  "stage_frame": 4462,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3986477,
+                  "stage_frame": 4466,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3986477,
+                  "stage_frame": 4466,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3986481,
+                  "stage_frame": 4470,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              1
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1368,
+            "before": {
+              "global_tick": 3987513,
+              "stage_frame": 5502,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 5,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3987513,
+                  "stage_frame": 5502,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3987517,
+                  "stage_frame": 5506,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3987517,
+                  "stage_frame": 5506,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3987521,
+                  "stage_frame": 5510,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3987521,
+                  "stage_frame": 5510,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3987525,
+                  "stage_frame": 5514,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3987525,
+                  "stage_frame": 5514,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3987529,
+                  "stage_frame": 5518,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          }
+        ]
+      }
+    },
+    {
+      "trial": {
+        "block": 2,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1603
+      },
+      "result": {
+        "reset": {
+          "fresh_credit_reset": {
+            "route": "game_over_retry",
+            "before": {
+              "screen": 7,
+              "state": 1,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 6,
+              "stage_frame": 6886,
+              "continues": 0,
+              "score": 78749,
+              "resources": {
+                "lives": -1,
+                "bombs": 0,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 1
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "opening_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "outcome": "game_over",
+        "decision_count": 1533,
+        "stage_frame": 6158,
+        "first_miss_frame": 2254,
+        "deaths": 3,
+        "actual_bombs_consumed": 3,
+        "rare_enrollment_opportunities": 5,
+        "windows": [
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 424,
+            "before": {
+              "global_tick": 3990692,
+              "stage_frame": 1726,
+              "lives": 2,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 0,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3990692,
+                  "stage_frame": 1726,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3990696,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3990696,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3990700,
+                  "stage_frame": 1734,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3990700,
+                  "stage_frame": 1734,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3990704,
+                  "stage_frame": 1738,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3990704,
+                  "stage_frame": 1738,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3990708,
+                  "stage_frame": 1742,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 554,
+            "before": {
+              "global_tick": 3991212,
+              "stage_frame": 2246,
+              "lives": 2,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3991212,
+                  "stage_frame": 2246,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3991216,
+                  "stage_frame": 2250,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3991216,
+                  "stage_frame": 2250,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3991220,
+                  "stage_frame": 2254,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3991220,
+                  "stage_frame": 2254,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3991224,
+                  "stage_frame": 2258,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3991224,
+                  "stage_frame": 2258,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3991228,
+                  "stage_frame": 2262,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 821,
+            "before": {
+              "global_tick": 3992280,
+              "stage_frame": 3314,
+              "lives": 1,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 1,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3992280,
+                  "stage_frame": 3314,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3992284,
+                  "stage_frame": 3318,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992284,
+                  "stage_frame": 3318,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3992288,
+                  "stage_frame": 3322,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992288,
+                  "stage_frame": 3322,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3992292,
+                  "stage_frame": 3326,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992292,
+                  "stage_frame": 3326,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3992296,
+                  "stage_frame": 3330,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              3
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 901,
+            "before": {
+              "global_tick": 3992600,
+              "stage_frame": 3634,
+              "lives": 0,
+              "bombs": 3,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3992600,
+                  "stage_frame": 3634,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3992604,
+                  "stage_frame": 3638,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992604,
+                  "stage_frame": 3638,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3992608,
+                  "stage_frame": 3642,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992608,
+                  "stage_frame": 3642,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3992612,
+                  "stage_frame": 3646,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3992612,
+                  "stage_frame": 3646,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3992616,
+                  "stage_frame": 3650,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              2
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 1092,
+            "before": {
+              "global_tick": 3993364,
+              "stage_frame": 4398,
+              "lives": 0,
+              "bombs": 2,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3993364,
+                  "stage_frame": 4398,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3993368,
+                  "stage_frame": 4402,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3993368,
+                  "stage_frame": 4402,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3993372,
+                  "stage_frame": 4406,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3993372,
+                  "stage_frame": 4406,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3993376,
+                  "stage_frame": 4410,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3993376,
+                  "stage_frame": 4410,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3993380,
+                  "stage_frame": 4414,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1322,
+            "before": {
+              "global_tick": 3994284,
+              "stage_frame": 5318,
+              "lives": 0,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3994284,
+                  "stage_frame": 5318,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3994288,
+                  "stage_frame": 5322,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3994288,
+                  "stage_frame": 5322,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3994292,
+                  "stage_frame": 5326,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3994292,
+                  "stage_frame": 5326,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3994296,
+                  "stage_frame": 5330,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3994296,
+                  "stage_frame": 5330,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3994300,
+                  "stage_frame": 5334,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              1
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 1523,
+            "before": {
+              "global_tick": 3995088,
+              "stage_frame": 6122,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3995088,
+                  "stage_frame": 6122,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3995092,
+                  "stage_frame": 6126,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3995092,
+                  "stage_frame": 6126,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3995096,
+                  "stage_frame": 6130,
+                  "lives": -1,
+                  "bombs": 1,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3995096,
+                  "stage_frame": 6130,
+                  "lives": -1,
+                  "bombs": 1,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3995100,
+                  "stage_frame": 6134,
+                  "lives": -1,
+                  "bombs": 1,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3995100,
+                  "stage_frame": 6134,
+                  "lives": -1,
+                  "bombs": 1,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3995104,
+                  "stage_frame": 6138,
+                  "lives": -1,
+                  "bombs": 1,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          }
+        ]
+      }
+    },
+    {
+      "trial": {
+        "block": 3,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1604
+      },
+      "result": {
+        "reset": {
+          "fresh_credit_reset": {
+            "route": "game_over_retry",
+            "before": {
+              "screen": 7,
+              "state": 1,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 6,
+              "stage_frame": 6160,
+              "continues": 0,
+              "score": 50595,
+              "resources": {
+                "lives": -1,
+                "bombs": 1,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "opening_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "outcome": "game_over",
+        "decision_count": 1662,
+        "stage_frame": 6674,
+        "first_miss_frame": 1734,
+        "deaths": 3,
+        "actual_bombs_consumed": 5,
+        "rare_enrollment_opportunities": 5,
+        "windows": [
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 273,
+            "before": {
+              "global_tick": 3996315,
+              "stage_frame": 1122,
+              "lives": 2,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 0,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3996315,
+                  "stage_frame": 1122,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3996319,
+                  "stage_frame": 1126,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996319,
+                  "stage_frame": 1126,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3996323,
+                  "stage_frame": 1130,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996323,
+                  "stage_frame": 1130,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3996327,
+                  "stage_frame": 1134,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996327,
+                  "stage_frame": 1134,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3996331,
+                  "stage_frame": 1138,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 424,
+            "before": {
+              "global_tick": 3996919,
+              "stage_frame": 1726,
+              "lives": 2,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3996919,
+                  "stage_frame": 1726,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3996923,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996923,
+                  "stage_frame": 1730,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3996927,
+                  "stage_frame": 1734,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996927,
+                  "stage_frame": 1734,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3996931,
+                  "stage_frame": 1738,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3996931,
+                  "stage_frame": 1738,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3996935,
+                  "stage_frame": 1742,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 759,
+            "before": {
+              "global_tick": 3998259,
+              "stage_frame": 3066,
+              "lives": 1,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 1,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3998259,
+                  "stage_frame": 3066,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3998263,
+                  "stage_frame": 3070,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998263,
+                  "stage_frame": 3070,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3998267,
+                  "stage_frame": 3074,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998267,
+                  "stage_frame": 3074,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3998271,
+                  "stage_frame": 3078,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998271,
+                  "stage_frame": 3078,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 3998275,
+                  "stage_frame": 3082,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 905,
+            "before": {
+              "global_tick": 3998843,
+              "stage_frame": 3650,
+              "lives": 0,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3998843,
+                  "stage_frame": 3650,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 3998847,
+                  "stage_frame": 3654,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998847,
+                  "stage_frame": 3654,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3998851,
+                  "stage_frame": 3658,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998851,
+                  "stage_frame": 3658,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3998855,
+                  "stage_frame": 3662,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3998855,
+                  "stage_frame": 3662,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3998859,
+                  "stage_frame": 3666,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              2
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 989,
+            "before": {
+              "global_tick": 3999179,
+              "stage_frame": 3986,
+              "lives": 0,
+              "bombs": 2,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 3999179,
+                  "stage_frame": 3986,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3999183,
+                  "stage_frame": 3990,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  0,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3999183,
+                  "stage_frame": 3990,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3999187,
+                  "stage_frame": 3994,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3999187,
+                  "stage_frame": 3994,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3999191,
+                  "stage_frame": 3998,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 3999191,
+                  "stage_frame": 3998,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 3999195,
+                  "stage_frame": 4002,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              1
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 1227,
+            "before": {
+              "global_tick": 4000131,
+              "stage_frame": 4938,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 4,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4000131,
+                  "stage_frame": 4938,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000135,
+                  "stage_frame": 4942,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000135,
+                  "stage_frame": 4942,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000139,
+                  "stage_frame": 4946,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  2,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000139,
+                  "stage_frame": 4946,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000143,
+                  "stage_frame": 4950,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000143,
+                  "stage_frame": 4950,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000147,
+                  "stage_frame": 4954,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              1
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1352,
+            "before": {
+              "global_tick": 4000631,
+              "stage_frame": 5438,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 4,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4000631,
+                  "stage_frame": 5438,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4000635,
+                  "stage_frame": 5442,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000635,
+                  "stage_frame": 5442,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000639,
+                  "stage_frame": 5446,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000639,
+                  "stage_frame": 5446,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000643,
+                  "stage_frame": 5450,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  8,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4000643,
+                  "stage_frame": 5450,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4000647,
+                  "stage_frame": 5454,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          }
+        ]
+      }
+    },
+    {
+      "trial": {
+        "block": 4,
+        "order": 1,
+        "arm": "ppo397",
+        "policy_seed": 1605
+      },
+      "result": {
+        "reset": {
+          "fresh_credit_reset": {
+            "route": "game_over_retry",
+            "before": {
+              "screen": 7,
+              "state": 1,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 6,
+              "stage_frame": 6677,
+              "continues": 0,
+              "score": 53635,
+              "resources": {
+                "lives": -1,
+                "bombs": 0,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 1
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "opening_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "outcome": "game_over",
+        "decision_count": 1870,
+        "stage_frame": 7506,
+        "first_miss_frame": 2818,
+        "deaths": 3,
+        "actual_bombs_consumed": 4,
+        "rare_enrollment_opportunities": 5,
+        "windows": [
+          {
+            "features": [
+              1,
+              0,
+              3
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 53,
+            "before": {
+              "global_tick": 4002178,
+              "stage_frame": 242,
+              "lives": 2,
+              "bombs": 3,
+              "player_state": 1
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 0,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4002178,
+                  "stage_frame": 242,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4002182,
+                  "stage_frame": 246,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4002182,
+                  "stage_frame": 246,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4002186,
+                  "stage_frame": 250,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4002186,
+                  "stage_frame": 250,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4002190,
+                  "stage_frame": 254,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4002190,
+                  "stage_frame": 254,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4002194,
+                  "stage_frame": 258,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              3
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 286,
+            "before": {
+              "global_tick": 4003110,
+              "stage_frame": 1174,
+              "lives": 2,
+              "bombs": 3,
+              "player_state": 1
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 0,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4003110,
+                  "stage_frame": 1174,
+                  "lives": 2,
+                  "bombs": 3,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4003114,
+                  "stage_frame": 1178,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4003114,
+                  "stage_frame": 1178,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4003118,
+                  "stage_frame": 1182,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4003118,
+                  "stage_frame": 1182,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4003122,
+                  "stage_frame": 1186,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4003122,
+                  "stage_frame": 1186,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4003126,
+                  "stage_frame": 1190,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              2
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 578,
+            "before": {
+              "global_tick": 4004278,
+              "stage_frame": 2342,
+              "lives": 2,
+              "bombs": 2,
+              "player_state": 1
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4004278,
+                  "stage_frame": 2342,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4004282,
+                  "stage_frame": 2346,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  7,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004282,
+                  "stage_frame": 2346,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4004286,
+                  "stage_frame": 2350,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  8,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004286,
+                  "stage_frame": 2350,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4004290,
+                  "stage_frame": 2354,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004290,
+                  "stage_frame": 2354,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4004294,
+                  "stage_frame": 2358,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 695,
+            "before": {
+              "global_tick": 4004746,
+              "stage_frame": 2810,
+              "lives": 2,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 0,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4004746,
+                  "stage_frame": 2810,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4004750,
+                  "stage_frame": 2814,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004750,
+                  "stage_frame": 2814,
+                  "lives": 2,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4004754,
+                  "stage_frame": 2818,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004754,
+                  "stage_frame": 2818,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 4004758,
+                  "stage_frame": 2822,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4004758,
+                  "stage_frame": 2822,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 4004762,
+                  "stage_frame": 2826,
+                  "lives": 1,
+                  "bombs": 2,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 832,
+            "before": {
+              "global_tick": 4005294,
+              "stage_frame": 3358,
+              "lives": 1,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 1,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4005294,
+                  "stage_frame": 3358,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4005298,
+                  "stage_frame": 3362,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4005298,
+                  "stage_frame": 3362,
+                  "lives": 1,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4005302,
+                  "stage_frame": 3366,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  1,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4005302,
+                  "stage_frame": 3366,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 4005306,
+                  "stage_frame": 3370,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4005306,
+                  "stage_frame": 3370,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "after": {
+                  "global_tick": 4005310,
+                  "stage_frame": 3374,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 2
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 1,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              3
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1470,
+            "before": {
+              "global_tick": 4007846,
+              "stage_frame": 5910,
+              "lives": 0,
+              "bombs": 3,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 1,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4007846,
+                  "stage_frame": 5910,
+                  "lives": 0,
+                  "bombs": 3,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4007850,
+                  "stage_frame": 5914,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4007850,
+                  "stage_frame": 5914,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4007854,
+                  "stage_frame": 5918,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4007854,
+                  "stage_frame": 5918,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4007858,
+                  "stage_frame": 5922,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4007858,
+                  "stage_frame": 5922,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4007862,
+                  "stage_frame": 5926,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              2
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1576,
+            "before": {
+              "global_tick": 4008270,
+              "stage_frame": 6334,
+              "lives": 0,
+              "bombs": 2,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 2,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4008270,
+                  "stage_frame": 6334,
+                  "lives": 0,
+                  "bombs": 2,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4008274,
+                  "stage_frame": 6338,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008274,
+                  "stage_frame": 6338,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008278,
+                  "stage_frame": 6342,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008278,
+                  "stage_frame": 6342,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008282,
+                  "stage_frame": 6346,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008282,
+                  "stage_frame": 6346,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008286,
+                  "stage_frame": 6350,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              1
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1580,
+            "before": {
+              "global_tick": 4008286,
+              "stage_frame": 6350,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4008286,
+                  "stage_frame": 6350,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008290,
+                  "stage_frame": 6354,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008290,
+                  "stage_frame": 6354,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008294,
+                  "stage_frame": 6358,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008294,
+                  "stage_frame": 6358,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008298,
+                  "stage_frame": 6362,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  0,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008298,
+                  "stage_frame": 6362,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008302,
+                  "stage_frame": 6366,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              1,
+              0,
+              1
+            ],
+            "rare": false,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 0.002,
+            "bomb": 0,
+            "base_bomb": 0,
+            "first_decision": 1623,
+            "before": {
+              "global_tick": 4008458,
+              "stage_frame": 6522,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 1
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4008458,
+                  "stage_frame": 6522,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008462,
+                  "stage_frame": 6526,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008462,
+                  "stage_frame": 6526,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008466,
+                  "stage_frame": 6530,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008466,
+                  "stage_frame": 6530,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008470,
+                  "stage_frame": 6534,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4008470,
+                  "stage_frame": 6534,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4008474,
+                  "stage_frame": 6538,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 0,
+            "terminal_outcome": null,
+            "label_valid": true
+          },
+          {
+            "features": [
+              4,
+              0,
+              1
+            ],
+            "rare": true,
+            "assignment_probability": 0.5,
+            "enrollment_probability": 1.0,
+            "bomb": 1,
+            "base_bomb": 0,
+            "first_decision": 1772,
+            "before": {
+              "global_tick": 4009054,
+              "stage_frame": 7118,
+              "lives": 0,
+              "bombs": 1,
+              "player_state": 4
+            },
+            "prior_deaths": 2,
+            "prior_bombs_used": 3,
+            "transitions": [
+              {
+                "before": {
+                  "global_tick": 4009054,
+                  "stage_frame": 7118,
+                  "lives": 0,
+                  "bombs": 1,
+                  "player_state": 4
+                },
+                "after": {
+                  "global_tick": 4009058,
+                  "stage_frame": 7122,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  5,
+                  1,
+                  1,
+                  1
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4009058,
+                  "stage_frame": 7122,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4009062,
+                  "stage_frame": 7126,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4009062,
+                  "stage_frame": 7126,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4009066,
+                  "stage_frame": 7130,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              },
+              {
+                "before": {
+                  "global_tick": 4009066,
+                  "stage_frame": 7130,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "after": {
+                  "global_tick": 4009070,
+                  "stage_frame": 7134,
+                  "lives": 0,
+                  "bombs": 0,
+                  "player_state": 1
+                },
+                "action": [
+                  4,
+                  1,
+                  1,
+                  0
+                ],
+                "base_bomb": 0,
+                "global_ticks": 4
+              }
+            ],
+            "elapsed_native_ticks": 16,
+            "native_life_losses": 0,
+            "actual_bombs_consumed": 1,
+            "terminal_outcome": null,
+            "label_valid": true
+          }
+        ]
+      }
+    }
+  ],
+  "restarts": [],
+  "pending": null,
+  "status": "complete",
+  "error": null
+}

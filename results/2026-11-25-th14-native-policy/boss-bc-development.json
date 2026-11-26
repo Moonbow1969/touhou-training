@@ -1,0 +1,219 @@
+{
+  "gate_passed": false,
+  "scores": {
+    "th14_ud06d6": {
+      "composite": {
+        "movement_ce": 1.2164429426193237,
+        "focus_ce": 0.2494124174118042,
+        "shoot_ce": 0.16374818980693817,
+        "mean_head_ce": 0.5432011485099792,
+        "four_tick_direction_accuracy": 0.6361556053161621,
+        "wide_target_count": 94,
+        "wide_toward_probability": 0.24243482947349548,
+        "wide_human_toward_fraction": 0.23404255509376526,
+        "shoot_probability": 0.9267489314079285,
+        "human_shoot_fraction": 0.9316361546516418,
+        "focus_probability": 0.9092678427696228,
+        "human_focus_fraction": 0.8003432750701904
+      },
+      "sft": {
+        "movement_ce": 0.9482735991477966,
+        "focus_ce": 0.10066072642803192,
+        "shoot_ce": 0.18170565366744995,
+        "mean_head_ce": 0.41021332144737244,
+        "four_tick_direction_accuracy": 0.7105262875556946,
+        "wide_target_count": 94,
+        "wide_toward_probability": 0.21478484570980072,
+        "wide_human_toward_fraction": 0.23404255509376526,
+        "shoot_probability": 0.965203046798706,
+        "human_shoot_fraction": 0.9316361546516418,
+        "focus_probability": 0.7968801259994507,
+        "human_focus_fraction": 0.8003432750701904
+      },
+      "candidate": {
+        "movement_ce": 0.9078118205070496,
+        "focus_ce": 0.15041063725948334,
+        "shoot_ce": 0.395635724067688,
+        "mean_head_ce": 0.4846193790435791,
+        "four_tick_direction_accuracy": 0.709382176399231,
+        "wide_target_count": 94,
+        "wide_toward_probability": 0.21730516850948334,
+        "wide_human_toward_fraction": 0.23404255509376526,
+        "shoot_probability": 0.9982470273971558,
+        "human_shoot_fraction": 0.9316361546516418,
+        "focus_probability": 0.7751175761222839,
+        "human_focus_fraction": 0.8003432750701904
+      }
+    },
+    "th14_ud068f": {
+      "composite": {
+        "movement_ce": 0.8248348832130432,
+        "focus_ce": 1.127685308456421,
+        "shoot_ce": 0.07413162291049957,
+        "mean_head_ce": 0.675550639629364,
+        "four_tick_direction_accuracy": 0.7585752010345459,
+        "wide_target_count": 82,
+        "wide_toward_probability": 0.24691681563854218,
+        "wide_human_toward_fraction": 0.2591463327407837,
+        "shoot_probability": 0.9335925579071045,
+        "human_shoot_fraction": 1.0,
+        "focus_probability": 0.9408995509147644,
+        "human_focus_fraction": 0.7203166484832764
+      },
+      "sft": {
+        "movement_ce": 0.7447277307510376,
+        "focus_ce": 0.8210341334342957,
+        "shoot_ce": 0.02801874838769436,
+        "mean_head_ce": 0.5312601923942566,
+        "four_tick_direction_accuracy": 0.8522427678108215,
+        "wide_target_count": 82,
+        "wide_toward_probability": 0.20002177357673645,
+        "wide_human_toward_fraction": 0.2591463327407837,
+        "shoot_probability": 0.9728699326515198,
+        "human_shoot_fraction": 1.0,
+        "focus_probability": 0.7353652715682983,
+        "human_focus_fraction": 0.7203166484832764
+      },
+      "candidate": {
+        "movement_ce": 0.49916455149650574,
+        "focus_ce": 0.507693350315094,
+        "shoot_ce": 0.0015234730672091246,
+        "mean_head_ce": 0.3361271321773529,
+        "four_tick_direction_accuracy": 0.8627968430519104,
+        "wide_target_count": 82,
+        "wide_toward_probability": 0.16833239793777466,
+        "wide_human_toward_fraction": 0.2591463327407837,
+        "shoot_probability": 0.9984792470932007,
+        "human_shoot_fraction": 1.0,
+        "focus_probability": 0.7851479649543762,
+        "human_focus_fraction": 0.7203166484832764
+      }
+    }
+  },
+  "training": {
+    "credits": [
+      "th14_ud0864",
+      "th14_ud05e0",
+      "th14_ud0613"
+    ],
+    "rows": 2393,
+    "steps": 160,
+    "seed": 397,
+    "lr": 0.003,
+    "weight_decay": 0.01,
+    "criterion": "four-tick human movement/focus/shoot categorical CE, credit-balanced, 3x for |dx_boss|>=32; residual regularization .003; final fixed update"
+  },
+  "routing": {
+    "native_observation": "positive boss HP and transformed Stage 1 clock past training gap midpoint",
+    "frame_cutoff": 4469,
+    "first_three_heads": "BC specialist on routed states, otherwise exact PPO397",
+    "bomb": "exact PPO211 in all states"
+  },
+  "gate": "on each development credit improve mean 3-head CE vs composite, within +0.05 of SFT or better, improve wide-offset toward-boss probability >=.05 vs composite and fire within .05 of human mean or higher",
+  "data": [
+    {
+      "replay": "th14_ud0864",
+      "player": "8DRabbit",
+      "split": "train",
+      "paired_sha256": "f82187abb79d0d7fe0643866c558a6365873fafbcfeea2d59b9bb72aa5a7752e",
+      "late_boss_decisions": 879,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2423,
+          3351
+        ],
+        [
+          5588,
+          9304
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud05e0",
+      "player": "A.U",
+      "split": "train",
+      "paired_sha256": "f01a92d7732d9c0c9607ade85abb1e6c3ffb340dc17d6ae693884805c746d21c",
+      "late_boss_decisions": 873,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3190
+        ],
+        [
+          5691,
+          9179
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 7
+    },
+    {
+      "replay": "th14_ud0613",
+      "player": "Alice",
+      "split": "train",
+      "paired_sha256": "fac4fc843c10a4be1bf1453789dfdc492074142feeec5414bfb42a56b1940a27",
+      "late_boss_decisions": 641,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2423,
+          3051
+        ],
+        [
+          5699,
+          8260
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud06d6",
+      "player": "Toshi",
+      "split": "validation",
+      "paired_sha256": "0ca2971753b6a2750b026355641481eaa3008a5df4c95e28e515281983b254c8",
+      "late_boss_decisions": 874,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3110
+        ],
+        [
+          5602,
+          9142
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud068f",
+      "player": "Aria",
+      "split": "train",
+      "paired_sha256": "9670bc07c3092f5ec90dd1536dfce9a2116ab9d51ca56602bd85906522db328b",
+      "late_boss_decisions": 758,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3138
+        ],
+        [
+          5714,
+          8742
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    }
+  ],
+  "sealed_test_used": false,
+  "native_performance_measured": false,
+  "sft_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+  "ppo_hashes": {
+    "ppo211": "d387a429bca1934b14a313e46101c91d4437556ea1445e46e567fa80c4717d19",
+    "ppo397": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36"
+  },
+  "run_sha256": "288a7053319aa0aa88c6cfcc5fc78d4cd8b40d9ec2c88461b944fd3475ee3011",
+  "candidate_sha256": "5b0b3a74b8576fb937205ee9ad1aa7b1761fc90ce74ab745d0a3e54aba8ad1ff"
+}

@@ -1,0 +1,264 @@
+{
+  "passed_offline_gate": false,
+  "gate": "per held-out player: wide approaching probability gain >=.10 on natural future waypoints and >=.05 on the boss; wrong-direction probability increase <=.02 for each; near-boss horizontal activity <= human +.10",
+  "scores": {
+    "th14_ud06d6": {
+      "boss": {
+        "all": 874,
+        "wide": 102,
+        "near": 415,
+        "distinct_wide_observations": 102,
+        "observed_progress": 28,
+        "observed_retreat": 12,
+        "observed_no_progress": 60,
+        "composite": {
+          "wide_toward": 0.2220190316438675,
+          "wide_wrong": 0.1313585638999939,
+          "near_move": 0.21697998046875,
+          "toward_on_observed_progress": 0.449484646320343,
+          "toward_on_observed_retreat": 0.04461802914738655,
+          "horizontal_ce": 0.6321960091590881
+        },
+        "candidate": {
+          "wide_toward": 0.28938916325569153,
+          "wide_wrong": 0.06576643884181976,
+          "near_move": 0.1830257773399353,
+          "toward_on_observed_progress": 0.6290764808654785,
+          "toward_on_observed_retreat": 0.006630590185523033,
+          "horizontal_ce": 0.41066446900367737
+        },
+        "human": {
+          "wide_toward": 0.23529411852359772,
+          "wide_wrong": 0.09803921729326248,
+          "near_move": 0.1499999761581421,
+          "toward_on_observed_progress": 0.8571428656578064,
+          "toward_on_observed_retreat": 0.0
+        }
+      },
+      "hindsight": {
+        "all": 3069,
+        "wide": 574,
+        "near": 1297,
+        "distinct_wide_observations": 339,
+        "observed_progress": 212,
+        "observed_retreat": 45,
+        "observed_no_progress": 317,
+        "composite": {
+          "wide_toward": 0.21498171985149384,
+          "wide_wrong": 0.0974755734205246,
+          "near_move": 0.22409284114837646,
+          "toward_on_observed_progress": 0.39794906973838806,
+          "toward_on_observed_retreat": 0.03785504028201103,
+          "horizontal_ce": 0.6280832290649414
+        },
+        "candidate": {
+          "wide_toward": 0.30233779549598694,
+          "wide_wrong": 0.0435837060213089,
+          "near_move": 0.16106843948364258,
+          "toward_on_observed_progress": 0.6099943518638611,
+          "toward_on_observed_retreat": 0.03568064048886299,
+          "horizontal_ce": 0.4005833864212036
+        },
+        "human": {
+          "wide_toward": 0.31707316637039185,
+          "wide_wrong": 0.06358885020017624,
+          "near_move": 0.09117192029953003,
+          "toward_on_observed_progress": 0.849056601524353,
+          "toward_on_observed_retreat": 0.0
+        }
+      }
+    },
+    "th14_ud068f": {
+      "boss": {
+        "all": 758,
+        "wide": 94,
+        "near": 289,
+        "distinct_wide_observations": 94,
+        "observed_progress": 28,
+        "observed_retreat": 11,
+        "observed_no_progress": 55,
+        "composite": {
+          "wide_toward": 0.20697559416294098,
+          "wide_wrong": 0.13478189706802368,
+          "near_move": 0.20058739185333252,
+          "toward_on_observed_progress": 0.3516443073749542,
+          "toward_on_observed_retreat": 0.04722464084625244,
+          "horizontal_ce": 0.5041967630386353
+        },
+        "candidate": {
+          "wide_toward": 0.19669240713119507,
+          "wide_wrong": 0.09297040104866028,
+          "near_move": 0.12681007385253906,
+          "toward_on_observed_progress": 0.48909974098205566,
+          "toward_on_observed_retreat": 0.021526971831917763,
+          "horizontal_ce": 0.2944488823413849
+        },
+        "human": {
+          "wide_toward": 0.24734042584896088,
+          "wide_wrong": 0.0797872319817543,
+          "near_move": 0.07958477735519409,
+          "toward_on_observed_progress": 0.8303571343421936,
+          "toward_on_observed_retreat": 0.0
+        }
+      },
+      "hindsight": {
+        "all": 2912,
+        "wide": 483,
+        "near": 1408,
+        "distinct_wide_observations": 289,
+        "observed_progress": 113,
+        "observed_retreat": 39,
+        "observed_no_progress": 331,
+        "composite": {
+          "wide_toward": 0.1525210291147232,
+          "wide_wrong": 0.09801715612411499,
+          "near_move": 0.19269907474517822,
+          "toward_on_observed_progress": 0.386810302734375,
+          "toward_on_observed_retreat": 0.03765192627906799,
+          "horizontal_ce": 0.4969625771045685
+        },
+        "candidate": {
+          "wide_toward": 0.1595693826675415,
+          "wide_wrong": 0.053378667682409286,
+          "near_move": 0.12785494327545166,
+          "toward_on_observed_progress": 0.4807083010673523,
+          "toward_on_observed_retreat": 0.020475268363952637,
+          "horizontal_ce": 0.28845247626304626
+        },
+        "human": {
+          "wide_toward": 0.19772256910800934,
+          "wide_wrong": 0.06314700096845627,
+          "near_move": 0.055397748947143555,
+          "toward_on_observed_progress": 0.8451327681541443,
+          "toward_on_observed_retreat": 0.0
+        }
+      }
+    }
+  },
+  "training": {
+    "whole_credits": [
+      "th14_ud0864",
+      "th14_ud05e0",
+      "th14_ud0613"
+    ],
+    "actual_late_boss_rows": 2393,
+    "hindsight_windows": 8876,
+    "horizons_decisions": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "large_hindsight_windows": 1884,
+    "offset": -2.46875,
+    "cutoff": 4469,
+    "objective": "75% hindsight + 25% actual boss goals. Equal credit, sign and distance-bin weights within each source. Four-tick human horizontal cross-entropy. 180 full-batch AdamW steps, lr .003, weight decay .01, seed 397."
+  },
+  "assumptions": "Future human positions indicate reachable goals under demonstrated actions. Conditioning on hindsight does not demonstrate counterfactual safety or on-policy wall recovery. Overlapping windows are not independent.",
+  "deployment": "On positive boss HP beyond training-derived frame cutoff: PPO397 vertical movement marginal and focus/shoot, learned horizontal marginal, PPO211 Bomb. All earlier states retain exact crossover.",
+  "data": [
+    {
+      "replay": "th14_ud0864",
+      "player": "8DRabbit",
+      "split": "train",
+      "paired_sha256": "f82187abb79d0d7fe0643866c558a6365873fafbcfeea2d59b9bb72aa5a7752e",
+      "late_boss_decisions": 879,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2423,
+          3351
+        ],
+        [
+          5588,
+          9304
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud05e0",
+      "player": "A.U",
+      "split": "train",
+      "paired_sha256": "f01a92d7732d9c0c9607ade85abb1e6c3ffb340dc17d6ae693884805c746d21c",
+      "late_boss_decisions": 873,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3190
+        ],
+        [
+          5691,
+          9179
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 7
+    },
+    {
+      "replay": "th14_ud0613",
+      "player": "Alice",
+      "split": "train",
+      "paired_sha256": "fac4fc843c10a4be1bf1453789dfdc492074142feeec5414bfb42a56b1940a27",
+      "late_boss_decisions": 641,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2423,
+          3051
+        ],
+        [
+          5699,
+          8260
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud06d6",
+      "player": "Toshi",
+      "split": "validation",
+      "paired_sha256": "0ca2971753b6a2750b026355641481eaa3008a5df4c95e28e515281983b254c8",
+      "late_boss_decisions": 874,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3110
+        ],
+        [
+          5602,
+          9142
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    },
+    {
+      "replay": "th14_ud068f",
+      "player": "Aria",
+      "split": "train",
+      "paired_sha256": "9670bc07c3092f5ec90dd1536dfce9a2116ab9d51ca56602bd85906522db328b",
+      "late_boss_decisions": 758,
+      "sustained_hp_positive_frame_ranges": [
+        [
+          2422,
+          3138
+        ],
+        [
+          5714,
+          8742
+        ]
+      ],
+      "stage2_exists_in_decoded_header": true,
+      "wall_decisions": 0
+    }
+  ],
+  "run_sha256": "1db9a28fe2800301c431352632aae4eca18aaa773b968e33d96c566401f98e69",
+  "candidate_sha256": "97afde2ad58c8130c878d3a6289f77e7ef44b415d5a4ed31a1dc2c508a234b71",
+  "checkpoint_sources": {
+    "ppo211": "d387a429bca1934b14a313e46101c91d4437556ea1445e46e567fa80c4717d19",
+    "ppo397": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36"
+  },
+  "sealed_test_opened": false,
+  "native_used": false
+}

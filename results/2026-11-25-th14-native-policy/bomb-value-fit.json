@@ -1,0 +1,2329 @@
+{
+  "training": {
+    "model": "linear conditional means and centered treatment contrasts for two measured outcomes",
+    "targets": [
+      "native life losses",
+      "native Bombs consumed"
+    ],
+    "utility": "minus losses minus 0.05 times consumption",
+    "regularization": "ridge 1 for player-state means, 8 for state \u00d7 held and state \u00d7 centered stock; doubled ridge for treatment contrasts",
+    "hyperparameter_selection": "fixed before training, no held-out selection",
+    "cross_validation": "leave one complete credit out",
+    "enrollment": "randomized actions conditional on enrolled, positive-stock, available intervention windows. Rare and common enrollment probabilities differ.",
+    "offpolicy": "IPS and cross-fitted doubly robust values per enrolled window; each observed action has propensity 0.5. No inverse enrollment weighting.",
+    "runtime_limits": "Inference scores every action including unsupported stock/held states; later stages and repeated policy decisions were not randomized by the study. Collector forced release on follow-up decisions."
+  },
+  "sources": [
+    {
+      "file": "report.json",
+      "sha256": "e208df572e6f077d84523527e46a0947a0d549d6276f36d1291a628ea204ac7a",
+      "experiment": {
+        "schema": "th14-stock-1.00b-normal-reimu-a-stage1-bomb-intervention-v1",
+        "observation": [
+          "raw_native_player_state",
+          "previous_bomb_key_held",
+          "native_bomb_stock"
+        ],
+        "rare_player_states": [
+          4
+        ],
+        "rare_enrollment_probability": 1.0,
+        "other_enrollment_probability": 0.002,
+        "assignment_probability": 0.5,
+        "assignment_seed": 404,
+        "label_native_frames": 16,
+        "followup_bomb_bit": 0,
+        "requires_positive_native_bomb_stock": true,
+        "bomb_counting": "Native adapter inventory decreases on steps without a life loss."
+      }
+    }
+  ],
+  "training_credits": [
+    "404/1602",
+    "404/1603",
+    "404/1604",
+    "404/1605"
+  ],
+  "training_rows": 31,
+  "rejected_labels": {},
+  "support": {
+    "1,0,3": {
+      "n": [
+        1,
+        3
+      ],
+      "life_losses": [
+        0,
+        0
+      ],
+      "bombs": [
+        0,
+        3
+      ],
+      "fitted_q": [
+        -0.002194557063915733,
+        -0.04105905649848643
+      ],
+      "learned_action": 0
+    },
+    "1,0,2": {
+      "n": [
+        2,
+        3
+      ],
+      "life_losses": [
+        0,
+        0
+      ],
+      "bombs": [
+        0,
+        3
+      ],
+      "fitted_q": [
+        -0.0018036947965689055,
+        -0.03992153125169753
+      ],
+      "learned_action": 0
+    },
+    "4,0,1": {
+      "n": [
+        1,
+        3
+      ],
+      "life_losses": [
+        1,
+        0
+      ],
+      "bombs": [
+        0,
+        3
+      ],
+      "fitted_q": [
+        -0.9125285618057664,
+        -0.06744713589476052
+      ],
+      "learned_action": 1
+    },
+    "4,0,3": {
+      "n": [
+        3,
+        5
+      ],
+      "life_losses": [
+        3,
+        0
+      ],
+      "bombs": [
+        0,
+        5
+      ],
+      "fitted_q": [
+        -0.9185400789824731,
+        -0.06804742910728677
+      ],
+      "learned_action": 1
+    },
+    "1,0,1": {
+      "n": [
+        2,
+        2
+      ],
+      "life_losses": [
+        0,
+        0
+      ],
+      "bombs": [
+        0,
+        1
+      ],
+      "fitted_q": [
+        -0.0014128325292220778,
+        -0.03878400600490862
+      ],
+      "learned_action": 0
+    },
+    "4,0,2": {
+      "n": [
+        4,
+        2
+      ],
+      "life_losses": [
+        4,
+        0
+      ],
+      "bombs": [
+        0,
+        2
+      ],
+      "fitted_q": [
+        -0.9155343203941197,
+        -0.06774728250102363
+      ],
+      "learned_action": 1
+    }
+  },
+  "extrapolated_contexts_in_opening_inventory_range": [
+    {
+      "features": [
+        1,
+        0,
+        0
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 0,
+      "q": [
+        -0.0010219702618752499,
+        -0.037646480758119716
+      ]
+    },
+    {
+      "features": [
+        1,
+        1,
+        0
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 0,
+      "q": [
+        -0.0010219702618752499,
+        -0.037646480758119716
+      ]
+    },
+    {
+      "features": [
+        1,
+        1,
+        1
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 0,
+      "q": [
+        -0.0014128325292220778,
+        -0.03878400600490862
+      ]
+    },
+    {
+      "features": [
+        1,
+        1,
+        2
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 0,
+      "q": [
+        -0.0018036947965689055,
+        -0.03992153125169753
+      ]
+    },
+    {
+      "features": [
+        1,
+        1,
+        3
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 0,
+      "q": [
+        -0.002194557063915733,
+        -0.04105905649848643
+      ]
+    },
+    {
+      "features": [
+        4,
+        0,
+        0
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 1,
+      "q": [
+        -0.909522803217413,
+        -0.0671469892884974
+      ]
+    },
+    {
+      "features": [
+        4,
+        1,
+        0
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 1,
+      "q": [
+        -0.909522803217413,
+        -0.0671469892884974
+      ]
+    },
+    {
+      "features": [
+        4,
+        1,
+        1
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 1,
+      "q": [
+        -0.9125285618057664,
+        -0.06744713589476052
+      ]
+    },
+    {
+      "features": [
+        4,
+        1,
+        2
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 1,
+      "q": [
+        -0.9155343203941197,
+        -0.06774728250102363
+      ]
+    },
+    {
+      "features": [
+        4,
+        1,
+        3
+      ],
+      "observed_by_action": [
+        0,
+        0
+      ],
+      "learned_action": 1,
+      "q": [
+        -0.9185400789824731,
+        -0.06804742910728677
+      ]
+    }
+  ],
+  "cross_fitted": {
+    "n": 31,
+    "assigned": [
+      13,
+      18
+    ],
+    "factual_rmse": 0.060884085650672666,
+    "action_only_rmse": 0.3356872910847131,
+    "policies": {
+      "value_head": {
+        "ips": -0.03225806451612903,
+        "dr": -0.02745168988931349,
+        "presses": 18,
+        "matched": 15
+      },
+      "action_only": {
+        "ips": -0.05483870967741937,
+        "dr": -0.0472768934640836,
+        "presses": 31,
+        "matched": 18
+      },
+      "release": {
+        "ips": -0.5161290322580645,
+        "dr": -0.574974382966987,
+        "presses": 0,
+        "matched": 13
+      },
+      "press": {
+        "ips": -0.05483870967741937,
+        "dr": -0.0472768934640836,
+        "presses": 31,
+        "matched": 18
+      },
+      "frozen_ppo397": {
+        "ips": -0.5161290322580645,
+        "dr": -0.574974382966987,
+        "presses": 0,
+        "matched": 13
+      }
+    }
+  },
+  "per_credit": {
+    "404/1602": {
+      "n": 7,
+      "assigned": [
+        1,
+        6
+      ],
+      "factual_rmse": 0.039628469407907915,
+      "action_only_rmse": 0.17009372136862633,
+      "policies": {
+        "value_head": {
+          "ips": -0.028571428571428574,
+          "dr": -0.01912652751971517,
+          "presses": 3,
+          "matched": 2
+        },
+        "action_only": {
+          "ips": -0.08571428571428572,
+          "dr": -0.057518670875662474,
+          "presses": 7,
+          "matched": 6
+        },
+        "release": {
+          "ips": -0.2857142857142857,
+          "dr": -0.4156455174765787,
+          "presses": 0,
+          "matched": 1
+        },
+        "press": {
+          "ips": -0.08571428571428572,
+          "dr": -0.057518670875662474,
+          "presses": 7,
+          "matched": 6
+        },
+        "frozen_ppo397": {
+          "ips": -0.2857142857142857,
+          "dr": -0.4156455174765787,
+          "presses": 0,
+          "matched": 1
+        }
+      }
+    },
+    "404/1603": {
+      "n": 7,
+      "assigned": [
+        4,
+        3
+      ],
+      "factual_rmse": 0.08539491670873249,
+      "action_only_rmse": 0.3727282991283564,
+      "policies": {
+        "value_head": {
+          "ips": -0.028571428571428574,
+          "dr": -0.03852545311812906,
+          "presses": 5,
+          "matched": 3
+        },
+        "action_only": {
+          "ips": -0.042857142857142864,
+          "dr": -0.052623824395648035,
+          "presses": 7,
+          "matched": 3
+        },
+        "release": {
+          "ips": -0.8571428571428571,
+          "dr": -0.733488426600677,
+          "presses": 0,
+          "matched": 4
+        },
+        "press": {
+          "ips": -0.042857142857142864,
+          "dr": -0.052623824395648035,
+          "presses": 7,
+          "matched": 3
+        },
+        "frozen_ppo397": {
+          "ips": -0.8571428571428571,
+          "dr": -0.733488426600677,
+          "presses": 0,
+          "matched": 4
+        }
+      }
+    },
+    "404/1604": {
+      "n": 7,
+      "assigned": [
+        3,
+        4
+      ],
+      "factual_rmse": 0.06080738308862626,
+      "action_only_rmse": 0.31650890411736377,
+      "policies": {
+        "value_head": {
+          "ips": -0.042857142857142864,
+          "dr": -0.03225210488201214,
+          "presses": 5,
+          "matched": 4
+        },
+        "action_only": {
+          "ips": -0.05714285714285715,
+          "dr": -0.04632009896629929,
+          "presses": 7,
+          "matched": 4
+        },
+        "release": {
+          "ips": -0.5714285714285714,
+          "dr": -0.6992616945556626,
+          "presses": 0,
+          "matched": 3
+        },
+        "press": {
+          "ips": -0.05714285714285715,
+          "dr": -0.04632009896629929,
+          "presses": 7,
+          "matched": 4
+        },
+        "frozen_ppo397": {
+          "ips": -0.5714285714285714,
+          "dr": -0.6992616945556626,
+          "presses": 0,
+          "matched": 3
+        }
+      }
+    },
+    "404/1605": {
+      "n": 10,
+      "assigned": [
+        5,
+        5
+      ],
+      "factual_rmse": 0.05195316340063344,
+      "action_only_rmse": 0.4021208352509903,
+      "policies": {
+        "value_head": {
+          "ips": -0.030000000000000006,
+          "dr": -0.02216737879297235,
+          "presses": 5,
+          "matched": 6
+        },
+        "action_only": {
+          "ips": -0.04,
+          "dr": -0.037034553772332265,
+          "presses": 10,
+          "matched": 5
+        },
+        "release": {
+          "ips": -0.4,
+          "dr": -0.48854364015461693,
+          "presses": 0,
+          "matched": 5
+        },
+        "press": {
+          "ips": -0.04,
+          "dr": -0.037034553772332265,
+          "presses": 10,
+          "matched": 5
+        },
+        "frozen_ppo397": {
+          "ips": -0.4,
+          "dr": -0.48854364015461693,
+          "presses": 0,
+          "matched": 5
+        }
+      }
+    }
+  },
+  "per_state": {
+    "1": {
+      "n": 13,
+      "assigned": [
+        5,
+        8
+      ],
+      "factual_rmse": 0.01684102984742779,
+      "action_only_rmse": 0.39210259447865725,
+      "policies": {
+        "value_head": {
+          "ips": 0.0,
+          "dr": -0.0001836644096270651,
+          "presses": 0,
+          "matched": 5
+        },
+        "action_only": {
+          "ips": -0.05384615384615385,
+          "dr": -0.04745914985715576,
+          "presses": 13,
+          "matched": 8
+        },
+        "release": {
+          "ips": 0.0,
+          "dr": -0.0001836644096270651,
+          "presses": 0,
+          "matched": 5
+        },
+        "press": {
+          "ips": -0.05384615384615385,
+          "dr": -0.04745914985715576,
+          "presses": 13,
+          "matched": 8
+        },
+        "frozen_ppo397": {
+          "ips": 0.0,
+          "dr": -0.0001836644096270651,
+          "presses": 0,
+          "matched": 5
+        }
+      }
+    },
+    "4": {
+      "n": 18,
+      "assigned": [
+        8,
+        10
+      ],
+      "factual_rmse": 0.07860801652958756,
+      "action_only_rmse": 0.28815378798192254,
+      "policies": {
+        "value_head": {
+          "ips": -0.05555555555555555,
+          "dr": -0.0471452638468648,
+          "presses": 18,
+          "matched": 10
+        },
+        "action_only": {
+          "ips": -0.05555555555555555,
+          "dr": -0.0471452638468648,
+          "presses": 18,
+          "matched": 10
+        },
+        "release": {
+          "ips": -0.8888888888888888,
+          "dr": -0.9901010130361916,
+          "presses": 0,
+          "matched": 8
+        },
+        "press": {
+          "ips": -0.05555555555555555,
+          "dr": -0.0471452638468648,
+          "presses": 18,
+          "matched": 10
+        },
+        "frozen_ppo397": {
+          "ips": -0.8888888888888888,
+          "dr": -0.9901010130361916,
+          "presses": 0,
+          "matched": 8
+        }
+      }
+    }
+  },
+  "equal_credit_dr_advantage_over_release": 0.5562169536186766,
+  "favorable_credits_vs_release": 4,
+  "rows": [
+    {
+      "credit": "404/1602",
+      "features": [
+        1,
+        0,
+        3
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0018927484666841543,
+        -0.0327176897725226
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.654353795450452
+      ],
+      "factual_squared_error": 0.0002986782467987699,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0018927484666841543
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06728231022747741
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0018927484666841543
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06728231022747741
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0018927484666841543
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        1,
+        0,
+        2
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0014423122497796037,
+        -0.031371436877312614
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.6274287375462523
+      ],
+      "factual_squared_error": 0.00034702336401594853,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06862856312268739
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06862856312268739
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        4,
+        0,
+        1
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.9037493733369325,
+        -0.07188355636111225
+      ],
+      "actual_action_prediction": [
+        0.02631020785931903,
+        0.9114669700358643
+      ],
+      "factual_squared_error": 0.0004788900390099764,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028116443638887753
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028116443638887753
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.9037493733369325
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028116443638887753
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.9037493733369325
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.9069154679726967,
+        -0.07139090278045589
+      ],
+      "actual_action_prediction": [
+        0.9054220816783001,
+        0.029867725887933447
+      ],
+      "factual_squared_error": 0.008664730102742048,
+      "action_only_squared_error": 0.20243077514792895,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07139090278045589
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07139090278045589
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.0930845320273033
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07139090278045589
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.0930845320273033
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.9069154679726967,
+        -0.07139090278045589
+      ],
+      "actual_action_prediction": [
+        0.02551964829740472,
+        0.9174250896610233
+      ],
+      "factual_squared_error": 0.00045757072176291525,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02860909721954412
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02860909721954412
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.9069154679726967
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02860909721954412
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.9069154679726967
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        1,
+        0,
+        2
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0014423122497796037,
+        -0.031371436877312614
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.6274287375462523
+      ],
+      "factual_squared_error": 0.00034702336401594853,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06862856312268739
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06862856312268739
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0014423122497796037
+        }
+      }
+    },
+    {
+      "credit": "404/1602",
+      "features": [
+        1,
+        0,
+        1
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0009918760328750532,
+        -0.03002518398210263
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.6005036796420525
+      ],
+      "factual_squared_error": 0.0003989932749488495,
+      "action_only_squared_error": 1.539053254437855e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0009918760328750532
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06997481601789737
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0009918760328750532
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06997481601789737
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0009918760328750532
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8758734352722657,
+        -0.07160010987429857
+      ],
+      "actual_action_prediction": [
+        0.025781219343108668,
+        0.9163778106237981
+      ],
+      "factual_squared_error": 0.0004665647465817706,
+      "action_only_squared_error": 6.79052297637084e-06,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028399890125701432
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028399890125701432
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8758734352722657
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.028399890125701432
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8758734352722657
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8708986802003896,
+        -0.07046768518397406
+      ],
+      "actual_action_prediction": [
+        0.8688898771762303,
+        0.04017606048318534
+      ],
+      "factual_squared_error": 0.016667150774001268,
+      "action_only_squared_error": 0.23603139025347747,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07046768518397406
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07046768518397406
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1291013197996103
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07046768518397406
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1291013197996103
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8758734352722657,
+        -0.07160010987429857
+      ],
+      "actual_action_prediction": [
+        0.8739192423905506,
+        0.039083857634301736
+      ],
+      "factual_squared_error": 0.015407404071108416,
+      "action_only_squared_error": 0.23603139025347747,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07160010987429857
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07160010987429857
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1241265647277343
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07160010987429857
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1241265647277343
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        1,
+        0,
+        3
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0024560422946884163,
+        -0.03974633265835312
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.7949266531670622
+      ],
+      "factual_squared_error": 0.0001051376939531559,
+      "action_only_squared_error": 6.79052297637084e-06,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0024560422946884163
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06025366734164689
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0024560422946884163
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.06025366734164689
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0024560422946884163
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        1,
+        0,
+        2
+      ],
+      "rare": false,
+      "assigned": 0,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.0021131309614344923,
+        -0.03877784293423983
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.042262619228689846
+      ],
+      "factual_squared_error": 4.4653224601730615e-06,
+      "action_only_squared_error": 0.26437015246846124,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0021131309614344923
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.03877784293423983
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0021131309614344923
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.03877784293423983
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0021131309614344923
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8708986802003896,
+        -0.07046768518397406
+      ],
+      "actual_action_prediction": [
+        0.02470209676786439,
+        0.9153117683221932
+      ],
+      "factual_squared_error": 0.00041892613679027113,
+      "action_only_squared_error": 6.79052297637084e-06,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.029532314816025945
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.029532314816025945
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8708986802003896
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.029532314816025945
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8708986802003896
+        }
+      }
+    },
+    {
+      "credit": "404/1603",
+      "features": [
+        4,
+        0,
+        1
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8659239251285135,
+        -0.06933526049364952
+      ],
+      "actual_action_prediction": [
+        0.86386051196191,
+        0.04126826333206894
+      ],
+      "factual_squared_error": 0.017976393852944465,
+      "action_only_squared_error": 0.23603139025347747,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.06933526049364952
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.06933526049364952
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1340760748714867
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.06933526049364952
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1340760748714867
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8944611491142349,
+        -0.07460597860131797
+      ],
+      "actual_action_prediction": [
+        0.029329223984564855,
+        0.9055350923350622
+      ],
+      "factual_squared_error": 0.0006054541829285178,
+      "action_only_squared_error": 1.2594662102320043e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8944611491142349
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8944611491142349
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8904257185096094,
+        -0.07377784459645692
+      ],
+      "actual_action_prediction": [
+        0.8887406349444987,
+        0.033701671302212466
+      ],
+      "factual_squared_error": 0.01200652316413536,
+      "action_only_squared_error": 0.19414170332076147,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1095742814903906
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1095742814903906
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8904257185096094,
+        -0.07377784459645692
+      ],
+      "actual_action_prediction": [
+        0.8887406349444987,
+        0.033701671302212466
+      ],
+      "factual_squared_error": 0.01200652316413536,
+      "action_only_squared_error": 0.19414170332076147,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1095742814903906
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07377784459645692
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1095742814903906
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8944611491142349,
+        -0.07460597860131797
+      ],
+      "actual_action_prediction": [
+        0.029329223984564855,
+        0.9055350923350622
+      ],
+      "factual_squared_error": 0.0006054541829285178,
+      "action_only_squared_error": 1.2594662102320043e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8944611491142349
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.025394021398682035
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8944611491142349
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        1,
+        0,
+        2
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.0020329705535062138,
+        -0.038626440516618
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.77252881033236
+      ],
+      "factual_squared_error": 0.00012935785532202862,
+      "action_only_squared_error": 1.2594662102320043e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0020329705535062138
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.061373559483382
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0020329705535062138
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.061373559483382
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.0020329705535062138
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        1,
+        0,
+        1
+      ],
+      "rare": false,
+      "assigned": 0,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.0016622577781032354,
+        -0.03747311188203096
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.033245155562064706
+      ],
+      "factual_squared_error": 2.763100920864705e-06,
+      "action_only_squared_error": 0.31291141940908956,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0016622577781032354
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.03747311188203096
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0016622577781032354
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.03747311188203096
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.0016622577781032354
+        }
+      }
+    },
+    {
+      "credit": "404/1604",
+      "features": [
+        4,
+        0,
+        1
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8863902879049838,
+        -0.07294971059159586
+      ],
+      "actual_action_prediction": [
+        0.027813275201082434,
+        0.9027287078102684
+      ],
+      "factual_squared_error": 0.0005266892162380069,
+      "action_only_squared_error": 1.2594662102320043e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02705028940840415
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02705028940840415
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8863902879049838
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02705028940840415
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8863902879049838
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        1,
+        0,
+        3
+      ],
+      "rare": false,
+      "assigned": 0,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.004213005682094114,
+        -0.04470885338254577
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.08426011364188228
+      ],
+      "factual_squared_error": 1.7749416877357293e-05,
+      "action_only_squared_error": 0.4725490575334649,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004213005682094114
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04470885338254577
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004213005682094114
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04470885338254577
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004213005682094114
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        1,
+        0,
+        3
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.004213005682094114,
+        -0.04470885338254577
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.8941770676509154
+      ],
+      "factual_squared_error": 2.7996232527397342e-05,
+      "action_only_squared_error": 9.547849464689274e-05,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.004213005682094114
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.05529114661745423
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.004213005682094114
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.05529114661745423
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.004213005682094114
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        1,
+        0,
+        2
+      ],
+      "rare": false,
+      "assigned": 0,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.004095235782623471,
+        -0.04457651401097567
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.08190471565246943
+      ],
+      "factual_squared_error": 1.6770956115279675e-05,
+      "action_only_squared_error": 0.4725490575334649,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004095235782623471
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04457651401097567
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004095235782623471
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04457651401097567
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.004095235782623471
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8913582642662193,
+        -0.07397964293762674
+      ],
+      "actual_action_prediction": [
+        0.8896887597966798,
+        0.03339008939079047
+      ],
+      "factual_squared_error": 0.011803026743248634,
+      "action_only_squared_error": 0.09770498268939022,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07397964293762674
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07397964293762674
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1086417357337806
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07397964293762674
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1086417357337806
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 0,
+      "utility": -1.0,
+      "observed_life_losses": 1,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.8931848912036457,
+        -0.07372830958760043
+      ],
+      "actual_action_prediction": [
+        0.8914915992688485,
+        0.03386583869594609
+      ],
+      "factual_squared_error": 0.011409467467176996,
+      "action_only_squared_error": 0.09770498268939022,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07372830958760043
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07372830958760043
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1068151087963543
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.07372830958760043
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": -2.0,
+          "dr": -1.1068151087963543
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        4,
+        0,
+        3
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8931848912036457,
+        -0.07372830958760043
+      ],
+      "actual_action_prediction": [
+        0.028388461827378086,
+        0.906796955204447
+      ],
+      "factual_squared_error": 0.0005630326758850105,
+      "action_only_squared_error": 9.547849464689274e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026271690412399573
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026271690412399573
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8931848912036457
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026271690412399573
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8931848912036457
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        4,
+        0,
+        2
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8913582642662193,
+        -0.07397964293762674
+      ],
+      "actual_action_prediction": [
+        0.028807872399028434,
+        0.9034354107719659
+      ],
+      "factual_squared_error": 0.0005750232754160718,
+      "action_only_squared_error": 9.547849464689274e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026020357062373267
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026020357062373267
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8913582642662193
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.026020357062373267
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8913582642662193
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        1,
+        0,
+        1
+      ],
+      "rare": false,
+      "assigned": 1,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.003977465883152829,
+        -0.04444417463940556
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.8888834927881112
+      ],
+      "factual_squared_error": 0.00197528465937798,
+      "action_only_squared_error": 0.0035726094717778646,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.003977465883152829
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.04444417463940556
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.003977465883152829
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.04444417463940556
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.003977465883152829
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        1,
+        0,
+        1
+      ],
+      "rare": false,
+      "assigned": 0,
+      "utility": 0.0,
+      "observed_life_losses": 0,
+      "observed_consumption": 0,
+      "predicted_action_values": [
+        -0.003977465883152829,
+        -0.04444417463940556
+      ],
+      "actual_action_prediction": [
+        0.0,
+        0.07954931766305658
+      ],
+      "factual_squared_error": 1.5820234851644714e-05,
+      "action_only_squared_error": 0.4725490575334649,
+      "policies": {
+        "value_head": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.003977465883152829
+        },
+        "action_only": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04444417463940556
+        },
+        "release": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.003977465883152829
+        },
+        "press": {
+          "action": 1,
+          "matched": false,
+          "ips": 0.0,
+          "dr": -0.04444417463940556
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": true,
+          "ips": 0.0,
+          "dr": 0.003977465883152829
+        }
+      }
+    },
+    {
+      "credit": "404/1605",
+      "features": [
+        4,
+        0,
+        1
+      ],
+      "rare": true,
+      "assigned": 1,
+      "utility": -0.05,
+      "observed_life_losses": 0,
+      "observed_consumption": 1,
+      "predicted_action_values": [
+        -0.8895316373287929,
+        -0.07423097628765302
+      ],
+      "actual_action_prediction": [
+        0.02922728297067878,
+        0.9000738663394847
+      ],
+      "factual_squared_error": 0.0005871402118528027,
+      "action_only_squared_error": 9.547849464689274e-05,
+      "policies": {
+        "value_head": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02576902371234699
+        },
+        "action_only": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02576902371234699
+        },
+        "release": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8895316373287929
+        },
+        "press": {
+          "action": 1,
+          "matched": true,
+          "ips": -0.1,
+          "dr": -0.02576902371234699
+        },
+        "frozen_ppo397": {
+          "action": 0,
+          "matched": false,
+          "ips": -0.0,
+          "dr": -0.8895316373287929
+        }
+      }
+    }
+  ],
+  "model_sha256": "51f89c4f816dc89f6bfd0b3e672625b1a4a6c116f0a01cdb3759332cad0b81f8",
+  "code_sha256": "7300ecbdc7dbde37448ac287518a278438112dc24e09f691e5eaf46d705c4282"
+}
