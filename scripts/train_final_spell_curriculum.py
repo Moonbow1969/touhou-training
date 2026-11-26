@@ -105,6 +105,9 @@ def main():
     spec["prefix"]["privileged_training_curriculum"] = True
     spec["learner"] = "Pure four-head SFT initialization; no demo, geometry, aim override or Bomb override after handoff."
     spec["curriculum_source_sha256"] = digest(Path(__file__))
+    # Per-stage provenance from the demo tracker uses integer dictionary keys in memory.
+    # The checkpoint store verifies exact manifest equality after a JSON round trip.
+    spec = json.loads(json.dumps(spec, allow_nan=False))
     if args.verify_only:
         print(json.dumps(spec, indent=2))
         return

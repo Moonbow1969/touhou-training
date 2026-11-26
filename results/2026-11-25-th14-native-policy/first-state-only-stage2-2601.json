@@ -1,0 +1,639 @@
+{
+  "specification": {
+    "schema": 1,
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "stock_story": true,
+      "target": "ending",
+      "start_frame": 30,
+      "decision_limit": 45000,
+      "frames_per_action": 4,
+      "all_native_lives": true,
+      "native_rng_seed_controlled": false
+    },
+    "controller": {
+      "frozen": true,
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "allows_continue": false,
+      "policy_unchanged_between_stages": true,
+      "kind": "greedy learned joint movement/focus, Shoot and Bomb"
+    },
+    "restart": {
+      "game_over_default_sha256": "1684aeb1fea7f3c39d181c6dcd1a9adfd7b063f6b892aac901a75a4cac2442c2",
+      "game_over_retry_sha256": "7c2ca1a1ec29d46bb1088ec86e320d06a52ef05f619b25e920ff39c6709afbfe",
+      "menu_crop": [
+        [
+          39,
+          256,
+          48,
+          20
+        ],
+        [
+          39,
+          356,
+          118,
+          20
+        ],
+        [
+          15,
+          207,
+          70,
+          24
+        ]
+      ],
+      "menu_max_error": 0.035,
+      "external_hook": null,
+      "external_hook_source_sha256": null
+    },
+    "runtime": {
+      "runner_sha256": "398e81f704eaa8fa22b433b67156be672cc1c8cf2159bcc990e88d9118779e2c",
+      "source_sha256": {
+        "scripts.evaluate_full_credit": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+        "scripts.native_story_restart": "c29a39a57bfecaa8582bc3779811dc8b0e4bcfe9fe922fa73d598f50f7c25209",
+        "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725",
+        "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+        "relative_phase_student": "f65ed3bd91e45abf0bfa1e1f05f60cb01c5ffc5562c73a9c72dfc79fe3a3c586",
+        "state_route_student": "705bf0b51b09684d1b97d32519d80df31453b849394d9aa64dcb5a88e09f972f",
+        "evaluate_relative_phase_student": "885d83506e1978a970cfe6b052981ecf371a63eb09c99a9b84db5de1842dc67b",
+        "scripts.native_story_transitions": "401ae8ab842f9dc02fac3ac0d3f16ed4f856f0f2cd797f37b87f877109c9f5cf",
+        "scripts.native_credit_transitions": "b29ae7922e658b5364bfb4062abf9aef92ee6e4e90e364bb38841cef1811c5f0"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0"
+    },
+    "policies": {
+      "relative_phase_student": {
+        "kind": "state-only event-clock neural actor",
+        "sha256": "d5bfabb005ee68f2bcc2410e6649f9df528262d28c3f215a35b2c38fbc3acdde"
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "order": 1,
+        "arm": "relative_phase_student",
+        "policy_seed": 2601
+      }
+    ],
+    "transition_recording": {
+      "schema": "th14-stock-story-actor-transitions-v1",
+      "budget_mib": 128,
+      "disk_reserve_mib": 2048
+    }
+  },
+  "completed": [
+    {
+      "trial": {
+        "block": 1,
+        "order": 1,
+        "arm": "relative_phase_student",
+        "policy_seed": 2601
+      },
+      "result": {
+        "stage_frame": 8554,
+        "native_stage": 2,
+        "native_pause_state": 1,
+        "stages_cleared": 1,
+        "score": 1087271,
+        "misses": 4,
+        "bombs_used": 14,
+        "steps": 4553,
+        "first_miss_frame": 7406,
+        "first_miss_stage": 1,
+        "outcome": "game_over",
+        "target": "ending",
+        "decision_count": 4553,
+        "deaths": 4,
+        "actual_bombs_consumed": 14,
+        "native_continues": 0,
+        "stage_records": [
+          {
+            "stage": 1,
+            "entry": {
+              "stage": 1,
+              "screen": 7,
+              "pause": 2,
+              "frame": 30,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "first_playable": {
+              "stage": 1,
+              "screen": 7,
+              "pause": 2,
+              "frame": 30,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "exit": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 24,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 276,
+                "life_fragments": 2,
+                "bomb_fragments": 4
+              },
+              "last_controlled_frame": 9674,
+              "reason": "native_stage_advance"
+            },
+            "decisions": 2412,
+            "lives_lost": 1,
+            "bombs_consumed": 7,
+            "action_counts": {
+              "movement": [
+                146,
+                188,
+                140,
+                273,
+                954,
+                246,
+                129,
+                157,
+                179
+              ],
+              "focus": [
+                1287,
+                1125
+              ],
+              "shoot": [
+                417,
+                1995
+              ],
+              "bomb": [
+                2403,
+                9
+              ]
+            },
+            "resource_events": [
+              {
+                "stage_frame": 1142,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 3438,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 4070,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 6494,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7398,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7402,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8270,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8882,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 9486,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              }
+            ]
+          },
+          {
+            "stage": 2,
+            "entry": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 24,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 276,
+                "life_fragments": 2,
+                "bomb_fragments": 4
+              }
+            },
+            "first_playable": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 24,
+              "resources": {
+                "lives": 1,
+                "bombs": 0,
+                "power": 276,
+                "life_fragments": 2,
+                "bomb_fragments": 4
+              }
+            },
+            "exit": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 1,
+              "frame": 8555,
+              "resources": {
+                "lives": -1,
+                "bombs": 0,
+                "power": 350,
+                "life_fragments": 2,
+                "bomb_fragments": 0
+              },
+              "last_controlled_frame": 8554,
+              "reason": "game_over"
+            },
+            "decisions": 2141,
+            "lives_lost": 3,
+            "bombs_consumed": 7,
+            "action_counts": {
+              "movement": [
+                180,
+                212,
+                165,
+                206,
+                639,
+                233,
+                169,
+                198,
+                139
+              ],
+              "focus": [
+                896,
+                1245
+              ],
+              "shoot": [
+                322,
+                1819
+              ],
+              "bomb": [
+                2128,
+                13
+              ]
+            },
+            "resource_events": [
+              {
+                "stage_frame": 226,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 230,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 1770,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 2950,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 4422,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 5270,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 5274,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 5614,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 6118,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7374,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8186,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8518,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8522,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              }
+            ]
+          }
+        ],
+        "start_frame": 30,
+        "start_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "reset_info": {
+          "fresh_credit_reset": {
+            "route": "native_retry",
+            "before": {
+              "screen": 7,
+              "state": 2,
+              "stage": 2,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 143,
+              "continues": 0,
+              "score": 628934,
+              "resources": {
+                "lives": 0,
+                "bombs": 1,
+                "power": 230,
+                "life_fragments": 2,
+                "bomb_fragments": 1
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "seconds": 306.4495029998943,
+        "native_terminal": {
+          "stage": 2,
+          "screen": 7,
+          "pause": 1,
+          "frame": 8555,
+          "resources": {
+            "lives": -1,
+            "bombs": 0,
+            "power": 350,
+            "life_fragments": 2,
+            "bomb_fragments": 0
+          }
+        },
+        "stopped_before_continue": true,
+        "one_credit_clear": false,
+        "target_reached": false,
+        "transition_shard": {
+          "path": "transition-shards/credit-001-arm-relative_phase_student-seed-2601.npz",
+          "sha256": "845368a1c59cb6f3c640285281b1e486ec847191bf5df4e6fe8ddea9bd9f4ed5",
+          "bytes": 1551054,
+          "rows": 4553
+        }
+      }
+    }
+  ],
+  "restarts": [],
+  "interrupted_attempts": [],
+  "pending": null,
+  "matched_blocks": 1,
+  "matched_summary": {
+    "relative_phase_student": {
+      "credits": 1,
+      "outcomes": {
+        "game_over": 1
+      },
+      "target_reaches": 0,
+      "one_credit_clears": 0,
+      "stage_entries": {
+        "1": {
+          "entries": 1,
+          "median_lives": 2,
+          "median_bombs": 3
+        },
+        "2": {
+          "entries": 1,
+          "median_lives": 1,
+          "median_bombs": 0
+        }
+      }
+    }
+  },
+  "status": "complete",
+  "error": null,
+  "in_progress": null,
+  "waiting_for_fresh_credit": null,
+  "session_preparations": [
+    null
+  ]
+}

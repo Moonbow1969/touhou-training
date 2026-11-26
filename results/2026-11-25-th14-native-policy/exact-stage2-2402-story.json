@@ -1,0 +1,896 @@
+{
+  "specification": {
+    "schema": 1,
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "stock_story": true,
+      "target": "ending",
+      "start_frame": 30,
+      "decision_limit": 45000,
+      "frames_per_action": 4,
+      "all_native_lives": true,
+      "native_rng_seed_controlled": false
+    },
+    "controller": {
+      "frozen": true,
+      "geometry": false,
+      "aim_correction": false,
+      "automatic_bomb": false,
+      "allows_continue": false,
+      "policy_unchanged_between_stages": true,
+      "kind": "frozen_demo_exact_stage1_stage2_phase",
+      "stage3_plus": "macro encounter alignment",
+      "learned_bomb_transfer_stage1_to_later": true
+    },
+    "restart": {
+      "game_over_default_sha256": "1684aeb1fea7f3c39d181c6dcd1a9adfd7b063f6b892aac901a75a4cac2442c2",
+      "game_over_retry_sha256": "7c2ca1a1ec29d46bb1088ec86e320d06a52ef05f619b25e920ff39c6709afbfe",
+      "menu_crop": [
+        [
+          39,
+          256,
+          48,
+          20
+        ],
+        [
+          39,
+          356,
+          118,
+          20
+        ],
+        [
+          15,
+          207,
+          70,
+          24
+        ]
+      ],
+      "menu_max_error": 0.035,
+      "external_hook": null,
+      "external_hook_source_sha256": null
+    },
+    "runtime": {
+      "runner_sha256": "c945522dda58adf9653a613b2b5cb348c66923bbbd0a4798f9cde6efbfffefd0",
+      "source_sha256": {
+        "scripts.evaluate_full_credit": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+        "scripts.native_story_restart": "c29a39a57bfecaa8582bc3779811dc8b0e4bcfe9fe922fa73d598f50f7c25209",
+        "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725",
+        "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+        "scripts.evaluate_demo_route_encounters": "66e7d0066214029fc2aa7ea8cc4083e266045cbabfb1d7b53de67479fde1b758",
+        "scripts.evaluate_demo_route_phase": "ed330b7aef82730fb85b559fa6bf43ddd9750358d1de2da175f404e4add11eb4",
+        "scripts.evaluate_credit_story": "398e81f704eaa8fa22b433b67156be672cc1c8cf2159bcc990e88d9118779e2c",
+        "scripts.train_demo_route": "cd7c6a92729cc123b00608089fadec35f0c9dea906979b2d26618db2d957740b",
+        "scripts.fit_randomized_bomb_value": "04657178ccc70c2573e42e362f194d18d1a1a8cc605dacf818f868003c59bba8",
+        "scripts.train_native_bomb_timing": "3185b4c6587c0b7e06acf52b48b83f7cac802f26fb7b1c8c7ad69b89614616f5",
+        "scripts.native_story_transitions": "401ae8ab842f9dc02fac3ac0d3f16ed4f856f0f2cd797f37b87f877109c9f5cf",
+        "scripts.native_credit_transitions": "b29ae7922e658b5364bfb4062abf9aef92ee6e4e90e364bb38841cef1811c5f0",
+        "scripts.native_story_sensors": "0aeb918d27c3afb2ee461d7b018be0db1bcd946a6c49e52853a6768600ca325e",
+        "environment.structured": "0245a7620520be3125dd2b0e959dc4b505f9298fc5d5b71407ac25424909926a"
+      },
+      "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+      "torch": "2.5.1+cu124",
+      "stable_baselines3": "2.5.0"
+    },
+    "policies": {
+      "stage2_exact_phase": {
+        "model_sha256": "d659bac965dd558fbaa1dbad0e12f63f5c2b8e0b226c1d42c0942f3d1e2a769b",
+        "route_sha256": "8092e337b03fc6dd43d91b2030db23fbbad9fb3be265f31b1c1e463d3256373c",
+        "train_replay": "th14_ud0613",
+        "stage1_phase_knots": {
+          "midboss": [
+            2423,
+            3055
+          ],
+          "nonspell1": [
+            5699,
+            6251
+          ],
+          "spell4": [
+            6251,
+            6971
+          ],
+          "nonspell2": [
+            6971,
+            7560
+          ],
+          "spell8": [
+            7560,
+            8264
+          ]
+        },
+        "later_stages_verified_train_sources": {
+          "2": {
+            "source_sha256": "17abb1b606218e5b05a2fbaef9d5d533d9a513e0b6d64a26374112e6f49cf5c3",
+            "visible_boss_intervals": [
+              [
+                2281,
+                3357
+              ],
+              [
+                7033,
+                10205
+              ]
+            ]
+          },
+          "3": {
+            "source_sha256": "04eb61de12e38cb357032c6f740ffa48a7ce4e483dbd7161ce9ca46c03b7eb4f",
+            "visible_boss_intervals": [
+              [
+                3124,
+                4124
+              ],
+              [
+                8521,
+                12238
+              ]
+            ]
+          },
+          "4": {
+            "source_sha256": "b0566141fedd97d604c7fcd0006249e65207734ee47c0e3ef6d8273a1946109e",
+            "visible_boss_intervals": [
+              [
+                5001,
+                6257
+              ],
+              [
+                10793,
+                16321
+              ]
+            ]
+          },
+          "5": {
+            "source_sha256": "d9037813b714af23db8dd9f4b498f1ccf5530db9c3749b94c2453a160421c0ac",
+            "visible_boss_intervals": [
+              [
+                4792,
+                6120
+              ],
+              [
+                10556,
+                16444
+              ]
+            ]
+          },
+          "6": {
+            "source_sha256": "4dcca4c3de87ab76b1d7f8cfc8353d9901dadcfd92dfae18fe1f012224b8e36a",
+            "visible_boss_intervals": [
+              [
+                4195,
+                5743
+              ],
+              [
+                6159,
+                18320
+              ]
+            ]
+          }
+        },
+        "method": "causal vulnerable onset/confirmed visible exit; nondecreasing within encounter",
+        "later_scope": "Stage 2\u20136 macro encounters only; no inferred spell or HP phase IDs.",
+        "learned_bomb_sha256": "51f89c4f816dc89f6bfd0b3e672625b1a4a6c116f0a01cdb3759332cad0b81f8",
+        "independent_shoot": {
+          "hidden": 512,
+          "encoder": "pool",
+          "motion_history": true,
+          "retain_recent_motion": false,
+          "stage_clock": true,
+          "motion_spans": null,
+          "factorized_movement": false,
+          "weights_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f"
+        },
+        "stage2_phase_intervals": {
+          "mid_nonspell": [
+            2281,
+            2761
+          ],
+          "spell12": [
+            2761,
+            3361
+          ],
+          "main_nonspell1": [
+            7033,
+            7509
+          ],
+          "spell16": [
+            7509,
+            7941
+          ],
+          "main_nonspell2": [
+            7941,
+            8549
+          ],
+          "spell20": [
+            8549,
+            9129
+          ]
+        },
+        "stage2_visible_knot_brackets": {
+          "spell12_visible_hp_1900": [
+            2757,
+            2761
+          ],
+          "spell16_visible_hp_1400": [
+            7505,
+            7509
+          ],
+          "post_spell16_clipped_reset": [
+            7937,
+            7941
+          ],
+          "spell20_visible_hp_1900": [
+            8545,
+            8549
+          ],
+          "post_spell20_clipped_reset_unlabeled": [
+            9125,
+            9129
+          ]
+        },
+        "stage2_raw_ids": [
+          {
+            "max_hp": 12000,
+            "spell_id": null,
+            "phase": "mid_nonspell"
+          },
+          {
+            "max_hp": 12000,
+            "spell_id": 12,
+            "phase": "spell12"
+          },
+          {
+            "max_hp": 12400,
+            "spell_id": null,
+            "phase": "main_nonspell1"
+          },
+          {
+            "max_hp": 12400,
+            "spell_id": 16,
+            "phase": "spell16"
+          },
+          {
+            "max_hp": 12900,
+            "spell_id": null,
+            "phase": "main_nonspell2"
+          },
+          {
+            "max_hp": 12900,
+            "spell_id": 20,
+            "phase": "spell20"
+          }
+        ],
+        "development_native_credit_sha256": "c86120842e56e3764c794c068997af5e8c5c01510b567e8494afcac0bf6dbf28",
+        "development_audit_sha256": "680af5d605b615b571019572fc0fff3a9a05c81edf7294bac34a694cf6a46968",
+        "development_tape_role": "Established raw phase identities only. Not an evaluation of this variant.",
+        "learned_bomb_training_anchor": "4025619296fe7b377ddbc3633ea59dcf413d5b7eb7e5b5f8f2aac20fe9054d36",
+        "learned_bomb_training_stage": 1,
+        "stage2_tail_target": "Last in-phase replay position with a four-frame action lookahead.",
+        "beyond_phase": "After the demonstration's aligned phase would end, hold its last active neural position/Focus target and use independent frozen Shoot for real vulnerable combat.",
+        "stage2_unknown_phase": "Continue from the observed post-spell20 HP reset with encounter bounds. No unobserved spell ID assigned."
+      }
+    },
+    "schedule": [
+      {
+        "block": 1,
+        "order": 1,
+        "arm": "stage2_exact_phase",
+        "policy_seed": 2402
+      }
+    ],
+    "transition_recording": {
+      "schema": "th14-stock-story-actor-transitions-v1",
+      "budget_mib": 64,
+      "disk_reserve_mib": 20480
+    },
+    "native_sensors": {
+      "schema": "th14-stock-near-player-sensors-v1",
+      "settings": {
+        "heavy_stride": 2,
+        "projectile_limit": 8,
+        "body_limit": 6,
+        "laser_limit": 6,
+        "near_radius": 96.0,
+        "urgent_radius": 32.0,
+        "horizon_ticks": 8,
+        "memory_mib": 32
+      },
+      "statuses": {
+        "not_sampled": 0,
+        "valid": 1,
+        "read_failed": 2
+      },
+      "status_columns": [
+        "projectiles",
+        "bodies",
+        "straight_lasers",
+        "stock"
+      ],
+      "entity_fields": {
+        "projectiles": [
+          "relative_x",
+          "relative_y",
+          "velocity_x",
+          "velocity_y",
+          "hitbox_radius",
+          "actor_rank"
+        ],
+        "bodies": [
+          "x",
+          "y",
+          "velocity_x",
+          "velocity_y",
+          "half_width",
+          "half_height",
+          "rotation",
+          "rectangular"
+        ],
+        "straight_lasers": [
+          "x",
+          "y",
+          "velocity_x",
+          "velocity_y",
+          "angle",
+          "angular_velocity",
+          "length",
+          "half_width",
+          "activation_ticks"
+        ]
+      },
+      "stock_fields": [
+        "power",
+        "life_fragments",
+        "bomb_fragments"
+      ],
+      "decision_index": "Zero-based into the parent credit's native_before array.",
+      "entity_layout": "Indptr offsets into ragged float32 arrays. Source count precedes filtering; near count precedes cap.",
+      "sample_timing": "Frozen before-policy snapshot. Extra body and beam reads on the configured stride or near-hazard/recovery bursts.",
+      "geometry": "Proximity ranks retained observations for storage only. The additional sensors never enter the actor.",
+      "coverage": "Active raw projectiles, nearby enemy bodies and straight laser segments. Curved lasers and item entities are absent."
+    }
+  },
+  "completed": [
+    {
+      "trial": {
+        "block": 1,
+        "order": 1,
+        "arm": "stage2_exact_phase",
+        "policy_seed": 2402
+      },
+      "result": {
+        "stage_frame": 507,
+        "native_stage": 2,
+        "native_pause_state": 1,
+        "stages_cleared": 1,
+        "score": 531022,
+        "misses": 3,
+        "bombs_used": 9,
+        "steps": 2523,
+        "first_miss_frame": 5230,
+        "first_miss_stage": 1,
+        "outcome": "game_over",
+        "target": "ending",
+        "decision_count": 2523,
+        "deaths": 3,
+        "actual_bombs_consumed": 9,
+        "native_continues": 0,
+        "stage_records": [
+          {
+            "stage": 1,
+            "entry": {
+              "stage": 1,
+              "screen": 7,
+              "pause": 2,
+              "frame": 30,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "first_playable": {
+              "stage": 1,
+              "screen": 7,
+              "pause": 2,
+              "frame": 30,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "exit": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 21,
+              "resources": {
+                "lives": 0,
+                "bombs": 0,
+                "power": 188,
+                "life_fragments": 0,
+                "bomb_fragments": 6
+              },
+              "last_controlled_frame": 9598,
+              "reason": "native_stage_advance"
+            },
+            "decisions": 2393,
+            "lives_lost": 2,
+            "bombs_consumed": 9,
+            "action_counts": {
+              "movement": [
+                97,
+                170,
+                85,
+                318,
+                1096,
+                282,
+                58,
+                138,
+                149
+              ],
+              "focus": [
+                1364,
+                1029
+              ],
+              "shoot": [
+                355,
+                2038
+              ],
+              "bomb": [
+                2380,
+                13
+              ]
+            },
+            "resource_events": [
+              {
+                "stage_frame": 614,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 3090,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 4594,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 5222,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 5226,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 6062,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 6694,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7074,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7678,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 7682,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8058,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 3,
+                "stock_after": 2,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 8854,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 2,
+                "stock_after": 1,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 9302,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 1,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 1,
+                "native_stage_after": 1,
+                "native_state_after": 2
+              }
+            ]
+          },
+          {
+            "stage": 2,
+            "entry": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 21,
+              "resources": {
+                "lives": 0,
+                "bombs": 0,
+                "power": 188,
+                "life_fragments": 0,
+                "bomb_fragments": 6
+              }
+            },
+            "first_playable": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 2,
+              "frame": 21,
+              "resources": {
+                "lives": 0,
+                "bombs": 0,
+                "power": 188,
+                "life_fragments": 0,
+                "bomb_fragments": 6
+              }
+            },
+            "exit": {
+              "stage": 2,
+              "screen": 7,
+              "pause": 1,
+              "frame": 508,
+              "resources": {
+                "lives": -1,
+                "bombs": 0,
+                "power": 138,
+                "life_fragments": 0,
+                "bomb_fragments": 6
+              },
+              "last_controlled_frame": 507,
+              "reason": "game_over"
+            },
+            "decisions": 130,
+            "lives_lost": 1,
+            "bombs_consumed": 0,
+            "action_counts": {
+              "movement": [
+                6,
+                2,
+                4,
+                8,
+                83,
+                14,
+                0,
+                7,
+                6
+              ],
+              "focus": [
+                99,
+                31
+              ],
+              "shoot": [
+                72,
+                58
+              ],
+              "bomb": [
+                128,
+                2
+              ]
+            },
+            "resource_events": [
+              {
+                "stage_frame": 471,
+                "player_state": 4,
+                "previous_x_key": false,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 0,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              },
+              {
+                "stage_frame": 475,
+                "player_state": 4,
+                "previous_x_key": true,
+                "bomb_command": 1,
+                "stock_before": 0,
+                "stock_after": 0,
+                "deaths": 1,
+                "bombs_used": 0,
+                "native_stage_after": 2,
+                "native_state_after": 2
+              }
+            ]
+          }
+        ],
+        "start_frame": 30,
+        "start_resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        },
+        "reset_info": {
+          "fresh_credit_reset": {
+            "route": "prepared_opening",
+            "before": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 7,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            },
+            "opening": {
+              "screen": 7,
+              "state": 2,
+              "stage": 1,
+              "difficulty": 1,
+              "character": 0,
+              "subshot": 0,
+              "chapter": 0,
+              "stage_frame": 30,
+              "continues": 0,
+              "score": 0,
+              "resources": {
+                "lives": 2,
+                "bombs": 3,
+                "power": 100,
+                "life_fragments": 0,
+                "bomb_fragments": 0
+              }
+            }
+          }
+        },
+        "seconds": 170.8644691000227,
+        "native_terminal": {
+          "stage": 2,
+          "screen": 7,
+          "pause": 1,
+          "frame": 508,
+          "resources": {
+            "lives": -1,
+            "bombs": 0,
+            "power": 138,
+            "life_fragments": 0,
+            "bomb_fragments": 6
+          }
+        },
+        "stopped_before_continue": true,
+        "one_credit_clear": false,
+        "target_reached": false,
+        "native_sensors": {
+          "schema": "th14-stock-near-player-sensors-v1",
+          "observed_rows": 2523,
+          "omitted_for_memory_limit": 0,
+          "raw_bytes": 334396,
+          "sensor_wall_ms": 528.2262,
+          "sensor_us_per_decision": 209.3643281807372,
+          "by_source": {
+            "projectiles": {
+              "attempted": 2523,
+              "failed": 0,
+              "wall_ms": 208.0883
+            },
+            "bodies": {
+              "attempted": 1614,
+              "failed": 0,
+              "wall_ms": 170.1382
+            },
+            "straight_lasers": {
+              "attempted": 1614,
+              "failed": 0,
+              "wall_ms": 110.3016
+            },
+            "stock": {
+              "attempted": 2523,
+              "failed": 0,
+              "wall_ms": 25.3206
+            }
+          }
+        },
+        "transition_shard": {
+          "path": "transition-shards/credit-001-arm-stage2_exact_phase-seed-2402.npz",
+          "sha256": "9bd0a45f9e318a59520116e6c51872d8258cbe6b57fb8fca8b7bfa74a905e502",
+          "bytes": 1264172,
+          "rows": 2523
+        }
+      }
+    }
+  ],
+  "restarts": [],
+  "interrupted_attempts": [],
+  "pending": null,
+  "matched_blocks": 1,
+  "matched_summary": {
+    "stage2_exact_phase": {
+      "credits": 1,
+      "outcomes": {
+        "game_over": 1
+      },
+      "target_reaches": 0,
+      "one_credit_clears": 0,
+      "stage_entries": {
+        "1": {
+          "entries": 1,
+          "median_lives": 2,
+          "median_bombs": 3
+        },
+        "2": {
+          "entries": 1,
+          "median_lives": 0,
+          "median_bombs": 0
+        }
+      }
+    }
+  },
+  "status": "complete",
+  "error": null,
+  "in_progress": null,
+  "waiting_for_fresh_credit": null,
+  "session_preparations": [
+    {
+      "route": "visually_verified_game_over_retry",
+      "before": {
+        "screen": 7,
+        "state": 1,
+        "stage": 1,
+        "difficulty": 1,
+        "character": 0,
+        "subshot": 0,
+        "chapter": 6,
+        "stage_frame": 7742,
+        "continues": 0,
+        "score": 27499,
+        "resources": {
+          "lives": -1,
+          "bombs": 0,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        }
+      },
+      "opening": {
+        "screen": 7,
+        "state": 2,
+        "stage": 1,
+        "difficulty": 1,
+        "character": 0,
+        "subshot": 0,
+        "chapter": 0,
+        "stage_frame": 6,
+        "continues": 0,
+        "score": 0,
+        "resources": {
+          "lives": 2,
+          "bombs": 3,
+          "power": 100,
+          "life_fragments": 0,
+          "bomb_fragments": 0
+        }
+      },
+      "initial_reference_errors": null,
+      "retry_reference_errors": {
+        "observed_cursor_transition": [
+          0,
+          4
+        ]
+      }
+    }
+  ]
+}

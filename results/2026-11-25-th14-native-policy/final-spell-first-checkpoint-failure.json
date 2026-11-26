@@ -1,0 +1,374 @@
+{
+  "status": "interrupted",
+  "specification": {
+    "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "initialization_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "train_limit": 1500,
+    "seed": 947,
+    "ppo_hyperparameters": {
+      "n_steps": 256,
+      "batch_size": 64,
+      "n_epochs": 4,
+      "learning_rate": 8e-05,
+      "gamma": 1.0,
+      "gae_lambda": 0.95,
+      "clip_range": 0.15,
+      "ent_coef": 0.004
+    },
+    "reward": {
+      "stage2_entry": 1.0,
+      "native_game_over": 0.0,
+      "ordinary_transition": 0.0,
+      "timeout_is_truncation": true,
+      "damage_potential": 0.15,
+      "damage_exclusion": "same vulnerable boss and spell phase with HP drop in 1\u2013512",
+      "shaping": "gamma * successor_potential - previous_potential; no terminal potential"
+    },
+    "task": {
+      "title": "TH14",
+      "version": "1.00b",
+      "stage": 1,
+      "difficulty": "Normal",
+      "shot": "Reimu A",
+      "start_frame": 30,
+      "stage2_only_success": true,
+      "flags": {
+        "geometry": false,
+        "aim_correction": false,
+        "automatic_bomb": false,
+        "full_native_lives": true,
+        "continue_allowed": false,
+        "native_game_rng_controlled": false
+      },
+      "handoff": {
+        "stage": 1,
+        "spell_id": 8,
+        "native_max_hp": 11400,
+        "remaining_hp_limit": 600,
+        "must_be_alive_vulnerable": true,
+        "player_state": 1,
+        "bomb_active": false
+      }
+    },
+    "prefix": {
+      "provenance": {
+        "model_sha256": "d659bac965dd558fbaa1dbad0e12f63f5c2b8e0b226c1d42c0942f3d1e2a769b",
+        "route_sha256": "8092e337b03fc6dd43d91b2030db23fbbad9fb3be265f31b1c1e463d3256373c",
+        "train_replay": "th14_ud0613",
+        "stage1_phase_knots": {
+          "midboss": [
+            2423,
+            3055
+          ],
+          "nonspell1": [
+            5699,
+            6251
+          ],
+          "spell4": [
+            6251,
+            6971
+          ],
+          "nonspell2": [
+            6971,
+            7560
+          ],
+          "spell8": [
+            7560,
+            8264
+          ]
+        },
+        "later_stages_verified_train_sources": {
+          "2": {
+            "source_sha256": "17abb1b606218e5b05a2fbaef9d5d533d9a513e0b6d64a26374112e6f49cf5c3",
+            "visible_boss_intervals": [
+              [
+                2281,
+                3357
+              ],
+              [
+                7033,
+                10205
+              ]
+            ]
+          },
+          "3": {
+            "source_sha256": "04eb61de12e38cb357032c6f740ffa48a7ce4e483dbd7161ce9ca46c03b7eb4f",
+            "visible_boss_intervals": [
+              [
+                3124,
+                4124
+              ],
+              [
+                8521,
+                12238
+              ]
+            ]
+          },
+          "4": {
+            "source_sha256": "b0566141fedd97d604c7fcd0006249e65207734ee47c0e3ef6d8273a1946109e",
+            "visible_boss_intervals": [
+              [
+                5001,
+                6257
+              ],
+              [
+                10793,
+                16321
+              ]
+            ]
+          },
+          "5": {
+            "source_sha256": "d9037813b714af23db8dd9f4b498f1ccf5530db9c3749b94c2453a160421c0ac",
+            "visible_boss_intervals": [
+              [
+                4792,
+                6120
+              ],
+              [
+                10556,
+                16444
+              ]
+            ]
+          },
+          "6": {
+            "source_sha256": "4dcca4c3de87ab76b1d7f8cfc8353d9901dadcfd92dfae18fe1f012224b8e36a",
+            "visible_boss_intervals": [
+              [
+                4195,
+                5743
+              ],
+              [
+                6159,
+                18320
+              ]
+            ]
+          }
+        },
+        "method": "causal vulnerable onset/confirmed visible exit; nondecreasing within encounter",
+        "later_scope": "Stage 2\u20136 macro encounters only; no inferred spell or HP phase IDs.",
+        "learned_bomb_sha256": "51f89c4f816dc89f6bfd0b3e672625b1a4a6c116f0a01cdb3759332cad0b81f8",
+        "independent_shoot": {
+          "hidden": 512,
+          "encoder": "pool",
+          "motion_history": true,
+          "retain_recent_motion": false,
+          "stage_clock": true,
+          "motion_spans": null,
+          "factorized_movement": false,
+          "weights_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+          "metadata_sha256": "ab2eb0fa9bbd9600dfb23198a19e56635c809dd58fc7128ae2864fc44592437f"
+        }
+      },
+      "policy_seed_rotation": [
+        3101,
+        3102,
+        3103,
+        3104
+      ],
+      "privileged_training_curriculum": true
+    },
+    "learner": "Pure four-head SFT initialization; no demo, geometry, aim override or Bomb override after handoff.",
+    "curriculum_source_sha256": "c0abf29e76badac260b39bdb6542c160c56efcf98f0fb84d7aede5845a9de82c"
+  },
+  "starting_steps": 0,
+  "requested_additional_steps": 256,
+  "resume_checkpoint_sha256": null,
+  "checkpoints": {
+    "base_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "initialization_sha256": "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc"
+  },
+  "checkpoint_storage": {
+    "budget_bytes": 67108864,
+    "reserve_bytes": 21474836480
+  },
+  "prefix_attempt_cursor": 1,
+  "runtime": {
+    "runner_sha256": "fc6a7fea7f0528974aa9f640888c744c0207b8e408800568b788c33da77c2f4f",
+    "source_sha256": {
+      "scripts.evaluate_bomb_crossover": "207d2045180a586cfce5ba6e56d5c95cef6f5713264dcec6bf16cb1167c0002f",
+      "scripts.evaluate_full_credit": "f55ceafb2dc631ab7d9e275382cc4769c2bf3f1263cf7fc4c0ddc63dbe59db9a",
+      "scripts.full_credit_reset": "dd38dfa7d19a23c6c01fc8a8c6d41419b7946be5143b3fb763b48acb8f793cce",
+      "scripts.stage_policy": "f6c60b20e418c42a62947359683005082cdec5c0e092b819cf5959ea9243c725",
+      "scripts.train_full_policy": "5fbf9c28775c35ad6b53a1840b6d9ed9d9c4989fbfe225493011d2f8d70fc222",
+      "__main__": "c0abf29e76badac260b39bdb6542c160c56efcf98f0fb84d7aede5845a9de82c",
+      "scripts.evaluate_demo_route_encounters": "66e7d0066214029fc2aa7ea8cc4083e266045cbabfb1d7b53de67479fde1b758",
+      "scripts.evaluate_demo_route_phase": "ed330b7aef82730fb85b559fa6bf43ddd9750358d1de2da175f404e4add11eb4",
+      "scripts.evaluate_credit_story": "398e81f704eaa8fa22b433b67156be672cc1c8cf2159bcc990e88d9118779e2c"
+    },
+    "parakit_offsets_sha256": "ff7292bec4837f0bef41ff9f02fda8755c445c7157ce03deefc0e903fe924367",
+    "torch": "2.5.1+cu124",
+    "stable_baselines3": "2.5.0"
+  },
+  "prefix_attempts": [
+    {
+      "outcome": "handoff",
+      "stage_frame": 8386,
+      "stage_decisions": 2089,
+      "deaths": 1,
+      "bombs_consumed": 7,
+      "player_state": 1,
+      "spell_id": 8,
+      "boss_hp": 595,
+      "boss_max_hp": 11400,
+      "vulnerable": true,
+      "previous_native_bomb_active": false,
+      "spell_start_frame": 7570,
+      "player_xy": [
+        -0.5686442255973816,
+        0.7960030436515808
+      ],
+      "policy_seed": 3101,
+      "prefix_attempt": 1,
+      "reset": {
+        "route": "prepared_opening",
+        "before": {
+          "screen": 7,
+          "state": 2,
+          "stage": 1,
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0,
+          "chapter": 0,
+          "stage_frame": 7,
+          "continues": 0,
+          "score": 0,
+          "resources": {
+            "lives": 2,
+            "bombs": 3,
+            "power": 100,
+            "life_fragments": 0,
+            "bomb_fragments": 0
+          }
+        },
+        "opening": {
+          "screen": 7,
+          "state": 2,
+          "stage": 1,
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0,
+          "chapter": 0,
+          "stage_frame": 30,
+          "continues": 0,
+          "score": 0,
+          "resources": {
+            "lives": 2,
+            "bombs": 3,
+            "power": 100,
+            "life_fragments": 0,
+            "bomb_fragments": 0
+          }
+        }
+      },
+      "seconds": 139.55238629993983,
+      "entry_resources": {
+        "lives": 1,
+        "bombs": 0,
+        "power": 259,
+        "life_fragments": 2,
+        "bomb_fragments": 0
+      }
+    }
+  ],
+  "episodes": [],
+  "updates": [],
+  "current": {
+    "handoff": {
+      "outcome": "handoff",
+      "stage_frame": 8386,
+      "stage_decisions": 2089,
+      "deaths": 1,
+      "bombs_consumed": 7,
+      "player_state": 1,
+      "spell_id": 8,
+      "boss_hp": 595,
+      "boss_max_hp": 11400,
+      "vulnerable": true,
+      "previous_native_bomb_active": false,
+      "spell_start_frame": 7570,
+      "player_xy": [
+        -0.5686442255973816,
+        0.7960030436515808
+      ],
+      "policy_seed": 3101,
+      "prefix_attempt": 1,
+      "reset": {
+        "route": "prepared_opening",
+        "before": {
+          "screen": 7,
+          "state": 2,
+          "stage": 1,
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0,
+          "chapter": 0,
+          "stage_frame": 7,
+          "continues": 0,
+          "score": 0,
+          "resources": {
+            "lives": 2,
+            "bombs": 3,
+            "power": 100,
+            "life_fragments": 0,
+            "bomb_fragments": 0
+          }
+        },
+        "opening": {
+          "screen": 7,
+          "state": 2,
+          "stage": 1,
+          "difficulty": 1,
+          "character": 0,
+          "subshot": 0,
+          "chapter": 0,
+          "stage_frame": 30,
+          "continues": 0,
+          "score": 0,
+          "resources": {
+            "lives": 2,
+            "bombs": 3,
+            "power": 100,
+            "life_fragments": 0,
+            "bomb_fragments": 0
+          }
+        }
+      },
+      "seconds": 139.55238629993983,
+      "entry_resources": {
+        "lives": 1,
+        "bombs": 0,
+        "power": 259,
+        "life_fragments": 2,
+        "bomb_fragments": 0
+      }
+    },
+    "first_suffix_miss_frame": 8490,
+    "section_decisions": 256,
+    "section_deaths": 1,
+    "section_bombs_consumed": 2,
+    "reward": 0.007815789473684217,
+    "verified_hp_damage": 594,
+    "verified_damage_fraction": 0.052105263157894786,
+    "before_lives_lost": 1,
+    "before_bombs_used": 7,
+    "stage_frame": 9410,
+    "last_action": [
+      5,
+      1,
+      1,
+      1
+    ]
+  },
+  "timing": {
+    "student_step_seconds": 16.702777498867363,
+    "reset_and_prefix_seconds": 139.91512880008668,
+    "student_native_frame_deltas": {
+      "4": 256
+    }
+  },
+  "error": {
+    "type": "CheckpointStorageError",
+    "detail": "The staged checkpoint manifest did not verify."
+  },
+  "seconds": 163.05089499987662
+}

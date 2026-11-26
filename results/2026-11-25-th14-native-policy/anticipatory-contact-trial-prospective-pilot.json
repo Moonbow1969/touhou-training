@@ -1,0 +1,402 @@
+{
+  "capture": {
+    "status": "complete",
+    "setting": "Official TH14 trial 0.01b, Normal Reimu A Stage 1",
+    "sampling": {
+      "windows_per_worker": 128,
+      "step_limit_per_worker": 2000,
+      "episode_limit_per_worker": 14,
+      "frame_limit": 1700,
+      "eligible_start_frame": 105,
+      "initial_lives": 2,
+      "near_projectile_radius": 112.0,
+      "move_focus": "uniform independent choice among 18, held 3 \u00d7 4 native ticks",
+      "focus_context": "last verified held Shift command",
+      "shoot": 1,
+      "bomb": 0,
+      "first_confirmed_native_hit_per_credit": true,
+      "injury": "Native player state enters 4 within the 12-tick hold, then native lives decrement.",
+      "rng_controlled": "Action sampler seeds only"
+    },
+    "requested_workers": [
+      "momentum",
+      "accelerator",
+      "entropy"
+    ],
+    "workers": {
+      "accelerator": {
+        "worker": "accelerator",
+        "seed": 121256,
+        "counts": {
+          "qualified_openings": 5,
+          "between_window_steps": 603,
+          "randomized_windows": 128,
+          "accepted_windows": 128,
+          "injuries": 4
+        },
+        "native_tick_deltas": {
+          "4": 992
+        },
+        "native_stage_deltas": {
+          "4": 992
+        },
+        "sampled_player_states": {
+          "1": 977,
+          "4": 11,
+          "2": 4
+        },
+        "minimum_injury_window_frame": 538,
+        "wall_seconds": 66.86985260015354,
+        "startup_seconds": 14.827660700073466,
+        "sampled_steps": 992,
+        "file": "accelerator.jsonl.gz",
+        "shard_sha256": "1e8fb37c61b27f3dd7e6c5aefa1525478c5cb039b7c62383fd6309eec460357c",
+        "launch": {
+          "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+          "worker_source_sha256": "120a33c05ecd1bbded60c66d1be12918ea4dddda201705637d0142922879c99b",
+          "readout_sha256": "c5bacfdf892b30c8a409a383055b02cd53a5b759bdb15bc91859ff8e7a093fe1",
+          "image_id": "sha256:e9bb0cd2e582e8b6f841aff4c37f801c83e367cd3457d012f6c69aef0139a475"
+        }
+      },
+      "momentum": {
+        "worker": "momentum",
+        "seed": 120247,
+        "counts": {
+          "qualified_openings": 6,
+          "between_window_steps": 708,
+          "randomized_windows": 128,
+          "accepted_windows": 128,
+          "injuries": 4
+        },
+        "native_tick_deltas": {
+          "4": 1094
+        },
+        "native_stage_deltas": {
+          "4": 1094
+        },
+        "sampled_player_states": {
+          "1": 1082,
+          "4": 8,
+          "2": 4
+        },
+        "minimum_injury_window_frame": 398,
+        "wall_seconds": 73.04198960005306,
+        "startup_seconds": 17.09704830008559,
+        "sampled_steps": 1094,
+        "file": "momentum.jsonl.gz",
+        "shard_sha256": "03931fdb303d40b3eb2b2f0d2038cb957faba907b21c1c4f16ae74d7c93bc3d7",
+        "launch": {
+          "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+          "worker_source_sha256": "120a33c05ecd1bbded60c66d1be12918ea4dddda201705637d0142922879c99b",
+          "readout_sha256": "c5bacfdf892b30c8a409a383055b02cd53a5b759bdb15bc91859ff8e7a093fe1",
+          "image_id": "sha256:1a25c4c8d56cfd74f71827c29e7930ec9cd32a3684d8e9a3b027916d80da02a0"
+        }
+      },
+      "entropy": {
+        "worker": "entropy",
+        "seed": 122265,
+        "counts": {
+          "qualified_openings": 7,
+          "between_window_steps": 908,
+          "randomized_windows": 128,
+          "accepted_windows": 128,
+          "injuries": 6
+        },
+        "native_tick_deltas": {
+          "4": 1297
+        },
+        "native_stage_deltas": {
+          "4": 1297
+        },
+        "sampled_player_states": {
+          "1": 1278,
+          "4": 13,
+          "2": 6
+        },
+        "minimum_injury_window_frame": 346,
+        "wall_seconds": 119.90971940010786,
+        "startup_seconds": 23.582348600029945,
+        "sampled_steps": 1297,
+        "file": "entropy.jsonl.gz",
+        "shard_sha256": "4f97d55eb69f9404395c8762461549fc18f84c476603c38248aa4f9ce9ef6b99",
+        "launch": {
+          "executable_sha256": "6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48",
+          "worker_source_sha256": "120a33c05ecd1bbded60c66d1be12918ea4dddda201705637d0142922879c99b",
+          "readout_sha256": "c5bacfdf892b30c8a409a383055b02cd53a5b759bdb15bc91859ff8e7a093fe1",
+          "image_id": "sha256:1e989fb7f948bb98813a57bd32067dfa4a9f506930a4ac59683452b499792156"
+        }
+      }
+    },
+    "errors": {},
+    "source_sha256": "0b95d503dd30d0a0cf3dbbfee6b7bb21d409c3f0ac48d3b665cd116f00ce6e06",
+    "wall_seconds": 119.91632920014672
+  },
+  "model_sha256": "7700eb95c641a1c95bdf9c4a7d51d4137a17755fe70ab673e99fff8a3301d124",
+  "evaluation_sha256": "5242ab33edb78f8679b6d49a12f6504d1cf4063d9da571a099893fa82d71505f",
+  "windows": 384,
+  "injuries": 14,
+  "observed_injury_rate": 0.036458333333333336,
+  "evaluation_scope": "Independent randomized held actions in official 0.01b trial only. No full-build clear inference.",
+  "action": {
+    "ap": 0.4785418987199768,
+    "auroc": 0.8472972972972973,
+    "brier": 0.02417474053800106
+  },
+  "same_focus_average": {
+    "ap": 0.322740596431098,
+    "auroc": 0.8355212355212355,
+    "brier": 0.02990495227277279
+  },
+  "agnostic": {
+    "ap": 0.39905249313434904,
+    "auroc": 0.8540540540540541,
+    "brier": 0.03196108713746071
+  },
+  "action_risk_quartiles": [
+    {
+      "n": 96,
+      "injuries": 0,
+      "injury_rate": 0.0,
+      "min_score": 8.315280410897685e-07,
+      "max_score": 8.315280410897685e-07,
+      "mean_score": 8.315282116200251e-07
+    },
+    {
+      "n": 96,
+      "injuries": 2,
+      "injury_rate": 0.020833333333333332,
+      "min_score": 8.315280410897685e-07,
+      "max_score": 5.32759759153123e-06,
+      "mean_score": 1.3111454109093756e-06
+    },
+    {
+      "n": 96,
+      "injuries": 1,
+      "injury_rate": 0.010416666666666666,
+      "min_score": 5.493275239132345e-06,
+      "max_score": 0.0015572254778817296,
+      "mean_score": 0.00036791517050005496
+    },
+    {
+      "n": 96,
+      "injuries": 11,
+      "injury_rate": 0.11458333333333333,
+      "min_score": 0.0016673115314915776,
+      "max_score": 0.7838347554206848,
+      "mean_score": 0.15249301493167877
+    }
+  ],
+  "by_action": [
+    {
+      "focus": 0,
+      "movement": 0,
+      "n": 23,
+      "injuries": 1,
+      "mean_score": 0.061194829642772675
+    },
+    {
+      "focus": 0,
+      "movement": 1,
+      "n": 15,
+      "injuries": 1,
+      "mean_score": 0.04766203463077545
+    },
+    {
+      "focus": 0,
+      "movement": 2,
+      "n": 30,
+      "injuries": 2,
+      "mean_score": 0.060047198086977005
+    },
+    {
+      "focus": 0,
+      "movement": 3,
+      "n": 21,
+      "injuries": 1,
+      "mean_score": 0.06321819871664047
+    },
+    {
+      "focus": 0,
+      "movement": 4,
+      "n": 17,
+      "injuries": 1,
+      "mean_score": 0.034499797970056534
+    },
+    {
+      "focus": 0,
+      "movement": 5,
+      "n": 17,
+      "injuries": 0,
+      "mean_score": 0.02904060296714306
+    },
+    {
+      "focus": 0,
+      "movement": 6,
+      "n": 18,
+      "injuries": 0,
+      "mean_score": 0.03348647058010101
+    },
+    {
+      "focus": 0,
+      "movement": 7,
+      "n": 22,
+      "injuries": 0,
+      "mean_score": 0.0447266548871994
+    },
+    {
+      "focus": 0,
+      "movement": 8,
+      "n": 25,
+      "injuries": 1,
+      "mean_score": 0.025355566293001175
+    },
+    {
+      "focus": 1,
+      "movement": 0,
+      "n": 19,
+      "injuries": 0,
+      "mean_score": 0.008125237189233303
+    },
+    {
+      "focus": 1,
+      "movement": 1,
+      "n": 24,
+      "injuries": 0,
+      "mean_score": 0.026024825870990753
+    },
+    {
+      "focus": 1,
+      "movement": 2,
+      "n": 21,
+      "injuries": 1,
+      "mean_score": 0.03799084201455116
+    },
+    {
+      "focus": 1,
+      "movement": 3,
+      "n": 25,
+      "injuries": 0,
+      "mean_score": 0.012716409750282764
+    },
+    {
+      "focus": 1,
+      "movement": 4,
+      "n": 27,
+      "injuries": 1,
+      "mean_score": 0.019720597192645073
+    },
+    {
+      "focus": 1,
+      "movement": 5,
+      "n": 20,
+      "injuries": 1,
+      "mean_score": 0.054569996893405914
+    },
+    {
+      "focus": 1,
+      "movement": 6,
+      "n": 19,
+      "injuries": 2,
+      "mean_score": 0.061751000583171844
+    },
+    {
+      "focus": 1,
+      "movement": 7,
+      "n": 22,
+      "injuries": 1,
+      "mean_score": 0.04639006033539772
+    },
+    {
+      "focus": 1,
+      "movement": 8,
+      "n": 19,
+      "injuries": 1,
+      "mean_score": 0.021590877324342728
+    }
+  ],
+  "by_worker": {
+    "accelerator": {
+      "windows": 128,
+      "injuries": 4,
+      "action": {
+        "ap": 0.8611111111111112,
+        "auroc": 0.9899193548387096,
+        "brier": 0.015722882002592087
+      },
+      "same_focus_average": {
+        "ap": 0.19384920634920635,
+        "auroc": 0.875,
+        "brier": 0.029773253947496414
+      },
+      "agnostic": {
+        "ap": 0.2549373040752351,
+        "auroc": 0.905241935483871,
+        "brier": 0.0314423032104969
+      }
+    },
+    "momentum": {
+      "windows": 128,
+      "injuries": 4,
+      "action": {
+        "ap": 0.12872023809523808,
+        "auroc": 0.5967741935483871,
+        "brier": 0.03379882872104645
+      },
+      "same_focus_average": {
+        "ap": 0.5197087378640777,
+        "auroc": 0.655241935483871,
+        "brier": 0.02499420754611492
+      },
+      "agnostic": {
+        "ap": 0.5237008753957906,
+        "auroc": 0.7116935483870968,
+        "brier": 0.028966709971427917
+      }
+    },
+    "entropy": {
+      "windows": 128,
+      "injuries": 6,
+      "action": {
+        "ap": 0.691949152542373,
+        "auroc": 0.9221311475409836,
+        "brier": 0.023002509027719498
+      },
+      "same_focus_average": {
+        "ap": 0.4674358974358975,
+        "auroc": 0.912568306010929,
+        "brier": 0.03494739159941673
+      },
+      "agnostic": {
+        "ap": 0.5059036538641248,
+        "auroc": 0.9139344262295082,
+        "brier": 0.035474248230457306
+      }
+    }
+  },
+  "recorded_movement_response": [
+    {
+      "focus": 0,
+      "n": 102,
+      "positive": 102,
+      "median_speed": 4.496774864277728
+    },
+    {
+      "focus": 1,
+      "n": 94,
+      "positive": 94,
+      "median_speed": 2.0
+    }
+  ],
+  "episode_clustered_confidence": {
+    "episodes": 18,
+    "draws": 600,
+    "action_minus_same_focus_ap_95": [
+      -0.20980141525189494,
+      0.45708769209275535
+    ],
+    "action_minus_agnostic_ap_95": [
+      -0.27429462905560037,
+      0.45043267976503404
+    ]
+  }
+}

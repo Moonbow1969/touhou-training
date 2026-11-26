@@ -1,0 +1,1047 @@
+{
+  "sources": [
+    {
+      "file": "outputs\\touhou-sft-world\\th14-stock-value-story-261125\\transition-shards\\credit-001-arm-learned_bomb_value-seed-1901.npz",
+      "sha256": "422f5eac4af965ed12342432b2b4a6571693d66b12df795bf21b2bbb7b1903d2",
+      "n": 2535
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\th14-stock-value-story-261125\\transition-shards\\credit-001-arm-ppo211_with_value-seed-1901.npz",
+      "sha256": "fcbd53396b5c55173a9249a406402c78e6b1c872cc0987b6be76b2c4488bae9c",
+      "n": 2064
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\th14-stock-value-story-261125\\transition-shards\\credit-002-arm-learned_bomb_value-seed-1902.npz",
+      "sha256": "d234cfb8a57051cc7404c0f1d424dde42d9ba62a8daf40549a7fc2b2971f90f2",
+      "n": 2510
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\th14-horizontal-scout-2051-261125\\transition-shards\\credit-001-arm-randomized_late_boss_horizontal-seed-2051.npz",
+      "sha256": "87237b9676fade85cdd0a687f59030d9362c624b2454732948bc05b40adaf8cf",
+      "n": 2248
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\th14-demo-alice-story-2001-261125\\transition-shards\\credit-001-arm-alice_route_with_learned_bomb-seed-2001.npz",
+      "sha256": "25961bcd911dea3197edf5b4b2795f17120000dfe557dd11c740e655d35e0e5f",
+      "n": 2433
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\th14-demo-alice-2tick-2101-261125\\transition-shards\\credit-001-arm-alice_route_2tick-seed-2101.npz",
+      "sha256": "a9be3a13bb26dbc7805894d370c0829ab30141ba48063663f7635afb9dd697b4",
+      "n": 4673
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage1.npz",
+      "sha256": "fac4fc843c10a4be1bf1453789dfdc492074142feeec5414bfb42a56b1940a27",
+      "n": 2050
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage2.npz",
+      "sha256": "17abb1b606218e5b05a2fbaef9d5d533d9a513e0b6d64a26374112e6f49cf5c3",
+      "n": 2532
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage3.npz",
+      "sha256": "04eb61de12e38cb357032c6f740ffa48a7ce4e483dbd7161ce9ca46c03b7eb4f",
+      "n": 3050
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage4.npz",
+      "sha256": "b0566141fedd97d604c7fcd0006249e65207734ee47c0e3ef6d8273a1946109e",
+      "n": 4041
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage5.npz",
+      "sha256": "d9037813b714af23db8dd9f4b498f1ccf5530db9c3749b94c2453a160421c0ac",
+      "n": 4057
+    },
+    {
+      "file": "outputs\\touhou-sft-world\\sft-native-data-261123\\frozen-training-snapshot\\th14_ud0613-stage6.npz",
+      "sha256": "4dcca4c3de87ab76b1d7f8cfc8353d9901dadcfd92dfae18fe1f012224b8e36a",
+      "n": 4538
+    }
+  ],
+  "dev_credit": "credit-002-arm-ppo211_with_value-seed-1902.npz",
+  "native_student_rollouts": 0,
+  "steps": 14400,
+  "seed": 9127,
+  "stored_rows": 36731,
+  "synthetic_elapsed_tail_rows": 4500,
+  "train_draws_stored": 206155,
+  "hash": "d5bfabb005ee68f2bcc2410e6649f9df528262d28c3f215a35b2c38fbc3acdde",
+  "teacher_hashes": [
+    "d659bac965dd558fbaa1dbad0e12f63f5c2b8e0b226c1d42c0942f3d1e2a769b",
+    "8092e337b03fc6dd43d91b2030db23fbbad9fb3be265f31b1c1e463d3256373c",
+    "d62aea41897019df9bec90f3f3288a350a0dfbd1bd471fbee0377400cdc1e2bc",
+    "51f89c4f816dc89f6bfd0b3e672625b1a4a6c116f0a01cdb3759332cad0b81f8"
+  ],
+  "runtime_hash": "f65ed3bd91e45abf0bfa1e1f05f60cb01c5ffc5562c73a9c72dfc79fe3a3c586",
+  "trainer_hash": "e2f57473a903fb9d5a0ff571d666c65256fe59b1e7b9eab96291702df1a7ebdb",
+  "holdout_contract": "2201 and 2202 are prior diagnostics, permanently excluded here. Reserve 2402 and one later comparable complete phase-aware route credit. Inspect only after weights freeze. Current source credit 1902 PPO211 is excluded from all fit and used for development diagnostics.",
+  "architecture": "No absolute stage or global clock enters the neural network. Generic visible-phase and encounter elapsed times evolve from current state. Inputs include normalized raw HP. One network estimates waypoint/preferences and simultaneous joint movement/focus, Shoot and Bomb; no route is present at deployment.",
+  "prior": "Alice full six-stage reference and earlier native states relabeled by a privileged frozen route tracker. Onset translations are independent on synthetic global and stage clocks. Earlier enclosing-phase durations vary independently, and matching source endpoints label synthetic post-expiry tails.",
+  "gate": "On both untouched native teacher credits: >=70% exact 9-way movement near active bullets and >=60% before an observed hit, three horizontal directions represented without single-mode collapse, spell8 Shoot within 5 percentage points, no erroneous Bomb in player_state 4 with stock. Native student survival remains unmeasured.",
+  "train_replay": {
+    "stage1": {
+      "all": {
+        "n": 2050,
+        "accuracy": [
+          0.8170731707317073,
+          0.9087804878048781,
+          0.9712195121951219,
+          1.0
+        ],
+        "moving_accuracy": 0.8310546875,
+        "horiz": [
+          453,
+          1182,
+          415
+        ],
+        "target_horiz": [
+          356,
+          1334,
+          360
+        ],
+        "fire": 0.7951219512195122,
+        "target_fire": 0.7946341463414635,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 2.122986078262329,
+        "p90_waypoint_error": 44.77341232299805,
+        "idle_reference": 0.5004878048780488
+      },
+      "near": {
+        "n": 352,
+        "accuracy": [
+          0.7954545454545454,
+          0.9034090909090909,
+          0.9886363636363636,
+          1.0
+        ],
+        "moving_accuracy": 0.7405405405405405,
+        "horiz": [
+          66,
+          219,
+          67
+        ],
+        "target_horiz": [
+          49,
+          233,
+          70
+        ],
+        "fire": 0.9403409090909091,
+        "target_fire": 0.9289772727272727,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 2.043506622314453,
+        "p90_waypoint_error": 8.691124153137242,
+        "idle_reference": 0.4744318181818182
+      },
+      "stage1_spell8": {
+        "n": 176,
+        "accuracy": [
+          0.8465909090909091,
+          0.9090909090909091,
+          1.0,
+          1.0
+        ],
+        "moving_accuracy": 0.7719298245614035,
+        "horiz": [
+          20,
+          150,
+          6
+        ],
+        "target_horiz": [
+          17,
+          153,
+          6
+        ],
+        "fire": 1.0,
+        "target_fire": 1.0,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 2.530332565307617,
+        "p90_waypoint_error": 5.234434604644775,
+        "idle_reference": 0.6761363636363636
+      },
+      "stage1": {
+        "n": 2050,
+        "accuracy": [
+          0.8170731707317073,
+          0.9087804878048781,
+          0.9712195121951219,
+          1.0
+        ],
+        "moving_accuracy": 0.8310546875,
+        "horiz": [
+          453,
+          1182,
+          415
+        ],
+        "target_horiz": [
+          356,
+          1334,
+          360
+        ],
+        "fire": 0.7951219512195122,
+        "target_fire": 0.7946341463414635,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 2.122986078262329,
+        "p90_waypoint_error": 44.77341232299805,
+        "idle_reference": 0.5004878048780488
+      }
+    },
+    "stage2": {
+      "all": {
+        "n": 2532,
+        "accuracy": [
+          0.7551342812006319,
+          0.8428120063191153,
+          0.9992101105845181,
+          1.0
+        ],
+        "moving_accuracy": 0.789,
+        "horiz": [
+          478,
+          1601,
+          453
+        ],
+        "target_horiz": [
+          357,
+          1816,
+          359
+        ],
+        "fire": 0.8368878357030016,
+        "target_fire": 0.8368878357030016,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 3.212831735610962,
+        "p90_waypoint_error": 10.482834434509277,
+        "idle_reference": 0.6050552922590837
+      },
+      "near": {
+        "n": 190,
+        "accuracy": [
+          0.6210526315789474,
+          0.7684210526315789,
+          1.0,
+          1.0
+        ],
+        "moving_accuracy": 0.6274509803921569,
+        "horiz": [
+          21,
+          140,
+          29
+        ],
+        "target_horiz": [
+          5,
+          176,
+          9
+        ],
+        "fire": 0.968421052631579,
+        "target_fire": 0.968421052631579,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 4.226861000061035,
+        "p90_waypoint_error": 13.108484935760496,
+        "idle_reference": 0.7315789473684211
+      },
+      "stage2": {
+        "n": 2532,
+        "accuracy": [
+          0.7551342812006319,
+          0.8428120063191153,
+          0.9992101105845181,
+          1.0
+        ],
+        "moving_accuracy": 0.789,
+        "horiz": [
+          478,
+          1601,
+          453
+        ],
+        "target_horiz": [
+          357,
+          1816,
+          359
+        ],
+        "fire": 0.8368878357030016,
+        "target_fire": 0.8368878357030016,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 3.212831735610962,
+        "p90_waypoint_error": 10.482834434509277,
+        "idle_reference": 0.6050552922590837
+      }
+    }
+  },
+  "independent_earlier_credit_teacher": {
+    "all": {
+      "n": 2060,
+      "accuracy": [
+        0.9135922330097087,
+        0.9975728155339806,
+        0.9684466019417476,
+        1.0
+      ],
+      "moving_accuracy": 0.9135922330097087,
+      "horiz": [
+        476,
+        604,
+        980
+      ],
+      "target_horiz": [
+        507,
+        620,
+        933
+      ],
+      "fire": 0.8305825242718446,
+      "target_fire": 0.8019417475728156,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.5087623596191406,
+      "p90_waypoint_error": 47.42206497192383,
+      "idle_reference": 0.0
+    },
+    "near": {
+      "n": 199,
+      "accuracy": [
+        0.8090452261306532,
+        1.0,
+        0.9899497487437185,
+        1.0
+      ],
+      "moving_accuracy": 0.8090452261306532,
+      "horiz": [
+        60,
+        98,
+        41
+      ],
+      "target_horiz": [
+        64,
+        90,
+        45
+      ],
+      "fire": 0.914572864321608,
+      "target_fire": 0.914572864321608,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.6611367464065552,
+      "p90_waypoint_error": 61.81946563720704,
+      "idle_reference": 0.0
+    },
+    "pre_hit": {
+      "n": 96,
+      "accuracy": [
+        0.9583333333333334,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.9583333333333334,
+      "horiz": [
+        30,
+        29,
+        37
+      ],
+      "target_horiz": [
+        31,
+        26,
+        39
+      ],
+      "fire": 0.8541666666666666,
+      "target_fire": 0.8541666666666666,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.3514161109924316,
+      "p90_waypoint_error": 34.250792503356934,
+      "idle_reference": 0.0
+    },
+    "hit_with_stock": {
+      "n": 9,
+      "accuracy": [
+        0.8888888888888888,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8888888888888888,
+      "horiz": [
+        3,
+        2,
+        4
+      ],
+      "target_horiz": [
+        3,
+        1,
+        5
+      ],
+      "fire": 0.8888888888888888,
+      "target_fire": 0.8888888888888888,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.7400739192962646,
+      "p90_waypoint_error": 32.56622543334961,
+      "idle_reference": 0.0
+    },
+    "empty_stock": {
+      "n": 600,
+      "accuracy": [
+        0.8833333333333333,
+        0.9966666666666667,
+        0.9516666666666667,
+        1.0
+      ],
+      "moving_accuracy": 0.8833333333333333,
+      "horiz": [
+        109,
+        150,
+        341
+      ],
+      "target_horiz": [
+        114,
+        185,
+        301
+      ],
+      "fire": 0.93,
+      "target_fire": 0.8883333333333333,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 2.0174498558044434,
+      "p90_waypoint_error": 58.630217742919925,
+      "idle_reference": 0.0
+    },
+    "stage1": {
+      "n": 2060,
+      "accuracy": [
+        0.9135922330097087,
+        0.9975728155339806,
+        0.9684466019417476,
+        1.0
+      ],
+      "moving_accuracy": 0.9135922330097087,
+      "horiz": [
+        476,
+        604,
+        980
+      ],
+      "target_horiz": [
+        507,
+        620,
+        933
+      ],
+      "fire": 0.8305825242718446,
+      "target_fire": 0.8019417475728156,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.5087623596191406,
+      "p90_waypoint_error": 47.42206497192383,
+      "idle_reference": 0.0
+    }
+  },
+  "counterfactual_shifted_preceding_phase_durations": {
+    "all": {
+      "n": 2060,
+      "accuracy": [
+        0.9179611650485436,
+        0.9975728155339806,
+        0.9684466019417476,
+        1.0
+      ],
+      "moving_accuracy": 0.9179611650485436,
+      "horiz": [
+        474,
+        611,
+        975
+      ],
+      "target_horiz": [
+        507,
+        620,
+        933
+      ],
+      "fire": 0.8305825242718446,
+      "target_fire": 0.8019417475728156,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.5168492794036865,
+      "p90_waypoint_error": 47.42206497192383,
+      "idle_reference": 0.0
+    },
+    "near": {
+      "n": 199,
+      "accuracy": [
+        0.8090452261306532,
+        1.0,
+        0.9899497487437185,
+        1.0
+      ],
+      "moving_accuracy": 0.8090452261306532,
+      "horiz": [
+        60,
+        98,
+        41
+      ],
+      "target_horiz": [
+        64,
+        90,
+        45
+      ],
+      "fire": 0.914572864321608,
+      "target_fire": 0.914572864321608,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.7773517370224,
+      "p90_waypoint_error": 61.81946563720704,
+      "idle_reference": 0.0
+    },
+    "pre_hit": {
+      "n": 96,
+      "accuracy": [
+        0.9479166666666666,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.9479166666666666,
+      "horiz": [
+        30,
+        28,
+        38
+      ],
+      "target_horiz": [
+        31,
+        26,
+        39
+      ],
+      "fire": 0.8541666666666666,
+      "target_fire": 0.8541666666666666,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.4869508743286133,
+      "p90_waypoint_error": 34.250792503356934,
+      "idle_reference": 0.0
+    },
+    "hit_with_stock": {
+      "n": 9,
+      "accuracy": [
+        0.8888888888888888,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8888888888888888,
+      "horiz": [
+        3,
+        2,
+        4
+      ],
+      "target_horiz": [
+        3,
+        1,
+        5
+      ],
+      "fire": 0.8888888888888888,
+      "target_fire": 0.8888888888888888,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.0844074487686157,
+      "p90_waypoint_error": 32.56622543334961,
+      "idle_reference": 0.0
+    },
+    "empty_stock": {
+      "n": 600,
+      "accuracy": [
+        0.8966666666666666,
+        0.9966666666666667,
+        0.9516666666666667,
+        1.0
+      ],
+      "moving_accuracy": 0.8966666666666666,
+      "horiz": [
+        107,
+        158,
+        335
+      ],
+      "target_horiz": [
+        114,
+        185,
+        301
+      ],
+      "fire": 0.93,
+      "target_fire": 0.8883333333333333,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 2.021822452545166,
+      "p90_waypoint_error": 58.630217742919925,
+      "idle_reference": 0.0
+    },
+    "stage1": {
+      "n": 2060,
+      "accuracy": [
+        0.9179611650485436,
+        0.9975728155339806,
+        0.9684466019417476,
+        1.0
+      ],
+      "moving_accuracy": 0.9179611650485436,
+      "horiz": [
+        474,
+        611,
+        975
+      ],
+      "target_horiz": [
+        507,
+        620,
+        933
+      ],
+      "fire": 0.8305825242718446,
+      "target_fire": 0.8019417475728156,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 1.5168492794036865,
+      "p90_waypoint_error": 47.42206497192383,
+      "idle_reference": 0.0
+    }
+  },
+  "synthetic_unseen_delayed_tail_3000to4799": {
+    "all": {
+      "n": 4500,
+      "accuracy": [
+        0.8128888888888889,
+        0.9624444444444444,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8151373074346953,
+      "horiz": [
+        1724,
+        1155,
+        1621
+      ],
+      "target_horiz": [
+        1650,
+        1128,
+        1722
+      ],
+      "fire": 1.0,
+      "target_fire": 1.0,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 6.643113136291504,
+      "p90_waypoint_error": 16.158359909057616,
+      "idle_reference": 0.004666666666666667
+    },
+    "near": {
+      "n": 1800,
+      "accuracy": [
+        0.8205555555555556,
+        0.9605555555555556,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8229050279329609,
+      "horiz": [
+        713,
+        450,
+        637
+      ],
+      "target_horiz": [
+        678,
+        439,
+        683
+      ],
+      "fire": 1.0,
+      "target_fire": 1.0,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 7.550609588623047,
+      "p90_waypoint_error": 15.297553634643556,
+      "idle_reference": 0.005555555555555556
+    },
+    "stage1_spell8": {
+      "n": 900,
+      "accuracy": [
+        0.8044444444444444,
+        0.96,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8069196428571429,
+      "horiz": [
+        311,
+        236,
+        353
+      ],
+      "target_horiz": [
+        320,
+        229,
+        351
+      ],
+      "fire": 1.0,
+      "target_fire": 1.0,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 5.844587326049805,
+      "p90_waypoint_error": 15.669729423522952,
+      "idle_reference": 0.0044444444444444444
+    },
+    "stage1": {
+      "n": 4500,
+      "accuracy": [
+        0.8128888888888889,
+        0.9624444444444444,
+        1.0,
+        1.0
+      ],
+      "moving_accuracy": 0.8151373074346953,
+      "horiz": [
+        1724,
+        1155,
+        1621
+      ],
+      "target_horiz": [
+        1650,
+        1128,
+        1722
+      ],
+      "fire": 1.0,
+      "target_fire": 1.0,
+      "false_bomb": 0,
+      "missed_bomb": 0,
+      "median_waypoint_error": 6.643113136291504,
+      "p90_waypoint_error": 16.158359909057616,
+      "idle_reference": 0.004666666666666667
+    }
+  },
+  "whole_human_replays": {
+    "th14_ud06d6": {
+      "all": {
+        "n": 2288,
+        "accuracy": [
+          0.07910839160839161,
+          0.39204545454545453,
+          0.8417832167832168,
+          1.0
+        ],
+        "moving_accuracy": 0.13343328335832083,
+        "horiz": [
+          1063,
+          579,
+          646
+        ],
+        "target_horiz": [
+          420,
+          1472,
+          396
+        ],
+        "fire": 0.8041958041958042,
+        "target_fire": 0.8505244755244755,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 62.744808197021484,
+        "p90_waypoint_error": 140.42299804687502,
+        "idle_reference": 0.416958041958042
+      },
+      "near": {
+        "n": 252,
+        "accuracy": [
+          0.07539682539682539,
+          0.023809523809523808,
+          0.9761904761904762,
+          1.0
+        ],
+        "moving_accuracy": 0.20430107526881722,
+        "horiz": [
+          134,
+          69,
+          49
+        ],
+        "target_horiz": [
+          21,
+          203,
+          28
+        ],
+        "fire": 0.9484126984126984,
+        "target_fire": 0.9722222222222222,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 70.45317840576172,
+        "p90_waypoint_error": 152.29813232421876,
+        "idle_reference": 0.6309523809523809
+      },
+      "stage1": {
+        "n": 2288,
+        "accuracy": [
+          0.07910839160839161,
+          0.39204545454545453,
+          0.8417832167832168,
+          1.0
+        ],
+        "moving_accuracy": 0.13343328335832083,
+        "horiz": [
+          1063,
+          579,
+          646
+        ],
+        "target_horiz": [
+          420,
+          1472,
+          396
+        ],
+        "fire": 0.8041958041958042,
+        "target_fire": 0.8505244755244755,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 62.744808197021484,
+        "p90_waypoint_error": 140.42299804687502,
+        "idle_reference": 0.416958041958042
+      }
+    },
+    "th14_ud068f": {
+      "all": {
+        "n": 21858,
+        "accuracy": [
+          0.06148778479275323,
+          0.5632720285479,
+          0.8896513862201483,
+          0.9984445054442309
+        ],
+        "moving_accuracy": 0.13128379731624273,
+        "horiz": [
+          6275,
+          7889,
+          7694
+        ],
+        "target_horiz": [
+          2753,
+          16394,
+          2711
+        ],
+        "fire": 0.9220880226919206,
+        "target_fire": 0.9592368926708756,
+        "false_bomb": 0,
+        "missed_bomb": 34,
+        "median_waypoint_error": 39.92917251586914,
+        "p90_waypoint_error": 148.01679840087888,
+        "idle_reference": 0.5431420990026535
+      },
+      "near": {
+        "n": 3070,
+        "accuracy": [
+          0.06612377850162866,
+          0.18045602605863192,
+          0.9677524429967427,
+          0.9960912052117263
+        ],
+        "moving_accuracy": 0.170194750211685,
+        "horiz": [
+          782,
+          1225,
+          1063
+        ],
+        "target_horiz": [
+          323,
+          2401,
+          346
+        ],
+        "fire": 0.9677524429967427,
+        "target_fire": 1.0,
+        "false_bomb": 0,
+        "missed_bomb": 12,
+        "median_waypoint_error": 47.02391815185547,
+        "p90_waypoint_error": 149.19327697753906,
+        "idle_reference": 0.6153094462540717
+      },
+      "empty_stock": {
+        "n": 361,
+        "accuracy": [
+          0.030470914127423823,
+          0.8587257617728532,
+          0.775623268698061,
+          0.9916897506925207
+        ],
+        "moving_accuracy": 0.08088235294117647,
+        "horiz": [
+          83,
+          51,
+          227
+        ],
+        "target_horiz": [
+          14,
+          309,
+          38
+        ],
+        "fire": 0.8421052631578947,
+        "target_fire": 0.9335180055401662,
+        "false_bomb": 0,
+        "missed_bomb": 3,
+        "median_waypoint_error": 107.548583984375,
+        "p90_waypoint_error": 186.9703826904297,
+        "idle_reference": 0.6232686980609419
+      },
+      "stage1": {
+        "n": 2166,
+        "accuracy": [
+          0.05216989843028624,
+          0.5572483841181902,
+          0.8296398891966759,
+          1.0
+        ],
+        "moving_accuracy": 0.1332547169811321,
+        "horiz": [
+          613,
+          861,
+          692
+        ],
+        "target_horiz": [
+          268,
+          1660,
+          238
+        ],
+        "fire": 0.8125577100646353,
+        "target_fire": 0.9829178208679594,
+        "false_bomb": 0,
+        "missed_bomb": 0,
+        "median_waypoint_error": 57.54820251464844,
+        "p90_waypoint_error": 144.11558532714844,
+        "idle_reference": 0.6084949215143121
+      },
+      "stage2": {
+        "n": 2756,
+        "accuracy": [
+          0.04934687953555878,
+          0.6832365747460087,
+          0.8846153846153846,
+          0.9996371552975326
+        ],
+        "moving_accuracy": 0.12042818911685994,
+        "horiz": [
+          835,
+          1137,
+          784
+        ],
+        "target_horiz": [
+          304,
+          2171,
+          281
+        ],
+        "fire": 0.8715529753265603,
+        "target_fire": 0.9869375907111756,
+        "false_bomb": 0,
+        "missed_bomb": 1,
+        "median_waypoint_error": 37.524993896484375,
+        "p90_waypoint_error": 130.85530853271484,
+        "idle_reference": 0.5932510885341074
+      },
+      "stage3": {
+        "n": 3320,
+        "accuracy": [
+          0.0430722891566265,
+          0.6484939759036145,
+          0.95,
+          0.9987951807228915
+        ],
+        "moving_accuracy": 0.10221586847748391,
+        "horiz": [
+          1033,
+          1249,
+          1038
+        ],
+        "target_horiz": [
+          329,
+          2626,
+          365
+        ],
+        "fire": 0.9722891566265061,
+        "target_fire": 0.977710843373494,
+        "false_bomb": 0,
+        "missed_bomb": 4,
+        "median_waypoint_error": 39.70133972167969,
+        "p90_waypoint_error": 136.80515136718745,
+        "idle_reference": 0.5786144578313253
+      },
+      "stage4": {
+        "n": 4132,
+        "accuracy": [
+          0.060503388189738626,
+          0.5723620522749274,
+          0.9506292352371732,
+          0.9985479186834463
+        ],
+        "moving_accuracy": 0.1256517205422315,
+        "horiz": [
+          1257,
+          1272,
+          1603
+        ],
+        "target_horiz": [
+          530,
+          3145,
+          457
+        ],
+        "fire": 0.9491771539206195,
+        "target_fire": 0.9975798644724104,
+        "false_bomb": 0,
+        "missed_bomb": 6,
+        "median_waypoint_error": 20.251888275146484,
+        "p90_waypoint_error": 178.47804412841796,
+        "idle_reference": 0.5358180058083253
+      },
+      "stage5": {
+        "n": 4273,
+        "accuracy": [
+          0.07793119588111397,
+          0.6051954130587409,
+          0.9066229815118184,
+          0.9978937514626726
+        ],
+        "moving_accuracy": 0.1520112254443405,
+        "horiz": [
+          1297,
+          1446,
+          1530
+        ],
+        "target_horiz": [
+          645,
+          2958,
+          670
+        ],
+        "fire": 0.9052188158202668,
+        "target_fire": 0.9967236133863796,
+        "false_bomb": 0,
+        "missed_bomb": 9,
+        "median_waypoint_error": 41.71797180175781,
+        "p90_waypoint_error": 174.40714111328128,
+        "idle_reference": 0.4996489585771121
+      },
+      "stage6": {
+        "n": 5211,
+        "accuracy": [
+          0.07081174438687392,
+          0.40644789867587794,
+          0.8165419305315679,
+          0.9973133755517175
+        ],
+        "moving_accuracy": 0.13817330210772832,
+        "horiz": [
+          1240,
+          1924,
+          2047
+        ],
+        "target_horiz": [
+          677,
+          3834,
+          700
+        ],
+        "fire": 0.9547111878718096,
+        "target_fire": 0.8618307426597582,
+        "false_bomb": 0,
+        "missed_bomb": 14,
+        "median_waypoint_error": 43.5964241027832,
+        "p90_waypoint_error": 131.36148071289062,
+        "idle_reference": 0.5083477259643063
+      }
+    }
+  }
+}
