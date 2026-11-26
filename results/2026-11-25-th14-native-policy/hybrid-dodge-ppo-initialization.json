@@ -1,0 +1,129 @@
+{
+  "weights_sha256": "3cdd6a1501196dec9a46f07c5d708a6c0130438c7a24ed99c2e67585ee68934b",
+  "seeds": [
+    4101,
+    4102
+  ],
+  "contract": "synthetic offline smoke only; no logged native actions used as PPO",
+  "exact_initial_joint_logits": 96,
+  "exact_initial_shoot_and_bomb": 96,
+  "initial_critic_max": 0.0,
+  "old_ratio_range": [
+    1.0,
+    1.0
+  ],
+  "changed_tensor_names": [
+    "movement.state.0.weight",
+    "movement.state.0.bias",
+    "movement.state.2.weight",
+    "movement.state.2.bias",
+    "movement.keep.weight",
+    "movement.keep.bias",
+    "movement.replacement.weight",
+    "movement.replacement.bias",
+    "critic.0.weight",
+    "critic.0.bias",
+    "critic.2.weight",
+    "critic.2.bias"
+  ],
+  "synthetic_update": {
+    "policy_loss": -0.0008446958963759243,
+    "value_loss": 0.6519908607006073,
+    "anchor_kl": 1.247800810233457e-05,
+    "entropy": 0.07162488251924515,
+    "gradient_norm": 0.938940703868866
+  },
+  "historic_training_credit_sampling": {
+    "source": {
+      "file": "th14-demo-alice-phase-2202-261125\\transition-shards\\credit-001-arm-phase-aware-seed-2202.npz",
+      "sha256": "30db9a9cf9d93f31e445963f5a110c0f83d65fbab7dac6697a70c3d20c54df8c",
+      "rows": 4187,
+      "stage_counts": {
+        "1": 2083,
+        "2": 2104
+      },
+      "genuine_motion_aligned": 0,
+      "supplemental_known_any_family": 0,
+      "supplemental_active_changes": 0,
+      "native_phase_ids": [
+        -1,
+        4,
+        8,
+        12,
+        16
+      ],
+      "native_contact_onsets": 18
+    },
+    "role": "Training credit only",
+    "results": {
+      "0.55": {
+        "all": {
+          "rows": 4187,
+          "expected_agreement": 0.9638006091117859,
+          "expected_non_greedy": 151.56689453125
+        },
+        "stage2": {
+          "rows": 2104,
+          "expected_agreement": 0.955019474029541,
+          "expected_non_greedy": 94.63899993896484
+        },
+        "chosen_at_risk": {
+          "rows": 72,
+          "expected_agreement": 0.659491240978241,
+          "expected_non_greedy": 24.51663589477539
+        },
+        "chosen_quiet": {
+          "rows": 3873,
+          "expected_agreement": 0.981290340423584,
+          "expected_non_greedy": 72.4624252319336
+        }
+      },
+      "1.0": {
+        "all": {
+          "rows": 4187,
+          "expected_agreement": 0.9235516786575317,
+          "expected_non_greedy": 320.0892333984375
+        },
+        "stage2": {
+          "rows": 2104,
+          "expected_agreement": 0.914753258228302,
+          "expected_non_greedy": 179.359130859375
+        },
+        "chosen_at_risk": {
+          "rows": 72,
+          "expected_agreement": 0.46244627237319946,
+          "expected_non_greedy": 38.70387268066406
+        },
+        "chosen_quiet": {
+          "rows": 3873,
+          "expected_agreement": 0.9526268839836121,
+          "expected_non_greedy": 183.4760284423828
+        }
+      }
+    }
+  },
+  "synthetic_aggregation": {
+    "rows": 16,
+    "rejected_evaluation_seeds": [
+      3601,
+      4001
+    ]
+  },
+  "isolated_reproduction": {
+    "student.pt": "fb13c2f48d7501752b6cfa1d2417a61d3f8fd775d50de392a027828c6f5100d4",
+    "conservative.pt": "3cdd6a1501196dec9a46f07c5d708a6c0130438c7a24ed99c2e67585ee68934b"
+  },
+  "synthetic_collection_to_evaluation": {
+    "credits": 2,
+    "rows": 48,
+    "ppo_update_complete": true,
+    "greedy_descendant_loader": "verified",
+    "reward_components": {
+      "native_hit": -0.015,
+      "stage2_entry_and_resources": 0.57,
+      "stage2_spell_onsets": 0.06,
+      "stage3_entry_and_resources": 1.72
+    },
+    "native_work_performed": false
+  }
+}

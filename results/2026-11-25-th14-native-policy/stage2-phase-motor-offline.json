@@ -1,0 +1,58 @@
+{
+  "model_sha256": "222ce8e40d7d8fd440517376b6464930ef28f62b37fee528d504c8218ae63655",
+  "tapes": {
+    "credit-001-arm-relative_phase_student-seed-2601.npz": {
+      "sha256": "845368a1c59cb6f3c640285281b1e486ec847191bf5df4e6fe8ddea9bd9f4ed5",
+      "all": {
+        "rows": 1053,
+        "executed_agreement": 0.023741690408357077,
+        "student_agreement": 0.9715099715099715,
+        "predicted_changes": 1030,
+        "median_goal_error": 0.7030231356620789,
+        "p90_goal_error": 2.3176880836486817
+      },
+      "onsets": {
+        "rows": 5,
+        "executed_agreement": 0.0,
+        "student_agreement": 0.8,
+        "predicted_changes": 5,
+        "median_goal_error": 1.051392912864685,
+        "p90_goal_error": 1.5213823080062867
+      },
+      "trial": {
+        "arm": "relative_phase_student",
+        "block": 1,
+        "order": 1,
+        "policy_seed": 2601
+      }
+    },
+    "credit-001-arm-frozen_student-seed-3601.npz": {
+      "sha256": "e34596d4257432af680ad94ac7194c8d10d5f3decb66b42269de0e20b9ab88c6",
+      "all": {
+        "rows": 699,
+        "executed_agreement": 0.0357653791130186,
+        "student_agreement": 0.9842632331902719,
+        "predicted_changes": 674,
+        "median_goal_error": 0.7631887197494507,
+        "p90_goal_error": 2.2119175434112552
+      },
+      "onsets": {
+        "rows": 4,
+        "executed_agreement": 0.0,
+        "student_agreement": 0.75,
+        "predicted_changes": 4,
+        "median_goal_error": 1.9542758464813232,
+        "p90_goal_error": 3.0600438117980957
+      },
+      "trial": {
+        "arm": "frozen_student",
+        "block": 1,
+        "order": 1,
+        "policy_seed": 3601
+      }
+    }
+  },
+  "offline_pilot_gate": true,
+  "pilot_gate": "On both preregistered frozen-parent credits, median waypoint error below 5 units, teacher agreement >=85%, gain >15 percentage points.",
+  "metric": "Agreement with the privileged phase-aligned teacher on fixed native observations. No candidate action executed."
+}

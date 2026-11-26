@@ -1,0 +1,61 @@
+{
+  "setting": "Official TH14 trial 0.01b, Normal Reimu A Stage 1",
+  "collection_sha256": "4d5586cae2cf53f55168859299f639c05bcf252edfbd56c3520d84a028a8bc2f",
+  "hosts": {
+    "momentum": {
+      "native_decisions": 12392,
+      "observed_wall_ms_per_decision_after_startup": 50.427123991295446,
+      "tiny_persistent_ssh_echo": {
+        "n": 30,
+        "p50_ms": 0.8308500983,
+        "p95_ms": 0.9252999327
+      },
+      "single_later_cpu_percent_sample": [
+        220.87,
+        179.85
+      ],
+      "single_later_resident_memory_mib_sample": [
+        416.9,
+        421.6
+      ]
+    },
+    "accelerator": {
+      "native_decisions": 12558,
+      "observed_wall_ms_per_decision_after_startup": 51.82631724000275,
+      "tiny_persistent_ssh_echo": {
+        "n": 30,
+        "p50_ms": 1.5972499968,
+        "p95_ms": 1.7630550894
+      },
+      "single_later_cpu_percent_sample": [
+        268.42,
+        248.91
+      ],
+      "single_later_resident_memory_mib_sample": [
+        414.4,
+        416.5
+      ]
+    },
+    "entropy": {
+      "native_decisions": 11328,
+      "observed_wall_ms_per_decision_after_startup": 94.92863690854911,
+      "tiny_persistent_ssh_echo": {
+        "n": 30,
+        "p50_ms": 0.4897001199,
+        "p95_ms": 0.7101599011
+      },
+      "single_later_cpu_percent_sample": [
+        347.35,
+        273.79
+      ],
+      "single_later_resident_memory_mib_sample": [
+        472.1,
+        472.3
+      ]
+    }
+  },
+  "wall_seconds": 567.3461770999711,
+  "accepted_windows": 4272,
+  "total_native_steps": 36278,
+  "timing_scope": "Native wall time after startup includes game, pipe transfer, parsing, Retry, and shutdown. The SSH echo uses tiny messages, so it does not quantify projectile-payload compression or transfer. Runtime snapshots are one sample per lane during a later train-only run."
+}

@@ -1,0 +1,83 @@
+{
+  "credits": [
+    {
+      "seed": 3501,
+      "steps": 2534,
+      "bombs": 8,
+      "native_return": 0.89,
+      "repriced_return": 0.85,
+      "buffer_sha256": "f6022acc7ca46d216c202f77bdc1c7ce48e30aceccdf86272a715d132d5b0907"
+    },
+    {
+      "seed": 3502,
+      "steps": 2487,
+      "bombs": 10,
+      "native_return": 0.8200000000000001,
+      "repriced_return": 0.77,
+      "buffer_sha256": "887323eacdb823f54bb6a7e23f2a82f8da0a69132c012196efc8fee579f46df5"
+    }
+  ],
+  "baseline": {
+    "hit_with_stock": {
+      "n": 18,
+      "mean_press_probability": 1.0,
+      "greedy_presses": 18
+    },
+    "ordinary_with_stock": {
+      "n": 4129,
+      "mean_press_probability": 3.3956244066546404e-11,
+      "greedy_presses": 0
+    }
+  },
+  "fixed_minibatch_seed": 44311,
+  "cost": 0.005,
+  "variants": {
+    "free": {
+      "checkpoint_sha256": "a7cbbf59af1f384acc69cab095ad72a40c28635a7121433bf9f9816c8473d46f",
+      "bomb": {
+        "hit_with_stock": {
+          "n": 18,
+          "mean_press_probability": 1.0,
+          "greedy_presses": 18
+        },
+        "ordinary_with_stock": {
+          "n": 4129,
+          "mean_press_probability": 3.3956244066546404e-11,
+          "greedy_presses": 0
+        }
+      },
+      "update": {
+        "policy_loss": 0.0025433690310887025,
+        "value_loss": 0.010432762855212607,
+        "anchor_kl": 0.0008370203314921072,
+        "entropy": 0.1651339050796297,
+        "gradient_norm": 79.60238091739608,
+        "clipped_fraction": 0.036731055782487
+      }
+    },
+    "charged": {
+      "checkpoint_sha256": "873c63f553b93d09e978133b12ea1bc9b736ab266bbe44387c498da5013a9428",
+      "bomb": {
+        "hit_with_stock": {
+          "n": 18,
+          "mean_press_probability": 1.0,
+          "greedy_presses": 18
+        },
+        "ordinary_with_stock": {
+          "n": 4129,
+          "mean_press_probability": 3.3956244066546404e-11,
+          "greedy_presses": 0
+        }
+      },
+      "update": {
+        "policy_loss": 0.0024465722697327072,
+        "value_loss": 0.01049852691825054,
+        "anchor_kl": 0.0008178710860967705,
+        "entropy": 0.16513708344212286,
+        "gradient_norm": 78.90704517599977,
+        "clipped_fraction": 0.0363607738500484
+      }
+    }
+  },
+  "estimand": "One paired PPO update on logged on-policy samples. Separate frozen gameplay tests measure survival."
+}

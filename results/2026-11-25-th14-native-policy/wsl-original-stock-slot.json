@@ -1,0 +1,35 @@
+{
+  "station": "Gamer local WSL2 Ubuntu-26.04",
+  "game": "stock TH14 Steam 1.00b, installed Windows copy mounted read-only",
+  "sha256": "4609e701b677b8317e43be92041f0c7075a292182848a7c11215c3a226034f90",
+  "private_container": "one ephemeral container at a time, private Xvfb :92/32-bit Wine prefix/null audio, 1.5 CPUs, 1800 MiB, read-only root; 1000 MiB tmpfs cap, no network or host desktop/Steam IPC",
+  "owned_game_origin": "existing local Steam installation, no game assets duplicated by this experiment",
+  "standalone_exits": [
+    53,
+    53
+  ],
+  "diagnostic": "[S_API FAIL] SteamAPI_Init() failed",
+  "window_checks_seconds": [
+    3,
+    6,
+    9
+  ],
+  "x11_root_children": [
+    5,
+    0,
+    0
+  ],
+  "game_windows": [
+    0,
+    0,
+    0
+  ],
+  "first_window_details": "Five 1x1 Wine helper/IME windows and no game renderer.",
+  "steam_client": "No steam or steamcmd on PATH or standard launcher at checked locations in either WSL distribution; no active Linux Steam client process in either.",
+  "limits": "No inference about capacity under a separately authenticated supported Linux Steam/Proton session. Neither a full game menu nor an original-stock tick/input/reset sequence was available in this isolated runtime.",
+  "cleanup": "Both one-shot containers automatically removed; the pre-existing unrelated Docker worker remained running.",
+  "source_evidence": {
+    "diagnostic_log_sha256": "d9fba134eb687a4b9e984705df7f6b4aac7341ab08c17332260e42d1a67c761c",
+    "xvfb_screen_sha256": "87a0d994554eccad55159f2bd5129052f68269130a657e4e3ae399d129fa3c65"
+  }
+}

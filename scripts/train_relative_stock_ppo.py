@@ -92,13 +92,15 @@ class LiveActor:
 
 
 class HitRecorder:
-    def __init__(self,actor,target):
+    def __init__(self,actor,target,bomb_cost=0.):
         self.actor=actor
         self.target=target
         self.rewards=[]
         self.bootstrap=0.
         self.spells=set()
         self.landmarks=[]
+        self.bomb_cost=bomb_cost
+        self.bombs_spent=[]
 
     def before_step(self,env,observation):
         return env.snapshot.player_state, env.snapshot.stage
@@ -106,7 +108,10 @@ class HitRecorder:
     def after_step(self,env,before,action,info,terminated,truncated,deaths,bombs):
         state,stage=before
         snap=env.snapshot
-        reward=-.015 if state==1 and snap.player_state==4 else 0.
+        if bombs<0:
+            raise ValueError("The native Bomb-consumption counter decreased inside a credit.")
+        self.bombs_spent.append(int(bombs))
+        reward=(-.015 if state==1 and snap.player_state==4 else 0.)-self.bomb_cost*bombs
         if self.target=="stage3":
             if stage==1 and info["native_stage"]==2:
                 reward+=.5+.03*env.game.read_game_val("lives")+.01*env.game.read_game_val("bombs")
@@ -195,6 +200,7 @@ def main():
     parser.add_argument("--updates",type=int,default=1)
     parser.add_argument("--seed",type=int,default=3501)
     parser.add_argument("--temperature",type=float,default=.55)
+    parser.add_argument("--bomb-cost",type=float,default=0.,help="Cost per confirmed native Bomb consumed.")
     init=parser.add_mutually_exclusive_group()
     init.add_argument("--continue-from",type=Path,help="Start a fresh run with a compatible published PPO model and optimizer.")
     init.add_argument("--warm-policy",type=Path,help="Transfer learned actor weights to a fresh objective and critic.")
@@ -204,6 +210,7 @@ def main():
     parser.add_argument("--verify-only",action="store_true")
     args=parser.parse_args()
     if (args.seed<0 or not 1<=args.credits_per_update<=8 or args.updates<1 or not .1<=args.temperature<=2
+            or not 0<=args.bomb_cost<=1
             or bool(args.menu_references)!=bool(args.menu_crop) or args.menu_crop and len(args.menu_crop)<2):
         parser.error("Use valid credit budgets, sampling temperature and complete menu references.")
     torch.set_num_threads(1)
@@ -237,6 +244,8 @@ def main():
         spec["reward"]=dict(stage2_entry=.5,stage2_spare_life=.03,stage2_bomb=.01,
                             first_vulnerable_stage2_spell=.06,stage3_entry=1.5,stage3_spare_life=.1,
                             stage3_bomb=.02,native_hit_onset=-.015,gamma=1.,gae_lambda=.995)
+    if args.bomb_cost:
+        spec["reward"]["native_bomb_consumed"]=-args.bomb_cost
     starting_steps=0
     parent=args.continue_from or args.warm_policy
     if parent:
@@ -288,13 +297,15 @@ def main():
                         idx=epoch*args.credits_per_update+j
                         trial=dict(block=epoch+1,order=j+1,arm="online",policy_seed=args.seed+idx)
                         runner.rows=[]
-                        rec=HitRecorder(runner,args.target)
+                        rec=HitRecorder(runner,args.target,args.bomb_cost)
                         def reset(stage,trial):
                             return native_story_restart.reset(stage,trial,start_frame=30,menu=menu)
                         def progress(row):
                             log["in_progress"]=dict(trial=trial,result=row)
                             publish_json(path,log)
                         result=story.story_credit(env,arm,trial,args,reset,progress,transition_recorder=rec)
+                        if sum(rec.bombs_spent)!=result["actual_bombs_consumed"]:
+                            raise ValueError("The reward ledger disagrees with native Bomb consumption.")
                         if result["target_reached"]:
                             resource=result["stage_records"][-1]["entry"]["resources"]
                             terminal_bonus=1.5 if args.target=="stage3" else 1.
@@ -303,10 +314,11 @@ def main():
                         buffer_info=publish_tensors(args.out/f"credit-{idx+1:03d}.pt",
                             dict(schema="relative-stock-ppo-on-policy-v1",steps=len(rec.rewards),fields=[
                                 "state","event","hp","stock","learned_contact","action","old_log_probability","advantage","value_target"],
-                                tensors=batch[-1],observed_rewards=rec.rewards,bootstrap=rec.bootstrap))
+                                tensors=batch[-1],observed_rewards=rec.rewards,bombs_spent=rec.bombs_spent,bootstrap=rec.bootstrap))
                         log["steps"]+=len(rec.rewards)
                         log["episodes"].append(dict(trial=trial,result=result,native_return=sum(rec.rewards),
-                                                    buffer=buffer_info,landmarks=rec.landmarks))
+                                                    buffer=buffer_info,landmarks=rec.landmarks,
+                                                    native_bomb_penalty=-sum(rec.bombs_spent)*args.bomb_cost))
                         log["in_progress"]=None
                         publish_json(path,log)
                     update_metrics=update(model,anchor,optim,tuple(torch.cat(chunk) for chunk in zip(*batch)),args.temperature)
