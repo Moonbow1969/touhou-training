@@ -42,12 +42,12 @@ def main():
                 raise ValueError("Duplicate data, changed inputs or stale behavior policy.")
             seen.add(digest)
             with np.load(path,allow_pickle=False) as z:
-                action=z["action"].astype(int)
+                action=z["action" if "action" in z else "action_index"].astype(int)
                 x=features(z["obs"][:-1])
                 prob=categorical(x,weights)
                 if not np.array_equal(action,action.clip(0,2)) or len(action)!=len(x) or len(x)==0:
                     raise ValueError("Invalid action stream.")
-                if not np.allclose(prob,z["prob"],atol=2e-9,rtol=2e-9):
+                if not np.allclose(prob,z["prob" if "prob" in z else "probabilities"],atol=2e-9,rtol=2e-9):
                     raise ValueError("Executed behavior probabilities do not match the common weights.")
                 if not np.allclose(np.log(prob[np.arange(len(action)),action]),z["logp"],atol=2e-8,rtol=2e-8):
                     raise ValueError("Logged action likelihoods do not replay.")
@@ -55,7 +55,10 @@ def main():
             if not np.isfinite(reward) or abs(reward)>1.000001:
                 raise ValueError("Out-of-range per-title normalized return.")
             returns.append(reward)
-            scores.append((np.eye(3)[action]-prob).T@x)
+            n_score=row.get("score_decisions",len(action))
+            if not 1<=n_score<=len(action):
+                raise ValueError("Invalid first-loss credit boundary.")
+            scores.append((np.eye(3)[action[:n_score]]-prob[:n_score]).T@x[:n_score])
             trials.append((x,prob))
             records.append({k:v for k,v in row.items() if k!="behavior"}|dict(decisions=len(action)))
         ret=np.asarray(returns)

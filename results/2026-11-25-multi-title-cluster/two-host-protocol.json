@@ -1,0 +1,21 @@
+{
+  "train_hosts": [
+    "Momentum",
+    "Accelerator"
+  ],
+  "test_host": "Entropy",
+  "updates": 8,
+  "per_host_steps": 128,
+  "total_steps": 2048,
+  "horizon": 220,
+  "eval_seeds": [
+    19431,
+    19432,
+    19433,
+    19434
+  ],
+  "control": "matched frozen three-title human SFT",
+  "policy_sampling": "stochastic; paired actor RNG, uncontrolled game RNG",
+  "selection": "last pretrained and final PPO; fixed budget",
+  "primary": "paired survival in restricted acknowledged decisions; also reported in resumed wall seconds"
+}

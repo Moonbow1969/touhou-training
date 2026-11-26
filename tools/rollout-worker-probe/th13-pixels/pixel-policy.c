@@ -20,7 +20,8 @@ int main(int argc, char **argv) {
     rng=strtoull(argv[2],NULL,10);
     random32();
     long seconds=strtol(argv[3],NULL,10), hold=strtol(argv[4],NULL,10);
-    if(seconds<1 || seconds>180 || hold<80 || hold>900) return 3;
+    long max_seconds=getenv("TH13_STORY_FOLLOWUP") ? 720 : 180;
+    if(seconds<1 || seconds>max_seconds || hold<80 || hold>900) return 3;
     Display *d=XOpenDisplay(NULL);
     if(!d) return 4;
     unsigned char frame[112][96],prior[112][96];
@@ -32,7 +33,8 @@ int main(int argc, char **argv) {
     int previous=1;
     XTestFakeKeyEvent(d,shoot,1,0);
     const int64_t end=now_ns()+seconds*1000000000LL;
-    while(now_ns()<end){
+    const char *stop_file = getenv("TH13_STOP_FILE");
+    while(now_ns()<end && (!stop_file || access(stop_file,F_OK)!=0)){
         double f[85]={1.0};
         for(int y=0;y<112;y++) for(int x=0;x<96;x++){
             int k=(y/16)*6+x/16;

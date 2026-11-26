@@ -75,7 +75,8 @@ def run(args):
                 break
     else:
         for block,seed in enumerate(args.eval_seeds):
-            arms=["sft","ppo" if args.ppo else "random"]
+            second="ppo" if args.ppo else "alternative_sft" if args.other_sft else "random"
+            arms=["sft",second]
             if block%2:
                 arms.reverse()
             for arm in arms:
@@ -90,6 +91,11 @@ def run(args):
                                 if parent["status"]!="complete" or digest(args.ppo)!=parent["updates"][-1]["sha256"]:
                                     raise ValueError("Missing completed PPO source.")
                                 model=PPO.load(args.ppo,env=env,device="cpu")
+                            elif arm=="alternative_sft":
+                                alt_report=json.loads(args.other_sft.with_name("report.json").read_bytes())
+                                env.motion_sign=alt_report.get("observed_motion_sign",False)
+                                log["alternative_sft_sha256"]=digest(args.other_sft)
+                                model=actor(env,args.seed,args.other_sft)
                             else:
                                 model=actor(env,args.seed,args.sft if arm=="sft" else None)
                             obs,_=env.reset(seed=seed)
@@ -121,7 +127,9 @@ def main():
     p.add_argument("--mode",choices=["train","evaluate"],required=True)
     p.add_argument("--out",type=Path,required=True)
     p.add_argument("--sft",type=Path,required=True)
-    p.add_argument("--ppo",type=Path)
+    alt=p.add_mutually_exclusive_group()
+    alt.add_argument("--ppo",type=Path)
+    alt.add_argument("--other-sft",type=Path)
     p.add_argument("--seed",type=int,default=613)
     p.add_argument("--updates",type=int,default=2,choices=range(1,9))
     p.add_argument("--horizon",type=int,default=220,choices=range(128,541))

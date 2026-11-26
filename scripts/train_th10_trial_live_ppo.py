@@ -36,6 +36,7 @@ class NativeTH10(gym.Env):
         if worker["executable_sha256"] != BINARY:
             raise ValueError("This adapter requires the same official TH10 trial.")
         self.worker, self.horizon, self.trace = worker, horizon, trace
+        self.difficulty = worker.get("difficulty",1)
         self.pipe = None
         self.episode = 0
         self.executed = 0
@@ -65,15 +66,34 @@ class NativeTH10(gym.Env):
 
     def reset(self, *, seed=None, options=None):
         super().reset(seed=seed)
-        self.close()
-        self.pipe = TrialWorker(self.worker["command"]).__enter__()
-        self.state = self.pipe.read(timeout=84)
+        started=perf_counter()
+        reused=False
+        fallback=None
+        if self.pipe is not None and self.worker.get("native_retry"):
+            try:
+                state=self.pipe.request("R")
+                if (state["stage"],state["lives"],state["score"],state["held"])!=(1,2,0,0):
+                    raise RuntimeError("Warm retry did not restore the initial stock and score.")
+                x,y=state["position"]
+                if abs(x)>.1 or abs(y-400)>1 or state.get("difficulty",1)!=self.difficulty:
+                    raise RuntimeError("Warm retry did not restore the expected spawn and difficulty.")
+                self.state=state
+                reused=True
+            except (RuntimeError,OSError,EOFError) as exc:
+                fallback=str(exc)
+        if not reused:
+            self.close()
+            self.pipe = TrialWorker(self.worker["command"]).__enter__()
+            self.state = self.pipe.read(timeout=84)
         if (self.state["stage"], self.state["lives"], self.state["score"], self.state["held"]) != (1,2,0,0):
-            raise RuntimeError("Native TH10 did not start at untouched Normal Stage 1 inventory.")
+            raise RuntimeError("Native TH10 did not start with untouched Stage 1 inventory.")
+        if self.state.get("difficulty",1) != self.difficulty:
+            raise RuntimeError("The verified TH10 difficulty differs from the assigned test.")
         self.episode += 1
         self.count = self.elapsed = self.horizontal = self.responses = self.bullet_peak = 0
         self.actions = Counter()
-        return self.observe(self.state,self.state,0), dict(resources=self.state["lives"],stock_score=self.state["score"])
+        return self.observe(self.state,self.state,0), dict(resources=self.state["lives"],stock_score=self.state["score"],
+            native_retry=reused,reset_seconds=perf_counter()-started,reset_fallback=fallback)
 
     def step(self, action):
         move, focus = map(int,action)
@@ -83,6 +103,8 @@ class NativeTH10(gym.Env):
         self.state = state
         if state["held"] != mask or not 70 <= state["time_ms"] <= 270:
             raise RuntimeError("The native input-held acknowledgement or measured cadence changed.")
+        if state.get("difficulty",1) != self.difficulty:
+            raise RuntimeError("The verified TH10 difficulty changed inside the assigned test.")
         self.count += 1
         self.actions[(move,focus)] += 1
         self.elapsed += state["time_ms"]
@@ -98,6 +120,7 @@ class NativeTH10(gym.Env):
             self.responses += direction * (state["position"][0] - x) > .05
         reward = (0 if miss else 1./self.horizon) - float(miss)
         raw_trace = dict(credit=self.episode,decision=self.count,action=[move,focus,1,0],ack=state["held"],
+                         native_difficulty=self.difficulty,
                          native_before={key:before[key] for key in ("stage","lives","score","position","bullet_count")},
                          native_after={key:state[key] for key in ("stage","lives","score","position","bullet_count","time_ms")},
                          terminated=terminated,truncated=truncated,reward=reward, **self.trace_tag)

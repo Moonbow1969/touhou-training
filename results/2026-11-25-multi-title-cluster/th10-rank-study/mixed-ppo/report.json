@@ -1,0 +1,504 @@
+{
+  "status": "complete",
+  "source_sha256": "84acbe9e6e9dbb4c7efd2ab494180487e0971b5e05c2cd6b91c9d32b14bfb4a2",
+  "hosts": [
+    "momentum-1",
+    "momentum-2",
+    "accelerator-1",
+    "accelerator-2"
+  ],
+  "seed": 19401,
+  "sft_sha256": "6f1c460cda8ff25bf6fad154e9a784797ec4bd7fbd0c8b5dc1e6379987871c92",
+  "steps_per_actor_per_update": 128,
+  "updates": [
+    {
+      "update": 1,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 512,
+      "seconds": 55.0312785001006,
+      "accepted_decisions_per_second": 9.303799838105961,
+      "checkpoint": "update-1.zip",
+      "sha256": "7d1140d647c9af461d700acb152dd8d058491e1781b4fc668c569a4aef99dcb4"
+    },
+    {
+      "update": 2,
+      "attempt": 2,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 1024,
+      "seconds": 47.942914500134066,
+      "accepted_decisions_per_second": 10.679367438092823,
+      "checkpoint": "update-2.zip",
+      "sha256": "4cea089a3063ef6907bea127db1b1d44ecaa77509c306a4c9c9a65f6972fa095"
+    },
+    {
+      "update": 3,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 1536,
+      "seconds": 34.130332600092515,
+      "accepted_decisions_per_second": 15.00131879753824,
+      "checkpoint": "update-3.zip",
+      "sha256": "f8557946deaaf4f0d36afd6ab5f4c689bb495778777d9bb3b781f8ff4a61bc7f"
+    },
+    {
+      "update": 4,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 2048,
+      "seconds": 24.958785600028932,
+      "accepted_decisions_per_second": 20.51381858897039,
+      "checkpoint": "update-4.zip",
+      "sha256": "d77b6579dfbdfa09f846d50730beac6b2581c5c8f8379db269de2497ae2b94a3"
+    },
+    {
+      "update": 5,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 2560,
+      "seconds": 27.9099097000435,
+      "accepted_decisions_per_second": 18.344738678936036,
+      "checkpoint": "update-5.zip",
+      "sha256": "2fb07107c21660bed9df050f20b7ae75c18d3aff342757f79155fca9040e2e5d"
+    },
+    {
+      "update": 6,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 3072,
+      "seconds": 24.86928609991446,
+      "accepted_decisions_per_second": 20.587643647790962,
+      "checkpoint": "update-6.zip",
+      "sha256": "9c027f213ceffa687bddb13ea2b5ab03f3b13abe873a10a31e395485b1111f43"
+    },
+    {
+      "update": 7,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 3584,
+      "seconds": 31.19312209985219,
+      "accepted_decisions_per_second": 16.4138747753764,
+      "checkpoint": "update-7.zip",
+      "sha256": "42e2b3798c55beeaccb1a1895f5b4b787015a538ddb219236bdeb5b9b015b3d3"
+    },
+    {
+      "update": 8,
+      "attempt": 1,
+      "acknowledged": [
+        128,
+        128,
+        128,
+        128
+      ],
+      "accepted_total": 4096,
+      "seconds": 27.887114000041038,
+      "accepted_decisions_per_second": 18.359734176840476,
+      "checkpoint": "update-8.zip",
+      "sha256": "79c8bc392cbf72b2b49917a6f17c72e18681b7ff2c174c2265c5e83a51da4950"
+    }
+  ],
+  "failed_attempts": [
+    {
+      "update": 2,
+      "attempt": 1,
+      "discarded_by_host": [
+        16,
+        15,
+        16,
+        16
+      ],
+      "seconds": 16.890459599904716,
+      "reason": "Native worker closed its response stream."
+    }
+  ],
+  "observation": "Shared motion-sign structured sensor, human model fitted to TH13, TH14 and TH17.",
+  "reward": "First spare-life loss minus one, plus 1/horizon per confirmed surviving action.",
+  "horizon": 220,
+  "requested_updates": 8,
+  "assignments": {
+    "momentum-1": {
+      "host": "momentum",
+      "difficulty": 1,
+      "native_retry": true,
+      "worker_sources": {
+        "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+        "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+        "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+        "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+        "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+        "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+      }
+    },
+    "momentum-2": {
+      "host": "momentum",
+      "difficulty": 2,
+      "native_retry": true,
+      "worker_sources": {
+        "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+        "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+        "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+        "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+        "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+        "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+      }
+    },
+    "accelerator-1": {
+      "host": "accelerator",
+      "difficulty": 1,
+      "native_retry": true,
+      "worker_sources": {
+        "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+        "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+        "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+        "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+        "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+        "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+      }
+    },
+    "accelerator-2": {
+      "host": "accelerator",
+      "difficulty": 2,
+      "native_retry": true,
+      "worker_sources": {
+        "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+        "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+        "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+        "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+        "serve-th10-trial.sh": "46ae076b19eb0c5dcc5ae7247c63965f3d26330e7b158ef32f21678842b470cc",
+        "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+      }
+    }
+  },
+  "resets": {
+    "momentum-1": [
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 25.976394400000572,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0980503000319004,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 25.07768419990316,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0560322001110762,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0800369998905808,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0586803001351655,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1006002000067383,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.087249700212851,
+        "reset_fallback": null
+      }
+    ],
+    "momentum-2": [
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 27.22652000002563,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1068762000650167,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0586707999464124,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 26.285315999994054,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.093364599859342,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0952577001880854,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.086024299962446,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0864847998600453,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.090530800167471,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0821178001351655,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0589307001791894,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.076999499928206,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.068052199902013,
+        "reset_fallback": null
+      }
+    ],
+    "accelerator-1": [
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 24.47459140000865,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1134477998130023,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 24.396830399986356,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.12584470002912,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.105158200021833,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0749967999290675,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0953819998539984,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1059154998511076,
+        "reset_fallback": null
+      }
+    ],
+    "accelerator-2": [
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 25.57628870010376,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0896453000605106,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.11702789994888,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": false,
+        "reset_seconds": 25.498302099993452,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1092286000493914,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1331872001755983,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.106937099946663,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.124786099884659,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0826348001137376,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1087233999278396,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.0991841999348253,
+        "reset_fallback": null
+      },
+      {
+        "resources": 2,
+        "stock_score": 0,
+        "native_retry": true,
+        "reset_seconds": 3.1136979998555034,
+        "reset_fallback": null
+      }
+    ]
+  }
+}

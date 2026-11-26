@@ -1,0 +1,97 @@
+{
+  "title": "TH13",
+  "build": "official Trial 0.01a",
+  "input": "112x96 uint8 grayscale screen crop, prior image",
+  "runtime": "3 logits for x axis, Shoot held, no Bomb; no native state read or geometry",
+  "policy_seed_only": true,
+  "frozen_before_evaluation": true,
+  "training_horizon_wall_seconds": 60,
+  "training_credits": 8,
+  "models": {
+    "initial": {
+      "weights_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "archive_sha256": "ec21e92149c2935eb5f32f78b70093ac641a2ddddff27ce3444375765ee735b5",
+      "weight_shape": [
+        3,
+        85
+      ],
+      "relative_export": "initial.npz"
+    },
+    "update1": {
+      "weights_sha256": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+      "archive_sha256": "f8cc1d716e92e3d29427090b0b2229b90ee86962fc61f0155f9b9258456cef7f",
+      "weight_shape": [
+        3,
+        85
+      ],
+      "relative_export": "update1.npz",
+      "training": {
+        "estimator": "mean over credits of leave-one-other-credit-out advantage times sum of categorical score functions",
+        "episodes": [
+          "pg-01-a",
+          "pg-01-b",
+          "pg-02-a",
+          "pg-02-b"
+        ],
+        "returns": [
+          -1.0,
+          -1.0,
+          0.0,
+          -1.0
+        ],
+        "baseline": [
+          -0.6666666666666666,
+          -0.6666666666666666,
+          -1.0,
+          -0.6666666666666666
+        ],
+        "gradient_norm_before_clip": 1.1030309726179917,
+        "gradient_clip": 2.0,
+        "learning_rate": 0.18,
+        "empirical_forward_kl": 0.0018039347379746385,
+        "moved": true,
+        "frozen_parent_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+        "weights_sha256": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+        "feature_contract": "bias, 42 current mean 16x16 bins, 42 abs pixel temporal difference means; 112x96 grayscale scaled /255; three logits in left,neutral,right order"
+      }
+    },
+    "update2": {
+      "weights_sha256": "9e5f4ae0ebc5addf97a41de1a72b9dbb11fd108102b8beb87caa6df6c343ad92",
+      "archive_sha256": "d8fb52473fabe8d9f7ceeab9bf2e53f6eecb45c10b62637466d66ca560d9391d",
+      "weight_shape": [
+        3,
+        85
+      ],
+      "relative_export": "update2.npz",
+      "training": {
+        "estimator": "mean over credits of leave-one-other-credit-out advantage times sum of categorical score functions",
+        "episodes": [
+          "pg-03-a",
+          "pg-03-b",
+          "pg-04-a",
+          "pg-04-b"
+        ],
+        "returns": [
+          0.0,
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "baseline": [
+          -0.6666666666666666,
+          -0.3333333333333333,
+          -0.3333333333333333,
+          -0.6666666666666666
+        ],
+        "gradient_norm_before_clip": 4.114806515729264,
+        "gradient_clip": 2.0,
+        "learning_rate": 0.045,
+        "empirical_forward_kl": 0.0026333734150689905,
+        "moved": true,
+        "frozen_parent_sha256": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+        "weights_sha256": "9e5f4ae0ebc5addf97a41de1a72b9dbb11fd108102b8beb87caa6df6c343ad92",
+        "feature_contract": "bias, 42 current mean 16x16 bins, 42 abs pixel temporal difference means; 112x96 grayscale scaled /255; three logits in left,neutral,right order"
+      }
+    }
+  }
+}

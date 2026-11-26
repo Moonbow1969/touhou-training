@@ -1,0 +1,314 @@
+{
+  "title": "TH13 official Trial 0.01a",
+  "host": "Endeavour",
+  "difficulty": "Normal",
+  "player": "Hakurei Reimu",
+  "native_ticks_qualified": false,
+  "horizon": "60s wall, independent original Stage 1 credit; adjudicated automatic death-trance settlement up to +12s",
+  "real_training": "on-policy REINFORCE, native terminal resource signal, image-only categorical horizontal movement; fixed Shoot, no Bomb",
+  "unit": "complete credit, original RNG not controlled",
+  "groups": {
+    "training/initial.npz": {
+      "credits": 4,
+      "valid": 4,
+      "returns": [
+        -1,
+        -1,
+        0,
+        -1
+      ],
+      "mean_return": -0.75,
+      "decisions": 688,
+      "no_observed_loss": 1
+    },
+    "training/update1.npz": {
+      "credits": 4,
+      "valid": 4,
+      "returns": [
+        0,
+        -1,
+        -1,
+        0
+      ],
+      "mean_return": -0.5,
+      "decisions": 689,
+      "no_observed_loss": 2
+    },
+    "solo_frozen_evaluation/initial.npz": {
+      "credits": 2,
+      "valid": 2,
+      "returns": [
+        -1,
+        -1
+      ],
+      "mean_return": -1.0,
+      "decisions": 345,
+      "no_observed_loss": 0
+    },
+    "solo_frozen_evaluation/update2.npz": {
+      "credits": 2,
+      "valid": 2,
+      "returns": [
+        0,
+        0
+      ],
+      "mean_return": 0.0,
+      "decisions": 345,
+      "no_observed_loss": 2
+    }
+  },
+  "credits": [
+    {
+      "credit": "pg-01-a",
+      "phase": "training",
+      "model": "initial.npz",
+      "seed": 253002,
+      "round": 1,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 172,
+      "duration_seconds": 60.0259,
+      "action_counts": [
+        26,
+        117,
+        29
+      ],
+      "observed_loss_reward": -1,
+      "status": "active",
+      "evidence": "One spare already visible at horizon, still one after 3 and 12 seconds. Respawn effect visible at horizon.",
+      "held_spares_at_cutoff": 1,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.849259
+    },
+    {
+      "credit": "pg-01-b",
+      "phase": "training",
+      "model": "initial.npz",
+      "seed": 253003,
+      "round": 1,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 172,
+      "duration_seconds": 60.001,
+      "action_counts": [
+        25,
+        118,
+        29
+      ],
+      "observed_loss_reward": -1,
+      "status": "resolved_trance",
+      "evidence": "Two spares and visible automatic death-trance countdown at horizon. Falls to one by the three-second follow-up and remains one at twelve seconds.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.840303
+    },
+    {
+      "credit": "pg-02-a",
+      "phase": "training",
+      "model": "initial.npz",
+      "seed": 253004,
+      "round": 2,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 172,
+      "duration_seconds": 60.0023,
+      "action_counts": [
+        26,
+        120,
+        26
+      ],
+      "observed_loss_reward": 0,
+      "status": "active",
+      "evidence": "Two spares at horizon and in both follow-ups, no visible death trance.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.822391
+    },
+    {
+      "credit": "pg-02-b",
+      "phase": "training",
+      "model": "initial.npz",
+      "seed": 253005,
+      "round": 2,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 172,
+      "duration_seconds": 60.0025,
+      "action_counts": [
+        28,
+        130,
+        14
+      ],
+      "observed_loss_reward": -1,
+      "status": "active",
+      "evidence": "One spare at horizon while respawn effect visible; follow-ups retain one.",
+      "held_spares_at_cutoff": 1,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.73283
+    },
+    {
+      "credit": "pg-03-a",
+      "phase": "training",
+      "model": "update1.npz",
+      "seed": 253006,
+      "round": 3,
+      "policy_fingerprint": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+      "decisions": 173,
+      "duration_seconds": 60.002,
+      "action_counts": [
+        29,
+        113,
+        31
+      ],
+      "observed_loss_reward": 0,
+      "status": "active",
+      "evidence": "Player visible with two spares; no pending death trance. Same count at all follow-ups.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.886862
+    },
+    {
+      "credit": "pg-03-b",
+      "phase": "training",
+      "model": "update1.npz",
+      "seed": 253007,
+      "round": 3,
+      "policy_fingerprint": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+      "decisions": 172,
+      "duration_seconds": 60.031,
+      "action_counts": [
+        28,
+        117,
+        27
+      ],
+      "observed_loss_reward": -1,
+      "status": "active",
+      "evidence": "Loss already debited to one spare, respawn effect visible, same count at all follow-ups.",
+      "held_spares_at_cutoff": 1,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.848274
+    },
+    {
+      "credit": "pg-04-a",
+      "phase": "training",
+      "model": "update1.npz",
+      "seed": 253008,
+      "round": 4,
+      "policy_fingerprint": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+      "decisions": 172,
+      "duration_seconds": 60.001,
+      "action_counts": [
+        27,
+        113,
+        32
+      ],
+      "observed_loss_reward": -1,
+      "status": "active",
+      "evidence": "One spare at cutoff with controllable character, unchanged over follow-up.",
+      "held_spares_at_cutoff": 1,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.88143
+    },
+    {
+      "credit": "pg-04-b",
+      "phase": "training",
+      "model": "update1.npz",
+      "seed": 253009,
+      "round": 4,
+      "policy_fingerprint": "7ffadbeadf661bd89c7fc45c2008ad9dd44910baacd1d461b949d0d6afdee87f",
+      "decisions": 172,
+      "duration_seconds": 60.0021,
+      "action_counts": [
+        27,
+        112,
+        33
+      ],
+      "observed_loss_reward": 0,
+      "status": "active",
+      "evidence": "Two spares at cutoff with controllable character and no death trance; both retained at all follow-ups.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.891671
+    },
+    {
+      "credit": "pg-05-a",
+      "phase": "solo_frozen_evaluation",
+      "model": "initial.npz",
+      "seed": 253010,
+      "round": 5,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 173,
+      "duration_seconds": 60.0009,
+      "action_counts": [
+        27,
+        123,
+        23
+      ],
+      "observed_loss_reward": -1,
+      "status": "resolved_trance",
+      "evidence": "Death-trance timer 1.78s and two spares at cutoff. At +3s timer is 0.27s; one spare is confirmed at +7s and +12s.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.80189
+    },
+    {
+      "credit": "pg-05-b",
+      "phase": "solo_frozen_evaluation",
+      "model": "update2.npz",
+      "seed": 253011,
+      "round": 5,
+      "policy_fingerprint": "9e5f4ae0ebc5addf97a41de1a72b9dbb11fd108102b8beb87caa6df6c343ad92",
+      "decisions": 173,
+      "duration_seconds": 60.001,
+      "action_counts": [
+        32,
+        109,
+        32
+      ],
+      "observed_loss_reward": 0,
+      "status": "active",
+      "evidence": "Two spares at cutoff with controllable character and no death trance; both retained at all follow-ups.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.917173
+    },
+    {
+      "credit": "pg-06-a",
+      "phase": "solo_frozen_evaluation",
+      "model": "update2.npz",
+      "seed": 253012,
+      "round": 6,
+      "policy_fingerprint": "9e5f4ae0ebc5addf97a41de1a72b9dbb11fd108102b8beb87caa6df6c343ad92",
+      "decisions": 172,
+      "duration_seconds": 60.0025,
+      "action_counts": [
+        25,
+        120,
+        27
+      ],
+      "observed_loss_reward": 0,
+      "status": "active",
+      "evidence": "Two spares, moving controllable player at horizon, stable at +3, +7 and +12 seconds.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.827752
+    },
+    {
+      "credit": "pg-06-b",
+      "phase": "solo_frozen_evaluation",
+      "model": "initial.npz",
+      "seed": 253013,
+      "round": 6,
+      "policy_fingerprint": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "decisions": 172,
+      "duration_seconds": 60.0153,
+      "action_counts": [
+        27,
+        123,
+        22
+      ],
+      "observed_loss_reward": -1,
+      "status": "resolved_trance",
+      "evidence": "Two spares with an automatic 0.03s death-trance countdown at the horizon. Debit to one confirmed by +3s and retained.",
+      "held_spares_at_cutoff": 2,
+      "held_bombs_at_cutoff": 2,
+      "mean_logp": -0.795523
+    }
+  ]
+}

@@ -1,7 +1,13 @@
 #!/bin/sh
 set -eu
 mode=${1:-}
-if test "$mode" = serve; then
+wire=0
+difficulty=1
+case "$mode" in
+    serve) wire=1 ;;
+    serve-hard) wire=1; difficulty=2 ;;
+esac
+if test "$wire" -eq 1; then
     exec 3>&1 1>&2
 fi
 export DISPLAY=:59 WINEPREFIX=/tmp/toho-th10-proof WINEDEBUG=-all WINEDLLOVERRIDES=mscoree,mshtml=
@@ -15,7 +21,7 @@ printf '%s  %s\n' "$expected" th10tr.exe | sha256sum -c
 i686-w64-mingw32-gcc-posix -Wall -Wextra -Werror -O2 -Wl,--no-insert-timestamp \
     /tools/th10-trial-observe.c -o /tmp/th10-observe.exe -luser32
 sha256sum /tmp/th10-observe.exe > /capture/probe-sha256.txt
-if test "$mode" = serve; then
+if test "$wire" -eq 1; then
     i686-w64-mingw32-gcc-posix -Wall -Wextra -Werror -O2 -Wl,--no-insert-timestamp \
         /tools/th10-trial-step.c -o /tmp/th10-step.exe -luser32
     sha256sum /tmp/th10-step.exe >> /capture/probe-sha256.txt
@@ -62,22 +68,40 @@ test -n "$game"
 xdotool windowfocus --sync "$game"
 xdotool getwindowname "$game" | tee /capture/window-title.txt
 sleep 7
+if test "$difficulty" -eq 2; then
+    rank=
+    for index in 1 2 3 4 5 6; do
+        scrot -o -a 28,18,180,48 /tmp/th10-rank.ppm
+        if perl /tools/th10-rank-screen.pl /tmp/th10-rank.ppm; then
+            rank=1
+            break
+        fi
+        xdotool keydown z; sleep .22; xdotool keyup z
+        sleep 1.3
+    done
+    test -n "$rank"
+    xdotool keydown Down; sleep .18; xdotool keyup Down
+    sleep .65
+    scrot /capture/hard-rank.png
+fi
 active=
 for index in 1 2 3 4 5 6 7 8; do
     xdotool keydown z; sleep .22; xdotool keyup z
     sleep 1.1
     scrot "/capture/02-confirm-$index.png"
     if wine /tmp/th10-observe.exe --check > /capture/opening.csv; then
+        awk -F, -v expected="$difficulty" 'NR == 2 { found = ($3 == expected) } END { exit !found }' /capture/opening.csv
         active=1
         break
     fi
 done
 test -n "$active"
 
-if test "$mode" = serve; then
+if test "$wire" -eq 1; then
     sleep 1.5
     xdotool windowfocus --sync "$game"
-    /bin/bash /tools/serve-th10-trial.sh "$game" >&3
+    if test "$difficulty" -eq 2; then scrot /capture/hard-stage.png; fi
+    /bin/bash /tools/serve-th10-trial.sh "$game" "$difficulty" >&3
     exit
 fi
 

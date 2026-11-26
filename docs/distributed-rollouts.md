@@ -1,5 +1,11 @@
 # Distributed native rollouts
 
+## Multi-title fleet
+
+The fleet has now run the original TH10, TH12, TH13 and TH14 trials on five physical hosts. Momentum and Accelerator both contributed 1,024 accepted steps to the same motion-SFT-initialized TH10 PPO learner. Eight update barriers each required 128 accepted actions per host from one policy version. One failed batch had 43 actions on one host and 42 on the other. The learner discarded both partial fragments and restored the preceding model and optimizer. Entropy evaluated the frozen checkpoints separately. On Steam Deck and Endeavour, a separate shared TH12/TH13 actor used title-specific native stock rewards and an equal-weight update from four credits per title. [Fleet evidence and native game recordings](../results/2026-11-25-multi-title-cluster/README.md)
+
+For that small horizontal actor, a worker can verify every action probability against a frozen 2,040-byte weight array, aggregate a 255-element score gradient per credit, and transmit it with its return and policy digest. The two hosts sent 16,009 bytes of compressed gradient packets from 12,519,190 bytes of retained raw pixel and behavior logs. Central recomputation agreed within 5.6 × 10⁻¹⁷ per weight. The study retained raw images separately for science and checked its proposed step size against the archived observations. Larger policy architectures require their own comparison of sufficient-statistic size against compressed rollout size. [Wire-size and numerical check](../results/2026-11-25-multi-title-cluster/actor-side-reduction.json)
+
 The first scaling target is more verified original-game decisions per second. The Windows TH14 1.00b run spent 267.8 of 291.4 seconds in native stepping for an additional 4,096 decisions, about 14.1 accepted decisions per second end to end. Four native frames per decision at a 60 Hz game clock give a nominal ceiling of 15 decisions per second per real-time instance. The Linux and SteamOS pilot runs ZUN's actual TH14 0.01b trial, with a separate benchmark from the Steam training task. [Windows PPO timing](../results/2026-11-23-th14-full-policy/survival-8192-train.json)
 
 ## Native scaling measurements
@@ -190,3 +196,4 @@ Transferring an SB3 archive across the Windows NumPy 1 and Linux NumPy 2 environ
 [Paper and resource list](resources.md)
 
 [Compute placement and GPU admission](compute-plan.md)
+Two Momentum/Accelerator instances each served a four-way synchronous PPO batch, with Normal and Hard crossed with physical host. The measured aggregate rate was 14.95 accepted controls/second across eight successful updates. The two-lane Normal-only run with cold launch achieved 4.82. A matched cold/warm reset comparison on one host separately measured medians of 26.68 and 3.10 seconds. For operators raising native actor counts, measure in-game countdown or frame advancement alongside CPU quota throttling: two simultaneous TH13 software-rendered clients advanced their on-screen timers at only 0.25–0.27 seconds per wall second under two-core quotas. [Full measurements, logs and checkpoints](../results/2026-11-25-multi-title-cluster/README.md#four-concurrent-th10-environments-and-external-evaluation)

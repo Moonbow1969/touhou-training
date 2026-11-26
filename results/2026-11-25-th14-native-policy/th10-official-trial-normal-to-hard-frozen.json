@@ -1,0 +1,370 @@
+{
+  "report": {
+    "status": "complete",
+    "source_report_sha256": "36575a79b80e3d34cec7ef600260ab6e196b21f08c96af0a324fc0d9cc178d1b",
+    "actor_sha256": {
+      "frozen_init": "757239fd28599296a2bb4e5f8e9ea070e74c65e0bd56ea9b54ca4f42bbf4b94a",
+      "live_ppo": "c3976b44cfc5af232ec751238a7c14039b244f1b23320438822c8157f58d8771"
+    },
+    "title": "TH10 Mountain of Faith",
+    "version": "official trial 0.02a",
+    "host": "accelerator",
+    "executable_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+    "worker_sources": {
+      "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+      "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+      "th10-trial-step.c": "3ce6077a601ad4bfd3bbc4764a8f3cadf71c72a58c15fd214d34f27d36c30d6a",
+      "run-th10-trial-probe.sh": "56e22a795fe0c588937e4a516859e5adb464660a67e70ea4386450c5b3409c4d",
+      "serve-th10-trial.sh": "1cbd08a87b835393145c5ed442896fb73f078f4efcdf63f89641639a0e8119bd",
+      "th10-rank-screen.pl": "9dd6414deb6c6fa568c69fc4fd67667a9c409a96741bf9dcaa2cac46137d2ea1"
+    },
+    "expected_native_difficulty": 2,
+    "setting": "Hard Reimu A Stage 1",
+    "horizon": 256,
+    "frozen": true,
+    "shoot": 1,
+    "bomb": 0,
+    "input_evidence": "Held is the XTest bridge acknowledgement. Native XY and lives are separately read from the game.",
+    "cadence": "Nominal 85 ms resumed-wall action hold, not frame-locked.",
+    "assignments": [
+      8101,
+      8102,
+      8103
+    ],
+    "runner_sha256": "53dc95e3f31f07d426d2cb1d2d6f42f8711e9fe90d04a5fbdca9d9ed56083f06",
+    "trials": [
+      {
+        "arm": "frozen_init",
+        "seed": 8101,
+        "order": 1,
+        "trace": "seed-8101-frozen_init-attempt1.jsonl.gz",
+        "trace_sha256": "1825c5a3175835a66cda0d71434e060f46995970ae4a6e9ed721dd82feb33a18",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 9193,
+        "decisions": 125,
+        "resumed_wall_ms": 10924,
+        "first_miss": true,
+        "peak_bullets": 44,
+        "horizontal_requested": 69,
+        "horizontal_responses": 69,
+        "move_focus_counts": [
+          [
+            9,
+            8,
+            5,
+            7,
+            12,
+            9,
+            2,
+            9,
+            3
+          ],
+          [
+            6,
+            8,
+            5,
+            6,
+            8,
+            9,
+            4,
+            10,
+            5
+          ]
+        ]
+      },
+      {
+        "arm": "live_ppo",
+        "seed": 8101,
+        "order": 2,
+        "trace": "seed-8101-live_ppo-attempt1.jsonl.gz",
+        "trace_sha256": "25c63ce18c06afe56e4adeec02da9ec40428a2e10b9ca49d1b614ff3e8e84c0c",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 918,
+        "decisions": 64,
+        "resumed_wall_ms": 5602,
+        "first_miss": true,
+        "peak_bullets": 5,
+        "horizontal_requested": 34,
+        "horizontal_responses": 34,
+        "move_focus_counts": [
+          [
+            4,
+            5,
+            3,
+            4,
+            8,
+            4,
+            1,
+            4,
+            2
+          ],
+          [
+            4,
+            3,
+            1,
+            4,
+            4,
+            5,
+            0,
+            5,
+            3
+          ]
+        ]
+      },
+      {
+        "arm": "live_ppo",
+        "seed": 8102,
+        "order": 1,
+        "trace": "seed-8102-live_ppo-attempt1.jsonl.gz",
+        "trace_sha256": "59c69911ed34caeb3ec27399ba29d08cca2686cacc8fb23b469f007ada9b371f",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 6899,
+        "decisions": 128,
+        "resumed_wall_ms": 11398,
+        "first_miss": true,
+        "peak_bullets": 36,
+        "horizontal_requested": 82,
+        "horizontal_responses": 82,
+        "move_focus_counts": [
+          [
+            7,
+            7,
+            2,
+            6,
+            5,
+            9,
+            10,
+            11,
+            9
+          ],
+          [
+            11,
+            9,
+            4,
+            4,
+            6,
+            5,
+            8,
+            8,
+            7
+          ]
+        ]
+      },
+      {
+        "arm": "frozen_init",
+        "seed": 8102,
+        "order": 2,
+        "trace": "seed-8102-frozen_init-attempt1.jsonl.gz",
+        "trace_sha256": "aa638aa3d164389abeb41e9045e0c96e3ada029b521d9bf8a76ab06d4f3dd430",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 9423,
+        "decisions": 128,
+        "resumed_wall_ms": 11259,
+        "first_miss": true,
+        "peak_bullets": 28,
+        "horizontal_requested": 80,
+        "horizontal_responses": 80,
+        "move_focus_counts": [
+          [
+            9,
+            5,
+            2,
+            4,
+            5,
+            8,
+            11,
+            8,
+            10
+          ],
+          [
+            11,
+            12,
+            3,
+            5,
+            7,
+            5,
+            8,
+            8,
+            7
+          ]
+        ]
+      },
+      {
+        "arm": "frozen_init",
+        "seed": 8103,
+        "order": 1,
+        "trace": "seed-8103-frozen_init-attempt1.jsonl.gz",
+        "trace_sha256": "1a23e5acccf5c3dc4ac298fc8e55050dd59bfdf13e6d656df158a8cd8ff9203f",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 409,
+        "decisions": 43,
+        "resumed_wall_ms": 3828,
+        "first_miss": true,
+        "peak_bullets": 2,
+        "horizontal_requested": 32,
+        "horizontal_responses": 32,
+        "move_focus_counts": [
+          [
+            5,
+            0,
+            0,
+            1,
+            4,
+            1,
+            1,
+            1,
+            2
+          ],
+          [
+            2,
+            3,
+            2,
+            5,
+            2,
+            6,
+            3,
+            1,
+            4
+          ]
+        ]
+      },
+      {
+        "arm": "live_ppo",
+        "seed": 8103,
+        "order": 2,
+        "trace": "seed-8103-live_ppo-attempt1.jsonl.gz",
+        "trace_sha256": "e6328baf5f0486018531e97c8c5b007f9509aa4fdad83cb3010f06f9a29696a2",
+        "outcome": "first_miss",
+        "native_stage": 1,
+        "remaining_lives": 1,
+        "raw_score": 10176,
+        "decisions": 176,
+        "resumed_wall_ms": 15635,
+        "first_miss": true,
+        "peak_bullets": 56,
+        "horizontal_requested": 121,
+        "horizontal_responses": 121,
+        "move_focus_counts": [
+          [
+            14,
+            9,
+            8,
+            8,
+            11,
+            10,
+            5,
+            11,
+            14
+          ],
+          [
+            8,
+            8,
+            12,
+            12,
+            8,
+            10,
+            10,
+            8,
+            10
+          ]
+        ]
+      }
+    ],
+    "rejected": [],
+    "summary": {
+      "frozen_init": {
+        "n": 3,
+        "first_misses": 3,
+        "median_decisions": 125,
+        "median_score": 9193,
+        "median_resumed_ms": 10924
+      },
+      "live_ppo": {
+        "n": 3,
+        "first_misses": 3,
+        "median_decisions": 128,
+        "median_score": 6899,
+        "median_resumed_ms": 11398
+      }
+    }
+  },
+  "source_sha256": "f26d72c7df41558d49a216f53ebfd0eb3e428344d35044b5f61ced5a2a28f1a7",
+  "paired": [
+    {
+      "seed": 8101,
+      "decisions": {
+        "frozen_init": 125,
+        "live_ppo": 64,
+        "difference": -61
+      },
+      "resumed_wall_ms": {
+        "frozen_init": 10924,
+        "live_ppo": 5602,
+        "difference": -5322
+      },
+      "raw_score": {
+        "frozen_init": 9193,
+        "live_ppo": 918,
+        "difference": -8275
+      }
+    },
+    {
+      "seed": 8102,
+      "decisions": {
+        "live_ppo": 128,
+        "frozen_init": 128,
+        "difference": 0
+      },
+      "resumed_wall_ms": {
+        "live_ppo": 11398,
+        "frozen_init": 11259,
+        "difference": 139
+      },
+      "raw_score": {
+        "live_ppo": 6899,
+        "frozen_init": 9423,
+        "difference": -2524
+      }
+    },
+    {
+      "seed": 8103,
+      "decisions": {
+        "frozen_init": 43,
+        "live_ppo": 176,
+        "difference": 133
+      },
+      "resumed_wall_ms": {
+        "frozen_init": 3828,
+        "live_ppo": 15635,
+        "difference": 11807
+      },
+      "raw_score": {
+        "frozen_init": 409,
+        "live_ppo": 10176,
+        "difference": 9767
+      }
+    }
+  ],
+  "paired_n": 3,
+  "audited_native_acknowledgements": 664,
+  "paired_delta_mean_decisions": 24,
+  "paired_delta_median_decisions": 0,
+  "paired_win_tie_loss": [
+    1,
+    1,
+    1
+  ],
+  "split": "Held fresh actor seeds; the original native procedural state is independently initialized.",
+  "scope": "Frozen transfer from Normal scratch PPO versus its initialization. This three-pair first-life trial cannot establish transfer improvement or full-game progression.",
+  "input_evidence": "Trace masks are XTest acknowledgements. XY and lives are independently observed in native memory. A distinct subsequently frozen build validates the game's actual consumed input word."
+}

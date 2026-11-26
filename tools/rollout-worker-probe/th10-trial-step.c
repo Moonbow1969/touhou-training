@@ -7,6 +7,7 @@
 #include "th10-trial-state.h"
 
 enum {
+    CURRENT_NATIVE_INPUT = 0x4957b4,
     BULLET_MANAGER = 0x475450,
     BULLET_POOL = 0x60,
     BULLET_STRIDE = 0x7bc,
@@ -58,20 +59,30 @@ static int projectiles(HANDLE game, const float xy[2]) {
     return count;
 }
 
-static int emit(HANDLE game, unsigned held, uint64_t elapsed) {
+static int emit(HANDLE game, unsigned held, uint64_t elapsed, uint32_t difficulty) {
     struct Th10State state;
-    if (!th10_read_state(game, &state) || state.difficulty != 1 || state.character != 0 || state.shot != 0) {
-        fputs("TH10 readout unavailable at the native Normal Reimu A state.\n", stderr);
+    if (!th10_read_state(game, &state) || state.difficulty != difficulty || state.character != 0 || state.shot != 0) {
+        fputs("TH10 readout unavailable at the qualified difficulty and Reimu A state.\n", stderr);
         return 0;
     }
+    /* Read the game-consumed mask separately from the bridge's XTest acknowledgement. */
+    uint32_t input;
+    if (!th10_read(game, CURRENT_NATIVE_INPUT, &input, sizeof(input)))
+        return 0;
+    unsigned observed = (input & 0x40 ? 1u : 0u) | (input & 0x80 ? 2u : 0u)
+                      | (input & 0x10 ? 4u : 0u) | (input & 0x20 ? 8u : 0u)
+                      | (input & 0x04 ? 16u : 0u) | (input & 0x01 ? 32u : 0u)
+                      | (input & 0x02 ? 64u : 0u);
     int count = projectiles(game, state.xy);
     if (count < 0) {
         fputs("TH10 projectile pool readout failed validation.\n", stderr);
         return 0;
     }
-    printf("{\"stage\":%" PRIu32 ",\"lives\":%" PRId32 ",\"score\":%" PRIu32
-           ",\"position\":[%.4f,%.4f],\"time_ms\":%" PRIu64 ",\"held\":%u,\"bullet_count\":%d,\"bullets\":[",
-           state.stage, state.lives, state.score, state.xy[0], state.xy[1], elapsed, held, count);
+    printf("{\"stage\":%" PRIu32 ",\"difficulty\":%" PRIu32 ",\"lives\":%" PRId32 ",\"score\":%" PRIu32
+           ",\"position\":[%.4f,%.4f],\"time_ms\":%" PRIu64 ",\"held\":%u"
+           ",\"native_input_bits\":%" PRIu32 ",\"observed_held\":%u,\"bullet_count\":%d,\"bullets\":[",
+           state.stage, state.difficulty, state.lives, state.score, state.xy[0], state.xy[1], elapsed, held,
+           input, observed, count);
     for (int i = 0; i < count && i < CAPACITY; i++) {
         const struct Bullet *b = objects + i;
         printf("%s[%.4f,%.4f,%.4f,%.4f]", i ? "," : "", b->relative[0], b->relative[1],
@@ -82,7 +93,12 @@ static int emit(HANDLE game, unsigned held, uint64_t elapsed) {
     return 1;
 }
 
-int main(void) {
+int main(int argc, char **argv) {
+    uint32_t difficulty = 1;
+    if (argc == 2 && !strcmp(argv[1], "2"))
+        difficulty = 2;
+    else if (argc > 2 || (argc == 2 && strcmp(argv[1], "1")))
+        return 1;
     DWORD pid = 0;
     HANDLE game = th10_process(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, &pid);
     if (!game || !DebugActiveProcess(pid)) {
@@ -92,7 +108,7 @@ int main(void) {
     }
     DebugSetProcessKillOnExit(FALSE);
     int stopped = 1;
-    int ok = emit(game, 0, 0);
+    int ok = emit(game, 0, 0, difficulty);
     char line[64];
     while (ok && fgets(line, sizeof(line), stdin)) {
         if (line[0] == 'Q')
@@ -110,7 +126,7 @@ int main(void) {
         stopped = DebugActiveProcess(pid);
         if (!stopped)
             fprintf(stderr, "TH10 could not pause at the action boundary (error %lu).\n", (unsigned long)GetLastError());
-        ok = stopped && emit(game, next, GetTickCount64() - start);
+        ok = stopped && emit(game, next, GetTickCount64() - start, difficulty);
     }
     if (stopped)
         DebugActiveProcessStop(pid);

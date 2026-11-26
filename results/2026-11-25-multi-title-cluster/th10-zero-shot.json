@@ -1,0 +1,184 @@
+{
+  "mode": "evaluate",
+  "host": "Momentum",
+  "lane": "b",
+  "status": "complete",
+  "horizon": 220,
+  "game_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+  "source_sha256": "91ebfd9050baa10fccf62cdb36157b2b7c721afb3354e9e887c7647b2d0da73a",
+  "worker_sources": {
+    "th10-trial-state.h": "ac58ecf4d6e67cd71b98a63c00703a82bd23734024611867c2adadbf14b52263",
+    "th10-trial-observe.c": "29426023a5833a0be4b0c0666a795212d05d9be1dfa68768970be8a1b35bbd55",
+    "th10-trial-step.c": "d53ff575dd1ac0f28f0f2ad93b7126df33953f31ab4d7a9d09e485c26afd752d",
+    "run-th10-trial-probe.sh": "b612cbad8341765518795506eeb6a248013ce90d2ac4fdb930a3ac04dc63bed4",
+    "serve-th10-trial.sh": "d1f7e3d237992c50f5588821cc8b1c83ebe4042ddf516e3a41bd34d3a61effa8"
+  },
+  "sft_sha256": "896253ebcf8ea810aaec1c478755cbd566dd95c9fa3ce8a0a518e628ee11953d",
+  "seed": 613,
+  "reward": "1/horizon for each non-injury decision, -1 on first native life decrement",
+  "controls": "Sampled movement and focus, continuous Shoot, no Bomb. Shared observed fields only.",
+  "failed_attempts": [],
+  "updates": [],
+  "credits": [
+    {
+      "arm": "sft",
+      "seed": 19111,
+      "trace": "19111-sft-try1.jsonl.gz",
+      "sha256": "32a63b3c0ef86b75ec664ed53760f8f70db04fee6b47ac9e02cb4567c4bbac59",
+      "outcome": "horizon",
+      "native_stage": 1,
+      "remaining_lives": 2,
+      "raw_score": 22146,
+      "decisions": 220,
+      "resumed_wall_ms": 19119,
+      "first_miss": false,
+      "peak_bullets": 31,
+      "horizontal_requested": 67,
+      "horizontal_responses": 67,
+      "move_focus_counts": [
+        [
+          7,
+          17,
+          3,
+          15,
+          81,
+          17,
+          6,
+          26,
+          16
+        ],
+        [
+          0,
+          3,
+          0,
+          1,
+          17,
+          4,
+          0,
+          6,
+          1
+        ]
+      ]
+    },
+    {
+      "arm": "random",
+      "seed": 19111,
+      "trace": "19111-random-try1.jsonl.gz",
+      "sha256": "032726e2cd0f377f7c1864b1678ba10721222981a4295cb0794f315083864be0",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 9419,
+      "decisions": 140,
+      "resumed_wall_ms": 12273,
+      "first_miss": true,
+      "peak_bullets": 16,
+      "horizontal_requested": 89,
+      "horizontal_responses": 89,
+      "move_focus_counts": [
+        [
+          7,
+          9,
+          6,
+          10,
+          8,
+          5,
+          4,
+          10,
+          8
+        ],
+        [
+          3,
+          11,
+          7,
+          4,
+          6,
+          9,
+          12,
+          7,
+          14
+        ]
+      ]
+    },
+    {
+      "arm": "random",
+      "seed": 19112,
+      "trace": "19112-random-try1.jsonl.gz",
+      "sha256": "5f9fee8ac779a2826c42fe8dfdcd472011d9a4c66b58a5c3c39d893956c07586",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 6341,
+      "decisions": 127,
+      "resumed_wall_ms": 11101,
+      "first_miss": true,
+      "peak_bullets": 3,
+      "horizontal_requested": 73,
+      "horizontal_responses": 73,
+      "move_focus_counts": [
+        [
+          10,
+          6,
+          5,
+          11,
+          4,
+          5,
+          9,
+          8,
+          6
+        ],
+        [
+          9,
+          14,
+          7,
+          3,
+          3,
+          11,
+          2,
+          6,
+          8
+        ]
+      ]
+    },
+    {
+      "arm": "sft",
+      "seed": 19112,
+      "trace": "19112-sft-try1.jsonl.gz",
+      "sha256": "dfa3d40b60ba90befd09c6b16468f32ce1b2d7ea7bf1e7371990448e5fa987df",
+      "outcome": "first_miss",
+      "native_stage": 1,
+      "remaining_lives": 1,
+      "raw_score": 3979,
+      "decisions": 146,
+      "resumed_wall_ms": 12744,
+      "first_miss": true,
+      "peak_bullets": 16,
+      "horizontal_requested": 39,
+      "horizontal_responses": 39,
+      "move_focus_counts": [
+        [
+          5,
+          13,
+          2,
+          8,
+          46,
+          8,
+          3,
+          13,
+          4
+        ],
+        [
+          0,
+          3,
+          2,
+          3,
+          15,
+          3,
+          1,
+          16,
+          1
+        ]
+      ]
+    }
+  ]
+}

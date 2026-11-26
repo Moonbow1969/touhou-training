@@ -1,0 +1,49 @@
+{
+  "title": "TH13 Normal Reimu official 0.01a trial",
+  "metric": "60s wall horizon stock; pending automatic death trance independently resolved from follow-up images",
+  "unit": "independent original credit; common controller draws within each pair; game RNG uncontrolled",
+  "matched_pairs": [
+    {
+      "round": 7,
+      "controller_seed": 713751,
+      "native_rng_controlled": false,
+      "common_decision_indices": 172,
+      "action_differences": 3,
+      "a": {
+        "model": "initial.npz",
+        "sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+        "reward": 0,
+        "note": "Two spares, active character, no death trance at horizon. Same two at all follow-ups.",
+        "total_actions": 172
+      },
+      "b": {
+        "model": "joint.npz",
+        "sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+        "reward": 0,
+        "note": "Two spares and active player, no death trance at horizon or +3s. Later follow-up includes a fresh contact and debit; excluded from the fixed-horizon return.",
+        "total_actions": 172
+      }
+    },
+    {
+      "round": 8,
+      "controller_seed": 713752,
+      "native_rng_controlled": false,
+      "common_decision_indices": 171,
+      "action_differences": 1,
+      "a": {
+        "model": "joint.npz",
+        "sha256": "3d02df1bf0a54f37531aa41faf7d471295fdeaea369a6f9706615ded9d00a22c",
+        "reward": -1,
+        "note": "Automatic death-trance effect/countdown at horizon. Two displayed spares become one by +3s, confirmed at +7s/+12s.",
+        "total_actions": 172
+      },
+      "b": {
+        "model": "initial.npz",
+        "sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+        "reward": -1,
+        "note": "Automatic death-trance timer 2.57s at horizon and 1.00s at +3s. Two spares become one by +7s and remain one.",
+        "total_actions": 171
+      }
+    }
+  ]
+}

@@ -1,0 +1,422 @@
+{
+  "status": "complete",
+  "host": "Steam Deck",
+  "task": "TH12 official v0.02a Normal Reimu A Stage 1",
+  "architecture": "One 3\u00d785 shared horizontal linear softmax over 112\u00d796 pixel-derived features",
+  "abi": "Bias, 42 mean grayscale 16\u00d716 bins, 42 mean absolute temporal differences. Native horizontal keys; Shoot held, Bomb never requested.",
+  "algorithm": "Two genuine on-policy four-credit REINFORCE updates with leave-one-credit-out baseline and empirical mean forward KL cap 0.02",
+  "episode_objective": "First observed spare-life loss wall seconds, censored at 40; gradients use pre-loss actions only.",
+  "interpretation": "The second spare drop, active zero spare lives, explicit Game Over and time-limit truncation are independent labels.",
+  "trial_count": 8,
+  "decisions": 920,
+  "pre_first_loss_decisions": 330,
+  "updates": [
+    {
+      "method": "on-policy leave-one-out Monte Carlo policy gradient",
+      "first_loss_objective": "restricted wall survival/10",
+      "source_credits": [
+        "train-initial-01-alpha",
+        "train-initial-01-beta",
+        "train-initial-02-alpha",
+        "train-initial-02-beta"
+      ],
+      "first_loss_restricted_wall_seconds": [
+        31.149522458,
+        5.245165053,
+        13.984692985,
+        12.59197813
+      ],
+      "second_spare_drop_wall_seconds": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "gradient_norm_before_clip": 13.904616984781885,
+      "learning_rate": 0.18,
+      "gradient_clip": 2,
+      "empirical_forward_kl": 0.01999999999996579,
+      "trust_region_cap": 0.02,
+      "trust_region_step_scale": 0.3412888785260293,
+      "raw_parent_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "raw_weights_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "npz": "th12-update1-kl.npz",
+      "sha256": "ba19615d0ce0629e6289e8348307a5876495af8760646020356d7a32bf9eadd9"
+    },
+    {
+      "method": "on-policy leave-one-out Monte Carlo policy gradient",
+      "first_loss_objective": "restricted wall survival/10",
+      "source_credits": [
+        "train-update1-01-alpha",
+        "train-update1-01-beta",
+        "train-update1-02-alpha",
+        "train-update1-02-beta"
+      ],
+      "first_loss_restricted_wall_seconds": [
+        31.136022241,
+        8.041352433,
+        9.43017751,
+        3.843641118
+      ],
+      "second_spare_drop_wall_seconds": [
+        null,
+        31.141411908,
+        null,
+        null
+      ],
+      "gradient_norm_before_clip": 22.53039481296031,
+      "learning_rate": 0.18,
+      "gradient_clip": 2,
+      "empirical_forward_kl": 0.01999999999988151,
+      "trust_region_cap": 0.02,
+      "trust_region_step_scale": 0.22815477715266752,
+      "raw_parent_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "raw_weights_sha256": "90fc2bc58c03ea0059407fc0d056a833d57ae6fa999222fba8149bdb01dd816b",
+      "npz": "th12-frozen.npz",
+      "sha256": "ed48dbf39f030a9bc9a9b6a549323795ebc302ea16a235aeefa373cfb454ffe0"
+    }
+  ],
+  "episodes": [
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ec21e92149c2935eb5f32f78b70093ac641a2ddddff27ce3444375765ee735b5",
+      "controller_seed": 122101,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 22,
+        "0": 78,
+        "1": 15
+      },
+      "episode_id": "train-initial-01-alpha",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 89,
+      "first_loss_restricted_wall_seconds": 31.149522458,
+      "first_spare_drop_wall_seconds": 31.149522458,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "alpha",
+      "measured_wall_seconds": 40.003301346,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 31.149522458
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 35.574761229,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "5c057e04becf2f33c17055dfe402c4c868b8da353474cb8e2c2654abf75ed3e1",
+      "truncated": true,
+      "weights_raw_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "npz": "initial-cohort/train-initial-01-alpha.npz",
+      "sha256": "bdd0d054ad2cf6a0c7f98d1248db3e09711deb4e8f68b9a969222002265d5e55"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ec21e92149c2935eb5f32f78b70093ac641a2ddddff27ce3444375765ee735b5",
+      "controller_seed": 122102,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 21,
+        "0": 79,
+        "1": 15
+      },
+      "episode_id": "train-initial-01-beta",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 15,
+      "first_loss_restricted_wall_seconds": 5.245165053,
+      "first_spare_drop_wall_seconds": 5.245165053,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "beta",
+      "measured_wall_seconds": 40.001262943,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 5.245165053
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 22.6225825265,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "ed7b96ba391bd099a0acbcf3132c4830e87c88a281d425892efd119e62da5da5",
+      "truncated": true,
+      "weights_raw_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "npz": "initial-cohort/train-initial-01-beta.npz",
+      "sha256": "e8b944e06a00bbb7bd68f45a9b891ad5712e9d448a551a4b90cbcb17231a41c8"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ec21e92149c2935eb5f32f78b70093ac641a2ddddff27ce3444375765ee735b5",
+      "controller_seed": 122103,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 17,
+        "0": 80,
+        "1": 18
+      },
+      "episode_id": "train-initial-02-alpha",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 40,
+      "first_loss_restricted_wall_seconds": 13.984692985,
+      "first_spare_drop_wall_seconds": 13.984692985,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "alpha",
+      "measured_wall_seconds": 40.001683947,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 13.984692985
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 26.9923464925,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "9a0aac8d877f8ab16bbe87cb2a0e5afe5c38b84c3bfffe65b24f2a0e4e7f8f94",
+      "truncated": true,
+      "weights_raw_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "npz": "initial-cohort/train-initial-02-alpha.npz",
+      "sha256": "4f999de2792410d4819ad43c03e69e754277527be6e4725fb9cd08712f45c49a"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ec21e92149c2935eb5f32f78b70093ac641a2ddddff27ce3444375765ee735b5",
+      "controller_seed": 122104,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 15,
+        "0": 84,
+        "1": 16
+      },
+      "episode_id": "train-initial-02-beta",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 36,
+      "first_loss_restricted_wall_seconds": 12.59197813,
+      "first_spare_drop_wall_seconds": 12.59197813,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "beta",
+      "measured_wall_seconds": 40.001782022,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 12.59197813
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 26.295989065,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "f426016593efe050e20cb058a5ec2079309138365d40aee1df2fe2655308f175",
+      "truncated": true,
+      "weights_raw_sha256": "cb3695e1fb0379033a4a030ca6eb5e852c58561595a5255dde52812a54f42687",
+      "npz": "initial-cohort/train-initial-02-beta.npz",
+      "sha256": "4a11a57a2ec076d5a8e4f7caefdee0d70b605b17426a60cdd009cb1028019b4c"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ba19615d0ce0629e6289e8348307a5876495af8760646020356d7a32bf9eadd9",
+      "controller_seed": 122201,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 17,
+        "0": 87,
+        "1": 11
+      },
+      "episode_id": "train-update1-01-alpha",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 89,
+      "first_loss_restricted_wall_seconds": 31.136022241,
+      "first_spare_drop_wall_seconds": 31.136022241,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "alpha",
+      "measured_wall_seconds": 40.002253845,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 31.136022241
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 35.5680111205,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "54bf00a81238bd1d291c1dad8da4887d83be36a123fc2b4c9463c1764ff99835",
+      "truncated": true,
+      "weights_raw_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "npz": "update1-cohort/train-update1-01-alpha.npz",
+      "sha256": "d7ec254c58cc52762a257fb09a15628c33f799af2302a39130f6f6fe2cd2a1e5"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ba19615d0ce0629e6289e8348307a5876495af8760646020356d7a32bf9eadd9",
+      "controller_seed": 122202,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 27,
+        "0": 74,
+        "1": 14
+      },
+      "episode_id": "train-update1-01-beta",
+      "final_confirmed_stored_lives": 0,
+      "first_loss_active_decisions": 23,
+      "first_loss_restricted_wall_seconds": 8.041352433,
+      "first_spare_drop_wall_seconds": 8.041352433,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "beta",
+      "measured_wall_seconds": 40.001566292,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 8.041352433
+        },
+        {
+          "from_lives": 1,
+          "to_lives": 0,
+          "wall_seconds": 31.141411908
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 19.591382170499998,
+      "second_loss_restricted_wall_seconds": 31.141411908,
+      "second_spare_drop_wall_seconds": 31.141411908,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "543c2f2ac773acc44ef6c9f968bc38db349e3780aaa15f8103be67b0be8cc379",
+      "truncated": true,
+      "weights_raw_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "npz": "update1-cohort/train-update1-01-beta.npz",
+      "sha256": "dbc16ec01645151381d0786dcd17e9bd0af725e7fd399fc2edbd51a70d1900e5"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ba19615d0ce0629e6289e8348307a5876495af8760646020356d7a32bf9eadd9",
+      "controller_seed": 122203,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 22,
+        "0": 81,
+        "1": 12
+      },
+      "episode_id": "train-update1-02-alpha",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 27,
+      "first_loss_restricted_wall_seconds": 9.43017751,
+      "first_spare_drop_wall_seconds": 9.43017751,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "alpha",
+      "measured_wall_seconds": 40.00194928,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 9.43017751
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 24.715088755,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "9c3ed72e68a73490f54c3b4bbb2701bb0c2ac74a4a9c30d1485f9431190c87d1",
+      "truncated": true,
+      "weights_raw_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "npz": "update1-cohort/train-update1-02-alpha.npz",
+      "sha256": "520722754dcf67cd40beb770a37285f76e82e7d56372b1b9e9883b6b1c6d4e0f"
+    },
+    {
+      "action_slot_wall_ms": 340,
+      "build": "official trial 0.02a",
+      "checkpoint_archive_sha256": "ba19615d0ce0629e6289e8348307a5876495af8760646020356d7a32bf9eadd9",
+      "controller_seed": 122204,
+      "decisions": 115,
+      "direction_counts": {
+        "-1": 19,
+        "0": 86,
+        "1": 10
+      },
+      "episode_id": "train-update1-02-beta",
+      "final_confirmed_stored_lives": 1,
+      "first_loss_active_decisions": 11,
+      "first_loss_restricted_wall_seconds": 3.843641118,
+      "first_spare_drop_wall_seconds": 3.843641118,
+      "fixed_shoot": true,
+      "horizon_wall_seconds": 40,
+      "host": "steamdeck",
+      "lane": "beta",
+      "measured_wall_seconds": 40.001620481,
+      "native_clock_qualified": false,
+      "observed_stock_changes": [
+        {
+          "from_lives": 2,
+          "to_lives": 1,
+          "wall_seconds": 3.843641118
+        }
+      ],
+      "outcome": "time_limit",
+      "reset": "qualified title start or native Give Up and Retry; two initial spare lives confirmed",
+      "restricted_spare_stock_area_wall_seconds": 21.921820559,
+      "second_loss_restricted_wall_seconds": 40.0,
+      "second_spare_drop_wall_seconds": null,
+      "terminal": false,
+      "title": "th12",
+      "trace_sha256": "c607038981aa403085529b8eebd0e5f3ef7abe7a329936f304631b6582d0db0b",
+      "truncated": true,
+      "weights_raw_sha256": "ee88a8adc0cbf683473949818057d7486293d8ae7b365a64651a7ce5e323a716",
+      "npz": "update1-cohort/train-update1-02-beta.npz",
+      "sha256": "ff9531fe27af8e11b6ce1e950617ef31d615a240e2fd6db5f5f6b2629b4fa9e5"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "hosts": {
+    "momentum-1": 1,
+    "momentum-2": 2,
+    "accelerator-1": 1,
+    "accelerator-2": 2
+  },
+  "seeds": [
+    19551,
+    19552,
+    19553,
+    19554
+  ],
+  "training": "4 concurrent private original workers. Each physical host runs Normal and Hard. 8 updates of 128 accepted steps per actor. Identical starting motion SFT and PPO settings to the Normal-only run.",
+  "held": "Entropy, separate Normal and Hard. Each of four frozen arms (SFT, Normal 2048, mixed 2048, mixed 4096) takes every Latin-square sequence position once. Each credit ends on first confirmed spare-life loss or 220 accepted decisions. Native game RNG uncontrolled."
+}
