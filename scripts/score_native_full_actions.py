@@ -70,13 +70,19 @@ def summarize(rows, protocol, candidate):
         rng = np.random.default_rng(216720 + title)
         differences = np.asarray([p["seconds_difference"] for p in pairs])
         draws = differences[rng.integers(len(pairs), size=(20000, len(pairs)))].mean(axis=1)
+        sampled_by_host = []
+        for physical_host in sorted({p["host"] for p in pairs}):
+            within = np.array([p["seconds_difference"] for p in pairs if p["host"] == physical_host])
+            sampled_by_host.append(rng.choice(within, size=(20000, len(within)), replace=True))
+        stratified = np.concatenate(sampled_by_host, axis=1).mean(axis=1)
         results[title] = {
             baseline: one(list(by_arm[baseline].values())), "candidate": one(list(by_arm[candidate].values())),
             "pairs": pairs, "stage2_discordances": {
                 "reference_only": sum(p["reference_stage2"] and not p["candidate_stage2"] for p in pairs),
                 "candidate_only": sum(p["candidate_stage2"] and not p["reference_stage2"] for p in pairs)},
             "mean_paired_wall_difference": float(differences.mean()),
-            "mean_paired_wall_difference_bootstrap95": np.quantile(draws, [.025, .975]).tolist()}
+            "mean_paired_wall_difference_bootstrap95": np.quantile(draws, [.025, .975]).tolist(),
+            "mean_paired_wall_difference_fixed_host_bootstrap95": np.quantile(stratified, [.025, .975]).tolist()}
     return results
 
 

@@ -1,0 +1,72 @@
+{
+  "credits": 8,
+  "valid_adjacent_decisions": 10580,
+  "movement_requests": 6444,
+  "nonneutral_with_at_least_one_outward_axis": 1832,
+  "actual_displacement_over_one_pixel": 5089,
+  "at_bottom": 3561,
+  "down_requests": 3226,
+  "downward_requests_at_bottom": 1556,
+  "directions": {
+    "left": {
+      "all": {
+        "requested": 1711,
+        "moved_in_requested_direction_over_one_pixel": 1525,
+        "median_displacement": -9.0
+      },
+      "interior": {
+        "requested": 1377,
+        "moved_in_requested_direction_over_one_pixel": 1343,
+        "median_displacement": -12.71875
+      }
+    },
+    "right": {
+      "all": {
+        "requested": 1661,
+        "moved_in_requested_direction_over_one_pixel": 1476,
+        "median_displacement": 9.5390625
+      },
+      "interior": {
+        "requested": 1312,
+        "moved_in_requested_direction_over_one_pixel": 1294,
+        "median_displacement": 12.71875
+      }
+    },
+    "up": {
+      "all": {
+        "requested": 1643,
+        "moved_in_requested_direction_over_one_pixel": 1610,
+        "median_displacement": -12.71875
+      },
+      "interior": {
+        "requested": 1162,
+        "moved_in_requested_direction_over_one_pixel": 1141,
+        "median_displacement": -12.71875
+      }
+    },
+    "down": {
+      "all": {
+        "requested": 3226,
+        "moved_in_requested_direction_over_one_pixel": 1616,
+        "median_displacement": 1.203125
+      },
+      "interior": {
+        "requested": 1281,
+        "moved_in_requested_direction_over_one_pixel": 1258,
+        "median_displacement": 12.71875
+      }
+    }
+  },
+  "source_files": [
+    "train-ppo2-730201.npz",
+    "train-ppo2-730202.npz",
+    "train-ppo2-730203.npz",
+    "train-ppo2-730204.npz",
+    "train-ppo2-730205.npz",
+    "train-ppo2-730206.npz",
+    "train-ppo2-730207.npz",
+    "train-ppo2-730208.npz"
+  ],
+  "quality": "Adjacent, stable original player labels with same stage and life count; 1\u201310 positive game ticks apart; absolute motion below 45 pixels; only the playable rectangle. Movement uses original between-decision displacement. The policy never reads these labels.",
+  "measured_clamp": "x=+/-184, y=32 or 432 on this original build; conservative axis-interior x in (-160,160), y in (50,410)."
+}

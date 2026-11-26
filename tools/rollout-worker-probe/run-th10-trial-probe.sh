@@ -97,6 +97,11 @@ for index in 1 2 3 4 5 6 7 8; do
 done
 test -n "$active"
 
+if test "$mode" = warm-reset-qualification; then
+    /bin/sh /tools/th10-warm-reset.sh "$game" "$2"
+    exit
+fi
+
 if test "$mode" = full-credit || test "$mode" = full-paired; then
     cd /capture
     i686-w64-mingw32-gcc-posix -O2 /tools/th10-full-stock.c -o /tmp/th10-stock.exe

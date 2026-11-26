@@ -35,4 +35,12 @@ The trial exposes Stages 1–3. This cohort reached an original game-over throug
 
 The optional passive player observer and camera pair are for offline visual supervision. For the verified build, the player object pointer is at module RVA `0xbcb20`; `+0x550` and `+0x554` are its x and y values. Bounds at `+0x5a0` and `+0x5ac` give an independent center check. The camera brackets every screenshot with two native reads and records their game tick and position. The benchmark actions receive no coordinates. The two diagnostic captures came from separate PPO1 training seeds, 730107 and 730108. Frozen benchmark seeds 731001–731012 are held out.
 
+For complete training-credit images, create `$run_dir/a/lib/record-original-frames` before launching the native observer and actor. The worker emits pre-action `observations.u8` and `observation-labels.bin` next to the control journal. After packaging the control journal, run the following command. It requires equal step counts, confirms exactly one terminal, and reproduces all 84 visual policy input features from the saved images.
+
+```sh
+python "$src/pack_observations.py" "$credit" "$credit/rollout.npz" "$credit/observations.npz"
+```
+
+Use the `stable` mask when training coordinate supervision. It checks an unchanged native tick and player position across the acquisition, agreement with the center of the hitbox, and a capture time below 18 ms. All images still carry the exact sampled action and row number for policy analysis.
+
 The current collector validates genuine stock exhaustion and ranking transition. A full retail-story ending requires separate executable calibration and ending recognition. The supplied trial and its assets are installed by the user.

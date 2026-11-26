@@ -17,6 +17,9 @@ if test -s "/capture/full/$label/outcome.txt" && grep -q '^game_over ' "/capture
     cat "/capture/full/$label/outcome.txt"
     exit 0
 fi
+# The display belongs to exactly one active credit, including reset and evidence capture.
+exec 8>/capture/active-credit.lock
+flock -x 8
 sh /input/th12-full-reset.sh "$label"
 cd "/capture/full/$label"
 test ! -e decisions.tsv

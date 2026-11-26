@@ -1,0 +1,531 @@
+{
+  "host_model": "AMD Ryzen 9 9950X3D, 16 physical cores, 32 logical CPUs",
+  "role": "Original TH13 Wine/Xvfb software render native full-action collector. Measured through completed credits only, six concurrent primary game lanes; no GPU inference.",
+  "completed_credits": 55,
+  "full_six_actor_windows_of_10s": 53,
+  "pooled_median_decisions_per_second_six": 35.9,
+  "pooled_median_native_ticks_per_second_six": 132.6,
+  "median_per_credit_native_stage_clock_hz": 23.523277160879097,
+  "median_across_credit_action_hold_ms": 117.31718480587006,
+  "window_counters": "Disjoint 10-second bins with at least six original credits continuously issuing actions. Individual decision wall timestamps anchored to original steps.bin filesystem birth (whole-second resolution). Positive native clock increments clipped to 12 per decision to suppress a menu/reset discontinuity.",
+  "cpu_sample": {
+    "utc": "2026-11-26T06:40:00Z",
+    "simultaneous_workers": 6,
+    "percent_of_one_logical_cpu_per_worker": [
+      196.85,
+      257.53,
+      267.09,
+      255.05,
+      259.11,
+      218.56
+    ],
+    "resident_MiB_per_worker": [
+      352.1,
+      380.6,
+      379.0,
+      385.7,
+      463.4,
+      390.8
+    ],
+    "per_container_limit_MiB": 1100,
+    "per_container_cpu_quota": 4,
+    "note": "Single docker stats snapshot spanning startup and sustained play, six named trial containers."
+  },
+  "credits": [
+    {
+      "seed": 730001,
+      "tag": "train-sft-730001",
+      "start_utc": "2026-11-26T05:51:43+00:00",
+      "actor_steps": 1041,
+      "actor_seconds": 142.5806121826172,
+      "original_tick_rate": 28.250685267369587,
+      "median_hold_ms": 97.17375785112381
+    },
+    {
+      "seed": 730002,
+      "tag": "train-sft-730002",
+      "start_utc": "2026-11-26T05:51:43+00:00",
+      "actor_steps": 752,
+      "actor_seconds": 102.89938354492188,
+      "original_tick_rate": 28.30920749615859,
+      "median_hold_ms": 96.87700122594833
+    },
+    {
+      "seed": 730003,
+      "tag": "train-sft-730003",
+      "start_utc": "2026-11-26T05:51:43+00:00",
+      "actor_steps": 1797,
+      "actor_seconds": 268.3350524902344,
+      "original_tick_rate": 25.63958728519222,
+      "median_hold_ms": 108.49641263484955
+    },
+    {
+      "seed": 730004,
+      "tag": "train-sft-730004",
+      "start_utc": "2026-11-26T05:51:43+00:00",
+      "actor_steps": 1407,
+      "actor_seconds": 207.17340087890625,
+      "original_tick_rate": 26.04098777696564,
+      "median_hold_ms": 104.9489974975586
+    },
+    {
+      "seed": 730101,
+      "tag": "train-ppo1-730101",
+      "start_utc": "2026-11-26T06:02:33+00:00",
+      "actor_steps": 878,
+      "actor_seconds": 138.99769592285156,
+      "original_tick_rate": 24.09392456302879,
+      "median_hold_ms": 114.89173024892807
+    },
+    {
+      "seed": 730102,
+      "tag": "train-ppo1-730102",
+      "start_utc": "2026-11-26T06:02:34+00:00",
+      "actor_steps": 870,
+      "actor_seconds": 145.93955993652344,
+      "original_tick_rate": 22.427092430754175,
+      "median_hold_ms": 121.87828123569489
+    },
+    {
+      "seed": 730103,
+      "tag": "train-ppo1-730103",
+      "start_utc": "2026-11-26T06:02:33+00:00",
+      "actor_steps": 1164,
+      "actor_seconds": 188.2559051513672,
+      "original_tick_rate": 23.314009706473875,
+      "median_hold_ms": 113.4384348988533
+    },
+    {
+      "seed": 730104,
+      "tag": "train-ppo1-730104",
+      "start_utc": "2026-11-26T06:03:42+00:00",
+      "actor_steps": 1043,
+      "actor_seconds": 163.21725463867188,
+      "original_tick_rate": 24.127351049482424,
+      "median_hold_ms": 113.01346868276596
+    },
+    {
+      "seed": 730105,
+      "tag": "train-ppo1-730105",
+      "start_utc": "2026-11-26T06:03:49+00:00",
+      "actor_steps": 1784,
+      "actor_seconds": 289.0802917480469,
+      "original_tick_rate": 23.426017592033766,
+      "median_hold_ms": 113.40419203042984
+    },
+    {
+      "seed": 730106,
+      "tag": "train-ppo1-730106",
+      "start_utc": "2026-11-26T06:04:52+00:00",
+      "actor_steps": 1180,
+      "actor_seconds": 186.83990478515625,
+      "original_tick_rate": 24.282821195060084,
+      "median_hold_ms": 113.10221254825592
+    },
+    {
+      "seed": 730107,
+      "tag": "train-ppo1-730107",
+      "start_utc": "2026-11-26T06:06:05+00:00",
+      "actor_steps": 998,
+      "actor_seconds": 163.74729919433594,
+      "original_tick_rate": 23.408019667249476,
+      "median_hold_ms": 114.7482767701149
+    },
+    {
+      "seed": 730108,
+      "tag": "train-ppo1-730108",
+      "start_utc": "2026-11-26T06:06:12+00:00",
+      "actor_steps": 1143,
+      "actor_seconds": 186.87872314453125,
+      "original_tick_rate": 23.523277160879097,
+      "median_hold_ms": 114.76007848978043
+    },
+    {
+      "seed": 731001,
+      "tag": "held-ppo1-731001",
+      "start_utc": "2026-11-26T06:06:52+00:00",
+      "actor_steps": 955,
+      "actor_seconds": 154.23898315429688,
+      "original_tick_rate": 23.586773755896942,
+      "median_hold_ms": 114.82423543930054
+    },
+    {
+      "seed": 731001,
+      "tag": "held-sft-731001",
+      "start_utc": "2026-11-26T05:58:43+00:00",
+      "actor_steps": 1793,
+      "actor_seconds": 294.67010498046875,
+      "original_tick_rate": 22.81873826476452,
+      "median_hold_ms": 117.36709624528885
+    },
+    {
+      "seed": 731002,
+      "tag": "held-ppo1-731002",
+      "start_utc": "2026-11-26T06:07:53+00:00",
+      "actor_steps": 1970,
+      "actor_seconds": 312.6293640136719,
+      "original_tick_rate": 23.922896761779963,
+      "median_hold_ms": 121.83848023414612
+    },
+    {
+      "seed": 731003,
+      "tag": "held-ppo1-731003",
+      "start_utc": "2026-11-26T06:09:10+00:00",
+      "actor_steps": 1441,
+      "actor_seconds": 230.8007049560547,
+      "original_tick_rate": 23.730430117372652,
+      "median_hold_ms": 123.9476129412651
+    },
+    {
+      "seed": 731004,
+      "tag": "held-ppo1-731004",
+      "start_utc": "2026-11-26T06:09:46+00:00",
+      "actor_steps": 990,
+      "actor_seconds": 156.22702026367188,
+      "original_tick_rate": 24.061138679184655,
+      "median_hold_ms": 123.10854345560074
+    },
+    {
+      "seed": 731005,
+      "tag": "held-ppo1-731005",
+      "start_utc": "2026-11-26T06:10:02+00:00",
+      "actor_steps": 2155,
+      "actor_seconds": 337.5904235839844,
+      "original_tick_rate": 24.26312901012216,
+      "median_hold_ms": 121.05688452720642
+    },
+    {
+      "seed": 731006,
+      "tag": "held-ppo1-731006",
+      "start_utc": "2026-11-26T06:10:26+00:00",
+      "actor_steps": 1443,
+      "actor_seconds": 214.59471130371094,
+      "original_tick_rate": 25.72756787182074,
+      "median_hold_ms": 113.39592933654785
+    },
+    {
+      "seed": 731007,
+      "tag": "held-ppo1-731007",
+      "start_utc": "2026-11-26T06:10:48+00:00",
+      "actor_steps": 1330,
+      "actor_seconds": 213.25704956054688,
+      "original_tick_rate": 23.483397197512826,
+      "median_hold_ms": 115.867480635643
+    },
+    {
+      "seed": 731008,
+      "tag": "held-ppo1-731008",
+      "start_utc": "2026-11-26T06:13:30+00:00",
+      "actor_steps": 783,
+      "actor_seconds": 119.8537368774414,
+      "original_tick_rate": 25.147317710102104,
+      "median_hold_ms": 113.73376846313477
+    },
+    {
+      "seed": 731008,
+      "tag": "held-sft-731008",
+      "start_utc": "2026-11-26T06:14:15+00:00",
+      "actor_steps": 1260,
+      "actor_seconds": 197.89205932617188,
+      "original_tick_rate": 24.58916247862026,
+      "median_hold_ms": 114.21671509742737
+    },
+    {
+      "seed": 731009,
+      "tag": "held-ppo1-731009",
+      "start_utc": "2026-11-26T06:14:15+00:00",
+      "actor_steps": 2107,
+      "actor_seconds": 329.1153869628906,
+      "original_tick_rate": 24.532429414825213,
+      "median_hold_ms": 113.7869581580162
+    },
+    {
+      "seed": 731009,
+      "tag": "held-sft-731009",
+      "start_utc": "2026-11-26T06:15:10+00:00",
+      "actor_steps": 1340,
+      "actor_seconds": 211.18304443359375,
+      "original_tick_rate": 24.32960474540198,
+      "median_hold_ms": 113.62191289663315
+    },
+    {
+      "seed": 731003,
+      "tag": "held-sft-731003",
+      "start_utc": "2026-11-26T05:58:43+00:00",
+      "actor_steps": 1435,
+      "actor_seconds": 236.92201232910156,
+      "original_tick_rate": 22.631919876452002,
+      "median_hold_ms": 121.919646859169
+    },
+    {
+      "seed": 731010,
+      "tag": "held-ppo1-731010",
+      "start_utc": "2026-11-26T06:15:36+00:00",
+      "actor_steps": 974,
+      "actor_seconds": 157.50119018554688,
+      "original_tick_rate": 23.695059037988575,
+      "median_hold_ms": 114.10340666770935
+    },
+    {
+      "seed": 731010,
+      "tag": "held-sft-731010",
+      "start_utc": "2026-11-26T06:24:15+00:00",
+      "actor_steps": 1841,
+      "actor_seconds": 320.8587646484375,
+      "original_tick_rate": 21.48297244600006,
+      "median_hold_ms": 133.43332707881927
+    },
+    {
+      "seed": 731011,
+      "tag": "held-ppo1-731011",
+      "start_utc": "2026-11-26T06:16:55+00:00",
+      "actor_steps": 1477,
+      "actor_seconds": 232.3352813720703,
+      "original_tick_rate": 24.22791737336488,
+      "median_hold_ms": 121.45354598760605
+    },
+    {
+      "seed": 731011,
+      "tag": "held-sft-731011",
+      "start_utc": "2026-11-26T06:17:30+00:00",
+      "actor_steps": 860,
+      "actor_seconds": 129.69505310058594,
+      "original_tick_rate": 25.482853208262178,
+      "median_hold_ms": 113.47827315330505
+    },
+    {
+      "seed": 731012,
+      "tag": "held-ppo1-731012",
+      "start_utc": "2026-11-26T06:18:51+00:00",
+      "actor_steps": 1182,
+      "actor_seconds": 183.06036376953125,
+      "original_tick_rate": 24.527428589909313,
+      "median_hold_ms": 117.31718480587006
+    },
+    {
+      "seed": 731012,
+      "tag": "held-sft-731012",
+      "start_utc": "2026-11-26T06:19:22+00:00",
+      "actor_steps": 1756,
+      "actor_seconds": 285.64599609375,
+      "original_tick_rate": 23.189542617730165,
+      "median_hold_ms": 121.92439287900925
+    },
+    {
+      "seed": 731001,
+      "tag": "held-ppo2-731001",
+      "start_utc": "2026-11-26T06:19:48+00:00",
+      "actor_steps": 1925,
+      "actor_seconds": 303.12750244140625,
+      "original_tick_rate": 24.062481765111073,
+      "median_hold_ms": 115.21542072296143
+    },
+    {
+      "seed": 731002,
+      "tag": "held-ppo2-731002",
+      "start_utc": "2026-11-26T06:20:48+00:00",
+      "actor_steps": 1045,
+      "actor_seconds": 158.00604248046875,
+      "original_tick_rate": 25.39776287667005,
+      "median_hold_ms": 113.25600743293762
+    },
+    {
+      "seed": 731003,
+      "tag": "held-ppo2-731003",
+      "start_utc": "2026-11-26T06:20:50+00:00",
+      "actor_steps": 1512,
+      "actor_seconds": 224.8207244873047,
+      "original_tick_rate": 25.75830147868334,
+      "median_hold_ms": 112.98232525587082
+    },
+    {
+      "seed": 731004,
+      "tag": "held-ppo2-731004",
+      "start_utc": "2026-11-26T06:22:04+00:00",
+      "actor_steps": 2113,
+      "actor_seconds": 346.3326721191406,
+      "original_tick_rate": 22.873960898712962,
+      "median_hold_ms": 121.05762213468552
+    },
+    {
+      "seed": 731004,
+      "tag": "held-sft-731004",
+      "start_utc": "2026-11-26T05:58:43+00:00",
+      "actor_steps": 1407,
+      "actor_seconds": 225.12551879882812,
+      "original_tick_rate": 23.4713506855781,
+      "median_hold_ms": 115.69694429636002
+    },
+    {
+      "seed": 731005,
+      "tag": "held-ppo2-731005",
+      "start_utc": "2026-11-26T06:23:05+00:00",
+      "actor_steps": 1589,
+      "actor_seconds": 258.3531188964844,
+      "original_tick_rate": 23.181450355935677,
+      "median_hold_ms": 120.88729441165924
+    },
+    {
+      "seed": 731006,
+      "tag": "held-ppo2-731006",
+      "start_utc": "2026-11-26T06:24:31+00:00",
+      "actor_steps": 1767,
+      "actor_seconds": 301.5854187011719,
+      "original_tick_rate": 21.987137271282915,
+      "median_hold_ms": 128.03149223327637
+    },
+    {
+      "seed": 731007,
+      "tag": "held-ppo2-731007",
+      "start_utc": "2026-11-26T06:25:20+00:00",
+      "actor_steps": 2035,
+      "actor_seconds": 369.4511413574219,
+      "original_tick_rate": 20.403239173397047,
+      "median_hold_ms": 142.3015594482422
+    },
+    {
+      "seed": 731008,
+      "tag": "held-ppo2-731008",
+      "start_utc": "2026-11-26T06:25:48+00:00",
+      "actor_steps": 1025,
+      "actor_seconds": 180.65478515625,
+      "original_tick_rate": 21.250475024393143,
+      "median_hold_ms": 135.63941419124603
+    },
+    {
+      "seed": 731009,
+      "tag": "held-ppo2-731009",
+      "start_utc": "2026-11-26T06:26:04+00:00",
+      "actor_steps": 1830,
+      "actor_seconds": 318.50799560546875,
+      "original_tick_rate": 21.47198844097895,
+      "median_hold_ms": 139.02416825294495
+    },
+    {
+      "seed": 731010,
+      "tag": "held-ppo2-731010",
+      "start_utc": "2026-11-26T06:28:38+00:00",
+      "actor_steps": 1768,
+      "actor_seconds": 308.63348388671875,
+      "original_tick_rate": 21.361907713227588,
+      "median_hold_ms": 139.26593959331512
+    },
+    {
+      "seed": 731011,
+      "tag": "held-ppo2-731011",
+      "start_utc": "2026-11-26T06:29:11+00:00",
+      "actor_steps": 1778,
+      "actor_seconds": 306.7426452636719,
+      "original_tick_rate": 21.58486960399222,
+      "median_hold_ms": 134.57953929901123
+    },
+    {
+      "seed": 731012,
+      "tag": "held-ppo2-731012",
+      "start_utc": "2026-11-26T06:30:05+00:00",
+      "actor_steps": 1496,
+      "actor_seconds": 252.14039611816406,
+      "original_tick_rate": 22.186052239635597,
+      "median_hold_ms": 132.04842805862427
+    },
+    {
+      "seed": 730201,
+      "tag": "train-ppo2-730201",
+      "start_utc": "2026-11-26T06:30:45+00:00",
+      "actor_steps": 848,
+      "actor_seconds": 146.22450256347656,
+      "original_tick_rate": 21.56957243626688,
+      "median_hold_ms": 130.27656078338623
+    },
+    {
+      "seed": 730202,
+      "tag": "train-ppo2-730202",
+      "start_utc": "2026-11-26T06:32:43+00:00",
+      "actor_steps": 1917,
+      "actor_seconds": 312.19451904296875,
+      "original_tick_rate": 23.161841604928256,
+      "median_hold_ms": 126.34435296058655
+    },
+    {
+      "seed": 731005,
+      "tag": "held-sft-731005",
+      "start_utc": "2026-11-26T05:58:43+00:00",
+      "actor_steps": 1007,
+      "actor_seconds": 158.93577575683594,
+      "original_tick_rate": 23.607019767156633,
+      "median_hold_ms": 114.70203101634979
+    },
+    {
+      "seed": 730203,
+      "tag": "train-ppo2-730203",
+      "start_utc": "2026-11-26T06:32:42+00:00",
+      "actor_steps": 2007,
+      "actor_seconds": 333.4803771972656,
+      "original_tick_rate": 22.59503261729483,
+      "median_hold_ms": 127.96413898468018
+    },
+    {
+      "seed": 730204,
+      "tag": "train-ppo2-730204",
+      "start_utc": "2026-11-26T06:34:20+00:00",
+      "actor_steps": 1873,
+      "actor_seconds": 308.1190185546875,
+      "original_tick_rate": 22.900241708863042,
+      "median_hold_ms": 126.18373334407806
+    },
+    {
+      "seed": 730205,
+      "tag": "train-ppo2-730205",
+      "start_utc": "2026-11-26T06:34:56+00:00",
+      "actor_steps": 1167,
+      "actor_seconds": 189.20687866210938,
+      "original_tick_rate": 23.3501024446885,
+      "median_hold_ms": 121.40273302793503
+    },
+    {
+      "seed": 730206,
+      "tag": "train-ppo2-730206",
+      "start_utc": "2026-11-26T06:35:26+00:00",
+      "actor_steps": 1894,
+      "actor_seconds": 305.22662353515625,
+      "original_tick_rate": 23.484189933957,
+      "median_hold_ms": 123.38456511497498
+    },
+    {
+      "seed": 730207,
+      "tag": "train-ppo2-730207",
+      "start_utc": "2026-11-26T06:35:26+00:00",
+      "actor_steps": 1298,
+      "actor_seconds": 208.90838623046875,
+      "original_tick_rate": 23.48397825728105,
+      "median_hold_ms": 123.5411986708641
+    },
+    {
+      "seed": 731006,
+      "tag": "held-sft-731006",
+      "start_utc": "2026-11-26T05:58:43+00:00",
+      "actor_steps": 1006,
+      "actor_seconds": 158.90618896484375,
+      "original_tick_rate": 23.649173291994412,
+      "median_hold_ms": 115.29338359832764
+    },
+    {
+      "seed": 731007,
+      "tag": "held-sft-731007",
+      "start_utc": "2026-11-26T05:58:48+00:00",
+      "actor_steps": 935,
+      "actor_seconds": 156.68896484375,
+      "original_tick_rate": 22.088345554208644,
+      "median_hold_ms": 123.7877830862999
+    },
+    {
+      "seed": 731002,
+      "tag": "held-sft-731002",
+      "start_utc": "2026-11-26T05:54:47+00:00",
+      "actor_steps": 1014,
+      "actor_seconds": 157.2961883544922,
+      "original_tick_rate": 24.603266236040852,
+      "median_hold_ms": 114.20896649360657
+    }
+  ]
+}

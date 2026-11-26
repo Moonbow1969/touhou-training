@@ -88,9 +88,12 @@ def summarize(raw, output, stage2_step=None):
         thumb.thumbnail((116,86));x=i%6*120;y=i//6*108+26
         sheet.paste(thumb,(x,y));dr.text((x+2,y+87),p.stem,fill='white')
     sheet.save(output/(episode+'-sheet.jpg'),quality=75)
+    terminal_image = raw / "terminal-at-control.ppm"
+    terminal_hash = hashlib.sha256(terminal_image.read_bytes()).hexdigest() if terminal_image.exists() else None
     report=dict(title=12,game="TH12 UFO official trial 0.02a",episode=episode,seed=int(seed),mode=mode,
                 lane=episode.split('-')[-1],policy_sha256=fingerprint,actions=n,seconds=float(wall),
                 native_outcome=end,stage2_reached=stage2_step is not None,stage2_step=stage2_step,
+                native_terminal_state=rows[-1]["status"],terminal_observation_sha256=terminal_hash,
                 stage2_remaining_spare_lives=stage2_spares,stage2_remaining_bombs=stage2_bombs,
                 stage2_stock_source=stage2_stock_source,
                 stage2_review="Review the time-stamped original color progression and terminal screen for each credit.",

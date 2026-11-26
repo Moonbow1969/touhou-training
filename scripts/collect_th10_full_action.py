@@ -31,11 +31,13 @@ def save(path, data):
     tmp.replace(path)
 
 
-def pin(client, paired=False, actor_header=None, locator_params=None):
+def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False):
     files = {name:(PROBE/name).read_bytes() for name in
              ("run-th10-trial-probe.sh","th10-trial-state.h","th10-trial-observe.c","th10-full-stock.c","th10-full-actor.c")}
     if paired:
         for n in ("th10-paired-targets.c","th10-trial-step.c"):files[n]=(PROBE/n).read_bytes()
+    if warm_reset:
+        files["th10-warm-reset.sh"]=(PROBE/"th10-warm-reset.sh").read_bytes()
     files["full_actor.h"] = (actor_header or PROBE.parent/"full_action/full_actor.h").read_bytes()
     if locator_params:
         files["native_locator.h"] = (PROBE.parent/"full_action/native_locator.h").read_bytes()

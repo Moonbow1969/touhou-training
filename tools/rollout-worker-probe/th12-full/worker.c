@@ -28,6 +28,26 @@ static void playfield(XImage *im,unsigned char *out){
         out[y*SMALL_W+x]=(unsigned char)((total+2048)/4096);
     }
 }
+static void save_terminal(XImage *im){
+    /* Keep the exact XImage that triggered termination. Menu inputs can change the
+       window before a later independent screenshot. The crop begins at (32,16)
+       within the native 640x480 window; excluded borders are stored as black. */
+    FILE *fp=fopen("terminal-at-control.ppm","wbx");
+    if(!fp)fail("Cannot create original terminal observation.");
+    fprintf(fp,"P6\n640 480\n255\n");
+    unsigned char row[640*3];
+    for(int y=0;y<480;y++){
+        memset(row,0,sizeof row);
+        if(y>=16 && y<16+HEIGHT)for(int x=32;x<640;x++){
+            unsigned long pixel=XGetPixel(im,x-32,y-16);
+            row[3*x]=(unsigned char)(pixel>>16);
+            row[3*x+1]=(unsigned char)(pixel>>8);
+            row[3*x+2]=(unsigned char)pixel;
+        }
+        if(fwrite(row,1,sizeof row,fp)!=sizeof row)fail("Terminal image write failed.");
+    }
+    if(fclose(fp))fail("Terminal image close failed.");
+}
 int main(int argc,char **argv){
     if(argc==2 && (!strcmp(argv[1],"status") || !strcmp(argv[1],"hud"))){
         initialize();load_patch(&rank_title);load_patch(&pause_title);load_patch(&game_over_title);
@@ -101,7 +121,9 @@ int main(int argc,char **argv){
         ++index;
         if(index%32==0)fflush(rows);
     }
-    set_keys(d,current,0);XDestroyImage(im);XCloseDisplay(d);
+    set_keys(d,current,0);
+    if(!strcmp(outcome,"game_over"))save_terminal(im);
+    XDestroyImage(im);XCloseDisplay(d);
     if(fclose(rows)||(f&&fclose(f))||(pixels&&fclose(pixels)))fail("Trajectory close failed.");
     printf("%s %d %.6f\n",outcome,index,(now_ns()-started)/1e9);
     return !strcmp(outcome,"technical_censor")?3:0;
