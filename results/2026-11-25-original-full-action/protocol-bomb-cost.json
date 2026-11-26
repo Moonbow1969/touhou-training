@@ -1,0 +1,67 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      710201,
+      710202,
+      710203,
+      710204,
+      710205,
+      710206,
+      710207,
+      710208
+    ],
+    "12": [
+      720201,
+      720202,
+      720203,
+      720204,
+      720205,
+      720206,
+      720207,
+      720208
+    ],
+    "13": [
+      730201,
+      730202,
+      730203,
+      730204,
+      730205,
+      730206,
+      730207,
+      730208
+    ]
+  },
+  "eval_seeds": {},
+  "initialization": "Full-policy PPO2 checkpoint. All 24 training trajectories must be independent, completed native credits from this policy. Hold the three-game PPO reward, architecture and hyperparameters fixed to measure one further update.",
+  "arms": [
+    "ppo3",
+    "ppo3-zero-bomb-cost"
+  ],
+  "eval": "Diagnostic on 24 separate archived whole credits in batch2. Compare total binary probability differences under identical observation histories. If the median expected number of different Bomb decisions reaches one full decision per credit for any title, run a separate original-game evaluation for that title. Otherwise retain as a frozen sensitivity test; never claim a survival improvement from this metric.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": 0
+  },
+  "ppo": {
+    "seed": 48213,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025,
+    "remove_confirmed_bomb_cost": true
+  },
+  "round": 3
+}

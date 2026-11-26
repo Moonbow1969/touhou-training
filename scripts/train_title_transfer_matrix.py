@@ -80,8 +80,10 @@ def main():
     p.add_argument("--switch-share",type=float,default=0.,
                    help="Share of training draws sampled from expert direction changes; the remainder is uniform.")
     p.add_argument("--joint-only",action="store_true",help="Fit only the three-title condition.")
+    p.add_argument("--history-dropout",type=float,default=0.,
+                   help="Training-only probability of jointly masking all displacement history and availability flags.")
     args=p.parse_args()
-    if shutil.disk_usage(args.out.parent).free<8*1024**3 or args.steps<1 or not 0<=args.switch_share<=1:
+    if shutil.disk_usage(args.out.parent).free<8*1024**3 or args.steps<1 or not 0<=args.switch_share<=1 or not 0<=args.history_dropout<=1:
         p.error("Supply a fresh output on a volume with an 8 GiB reserve and a positive budget.")
     args.out.mkdir(exist_ok=False)
     fit,hold=groups(args.data)
@@ -96,6 +98,7 @@ def main():
         train_samples={t:len(v[0]) for t,v in train.items()},test_samples={t:len(v[0]) for t,v in test.items()},
         seeds=args.seeds,arms=[])
     state["switch_share"]=args.switch_share
+    state["history_dropout"]=args.history_dropout
     state["switch_pool_counts"]={t:len(ix) for t,ix in switches.items()}
     if args.switch_share:
         state["form"]="Equal title probability. Within each title mix uniform training transitions with uniform true movement changes."
@@ -107,6 +110,7 @@ def main():
             label=f"seed-{seed}-"+("all" if exclude is None else f"without-{exclude}")
             torch.manual_seed(seed)
             rng=np.random.default_rng(seed)
+            mask_rng=torch.Generator(device="cuda").manual_seed(8521+seed)
             model=bc.MovementPolicy(bc.observation_space(True),bc.action_space(),lambda _: .0003,
                                     **bc.network_kwargs(256)).cuda()
             opt=torch.optim.AdamW(model.parameters(),lr=.0003,weight_decay=.0001)
@@ -124,6 +128,9 @@ def main():
                         ix[:n_switch]=switches[t][torch.randint(len(switches[t]),(n_switch,),device="cuda")]
                     parts.append([f[ix] for f in train[t]])
                 b,c,y,soft=(torch.cat(x) for x in zip(*parts))
+                if args.history_dropout:
+                    drop=torch.rand(len(c),device="cuda",generator=mask_rng)<args.history_dropout
+                    c[drop,-9:]=0.
                 heads=bc.predict_heads(model,b,c)
                 loss=-(soft*heads[0].log_softmax(1)).sum(1).mean()
                 loss+=sum(F.cross_entropy(h,y[:,k]) for k,h in enumerate(heads[1:],1))

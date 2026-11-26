@@ -29,7 +29,7 @@ def calculate_gae(rewards,values,gamma,lam):
     return advantage
 
 
-def read_credit(record,manifest,model,parent_sha,gamma,lam):
+def read_credit(record,manifest,model,parent_sha,gamma,lam,remove_bomb_cost=False):
     path=manifest.parent/record["file"]
     if record["role"]!="train" or record["policy_sha256"]!=parent_sha or digest(path)!=record["sha256"]:
         raise ValueError("Unverified behavior data or non-training credit.")
@@ -42,6 +42,15 @@ def read_credit(record,manifest,model,parent_sha,gamma,lam):
         v=np.asarray(z["value"],dtype=np.float32).reshape(-1)
         rewards=np.asarray(z["reward"],dtype=np.float32).reshape(-1)
         done=np.asarray(z["terminated"],dtype=bool).reshape(-1)
+        original_return=float(rewards.sum())
+        if remove_bomb_cost:
+            title=int(record["title"])
+            if title==10:cost=z["reward_bomb"]
+            elif title==12:cost=z["reward_parts"][:,2]
+            else:cost=-.03*z["reward_components"][:,3]
+            if not np.isfinite(cost).all() or np.any(cost>0):
+                raise ValueError("Invalid recorded Bomb reward component")
+            rewards=rewards-cost
     n=len(x)
     if (x.shape!=(n,110) or not n or a.shape!=(n,4) or lp.shape!=(n,4) or
         len(rewards)!=n or len(v)!=n or len(done)!=n or not done[-1] or np.any(done[:-1]) or
@@ -56,9 +65,11 @@ def read_credit(record,manifest,model,parent_sha,gamma,lam):
     if lp_error>5e-4 or v_error>3e-4:
         raise ValueError(f"On-policy likelihood/value replay failed for {path.name}: {lp_error}/{v_error}")
     adv=calculate_gae(rewards,v,gamma,lam)
-    return (xt,at,torch.from_numpy(lp.sum(1)),torch.from_numpy(adv),torch.from_numpy(v+adv)),dict(
+    stats=dict(
         title=record['title'],seed=record['seed'],steps=n,total_reward=float(rewards.sum()),action_counts=[np.bincount(a[:,k].astype(int),minlength=m).tolist() for k,m in enumerate(WIDTHS)],
         max_logp_error=float(lp_error),max_value_error=float(v_error))
+    if remove_bomb_cost:stats["original_return_with_bomb_cost"]=original_return
+    return (xt,at,torch.from_numpy(lp.sum(1)),torch.from_numpy(adv),torch.from_numpy(v+adv)),stats
 
 
 def main():
@@ -77,7 +88,8 @@ def main():
     by_title=defaultdict(list);quality=[]
     aux_config=config.get("visual_loss_aux")
     for r in rows:
-        arrays,metrics=read_credit(r,args.manifest,reference,parent_sha,config['gamma'],config['gae_lambda'])
+        arrays,metrics=read_credit(r,args.manifest,reference,parent_sha,config['gamma'],config['gae_lambda'],
+                                   config.get('remove_confirmed_bomb_cost',False))
         if aux_config:
             with np.load(args.manifest.parent/r["file"],allow_pickle=False) as trace:
                 target,losses=loss_targets(trace,int(r["title"]),aux_config["horizon"])

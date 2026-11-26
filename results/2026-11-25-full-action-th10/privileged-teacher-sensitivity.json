@@ -1,0 +1,1515 @@
+{
+  "teacher_sha256": "6357a40fe4d90e2619e9a9b19a3e44fa545f33ff1ae7bb929a3e7cee48cf7b85",
+  "training_titles": [
+    13,
+    14,
+    17
+  ],
+  "target_title": 10,
+  "credits": 8,
+  "policy_data": "Eight genuine on-policy theta-PPO2 training credits, 710201\u20138. No held story outcomes used. The teacher did not control these games. This is an input sensitivity audit, without expert action labels on these states.",
+  "cross_title_mapping": {
+    "entities": "Native TH10 reader keeps active==1 pool entries, closest 96 by squared relative distance. dx/384, dy/448, vx/16, vy/16. Mask and active flag are one for present rows, zero otherwise. Hitbox radius unobserved and set to zero in the primary audit; 4px sensitivity check. Other titles may represent additional inactive/fading rows.",
+    "player_and_resources": "x/192, y/448, focus from game's consumed key bit, spares/8. Display Power/4 clipped to [0,1] matches the teacher's 4.00 reference scale; TH10 can reach 5.00. TH10 pays Power per Bomb and has no separate stock: the teacher stock channel is zero by default; floor(Power)/8 is an explicitly tested proxy.",
+    "boss": "Relative boss x, relative boss y and normalized boss HP were unobserved and set to zero, the original replay encoder's no-boss representation. The data covers only stage 1.",
+    "counts_and_metadata": "Native bullet count/512, Normal difficulty index 1/4, one-hot Reimu/A. No title encoding or stage-clock channel in this exact teacher. Standard observation bounds apply.",
+    "history": "Approximate 4-, 12-, 36-tick same-life displacement using previous complete native reads assuming 60 Hz and 8 pixels/tick normalization. No native stage frame in TH10 archive; compare disabled history and expose availability flags.",
+    "alignment": "Last native read completed before the camera timestamp. Rows with no prior native read, over 100ms age, negative spares, or offscreen vertically during respawn are discarded. No future native inputs used.",
+    "test": "Derange complete bullet sets within controller credit, same life and exact count by a half-group circular shift. Keep player/context/history fixed. Only nonempty groups with >=2 distinct stored sets contribute. Total variation = half L1 distance between the two head distributions."
+  },
+  "coverage": {
+    "total_camera": 2511,
+    "valid": 2455,
+    "native_bullets_present": 1358,
+    "same_life_count_shuffle": 1197,
+    "history_valid": [
+      2431,
+      2385,
+      2300
+    ],
+    "median_past_age_ms": 20.83447265625,
+    "maximum_past_age_ms": 43.91796875
+  },
+  "summary": {
+    "same_life_and_exact_count_shuffle": {
+      "movement": {
+        "n": 1197,
+        "modal_changes": 12,
+        "modal_change_fraction": 0.01002506259828806,
+        "mean_total_variation": 0.049548983573913574,
+        "p90_total_variation": 0.0988452807068825
+      },
+      "focus": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.006778188049793243,
+        "p90_total_variation": 0.015070713311433791
+      },
+      "shoot": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.02106672152876854,
+        "p90_total_variation": 0.048586556315422094
+      },
+      "bomb": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.0004140004748478532,
+        "p90_total_variation": 0.0009830161230638627
+      }
+    },
+    "same_shuffle_imputed_radius_4_native_pixels": {
+      "movement": {
+        "n": 1197,
+        "modal_changes": 11,
+        "modal_change_fraction": 0.00918964110314846,
+        "mean_total_variation": 0.053934935480356216,
+        "p90_total_variation": 0.10873619168996812
+      },
+      "focus": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.007178446743637323,
+        "p90_total_variation": 0.01658497750759125
+      },
+      "shoot": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.02115185186266899,
+        "p90_total_variation": 0.050433404743671445
+      },
+      "bomb": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.00044435227755457163,
+        "p90_total_variation": 0.0010924300411716107
+      }
+    },
+    "same_shuffle_without_approximate_motion_history": {
+      "movement": {
+        "n": 1197,
+        "modal_changes": 156,
+        "modal_change_fraction": 0.1303258091211319,
+        "mean_total_variation": 0.12696151435375214,
+        "p90_total_variation": 0.23766227662563325
+      },
+      "focus": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.006824566517025232,
+        "p90_total_variation": 0.016632549092173578
+      },
+      "shoot": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.028262082487344742,
+        "p90_total_variation": 0.06819135695695878
+      },
+      "bomb": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.004368394613265991,
+        "p90_total_variation": 0.00994907207787037
+      }
+    },
+    "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+      "movement": {
+        "n": 1197,
+        "modal_changes": 14,
+        "modal_change_fraction": 0.011695906519889832,
+        "mean_total_variation": 0.049188077449798584,
+        "p90_total_variation": 0.0974101468920708
+      },
+      "focus": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.007066885940730572,
+        "p90_total_variation": 0.015613268688321115
+      },
+      "shoot": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.021861707791686058,
+        "p90_total_variation": 0.04964203760027888
+      },
+      "bomb": {
+        "n": 1197,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.00039097678381949663,
+        "p90_total_variation": 0.0009433066705241804
+      }
+    },
+    "remove_all_native_bullets_and_zero_count": {
+      "movement": {
+        "n": 1358,
+        "modal_changes": 18,
+        "modal_change_fraction": 0.013254786841571331,
+        "mean_total_variation": 0.0655822902917862,
+        "p90_total_variation": 0.1207890100777149
+      },
+      "focus": {
+        "n": 1358,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.010958889499306679,
+        "p90_total_variation": 0.03154022842645644
+      },
+      "shoot": {
+        "n": 1358,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.06749384850263596,
+        "p90_total_variation": 0.13629379719495774
+      },
+      "bomb": {
+        "n": 1358,
+        "modal_changes": 0,
+        "modal_change_fraction": 0.0,
+        "mean_total_variation": 0.0006265077390708029,
+        "p90_total_variation": 0.00117911793058738
+      }
+    }
+  },
+  "per_credit": [
+    {
+      "seed": 710201,
+      "valid": 324,
+      "with_bullets": 173,
+      "exact_count_shuffle_rows": 144,
+      "max_live_count": 54,
+      "history_valid": [
+        321,
+        316,
+        305
+      ],
+      "min_past_age_ms": 0.036376953125,
+      "max_past_age_ms": 43.709716796875,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 144,
+            "modal_changes": 2,
+            "modal_change_fraction": 0.013888888992369175,
+            "mean_total_variation": 0.040281880646944046,
+            "p90_total_variation": 0.07350662052631379
+          },
+          "focus": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005361043848097324,
+            "p90_total_variation": 0.011646027956157925
+          },
+          "shoot": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.018852727487683296,
+            "p90_total_variation": 0.04215221777558327
+          },
+          "bomb": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00041601143311709166,
+            "p90_total_variation": 0.0009960718336515155
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 144,
+            "modal_changes": 2,
+            "modal_change_fraction": 0.013888888992369175,
+            "mean_total_variation": 0.044770415872335434,
+            "p90_total_variation": 0.07948167771101
+          },
+          "focus": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005805579945445061,
+            "p90_total_variation": 0.012968697119504213
+          },
+          "shoot": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.020059753209352493,
+            "p90_total_variation": 0.04424878545105459
+          },
+          "bomb": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00041548971785232425,
+            "p90_total_variation": 0.0009515165933407854
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 144,
+            "modal_changes": 7,
+            "modal_change_fraction": 0.0486111119389534,
+            "mean_total_variation": 0.11050698161125183,
+            "p90_total_variation": 0.19923766106367113
+          },
+          "focus": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.010477359406650066,
+            "p90_total_variation": 0.025833816081285477
+          },
+          "shoot": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.02389645017683506,
+            "p90_total_variation": 0.05119236558675766
+          },
+          "bomb": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0028936497401446104,
+            "p90_total_variation": 0.00674230507574976
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 144,
+            "modal_changes": 2,
+            "modal_change_fraction": 0.013888888992369175,
+            "mean_total_variation": 0.03985359147191048,
+            "p90_total_variation": 0.07201904505491258
+          },
+          "focus": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0053825159557163715,
+            "p90_total_variation": 0.011816057283431295
+          },
+          "shoot": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.019448913633823395,
+            "p90_total_variation": 0.043097104132175455
+          },
+          "bomb": {
+            "n": 144,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003798988473135978,
+            "p90_total_variation": 0.0007846470922231689
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 173,
+            "modal_changes": 3,
+            "modal_change_fraction": 0.017341040074825287,
+            "mean_total_variation": 0.06186743825674057,
+            "p90_total_variation": 0.11049722582101823
+          },
+          "focus": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0065301572903990746,
+            "p90_total_variation": 0.013955876231193551
+          },
+          "shoot": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.07920372486114502,
+            "p90_total_variation": 0.14021010994911193
+          },
+          "bomb": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004715555114671588,
+            "p90_total_variation": 0.0009384891949594023
+          }
+        }
+      }
+    },
+    {
+      "seed": 710202,
+      "valid": 254,
+      "with_bullets": 134,
+      "exact_count_shuffle_rows": 109,
+      "max_live_count": 37,
+      "history_valid": [
+        251,
+        246,
+        233
+      ],
+      "min_past_age_ms": 0.521728515625,
+      "max_past_age_ms": 41.62646484375,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.04832221940159798,
+            "p90_total_variation": 0.09959056377410894
+          },
+          "focus": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005346417892724276,
+            "p90_total_variation": 0.015123736113309862
+          },
+          "shoot": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.014902141876518726,
+            "p90_total_variation": 0.04670406430959702
+          },
+          "bomb": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003193558077327907,
+            "p90_total_variation": 0.000709794950671494
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.04817846789956093,
+            "p90_total_variation": 0.09237430393695834
+          },
+          "focus": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005594419781118631,
+            "p90_total_variation": 0.016538150236010553
+          },
+          "shoot": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.012310901656746864,
+            "p90_total_variation": 0.03748123198747636
+          },
+          "bomb": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003017387352883816,
+            "p90_total_variation": 0.0006250081351026893
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 109,
+            "modal_changes": 9,
+            "modal_change_fraction": 0.08256880939006805,
+            "mean_total_variation": 0.11471592634916306,
+            "p90_total_variation": 0.2199983686208725
+          },
+          "focus": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.004398812539875507,
+            "p90_total_variation": 0.010286578163504607
+          },
+          "shoot": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.020613323897123337,
+            "p90_total_variation": 0.06721673607826233
+          },
+          "bomb": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.004301486536860466,
+            "p90_total_variation": 0.007725381478667259
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.048155881464481354,
+            "p90_total_variation": 0.09991538524627691
+          },
+          "focus": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005405928008258343,
+            "p90_total_variation": 0.015123736113309862
+          },
+          "shoot": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01615356281399727,
+            "p90_total_variation": 0.04933030158281328
+          },
+          "bomb": {
+            "n": 109,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003000731812790036,
+            "p90_total_variation": 0.0007092377403751015
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 134,
+            "modal_changes": 3,
+            "modal_change_fraction": 0.02238805964589119,
+            "mean_total_variation": 0.0724903792142868,
+            "p90_total_variation": 0.12536899745464325
+          },
+          "focus": {
+            "n": 134,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01791789010167122,
+            "p90_total_variation": 0.05798371285200119
+          },
+          "shoot": {
+            "n": 134,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.06125273555517197,
+            "p90_total_variation": 0.1251321062445641
+          },
+          "bomb": {
+            "n": 134,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.000961222336627543,
+            "p90_total_variation": 0.0016005074256099769
+          }
+        }
+      }
+    },
+    {
+      "seed": 710203,
+      "valid": 233,
+      "with_bullets": 111,
+      "exact_count_shuffle_rows": 101,
+      "max_live_count": 22,
+      "history_valid": [
+        231,
+        224,
+        214
+      ],
+      "min_past_age_ms": 0.126708984375,
+      "max_past_age_ms": 43.80908203125,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 101,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.009900989942252636,
+            "mean_total_variation": 0.04236314445734024,
+            "p90_total_variation": 0.07833731174468994
+          },
+          "focus": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007195685990154743,
+            "p90_total_variation": 0.01982254907488823
+          },
+          "shoot": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01828334480524063,
+            "p90_total_variation": 0.03904043510556221
+          },
+          "bomb": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0002567358023952693,
+            "p90_total_variation": 0.0006291713798418641
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 101,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.009900989942252636,
+            "mean_total_variation": 0.04958956688642502,
+            "p90_total_variation": 0.10681094974279404
+          },
+          "focus": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0076259043999016285,
+            "p90_total_variation": 0.01810731366276741
+          },
+          "shoot": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01826736517250538,
+            "p90_total_variation": 0.039816226810216904
+          },
+          "bomb": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0002920465776696801,
+            "p90_total_variation": 0.0007276467513293028
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 101,
+            "modal_changes": 11,
+            "modal_change_fraction": 0.10891088843345642,
+            "mean_total_variation": 0.11188755184412003,
+            "p90_total_variation": 0.19865229725837708
+          },
+          "focus": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007492123171687126,
+            "p90_total_variation": 0.01605362631380558
+          },
+          "shoot": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.027794785797595978,
+            "p90_total_variation": 0.06696127355098724
+          },
+          "bomb": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.003576089860871434,
+            "p90_total_variation": 0.009585445746779442
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 101,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.009900989942252636,
+            "mean_total_variation": 0.04227720946073532,
+            "p90_total_variation": 0.07833731174468994
+          },
+          "focus": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007187476847320795,
+            "p90_total_variation": 0.01982254907488823
+          },
+          "shoot": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01847282610833645,
+            "p90_total_variation": 0.03904043510556221
+          },
+          "bomb": {
+            "n": 101,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0002455382782500237,
+            "p90_total_variation": 0.0006291713798418641
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 111,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.05687197670340538,
+            "p90_total_variation": 0.11632051318883896
+          },
+          "focus": {
+            "n": 111,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00926723051816225,
+            "p90_total_variation": 0.02322046086192131
+          },
+          "shoot": {
+            "n": 111,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.05319914221763611,
+            "p90_total_variation": 0.11007364094257355
+          },
+          "bomb": {
+            "n": 111,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00035704593756236136,
+            "p90_total_variation": 0.0006621189531870186
+          }
+        }
+      }
+    },
+    {
+      "seed": 710204,
+      "valid": 342,
+      "with_bullets": 181,
+      "exact_count_shuffle_rows": 173,
+      "max_live_count": 33,
+      "history_valid": [
+        339,
+        332,
+        323
+      ],
+      "min_past_age_ms": 0.5517578125,
+      "max_past_age_ms": 42.62451171875,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 173,
+            "modal_changes": 4,
+            "modal_change_fraction": 0.023121386766433716,
+            "mean_total_variation": 0.05576546490192413,
+            "p90_total_variation": 0.10391446501016618
+          },
+          "focus": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.008455142378807068,
+            "p90_total_variation": 0.018811335414648057
+          },
+          "shoot": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.04327087104320526,
+            "p90_total_variation": 0.11565518975257882
+          },
+          "bomb": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004725517937913537,
+            "p90_total_variation": 0.0010475459275767214
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 173,
+            "modal_changes": 4,
+            "modal_change_fraction": 0.023121386766433716,
+            "mean_total_variation": 0.061211634427309036,
+            "p90_total_variation": 0.13212914466857914
+          },
+          "focus": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00871329102665186,
+            "p90_total_variation": 0.020397525653243077
+          },
+          "shoot": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.03801494836807251,
+            "p90_total_variation": 0.0975154951214791
+          },
+          "bomb": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004647159657906741,
+            "p90_total_variation": 0.0012008641380816699
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 173,
+            "modal_changes": 24,
+            "modal_change_fraction": 0.1387283205986023,
+            "mean_total_variation": 0.13797156512737274,
+            "p90_total_variation": 0.2559656977653504
+          },
+          "focus": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.006123415194451809,
+            "p90_total_variation": 0.014820387959480286
+          },
+          "shoot": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.034589871764183044,
+            "p90_total_variation": 0.08170818239450463
+          },
+          "bomb": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.003778199665248394,
+            "p90_total_variation": 0.007553185708820822
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 173,
+            "modal_changes": 5,
+            "modal_change_fraction": 0.028901733458042145,
+            "mean_total_variation": 0.055508650839328766,
+            "p90_total_variation": 0.1060303270816803
+          },
+          "focus": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.009257317520678043,
+            "p90_total_variation": 0.020523742958903333
+          },
+          "shoot": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.04731510207056999,
+            "p90_total_variation": 0.12792835533618926
+          },
+          "bomb": {
+            "n": 173,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00042798349750228226,
+            "p90_total_variation": 0.0009303004713729024
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 181,
+            "modal_changes": 4,
+            "modal_change_fraction": 0.0220994483679533,
+            "mean_total_variation": 0.06201062351465225,
+            "p90_total_variation": 0.1190267950296402
+          },
+          "focus": {
+            "n": 181,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.011918394826352596,
+            "p90_total_variation": 0.03508399799466133
+          },
+          "shoot": {
+            "n": 181,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.06514342129230499,
+            "p90_total_variation": 0.1497892141342163
+          },
+          "bomb": {
+            "n": 181,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0005524124135263264,
+            "p90_total_variation": 0.0009841358987614512
+          }
+        }
+      }
+    },
+    {
+      "seed": 710205,
+      "valid": 474,
+      "with_bullets": 360,
+      "exact_count_shuffle_rows": 332,
+      "max_live_count": 77,
+      "history_valid": [
+        470,
+        465,
+        455
+      ],
+      "min_past_age_ms": 0.031982421875,
+      "max_past_age_ms": 43.91796875,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 332,
+            "modal_changes": 3,
+            "modal_change_fraction": 0.009036144241690636,
+            "mean_total_variation": 0.05131144821643829,
+            "p90_total_variation": 0.10374315157532693
+          },
+          "focus": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005752964410930872,
+            "p90_total_variation": 0.011809619423002005
+          },
+          "shoot": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.010981447994709015,
+            "p90_total_variation": 0.026617075875401512
+          },
+          "bomb": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0005308850668370724,
+            "p90_total_variation": 0.0014023769879713674
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 332,
+            "modal_changes": 2,
+            "modal_change_fraction": 0.0060240961611270905,
+            "mean_total_variation": 0.05672164261341095,
+            "p90_total_variation": 0.11297776922583586
+          },
+          "focus": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00611936254426837,
+            "p90_total_variation": 0.012947502546012405
+          },
+          "shoot": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.012773500755429268,
+            "p90_total_variation": 0.030899008922278894
+          },
+          "bomb": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0005977043765597045,
+            "p90_total_variation": 0.0014224072336219264
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 332,
+            "modal_changes": 46,
+            "modal_change_fraction": 0.13855421543121338,
+            "mean_total_variation": 0.1357802003622055,
+            "p90_total_variation": 0.2541351646184922
+          },
+          "focus": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0064684683457016945,
+            "p90_total_variation": 0.014849526807665827
+          },
+          "shoot": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.016476303339004517,
+            "p90_total_variation": 0.03870708495378495
+          },
+          "bomb": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0064119501039385796,
+            "p90_total_variation": 0.017375245504081267
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 332,
+            "modal_changes": 4,
+            "modal_change_fraction": 0.012048192322254181,
+            "mean_total_variation": 0.05110686644911766,
+            "p90_total_variation": 0.10374315157532693
+          },
+          "focus": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005765920504927635,
+            "p90_total_variation": 0.011809619423002005
+          },
+          "shoot": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.011272228322923183,
+            "p90_total_variation": 0.0269829872995615
+          },
+          "bomb": {
+            "n": 332,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0005145129398442805,
+            "p90_total_variation": 0.0013492425088770708
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 360,
+            "modal_changes": 5,
+            "modal_change_fraction": 0.013888888992369175,
+            "mean_total_variation": 0.06727901101112366,
+            "p90_total_variation": 0.1160916455090046
+          },
+          "focus": {
+            "n": 360,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.008968974463641644,
+            "p90_total_variation": 0.01928385179489851
+          },
+          "shoot": {
+            "n": 360,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.07539641112089157,
+            "p90_total_variation": 0.1401796296238899
+          },
+          "bomb": {
+            "n": 360,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.000909023336134851,
+            "p90_total_variation": 0.0020400022622197875
+          }
+        }
+      }
+    },
+    {
+      "seed": 710206,
+      "valid": 276,
+      "with_bullets": 146,
+      "exact_count_shuffle_rows": 129,
+      "max_live_count": 22,
+      "history_valid": [
+        273,
+        267,
+        257
+      ],
+      "min_past_age_ms": 0.520751953125,
+      "max_past_age_ms": 42.62890625,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 129,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.007751937955617905,
+            "mean_total_variation": 0.06248116493225098,
+            "p90_total_variation": 0.10960865169763565
+          },
+          "focus": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.008908613584935665,
+            "p90_total_variation": 0.026909127458930017
+          },
+          "shoot": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.024744631722569466,
+            "p90_total_variation": 0.05083817839622498
+          },
+          "bomb": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0002973069786094129,
+            "p90_total_variation": 0.0005567769752815367
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 129,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.007751937955617905,
+            "mean_total_variation": 0.06652228534221649,
+            "p90_total_variation": 0.11179132461547853
+          },
+          "focus": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.01038697175681591,
+            "p90_total_variation": 0.027547530084848407
+          },
+          "shoot": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.02338716946542263,
+            "p90_total_variation": 0.046342990547418604
+          },
+          "bomb": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00034021917963400483,
+            "p90_total_variation": 0.0007478394778445364
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 129,
+            "modal_changes": 20,
+            "modal_change_fraction": 0.1550387591123581,
+            "mean_total_variation": 0.15986207127571106,
+            "p90_total_variation": 0.2600464642047882
+          },
+          "focus": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.005116923712193966,
+            "p90_total_variation": 0.014539650455117226
+          },
+          "shoot": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.050571560859680176,
+            "p90_total_variation": 0.1174520179629326
+          },
+          "bomb": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0038693747483193874,
+            "p90_total_variation": 0.007483486365526915
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 129,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.007751937955617905,
+            "mean_total_variation": 0.06108510494232178,
+            "p90_total_variation": 0.10960865169763565
+          },
+          "focus": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.010231278836727142,
+            "p90_total_variation": 0.03058386743068696
+          },
+          "shoot": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.02371320128440857,
+            "p90_total_variation": 0.0477729506790638
+          },
+          "bomb": {
+            "n": 129,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00027622864581644535,
+            "p90_total_variation": 0.0005567769752815367
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 146,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.006849315017461777,
+            "mean_total_variation": 0.06398763507604599,
+            "p90_total_variation": 0.11685307323932648
+          },
+          "focus": {
+            "n": 146,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.013919670134782791,
+            "p90_total_variation": 0.042055508121848106
+          },
+          "shoot": {
+            "n": 146,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.04990821331739426,
+            "p90_total_variation": 0.08851350471377373
+          },
+          "bomb": {
+            "n": 146,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.000438419112470001,
+            "p90_total_variation": 0.0006765512516722083
+          }
+        }
+      }
+    },
+    {
+      "seed": 710207,
+      "valid": 295,
+      "with_bullets": 132,
+      "exact_count_shuffle_rows": 112,
+      "max_live_count": 35,
+      "history_valid": [
+        291,
+        286,
+        275
+      ],
+      "min_past_age_ms": 0.060791015625,
+      "max_past_age_ms": 43.060791015625,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 112,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.008928571827709675,
+            "mean_total_variation": 0.049617279320955276,
+            "p90_total_variation": 0.10543126836419109
+          },
+          "focus": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007088643033057451,
+            "p90_total_variation": 0.01273348852992058
+          },
+          "shoot": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.02255885861814022,
+            "p90_total_variation": 0.05218435041606428
+          },
+          "bomb": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00038165663136169314,
+            "p90_total_variation": 0.0008304258750285954
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 112,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.008928571827709675,
+            "mean_total_variation": 0.05282190069556236,
+            "p90_total_variation": 0.10624367445707324
+          },
+          "focus": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0072019146755337715,
+            "p90_total_variation": 0.014601378049701458
+          },
+          "shoot": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.025320397689938545,
+            "p90_total_variation": 0.06029163561761379
+          },
+          "bomb": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004167970619164407,
+            "p90_total_variation": 0.0008863348048180343
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 112,
+            "modal_changes": 14,
+            "modal_change_fraction": 0.125,
+            "mean_total_variation": 0.12820595502853394,
+            "p90_total_variation": 0.2097912013530731
+          },
+          "focus": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0076587204821407795,
+            "p90_total_variation": 0.01582753788679839
+          },
+          "shoot": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.03428205847740173,
+            "p90_total_variation": 0.07686003148555758
+          },
+          "bomb": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0037580423522740602,
+            "p90_total_variation": 0.009842127282172448
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 112,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.008928571827709675,
+            "mean_total_variation": 0.04921787232160568,
+            "p90_total_variation": 0.10370872020721439
+          },
+          "focus": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007329154293984175,
+            "p90_total_variation": 0.012701962236315017
+          },
+          "shoot": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.02287430875003338,
+            "p90_total_variation": 0.05582843311131004
+          },
+          "bomb": {
+            "n": 112,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00035969240707345307,
+            "p90_total_variation": 0.0008185394690372051
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 132,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.007575757801532745,
+            "mean_total_variation": 0.06430425494909286,
+            "p90_total_variation": 0.15250098109245305
+          },
+          "focus": {
+            "n": 132,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.008842632174491882,
+            "p90_total_variation": 0.02430056668817997
+          },
+          "shoot": {
+            "n": 132,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.07324059307575226,
+            "p90_total_variation": 0.13372824490070345
+          },
+          "bomb": {
+            "n": 132,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004504418757278472,
+            "p90_total_variation": 0.0007609327498357745
+          }
+        }
+      }
+    },
+    {
+      "seed": 710208,
+      "valid": 257,
+      "with_bullets": 121,
+      "exact_count_shuffle_rows": 97,
+      "max_live_count": 34,
+      "history_valid": [
+        255,
+        249,
+        238
+      ],
+      "min_past_age_ms": 0.37548828125,
+      "max_past_age_ms": 42.62353515625,
+      "per_credit": {
+        "same_life_and_exact_count_shuffle": {
+          "movement": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.03777025267481804,
+            "p90_total_variation": 0.08165049403905869
+          },
+          "focus": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007382610347121954,
+            "p90_total_variation": 0.01580199506133795
+          },
+          "shoot": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.022482149302959442,
+            "p90_total_variation": 0.05998823568224911
+          },
+          "bomb": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003691691963467747,
+            "p90_total_variation": 0.000762419099919498
+          }
+        },
+        "same_shuffle_imputed_radius_4_native_pixels": {
+          "movement": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.040562357753515244,
+            "p90_total_variation": 0.08907191157341003
+          },
+          "focus": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007123998366296291,
+            "p90_total_variation": 0.01767735444009304
+          },
+          "shoot": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.026526302099227905,
+            "p90_total_variation": 0.08056669533252722
+          },
+          "bomb": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0004151514149270952,
+            "p90_total_variation": 0.0010980097111314535
+          }
+        },
+        "same_shuffle_without_approximate_motion_history": {
+          "movement": {
+            "n": 97,
+            "modal_changes": 25,
+            "modal_change_fraction": 0.25773194432258606,
+            "mean_total_variation": 0.08583375811576843,
+            "p90_total_variation": 0.1562874495983124
+          },
+          "focus": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007209792733192444,
+            "p90_total_variation": 0.023362987115979207
+          },
+          "shoot": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.03625769168138504,
+            "p90_total_variation": 0.10064576715230943
+          },
+          "bomb": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0028844322077929974,
+            "p90_total_variation": 0.007078292220830921
+          }
+        },
+        "same_shuffle_with_affordable_strikes_as_stock_proxy": {
+          "movement": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.037704795598983765,
+            "p90_total_variation": 0.08165049403905869
+          },
+          "focus": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.007343267556279898,
+            "p90_total_variation": 0.0154145946726203
+          },
+          "shoot": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.022603197023272514,
+            "p90_total_variation": 0.063068387657404
+          },
+          "bomb": {
+            "n": 97,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.0003609067643992603,
+            "p90_total_variation": 0.000762419099919498
+          }
+        },
+        "remove_all_native_bullets_and_zero_count": {
+          "movement": {
+            "n": 121,
+            "modal_changes": 1,
+            "modal_change_fraction": 0.00826446246355772,
+            "mean_total_variation": 0.0748467668890953,
+            "p90_total_variation": 0.14108194410800934
+          },
+          "focus": {
+            "n": 121,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.014357310719788074,
+            "p90_total_variation": 0.03732496127486229
+          },
+          "shoot": {
+            "n": 121,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.06573057919740677,
+            "p90_total_variation": 0.11434681713581085
+          },
+          "bomb": {
+            "n": 121,
+            "modal_changes": 0,
+            "modal_change_fraction": 0.0,
+            "mean_total_variation": 0.00041388385579921305,
+            "p90_total_variation": 0.0010874108411371708
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,268 @@
+{
+  "scope": "Training-only descriptive audit, three fixed policies and 20 TH13 original credits. Correlation over observed trajectories cannot determine a different reward policy\u2019s outcome.",
+  "reward_components": [
+    "\u22121 per lost life",
+    "+1 per earned life",
+    "+2 per native stage advance",
+    "\u22120.03 per effective Bomb",
+    "+0.001 per second holding an action, measured on the worker"
+  ],
+  "nominal_penalty_equivalent_hold_seconds": 30.0,
+  "gamma": 0.999,
+  "gae_lambda": 0.985,
+  "gae_trace_efold_decisions": 62.05730589415342,
+  "groups": {
+    "sft": {
+      "n": 4,
+      "life_debits": 12,
+      "life_extends": 0,
+      "stage_advances": 0,
+      "effective_bombs": 7,
+      "minimum_total_return": -2.9289567470550537,
+      "maximum_total_return": -2.8269498348236084,
+      "stage_tick_vs_total_return_spearman": 0.7999999999999999,
+      "stage_tick_vs_active_hold_seconds_spearman": 1.0
+    },
+    "ppo1": {
+      "n": 8,
+      "life_debits": 24,
+      "life_extends": 0,
+      "stage_advances": 0,
+      "effective_bombs": 11,
+      "minimum_total_return": -2.90705943107605,
+      "maximum_total_return": -2.8073766231536865,
+      "stage_tick_vs_total_return_spearman": 0.523809523809524,
+      "stage_tick_vs_active_hold_seconds_spearman": 0.8571428571428572
+    },
+    "ppo2": {
+      "n": 8,
+      "life_debits": 24,
+      "life_extends": 0,
+      "stage_advances": 0,
+      "effective_bombs": 21,
+      "minimum_total_return": -2.917595386505127,
+      "maximum_total_return": -2.7853317260742188,
+      "stage_tick_vs_total_return_spearman": 0.7619047619047621,
+      "stage_tick_vs_active_hold_seconds_spearman": 0.9523809523809524
+    },
+    "combined": {
+      "n": 20,
+      "life_debits": 60,
+      "life_extends": 0,
+      "stage_advances": 0,
+      "effective_bombs": 39,
+      "minimum_total_return": -2.9289567470550537,
+      "maximum_total_return": -2.7853317260742188,
+      "stage_tick_vs_total_return_spearman": 0.7969924812030074,
+      "stage_tick_vs_active_hold_seconds_spearman": 0.9548872180451128
+    }
+  },
+  "credits": {
+    "sft": [
+      {
+        "seed": 730001,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 2,
+        "active_hold_seconds": 139.76040649414062,
+        "total_discount_free_return": -2.9202394485473633,
+        "terminal_stage_tick": 4142
+      },
+      {
+        "seed": 730002,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 1,
+        "active_hold_seconds": 101.04330444335938,
+        "total_discount_free_return": -2.9289567470550537,
+        "terminal_stage_tick": 3033
+      },
+      {
+        "seed": 730003,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 262.8461608886719,
+        "total_discount_free_return": -2.827153444290161,
+        "terminal_stage_tick": 7000
+      },
+      {
+        "seed": 730004,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 1,
+        "active_hold_seconds": 203.05003356933594,
+        "total_discount_free_return": -2.8269498348236084,
+        "terminal_stage_tick": 5514
+      }
+    ],
+    "ppo1": [
+      {
+        "seed": 730101,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 0,
+        "active_hold_seconds": 135.75057983398438,
+        "total_discount_free_return": -2.8642494678497314,
+        "terminal_stage_tick": 3491
+      },
+      {
+        "seed": 730102,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 1,
+        "active_hold_seconds": 142.63829040527344,
+        "total_discount_free_return": -2.887361764907837,
+        "terminal_stage_tick": 3421
+      },
+      {
+        "seed": 730103,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 1,
+        "active_hold_seconds": 183.73507690429688,
+        "total_discount_free_return": -2.8462650775909424,
+        "terminal_stage_tick": 4538
+      },
+      {
+        "seed": 730104,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 1,
+        "active_hold_seconds": 159.2714080810547,
+        "total_discount_free_return": -2.8707284927368164,
+        "terminal_stage_tick": 4086
+      },
+      {
+        "seed": 730105,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 282.62310791015625,
+        "total_discount_free_return": -2.8073766231536865,
+        "terminal_stage_tick": 6916
+      },
+      {
+        "seed": 730106,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 0,
+        "active_hold_seconds": 182.6929931640625,
+        "total_discount_free_return": -2.8173069953918457,
+        "terminal_stage_tick": 4670
+      },
+      {
+        "seed": 730107,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 2,
+        "active_hold_seconds": 160.30751037597656,
+        "total_discount_free_return": -2.8996925354003906,
+        "terminal_stage_tick": 3884
+      },
+      {
+        "seed": 730108,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 182.94041442871094,
+        "total_discount_free_return": -2.90705943107605,
+        "terminal_stage_tick": 4596
+      }
+    ],
+    "ppo2": [
+      {
+        "seed": 730201,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 2,
+        "active_hold_seconds": 142.40489196777344,
+        "total_discount_free_return": -2.917595386505127,
+        "terminal_stage_tick": 3306
+      },
+      {
+        "seed": 730202,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 304.6683349609375,
+        "total_discount_free_return": -2.7853317260742188,
+        "terminal_stage_tick": 7311
+      },
+      {
+        "seed": 730203,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 4,
+        "active_hold_seconds": 325.58990478515625,
+        "total_discount_free_return": -2.794409990310669,
+        "terminal_stage_tick": 7638
+      },
+      {
+        "seed": 730204,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 4,
+        "active_hold_seconds": 300.89013671875,
+        "total_discount_free_return": -2.8191099166870117,
+        "terminal_stage_tick": 7211
+      },
+      {
+        "seed": 730205,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 0,
+        "active_hold_seconds": 184.46339416503906,
+        "total_discount_free_return": -2.8155367374420166,
+        "terminal_stage_tick": 4592
+      },
+      {
+        "seed": 730206,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 298.22723388671875,
+        "total_discount_free_return": -2.7917726039886475,
+        "terminal_stage_tick": 7293
+      },
+      {
+        "seed": 730207,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 2,
+        "active_hold_seconds": 204.08258056640625,
+        "total_discount_free_return": -2.855917453765869,
+        "terminal_stage_tick": 5031
+      },
+      {
+        "seed": 730208,
+        "life_debits": 3,
+        "life_extends": 0,
+        "stage_advances": 0,
+        "effective_bombs": 3,
+        "active_hold_seconds": 195.95375061035156,
+        "total_discount_free_return": -2.8940463066101074,
+        "terminal_stage_tick": 5275
+      }
+    ]
+  }
+}

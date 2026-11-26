@@ -1,0 +1,651 @@
+{
+  "design": "Random initialization, same teacher architecture, seed 613, ordered 56 human training shards, 24 held shards from four reserved human replays, 2,400 optimizer updates and equal title sampling in both arms. Masking uses a separate seeded CUDA generator so minibatch draws and parameter initialization stay matched. Dropout jointly zeros the last nine motion-history fields during 30% of training examples; both fitted models use intact history at test time. One fit per arm; this is an offline intervention.",
+  "counts": {
+    "13": 26262,
+    "14": 89645,
+    "17": 100443
+  },
+  "held": {
+    "13": 20576,
+    "14": 22435,
+    "17": 51421
+  },
+  "results": {
+    "control": {
+      "sha256": "aabfb3e79fbec987d09af83fe66e7fa4801c06c9bd8e4022ae801b99a6871416",
+      "dropout": 0,
+      "train_history": [
+        {
+          "step": 1,
+          "draws": 256,
+          "loss": 4.269984245300293,
+          "seconds": 0.19952449994161725
+        },
+        {
+          "step": 200,
+          "draws": 51200,
+          "loss": 1.896386981010437,
+          "seconds": 0.7708378001116216
+        },
+        {
+          "step": 400,
+          "draws": 102400,
+          "loss": 1.592278003692627,
+          "seconds": 1.3344918999355286
+        },
+        {
+          "step": 600,
+          "draws": 153600,
+          "loss": 1.7187016010284424,
+          "seconds": 1.907274299999699
+        },
+        {
+          "step": 800,
+          "draws": 204800,
+          "loss": 1.489938735961914,
+          "seconds": 2.469061099924147
+        },
+        {
+          "step": 1000,
+          "draws": 256000,
+          "loss": 1.5324804782867432,
+          "seconds": 3.0472172000445426
+        },
+        {
+          "step": 1200,
+          "draws": 307200,
+          "loss": 1.5114282369613647,
+          "seconds": 3.603709900053218
+        },
+        {
+          "step": 1400,
+          "draws": 358400,
+          "loss": 1.4694839715957642,
+          "seconds": 4.152247299905866
+        },
+        {
+          "step": 1600,
+          "draws": 409600,
+          "loss": 1.5120470523834229,
+          "seconds": 4.712297199992463
+        },
+        {
+          "step": 1800,
+          "draws": 460800,
+          "loss": 1.3777450323104858,
+          "seconds": 5.281169899972156
+        },
+        {
+          "step": 2000,
+          "draws": 512000,
+          "loss": 1.4366461038589478,
+          "seconds": 5.836861500050873
+        },
+        {
+          "step": 2200,
+          "draws": 563200,
+          "loss": 1.3513479232788086,
+          "seconds": 6.409421399934217
+        },
+        {
+          "step": 2400,
+          "draws": 614400,
+          "loss": 1.3255245685577393,
+          "seconds": 6.982109700096771
+        }
+      ],
+      "intact_held": {
+        "13": {
+          "all": {
+            "n": 20576,
+            "correct": 15302,
+            "accuracy": 0.7436819595645412,
+            "nll": 0.8323610203996413,
+            "predicted_moving_rate": 0.473755832037325
+          },
+          "contiguous": {
+            "n": 20508,
+            "correct": 15257,
+            "accuracy": 0.7439535790910864,
+            "nll": 0.8312642236067822,
+            "predicted_moving_rate": 0.4749366101033743
+          },
+          "stable": {
+            "n": 15447,
+            "correct": 14400,
+            "accuracy": 0.9322198485142746,
+            "nll": 0.3987135782525799,
+            "predicted_moving_rate": 0.41205412054120544
+          },
+          "direction_changed": {
+            "n": 5061,
+            "correct": 857,
+            "accuracy": 0.16933412369097017,
+            "nll": 2.1514795602569228,
+            "predicted_moving_rate": 0.6668642560758743
+          },
+          "stationary_to_movement": {
+            "n": 1412,
+            "correct": 160,
+            "accuracy": 0.11331444759206799,
+            "nll": 2.6444107918728346,
+            "predicted_moving_rate": 0.13810198300283286
+          },
+          "movement_to_other_movement": {
+            "n": 2243,
+            "correct": 356,
+            "accuracy": 0.1587160053499777,
+            "nll": 2.134464316594909,
+            "predicted_moving_rate": 0.9429335711101203
+          },
+          "movement_to_stationary": {
+            "n": 1406,
+            "correct": 341,
+            "accuracy": 0.24253200568990044,
+            "nll": 1.6835892988715961,
+            "predicted_moving_rate": 0.7574679943100996
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 439,
+            "correct": 10,
+            "accuracy": 0.022779043280182234,
+            "nll": 3.4245123585223607,
+            "predicted_moving_rate": 0.06378132118451026
+          }
+        },
+        "all_titles": {
+          "all": {
+            "n": 94432,
+            "correct": 62310,
+            "accuracy": 0.6598398847848187,
+            "nll": 0.9943103325435758,
+            "predicted_moving_rate": 0.5092553371738394
+          },
+          "contiguous": {
+            "n": 93938,
+            "correct": 62110,
+            "accuracy": 0.6611807788115566,
+            "nll": 0.9894498978356616,
+            "predicted_moving_rate": 0.5114224275586025
+          },
+          "stable": {
+            "n": 64972,
+            "correct": 57523,
+            "accuracy": 0.8853506125715693,
+            "nll": 0.48463595158121836,
+            "predicted_moving_rate": 0.4627070122514314
+          },
+          "direction_changed": {
+            "n": 28966,
+            "correct": 4587,
+            "accuracy": 0.15835807498446455,
+            "nll": 2.1217695731806763,
+            "predicted_moving_rate": 0.6206932265414624
+          },
+          "stationary_to_movement": {
+            "n": 7848,
+            "correct": 590,
+            "accuracy": 0.07517838939857288,
+            "nll": 2.6551948810996873,
+            "predicted_moving_rate": 0.09849643221202854
+          },
+          "movement_to_other_movement": {
+            "n": 13247,
+            "correct": 1816,
+            "accuracy": 0.13708764248509098,
+            "nll": 2.1858335588952187,
+            "predicted_moving_rate": 0.8693289046576583
+          },
+          "movement_to_stationary": {
+            "n": 7871,
+            "correct": 2181,
+            "accuracy": 0.2770931266675137,
+            "nll": 1.4820824387239435,
+            "predicted_moving_rate": 0.7229068733324864
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 2353,
+            "correct": 28,
+            "accuracy": 0.011899702507437314,
+            "nll": 3.2967043287586617,
+            "predicted_moving_rate": 0.051423714407139824
+          }
+        },
+        "14": {
+          "all": {
+            "n": 22435,
+            "correct": 15678,
+            "accuracy": 0.6988188098952529,
+            "nll": 0.9037606583968393,
+            "predicted_moving_rate": 0.5180744372632048
+          },
+          "contiguous": {
+            "n": 22364,
+            "correct": 15631,
+            "accuracy": 0.6989357896619567,
+            "nll": 0.9032074528564906,
+            "predicted_moving_rate": 0.5192720443570024
+          },
+          "stable": {
+            "n": 16283,
+            "correct": 14609,
+            "accuracy": 0.897193391881103,
+            "nll": 0.45476795589893476,
+            "predicted_moving_rate": 0.49020450776883867
+          },
+          "direction_changed": {
+            "n": 6081,
+            "correct": 1022,
+            "accuracy": 0.16806446308172998,
+            "nll": 2.1039869840125314,
+            "predicted_moving_rate": 0.5971057391876337
+          },
+          "stationary_to_movement": {
+            "n": 1670,
+            "correct": 99,
+            "accuracy": 0.0592814371257485,
+            "nll": 2.5076115150116163,
+            "predicted_moving_rate": 0.0718562874251497
+          },
+          "movement_to_other_movement": {
+            "n": 2748,
+            "correct": 385,
+            "accuracy": 0.1401018922852984,
+            "nll": 2.3767643214150547,
+            "predicted_moving_rate": 0.8682678311499272
+          },
+          "movement_to_stationary": {
+            "n": 1663,
+            "correct": 538,
+            "accuracy": 0.32351172579675286,
+            "nll": 1.2479165751426533,
+            "predicted_moving_rate": 0.6764882742032472
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 483,
+            "correct": 6,
+            "accuracy": 0.012422360248447204,
+            "nll": 3.50072780166662,
+            "predicted_moving_rate": 0.08074534161490683
+          }
+        },
+        "17": {
+          "all": {
+            "n": 51421,
+            "correct": 31330,
+            "accuracy": 0.6092841446101788,
+            "nll": 1.0986208474335162,
+            "predicted_moving_rate": 0.5196126096341962
+          },
+          "contiguous": {
+            "n": 51066,
+            "correct": 31222,
+            "accuracy": 0.6114048486272666,
+            "nll": 1.0907462172380045,
+            "predicted_moving_rate": 0.5226373712450554
+          },
+          "stable": {
+            "n": 33242,
+            "correct": 28514,
+            "accuracy": 0.8577702905962337,
+            "nll": 0.5391929419699465,
+            "predicted_moving_rate": 0.47277540460862766
+          },
+          "direction_changed": {
+            "n": 17824,
+            "correct": 2708,
+            "accuracy": 0.15192998204667862,
+            "nll": 2.1194005022728333,
+            "predicted_moving_rate": 0.6156306104129264
+          },
+          "stationary_to_movement": {
+            "n": 4766,
+            "correct": 331,
+            "accuracy": 0.06945027276542173,
+            "nll": 2.710102844875473,
+            "predicted_moving_rate": 0.0960973562736047
+          },
+          "movement_to_other_movement": {
+            "n": 8256,
+            "correct": 1075,
+            "accuracy": 0.13020833333333334,
+            "nll": 2.136238534073887,
+            "predicted_moving_rate": 0.8496850775193798
+          },
+          "movement_to_stationary": {
+            "n": 4802,
+            "correct": 1302,
+            "accuracy": 0.27113702623906705,
+            "nll": 1.5041772295960978,
+            "predicted_moving_rate": 0.7288629737609329
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 1431,
+            "correct": 12,
+            "accuracy": 0.008385744234800839,
+            "nll": 3.188632307458307,
+            "predicted_moving_rate": 0.03773584905660377
+          }
+        }
+      }
+    },
+    "dropout30": {
+      "sha256": "cdc2ea368f5f1ac52a4ef8c487509d1f905d314880fdcfcad576e08908c576dd",
+      "dropout": 0.3,
+      "train_history": [
+        {
+          "step": 1,
+          "draws": 256,
+          "loss": 4.270705699920654,
+          "seconds": 0.2256707998458296
+        },
+        {
+          "step": 200,
+          "draws": 51200,
+          "loss": 2.09061336517334,
+          "seconds": 0.8216963999439031
+        },
+        {
+          "step": 400,
+          "draws": 102400,
+          "loss": 1.831470012664795,
+          "seconds": 1.423103799810633
+        },
+        {
+          "step": 600,
+          "draws": 153600,
+          "loss": 1.8764119148254395,
+          "seconds": 2.1034830999560654
+        },
+        {
+          "step": 800,
+          "draws": 204800,
+          "loss": 1.683939814567566,
+          "seconds": 2.7986478998791426
+        },
+        {
+          "step": 1000,
+          "draws": 256000,
+          "loss": 1.709590196609497,
+          "seconds": 3.5332047999836504
+        },
+        {
+          "step": 1200,
+          "draws": 307200,
+          "loss": 1.6773827075958252,
+          "seconds": 4.223423399962485
+        },
+        {
+          "step": 1400,
+          "draws": 358400,
+          "loss": 1.7389044761657715,
+          "seconds": 4.907144199823961
+        },
+        {
+          "step": 1600,
+          "draws": 409600,
+          "loss": 1.7236350774765015,
+          "seconds": 5.5949957999400795
+        },
+        {
+          "step": 1800,
+          "draws": 460800,
+          "loss": 1.6790385246276855,
+          "seconds": 6.308204599888995
+        },
+        {
+          "step": 2000,
+          "draws": 512000,
+          "loss": 1.6844465732574463,
+          "seconds": 7.015624199993908
+        },
+        {
+          "step": 2200,
+          "draws": 563200,
+          "loss": 1.6139171123504639,
+          "seconds": 7.759451599791646
+        },
+        {
+          "step": 2400,
+          "draws": 614400,
+          "loss": 1.5119727849960327,
+          "seconds": 8.436518599977717
+        }
+      ],
+      "intact_held": {
+        "13": {
+          "all": {
+            "n": 20576,
+            "correct": 15343,
+            "accuracy": 0.7456745723172629,
+            "nll": 0.8243773720067133,
+            "predicted_moving_rate": 0.4679237947122862
+          },
+          "contiguous": {
+            "n": 20508,
+            "correct": 15297,
+            "accuracy": 0.7459040374488005,
+            "nll": 0.8235432065188484,
+            "predicted_moving_rate": 0.469133996489175
+          },
+          "stable": {
+            "n": 15447,
+            "correct": 14429,
+            "accuracy": 0.9340972357091992,
+            "nll": 0.4026222869207838,
+            "predicted_moving_rate": 0.40765197125655467
+          },
+          "direction_changed": {
+            "n": 5061,
+            "correct": 868,
+            "accuracy": 0.1715076071922545,
+            "nll": 2.108262717491246,
+            "predicted_moving_rate": 0.6567871962062833
+          },
+          "stationary_to_movement": {
+            "n": 1412,
+            "correct": 148,
+            "accuracy": 0.1048158640226629,
+            "nll": 2.6023959859825734,
+            "predicted_moving_rate": 0.12464589235127478
+          },
+          "movement_to_other_movement": {
+            "n": 2243,
+            "correct": 351,
+            "accuracy": 0.15648684797146678,
+            "nll": 2.11557583702538,
+            "predicted_moving_rate": 0.9411502452073116
+          },
+          "movement_to_stationary": {
+            "n": 1406,
+            "correct": 369,
+            "accuracy": 0.2624466571834993,
+            "nll": 1.600354109934477,
+            "predicted_moving_rate": 0.7375533428165008
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 439,
+            "correct": 9,
+            "accuracy": 0.02050113895216401,
+            "nll": 3.3371336043288333,
+            "predicted_moving_rate": 0.05694760820045558
+          }
+        },
+        "all_titles": {
+          "all": {
+            "n": 94432,
+            "correct": 61743,
+            "accuracy": 0.6538355642155201,
+            "nll": 1.0074144507087206,
+            "predicted_moving_rate": 0.49205777702473735
+          },
+          "contiguous": {
+            "n": 93938,
+            "correct": 61544,
+            "accuracy": 0.6551555281142881,
+            "nll": 1.0026467006385704,
+            "predicted_moving_rate": 0.4944112073921097
+          },
+          "stable": {
+            "n": 64972,
+            "correct": 56787,
+            "accuracy": 0.8740226559133165,
+            "nll": 0.5117621385996777,
+            "predicted_moving_rate": 0.44956288862894783
+          },
+          "direction_changed": {
+            "n": 28966,
+            "correct": 4757,
+            "accuracy": 0.1642270247876821,
+            "nll": 2.1037221603082155,
+            "predicted_moving_rate": 0.5950079403438514
+          },
+          "stationary_to_movement": {
+            "n": 7848,
+            "correct": 487,
+            "accuracy": 0.06205402650356779,
+            "nll": 2.6537369074343604,
+            "predicted_moving_rate": 0.07836391437308869
+          },
+          "movement_to_other_movement": {
+            "n": 13247,
+            "correct": 1790,
+            "accuracy": 0.13512493394730882,
+            "nll": 2.2122878762429017,
+            "predicted_moving_rate": 0.8476636219521401
+          },
+          "movement_to_stationary": {
+            "n": 7871,
+            "correct": 2480,
+            "accuracy": 0.3150806758988693,
+            "nll": 1.3725970460364876,
+            "predicted_moving_rate": 0.6849193241011308
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 2353,
+            "correct": 26,
+            "accuracy": 0.011049723756906077,
+            "nll": 3.255585692275143,
+            "predicted_moving_rate": 0.04929876753081173
+          }
+        },
+        "14": {
+          "all": {
+            "n": 22435,
+            "correct": 15420,
+            "accuracy": 0.6873189213282817,
+            "nll": 0.9312254321304174,
+            "predicted_moving_rate": 0.4996211277022509
+          },
+          "contiguous": {
+            "n": 22364,
+            "correct": 15372,
+            "accuracy": 0.687354677159721,
+            "nll": 0.930724079874425,
+            "predicted_moving_rate": 0.5008048649615453
+          },
+          "stable": {
+            "n": 16283,
+            "correct": 14357,
+            "accuracy": 0.8817171282933121,
+            "nll": 0.49554485859439623,
+            "predicted_moving_rate": 0.4746668304366517
+          },
+          "direction_changed": {
+            "n": 6081,
+            "correct": 1015,
+            "accuracy": 0.16691333662226607,
+            "nll": 2.0959967751716966,
+            "predicted_moving_rate": 0.5707942772570301
+          },
+          "stationary_to_movement": {
+            "n": 1670,
+            "correct": 91,
+            "accuracy": 0.05449101796407185,
+            "nll": 2.4964435717838254,
+            "predicted_moving_rate": 0.06347305389221557
+          },
+          "movement_to_other_movement": {
+            "n": 2748,
+            "correct": 345,
+            "accuracy": 0.12554585152838427,
+            "nll": 2.4067138210155905,
+            "predicted_moving_rate": 0.8300582241630277
+          },
+          "movement_to_stationary": {
+            "n": 1663,
+            "correct": 579,
+            "accuracy": 0.3481659651232712,
+            "nll": 1.1804245609075494,
+            "predicted_moving_rate": 0.6518340348767288
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 483,
+            "correct": 6,
+            "accuracy": 0.012422360248447204,
+            "nll": 3.450217657547066,
+            "predicted_moving_rate": 0.08074534161490683
+          }
+        },
+        "17": {
+          "all": {
+            "n": 51421,
+            "correct": 30980,
+            "accuracy": 0.6024775869780828,
+            "nll": 1.1138976300163328,
+            "predicted_moving_rate": 0.49841504443709767
+          },
+          "contiguous": {
+            "n": 51066,
+            "correct": 30875,
+            "accuracy": 0.6046097207535347,
+            "nll": 1.1060723057021473,
+            "predicted_moving_rate": 0.5017624250969334
+          },
+          "stable": {
+            "n": 33242,
+            "correct": 28001,
+            "accuracy": 0.8423380061368149,
+            "nll": 0.5704213425949208,
+            "predicted_moving_rate": 0.4567414716322724
+          },
+          "direction_changed": {
+            "n": 17824,
+            "correct": 2874,
+            "accuracy": 0.16124326750448834,
+            "nll": 2.105068564432534,
+            "predicted_moving_rate": 0.5857271095152603
+          },
+          "stationary_to_movement": {
+            "n": 4766,
+            "correct": 248,
+            "accuracy": 0.052035249685270665,
+            "nll": 2.7240628099996806,
+            "predicted_moving_rate": 0.06986991187578682
+          },
+          "movement_to_other_movement": {
+            "n": 8256,
+            "correct": 1094,
+            "accuracy": 0.13250968992248063,
+            "nll": 2.173848269620997,
+            "predicted_moving_rate": 0.828125
+          },
+          "movement_to_stationary": {
+            "n": 4802,
+            "correct": 1532,
+            "accuracy": 0.31903373594335693,
+            "nll": 1.3724630208238369,
+            "predicted_moving_rate": 0.6809662640566431
+          },
+          "native_stationary_to_first_tick_movement": {
+            "n": 1431,
+            "correct": 11,
+            "accuracy": 0.007686932215234102,
+            "nll": 3.1648751593485818,
+            "predicted_moving_rate": 0.0363382250174703
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "population": "External descriptive training-only replay archive, same TH13 Normal Reimu character/difficulty, retail build 1.00c. Primary benchmark is trial build 0.01a. These 22 replays are a reference population, not the exact portable teacher fitting set.",
+  "raw_corpus_sha256": "a0174b7a19441fb1db6e484bca3592cc1138831a787f3a296eba32e376c009d0",
+  "expert_replays": 22,
+  "expert_player_groups": 19,
+  "experts": {
+    "retail_human_stage1_first7000_window4": {
+      "histogram": [
+        1813,
+        3031,
+        1702,
+        6042,
+        12454,
+        6111,
+        1827,
+        3309,
+        2211
+      ],
+      "n": 38500,
+      "up": 6546,
+      "down": 7347,
+      "down_up_ratio": 1.1223648029330888,
+      "neutral": 0.3234805194805195,
+      "raw_frames": 154000
+    },
+    "retail_human_stage1_all_window4": {
+      "histogram": [
+        2229,
+        4709,
+        2154,
+        6801,
+        25783,
+        6897,
+        2228,
+        6084,
+        2616
+      ],
+      "n": 59501,
+      "up": 9092,
+      "down": 10928,
+      "down_up_ratio": 1.201935767707875,
+      "neutral": 0.4333204483958253,
+      "raw_frames": 238041
+    },
+    "retail_human_stage1_first7000_window8": {
+      "histogram": [
+        904,
+        1518,
+        831,
+        3069,
+        6257,
+        3077,
+        892,
+        1606,
+        1096
+      ],
+      "n": 19250,
+      "up": 3253,
+      "down": 3594,
+      "down_up_ratio": 1.104826314171534,
+      "neutral": 0.325038961038961,
+      "raw_frames": 154000
+    },
+    "retail_human_stage1_all_window8": {
+      "histogram": [
+        1096,
+        2338,
+        1066,
+        3409,
+        13059,
+        3439,
+        1085,
+        2978,
+        1276
+      ],
+      "n": 29746,
+      "up": 4500,
+      "down": 5339,
+      "down_up_ratio": 1.1864444444444444,
+      "neutral": 0.439017010690513,
+      "raw_frames": 238041
+    }
+  },
+  "actors": {
+    "train_sft_first7000": {
+      "histogram": [
+        213,
+        480,
+        184,
+        366,
+        2027,
+        457,
+        230,
+        784,
+        256
+      ],
+      "n": 4997,
+      "up": 877,
+      "down": 1270,
+      "down_up_ratio": 1.4481185860889396,
+      "neutral": 0.405643386031619,
+      "credits": 4
+    },
+    "train_ppo1_first7000": {
+      "histogram": [
+        434,
+        888,
+        338,
+        810,
+        3630,
+        732,
+        457,
+        1331,
+        440
+      ],
+      "n": 9060,
+      "up": 1660,
+      "down": 2228,
+      "down_up_ratio": 1.342168674698795,
+      "neutral": 0.40066225165562913,
+      "credits": 8
+    },
+    "train_ppo2_first7000": {
+      "histogram": [
+        452,
+        1053,
+        366,
+        882,
+        4666,
+        947,
+        665,
+        2393,
+        576
+      ],
+      "n": 12000,
+      "up": 1871,
+      "down": 3634,
+      "down_up_ratio": 1.9422768572955638,
+      "neutral": 0.3888333333333333,
+      "credits": 8
+    },
+    "held_sft_first7000": {
+      "histogram": [
+        595,
+        1406,
+        594,
+        1312,
+        6327,
+        1292,
+        679,
+        2623,
+        814
+      ],
+      "n": 15642,
+      "up": 2595,
+      "down": 4116,
+      "down_up_ratio": 1.586127167630058,
+      "neutral": 0.404487917146145,
+      "credits": 12
+    },
+    "held_ppo1_first7000": {
+      "histogram": [
+        738,
+        1479,
+        554,
+        1343,
+        6067,
+        1285,
+        793,
+        2900,
+        834
+      ],
+      "n": 15993,
+      "up": 2771,
+      "down": 4527,
+      "down_up_ratio": 1.6337062432334897,
+      "neutral": 0.37935346714187457,
+      "credits": 12
+    },
+    "held_ppo2_first7000": {
+      "histogram": [
+        680,
+        1708,
+        545,
+        1550,
+        7323,
+        1430,
+        1008,
+        4215,
+        838
+      ],
+      "n": 19297,
+      "up": 2933,
+      "down": 6061,
+      "down_up_ratio": 2.0664848278213435,
+      "neutral": 0.37948903974711096,
+      "credits": 12
+    }
+  },
+  "expert_label": "Replicates pretrain_policy.label_actions: mode of combined movement/focus/shot per fixed input-word window, first observed combination breaks ties.",
+  "clock": "The portable human trajectory student labels use eight native input ticks, and its positional age features use game.frame/8; this TH13 online adapter typically holds for four native stage ticks. Control history therefore spans different game-time intervals.",
+  "limits": "Original builds and Stage 1 episode lengths differ. Marginal ratios cannot assign the effect to the action horizon or prove a strategy improves survival."
+}
