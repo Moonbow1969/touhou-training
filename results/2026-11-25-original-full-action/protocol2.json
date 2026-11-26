@@ -1,0 +1,109 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      710101,
+      710102,
+      710103,
+      710104,
+      710105,
+      710106,
+      710107,
+      710108
+    ],
+    "12": [
+      720101,
+      720102,
+      720103,
+      720104,
+      720105,
+      720106,
+      720107,
+      720108
+    ],
+    "13": [
+      730101,
+      730102,
+      730103,
+      730104,
+      730105,
+      730106,
+      730107,
+      730108
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      711001,
+      711002,
+      711003,
+      711004,
+      711005,
+      711006,
+      711007,
+      711008,
+      711009,
+      711010,
+      711011,
+      711012
+    ],
+    "12": [
+      721001,
+      721002,
+      721003,
+      721004,
+      721005,
+      721006,
+      721007,
+      721008,
+      721009,
+      721010,
+      721011,
+      721012
+    ],
+    "13": [
+      731001,
+      731002,
+      731003,
+      731004,
+      731005,
+      731006,
+      731007,
+      731008,
+      731009,
+      731010,
+      731011,
+      731012
+    ]
+  },
+  "initialization": "Exact frozen checkpoint from first completed PPO round. All 24 trajectories must be new and carry this checkpoint SHA.",
+  "arms": [
+    "frozen_sft",
+    "frozen_joint_ppo2"
+  ],
+  "eval": "Original full starting stock Normal. Separate native Game Over or ending per credit. Record whether Stage 2 was reached, first-entry stocks conditional on reach, last-playable and terminal resources, deaths, confirmed Bombs and elapsed/decisions. No continue. TH10 uses power rather than discrete Bomb stock. Exclude technical partials as censored and retry exact controller seed, retain original attempt. Native RNG uncontrolled. Match identical seeds and lanes where practical. Report n/d and Wilson 95% CI, paired discordances by title without pooling ranks or endpoints.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": -0.03
+  },
+  "ppo": {
+    "seed": 48212,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025
+  },
+  "round": 2
+}

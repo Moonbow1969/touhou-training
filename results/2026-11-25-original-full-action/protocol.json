@@ -1,0 +1,96 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      710001,
+      710002,
+      710003,
+      710004
+    ],
+    "12": [
+      720001,
+      720002,
+      720003,
+      720004
+    ],
+    "13": [
+      730001,
+      730002,
+      730003,
+      730004
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      711001,
+      711002,
+      711003,
+      711004,
+      711005,
+      711006,
+      711007,
+      711008,
+      711009,
+      711010,
+      711011,
+      711012
+    ],
+    "12": [
+      721001,
+      721002,
+      721003,
+      721004,
+      721005,
+      721006,
+      721007,
+      721008,
+      721009,
+      721010,
+      721011,
+      721012
+    ],
+    "13": [
+      731001,
+      731002,
+      731003,
+      731004,
+      731005,
+      731006,
+      731007,
+      731008,
+      731009,
+      731010,
+      731011,
+      731012
+    ]
+  },
+  "initialization": "Portable four-head human replay SFT distills an existing TH13/14/17 full-action human teacher; PPO directly initializes all parameters from this portable SFT binary.",
+  "arms": [
+    "frozen_sft",
+    "frozen_joint_ppo1"
+  ],
+  "eval": "Original full starting stock Normal. Separate native Game Over or ending per credit. Record whether Stage 2 was reached, first-entry stocks conditional on reach, last-playable and terminal resources, deaths, confirmed Bombs and elapsed/decisions. No continue. TH10 uses power rather than discrete Bomb stock. Exclude technical partials as censored and retry exact controller seed, retain original attempt. Native RNG uncontrolled. Match identical seeds and lanes where practical. Report n/d and Wilson 95% CI, paired discordances by title without pooling ranks or endpoints.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": -0.03
+  },
+  "ppo": {
+    "seed": 48211,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025
+  }
+}
