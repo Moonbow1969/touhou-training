@@ -1,0 +1,256 @@
+{
+  "metric": "Last observed original Stage 1 tick, PPO minus human SFT.",
+  "design": "One physical Momentum host per pair. For each difficulty the successive pair order alternated deterministically between SFT first and PPO first. In-game RNG was uncontrolled.",
+  "test": "Descriptive, post hoc exact two-sided paired sign test. Exclude ties and double the smaller tail of a Binomial(non_ties, 0.5), capped at 1. The null assumes independent fair signs across pairs. Fixed arm order provides no design-based randomization p-value. No adjustment for examining multiple game/difficulty cells.",
+  "cohort": "TH10 component of the joint TH10/TH17 179 experiment. Both TH10 difficulty strata, every fixed pair and both arms are retained. The original TH17 arm has a separate native evaluation.",
+  "ranks": {
+    "hard": {
+      "n_pairs": 8,
+      "win_tie_loss": [
+        6,
+        0,
+        2
+      ],
+      "non_ties": 8,
+      "exact_two_sided_sign_p": 0.2890625,
+      "paired_mean_ticks": 384.5,
+      "paired_median_ticks": 256.0,
+      "paired_credit_bootstrap95": [
+        77.746875,
+        727.75
+      ],
+      "first_arm_order_means": {
+        "held-teacher": 343,
+        "held-teacher-ppo": 426
+      },
+      "stage2": [
+        0,
+        0
+      ],
+      "pairs": [
+        {
+          "seed": 1791051,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 2306,
+          "ppo_tick": 2944,
+          "ppo_minus_sft_ticks": 638,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791053,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1011,
+          "ppo_tick": 2283,
+          "ppo_minus_sft_ticks": 1272,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791055,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1415,
+          "ppo_tick": 2252,
+          "ppo_minus_sft_ticks": 837,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791057,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 2241,
+          "ppo_tick": 2676,
+          "ppo_minus_sft_ticks": 435,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791059,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1817,
+          "ppo_tick": 1661,
+          "ppo_minus_sft_ticks": -156,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791061,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1964,
+          "ppo_tick": 1884,
+          "ppo_minus_sft_ticks": -80,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791063,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1832,
+          "ppo_tick": 1885,
+          "ppo_minus_sft_ticks": 53,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791065,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1222,
+          "ppo_tick": 1299,
+          "ppo_minus_sft_ticks": 77,
+          "stage2": [
+            false,
+            false
+          ]
+        }
+      ],
+      "native_ledger_sha256": "87ac37f1333c7384c6d5bfe723a6c782756266f7581bc31d44b30e8a2276a06f",
+      "execution_order_sha256": "cacad55a6ca0a6f08a3459859d79d09ce300e0c10433e6f005e5f4a9d5b704e0"
+    },
+    "lunatic": {
+      "n_pairs": 8,
+      "win_tie_loss": [
+        5,
+        0,
+        3
+      ],
+      "non_ties": 8,
+      "exact_two_sided_sign_p": 0.7265625,
+      "paired_mean_ticks": 91,
+      "paired_median_ticks": 12.0,
+      "paired_credit_bootstrap95": [
+        -271.75,
+        429.75
+      ],
+      "first_arm_order_means": {
+        "held-teacher": 442,
+        "held-teacher-ppo": -260
+      },
+      "stage2": [
+        0,
+        0
+      ],
+      "pairs": [
+        {
+          "seed": 1791052,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 2207,
+          "ppo_tick": 2215,
+          "ppo_minus_sft_ticks": 8,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791054,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1285,
+          "ppo_tick": 1231,
+          "ppo_minus_sft_ticks": -54,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791056,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1263,
+          "ppo_tick": 2113,
+          "ppo_minus_sft_ticks": 850,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791058,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1967,
+          "ppo_tick": 993,
+          "ppo_minus_sft_ticks": -974,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791060,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1136,
+          "ppo_tick": 1337,
+          "ppo_minus_sft_ticks": 201,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791062,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1763,
+          "ppo_tick": 1779,
+          "ppo_minus_sft_ticks": 16,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791064,
+          "host": "momentum",
+          "first_arm": "held-teacher",
+          "sft_tick": 1082,
+          "ppo_tick": 1791,
+          "ppo_minus_sft_ticks": 709,
+          "stage2": [
+            false,
+            false
+          ]
+        },
+        {
+          "seed": 1791066,
+          "host": "momentum",
+          "first_arm": "held-teacher-ppo",
+          "sft_tick": 1927,
+          "ppo_tick": 1899,
+          "ppo_minus_sft_ticks": -28,
+          "stage2": [
+            false,
+            false
+          ]
+        }
+      ],
+      "native_ledger_sha256": "1a8c4dcbedeae6a61f137acbf65a864f6d8637c795d51a13f4eddf58cb285aff",
+      "execution_order_sha256": "d63159caf4d37680de8e533ae9f2331cbbee37d114e8e9becb8c3b7b7e4c1c2a"
+    }
+  }
+}
