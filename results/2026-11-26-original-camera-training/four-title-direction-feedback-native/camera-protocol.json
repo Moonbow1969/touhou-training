@@ -1,0 +1,89 @@
+{
+  "reference_arm": "image",
+  "candidate": "feedback",
+  "policies": {
+    "image": "f49d7e297419a1f6a095817530f239cb62cd9ce0edcf889dbcdf1a32f710ee5d",
+    "feedback": "ad978c306f5b49a76c6f540824f29f6023bc4fbe0158a9e7c016d42174f2bc32"
+  },
+  "eval_seeds": {
+    "10": [
+      1511051,
+      1511052,
+      1511053,
+      1511054,
+      1511055,
+      1511056,
+      1511057,
+      1511058,
+      1511059,
+      1511060,
+      1511061,
+      1511062,
+      1511063,
+      1511064,
+      1511065,
+      1511066
+    ],
+    "17": [
+      1511751,
+      1511752,
+      1511753,
+      1511754,
+      1511755,
+      1511756,
+      1511757,
+      1511758,
+      1511759,
+      1511760,
+      1511761,
+      1511762,
+      1511763,
+      1511764,
+      1511765,
+      1511766
+    ]
+  },
+  "rank_by_seed": {
+    "10": {
+      "1511051": 2,
+      "1511052": 3,
+      "1511053": 2,
+      "1511054": 3,
+      "1511055": 2,
+      "1511056": 3,
+      "1511057": 2,
+      "1511058": 3,
+      "1511059": 2,
+      "1511060": 3,
+      "1511061": 2,
+      "1511062": 3,
+      "1511063": 2,
+      "1511064": 3,
+      "1511065": 2,
+      "1511066": 3
+    },
+    "17": {
+      "1511751": 2,
+      "1511752": 3,
+      "1511753": 2,
+      "1511754": 3,
+      "1511755": 2,
+      "1511756": 3,
+      "1511757": 2,
+      "1511758": 3,
+      "1511759": 2,
+      "1511760": 3,
+      "1511761": 2,
+      "1511762": 3,
+      "1511763": 2,
+      "1511764": 3,
+      "1511765": 2,
+      "1511766": 3
+    }
+  },
+  "sft_protocol_sha256": "59f07ce946b4455338b229bea1a739f9d345aae3416a248297239fe3c460f1b3",
+  "sft_evaluation_sha256": "3969a48948d0393920024ea0cb4974ad7a3bbaa49f4243609d35e9d9bf522917",
+  "design": "Both human SFT variants use identical original images, architecture, training rows and action temperatures. Each native worker transmits the previous executed direction, initially neutral. The image control substitutes neutral inside its model. Same controller seed, build and lane in every pair. Original RNG is uncontrolled. Study starts from stock life and terminates at Game Over or ending, with no continues or automatic actions.",
+  "outcomes": "Report Stage 2 and corresponding stocks when reached, terminal spares and payable Power or last-live Bombs per title and difficulty. Compare native last Stage 1 tick and uncertainty within each title and rank. The two titles were included in the human training and are independent runs of familiar titles.",
+  "scope": "Eight paired controller seeds per difficulty per title. Per-title lane and execution-order assignments live beneath native10 and native17."
+}

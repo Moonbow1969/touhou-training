@@ -84,7 +84,8 @@ def seal(root, identity):
     ended = np.zeros(n, dtype=bool)
     ended[-1] = True
     tmp = root/"behavior.pending.npz"
-    np.savez_compressed(tmp, frames=frames, action=action, logp=logp, value=value, reward=parts.sum(1), terminated=ended, reward_parts=parts,
+    from direction_history import previous_move_fields
+    np.savez_compressed(tmp, frames=frames, action=action, logp=logp, value=value, reward=parts.sum(1), terminated=ended, reward_parts=parts, **previous_move_fields(decisions,action),
         observed_keys=decisions["observed_keys"].astype("u1"), native_tick=decisions["tick"].astype("i4"),
         stock=np.stack((decisions["spares_before"],decisions["bombs_before"]),axis=1).astype("i2"))
     tmp.replace(root/"behavior.npz")

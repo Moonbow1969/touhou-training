@@ -53,7 +53,11 @@ int main(int argc,char**argv) {
     shared=mmap(NULL,sizeof(*shared),PROT_READ,MAP_SHARED,fd,0);if(shared==MAP_FAILED)fail("Witness mmap failed");
     FILE *rows=fopen("decisions.tsv","wx"), *pixels=fopen("observations.u8","wbx");
     if(!rows||!pixels)fail("Output already exists or invalid");
-    fprintf(rows,"action_t\tonset_ns\tobserved_ns\tmove\tfocus\tshoot\tbomb\tkeys\tobserved_keys\tstage\ttick\ttotal_tick\tspares_before\tbombs_before\tafter_stage\tafter_tick\tafter_total_tick\tspares\tbombs\tlogp_move\tlogp_focus\tlogp_shoot\tlogp_bomb\tvalue\n");
+    fprintf(rows,"action_t\tonset_ns\tobserved_ns\tmove\tfocus\tshoot\tbomb\tkeys\tobserved_keys\tstage\ttick\ttotal_tick\tspares_before\tbombs_before\tafter_stage\tafter_tick\tafter_total_tick\tspares\tbombs\tlogp_move\tlogp_focus\tlogp_shoot\tlogp_bomb\tvalue");
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+    fputs("\tprevious_move",rows);
+#endif
+    fputc('\n',rows);
     struct timespec nap={0,5000000};uint64_t begin=now_ns();
     State pre;
     do {
@@ -72,9 +76,13 @@ int main(int argc,char**argv) {
         do{nanosleep(&nap,NULL);post=read_state();}while(now_ns()-onset<120000000ULL && post.lives>=0);
         uint64_t end=now_ns();
         fwrite(frame,sizeof frame,1,pixels);
-        fprintf(rows,"%d\t%llu\t%llu\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.9g\t%.9g\t%.9g\t%.9g\t%.9g\n",
+        fprintf(rows,"%d\t%llu\t%llu\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.9g\t%.9g\t%.9g\t%.9g\t%.9g",
                  i,(unsigned long long)onset,(unsigned long long)end,action[0],action[1],action[2],action[3],next,observed,pre.stage,pre.tick,pre.total_tick,pre.lives,pre.bombs,
                  post.stage,post.tick,post.total_tick,post.lives,post.bombs,actor_logp[0],actor_logp[1],actor_logp[2],actor_logp[3],actor_value);
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+        fprintf(rows,"\t%u",(unsigned)actor_camera_previous_move);
+#endif
+        fputc('\n',rows);
         ++i;
         if(post.continues||post.rank!=rank||post.stage<1)break;
         if(post.lives==-1){good=1;break;}
