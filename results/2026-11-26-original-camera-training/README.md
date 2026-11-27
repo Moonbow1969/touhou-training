@@ -200,3 +200,13 @@ The two frozen policies completed all 72 registered original Normal credits. Eac
 The six-panel recording replays every captured decision of the lowest registered seed for each title and arm. The panel labels list movement, focus, shot and Bomb, followed by the verified original endpoint and resources. Playback uses 15 decisions per second, so wall clocks and game clocks can differ between panels. [Fourteen-player SFT and PPO full credits](v2-online/evaluation/fourteen-player-sft-ppo.mp4) · [Video checksum and source credits](v2-online/evaluation/fourteen-player-sft-ppo.json)
 
 On original TH14 Easy, adding spatial attention to the trained SFT moved mean Stage 1 progress from 4,529 to 3,608 native ticks. Across 12 matched controller seeds the difference was −921 [−1,619, −234]. Both arms reached Stage 2 in 0/12 and ended with zero spare lives. This development-title result measures a different outcome from the six-player improvement on held replay movement. [Whole-credit outcomes](spatial-policy-study/held-th14-easy/paired.json) · [Every original controller trajectory](spatial-policy-study/held-th14-easy/credits.json)
+
+### Continued PPO from the eight-player joint policy
+
+Three PPO generations in this independent lineage used 93,393 original decisions in 144 complete training credits. PPO1 and PPO3 each reached Stage 2 in 0/12 original Normal credits per title, with zero spare lives at game over. On TH13, mean native Stage 1 progress improved from 3,878 to 4,523 ticks across twelve paired controller seeds on the two hosts. The mean paired gain was +646 ticks, with a host-stratified 95% bootstrap interval of [+220, +1,101]. On TH12, the first timed midboss appeared in ten PPO1 and eight PPO3 credits. [Paired Stage 1 clock](cross-campaign/g03/evaluation/native13-stage-clock.json) · [All three trials](cross-campaign/g03/evaluation/camera-cross-ppo3.json) · [Full-credit six-panel recording](cross-campaign/g03/evaluation/joint-ppo1-ppo3.mp4)
+
+| Original Normal trial | Mean terminal resource, PPO1 → PPO3 | Confirmed casts, PPO1 → PPO3 |
+|---|---|---|
+| TH10 | 0.00 → 0.00 Power | 9 → 6 |
+| TH12 | 0.83 → 0.67 Bombs | 41 → 43 |
+| TH13 | 0.58 → 0.42 Bombs | 52 → 56 |
