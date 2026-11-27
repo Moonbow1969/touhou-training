@@ -1,0 +1,29 @@
+{
+  "train_mixtures": [
+    "six TH13 pilots",
+    "same six TH13 pilots plus separate TH10 and TH12 pilots"
+  ],
+  "supervised_updates": 3000,
+  "loss": "importance-corrected movement cross entropy with uniform title then replay sampling; same encoder initialization",
+  "eval_seeds": [
+    789001,
+    789002,
+    789003,
+    789004,
+    789005,
+    789006,
+    789007,
+    789008,
+    789009,
+    789010,
+    789011,
+    789012
+  ],
+  "primary": "Reached Stage 2; original native stage ticks and stock at Game Over. No TH14 gameplay for optimizer updates.",
+  "arms": [
+    "matched-th13",
+    "cross-sft",
+    "cross-ppo"
+  ],
+  "cross_sft_sha256": "c5cca1d78ad5b0c923f5e6b999c98647ce36921fe723d7d6f9393f0f68bd54f4"
+}

@@ -1,0 +1,57 @@
+{
+  "host": "momentum",
+  "container_image": "sha256:1a25c4c8d56cfd74f71827c29e7930ec9cd32a3684d8e9a3b027916d80da02a0",
+  "game_mounted": false,
+  "network_enabled": false,
+  "retained_container_or_cache": false,
+  "normalized_scope": "One disposable original-game runtime and one existing Xvfb. Three distinct empty Wine prefixes. Within each pair compare wineboot --init on empty prefix vs same initialized default prefix after stopping its wineserver. No game is installed or launched; captured times cover Wine prefix initialization only.",
+  "median_seconds": {
+    "cold": 4.677911592,
+    "reused": 0.257945401
+  },
+  "receipts": [
+    {
+      "replicate": 1,
+      "mode": "cold",
+      "exit_code": 0,
+      "seconds": 4.677911592,
+      "default_registry_verified": true
+    },
+    {
+      "replicate": 1,
+      "mode": "reused",
+      "exit_code": 0,
+      "seconds": 0.257945401,
+      "default_registry_verified": true
+    },
+    {
+      "replicate": 2,
+      "mode": "cold",
+      "exit_code": 0,
+      "seconds": 4.503167128,
+      "default_registry_verified": true
+    },
+    {
+      "replicate": 2,
+      "mode": "reused",
+      "exit_code": 0,
+      "seconds": 0.243526604,
+      "default_registry_verified": true
+    },
+    {
+      "replicate": 3,
+      "mode": "cold",
+      "exit_code": 0,
+      "seconds": 5.475578885,
+      "default_registry_verified": true
+    },
+    {
+      "replicate": 3,
+      "mode": "reused",
+      "exit_code": 0,
+      "seconds": 0.260108518,
+      "default_registry_verified": true
+    }
+  ],
+  "script_sha256": "f6d518bf0592bd918b077954d17c10e08baf2e5e9ccc6fb8d4dc3eef982acbcb"
+}

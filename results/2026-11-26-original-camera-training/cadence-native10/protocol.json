@@ -1,0 +1,87 @@
+{
+  "host": "accelerator",
+  "seeds": [
+    759001,
+    759002,
+    759003,
+    759004,
+    759005,
+    759006,
+    759007,
+    759008
+  ],
+  "order": {
+    "759001": [
+      "four-120",
+      "four-62",
+      "multi-62",
+      "multi-120"
+    ],
+    "759002": [
+      "four-62",
+      "multi-120",
+      "four-120",
+      "multi-62"
+    ],
+    "759003": [
+      "multi-120",
+      "multi-62",
+      "four-62",
+      "four-120"
+    ],
+    "759004": [
+      "multi-62",
+      "four-120",
+      "multi-120",
+      "four-62"
+    ],
+    "759005": [
+      "four-120",
+      "four-62",
+      "multi-62",
+      "multi-120"
+    ],
+    "759006": [
+      "four-62",
+      "multi-120",
+      "four-120",
+      "multi-62"
+    ],
+    "759007": [
+      "multi-120",
+      "multi-62",
+      "four-62",
+      "four-120"
+    ],
+    "759008": [
+      "multi-62",
+      "four-120",
+      "multi-120",
+      "four-62"
+    ]
+  },
+  "concurrency": 3,
+  "design": "Each of eight fresh controller seeds plays each of two six-human-player SFT models at two exact native holds, 62 ms and 120 ms. Williams order is replicated twice, balancing every arm by period and every ordered pair of immediate predecessors. Original Normal TH10 trial, fresh stock, all four actions, no assistance, no Continue. No mid-hold images. Native RNG and incidental load uncontrolled.",
+  "training_models": {
+    "four": "camera-sft-expanded\\policy.ts",
+    "multi": "camera-sft-multilag\\policy.ts"
+  },
+  "settings": {
+    "four-120": {
+      "model": "four",
+      "hold_ms": 120
+    },
+    "four-62": {
+      "model": "four",
+      "hold_ms": 62
+    },
+    "multi-120": {
+      "model": "multi",
+      "hold_ms": 120
+    },
+    "multi-62": {
+      "model": "multi",
+      "hold_ms": 62
+    }
+  }
+}
