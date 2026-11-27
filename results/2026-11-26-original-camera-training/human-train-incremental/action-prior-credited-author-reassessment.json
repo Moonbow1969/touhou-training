@@ -1,0 +1,109 @@
+{
+  "model_sha256": "22981e8b48e829b57730e1723ad0d93d4051e9154f7a846f6e67f8446348dfee",
+  "selected_epoch": 8,
+  "earlier_performance_sha256": "b84c79c9bc187e91cdeb9342f8a56e8bd9e5e9419dae284f5a4319249f6808e1",
+  "author_evidence_sha256": "543f3f5be90ffb4e0c9e739d8b7078b9cb8c71e08b331c19548c7dc4221bd8c7",
+  "explanation": "Reuse every original test/validation tile and the published epoch checkpoint. Groups are formed by public author before inference. The model conditions on genuine earlier human keys and stage metadata; these figures measure next-direction prediction.",
+  "validation_used_to_select_epoch": true,
+  "new_gradient_updates": 0,
+  "device": "NVIDIA GeForce RTX 4070",
+  "sequence": 64,
+  "batch": 64,
+  "torch_peak_gpu_memory_mib": 26.0,
+  "results": {
+    "test": {
+      "metrics": {
+        "held_authors": {
+          "original_replays": 59,
+          "stage_spans": 349,
+          "decisions": 1475136,
+          "right_direction": 1082228,
+          "previous_direction_matches": 1070894,
+          "direction_changes": 404242,
+          "right_after_change": 40330,
+          "direction_accuracy": 0.7336462536335633,
+          "keep_last_accuracy": 0.7259628942687318,
+          "direction_change_accuracy": 0.09976697126968499
+        },
+        "seen_training_authors": {
+          "original_replays": 44,
+          "stage_spans": 264,
+          "decisions": 1074752,
+          "right_direction": 748619,
+          "previous_direction_matches": 726472,
+          "direction_changes": 348280,
+          "right_after_change": 45668,
+          "direction_accuracy": 0.6965504600131007,
+          "keep_last_accuracy": 0.6759438456499732,
+          "direction_change_accuracy": 0.1311243826806018
+        }
+      },
+      "combined_original_report": {
+        "decisions": 2549888,
+        "right_direction": 1830848,
+        "previous_direction_matches": 1797366,
+        "direction_changes": 752522,
+        "right_after_change": 85998,
+        "direction_accuracy": 0.7180111440188746,
+        "keep_last_accuracy": 0.7048803712163044,
+        "direction_change_accuracy": 0.11427971541031358
+      },
+      "reevaluated_combined_counts": {
+        "decisions": 2549888,
+        "direction_changes": 752522,
+        "previous_direction_matches": 1797366,
+        "right_direction": 1830847,
+        "right_after_change": 85998
+      },
+      "correct_direction_count_delta": -1,
+      "correct_direction_change_count_delta": 0
+    },
+    "validation": {
+      "metrics": {
+        "held_authors": {
+          "original_replays": 93,
+          "stage_spans": 558,
+          "decisions": 2415552,
+          "right_direction": 1746942,
+          "previous_direction_matches": 1727576,
+          "direction_changes": 687976,
+          "right_after_change": 66765,
+          "direction_accuracy": 0.7232061243144424,
+          "keep_last_accuracy": 0.7151889092017063,
+          "direction_change_accuracy": 0.09704553647220251
+        },
+        "seen_training_authors": {
+          "original_replays": 66,
+          "stage_spans": 396,
+          "decisions": 1812352,
+          "right_direction": 1291432,
+          "previous_direction_matches": 1267470,
+          "direction_changes": 544882,
+          "right_after_change": 61843,
+          "direction_accuracy": 0.7125723921180874,
+          "keep_last_accuracy": 0.6993508987216611,
+          "direction_change_accuracy": 0.11349796836746305
+        }
+      },
+      "combined_original_report": {
+        "decisions": 4227904,
+        "right_direction": 3038375,
+        "previous_direction_matches": 2995046,
+        "direction_changes": 1232858,
+        "right_after_change": 128608,
+        "direction_accuracy": 0.7186480582340564,
+        "keep_last_accuracy": 0.7083997176851697,
+        "direction_change_accuracy": 0.10431696107743146
+      },
+      "reevaluated_combined_counts": {
+        "decisions": 4227904,
+        "direction_changes": 1232858,
+        "previous_direction_matches": 2995046,
+        "right_direction": 3038374,
+        "right_after_change": 128608
+      },
+      "correct_direction_count_delta": -1,
+      "correct_direction_change_count_delta": 0
+    }
+  }
+}

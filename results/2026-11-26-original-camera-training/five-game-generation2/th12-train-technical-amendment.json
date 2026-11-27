@@ -1,0 +1,31 @@
+{
+  "original_protocol_sha256": "9c3bbb32c204a1278c0bdf98b37b8125290f3c50b3e2c5049e6a70e4afeca1a6",
+  "name": "TH12 technical exclusion and deterministic reserve allocation",
+  "terminal_consumption_registration_sha256": "f56c69b5a9091cab8c6bf1c968b861ec77229291b399ccd5f7d831364586d249",
+  "applicable_title": 12,
+  "role": "train",
+  "original_seeds": [
+    1461201,
+    1461202,
+    1461203,
+    1461204,
+    1461205,
+    1461206,
+    1461207,
+    1461208,
+    1461209,
+    1461210,
+    1461211,
+    1461212,
+    1461213,
+    1461214,
+    1461215,
+    1461216
+  ],
+  "reserve_stride": 10000,
+  "max_reserve_attempts": 2,
+  "first_observed_technical_case": 1461213,
+  "sealed_reserve_credits_at_registration": 0,
+  "eligibility": "Select the earliest technically eligible attempt for each original slot. Only an unresolved native terminal-consumption attribution or a verifiable acquisition fault can activate a replacement. No evaluation score, survival time, reward, stage or inventory may select an attempt. Keep original host, physical lane, rank and frozen behavior for all attempts. Record every rejected attempt and original endpoint in the acquisition ledger. Report the full physical denominator and the qualified training denominator separately. If no technically verified full trajectory exists after two reserves, report an incomplete batch.",
+  "output": "Keep original registration immutable. Derive effective-train-protocol.json from it and the sealed th12-train-source-selection.json; held assignments are unchanged."
+}

@@ -15,8 +15,11 @@ def main():
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
     a=p.parse_args()
-    plan=json.loads((a.root/'camera-protocol.json').read_bytes())
+    source=a.root/'effective-train-protocol.json'
+    if not source.is_file():source=a.root/'camera-protocol.json'
+    plan=json.loads(source.read_bytes())
     learner=json.loads((a.root/'policy/report.json').read_bytes())
+    if digest(source)!=learner['protocol_sha256']:raise ValueError('Different effective optimizer protocol')
     wanted={(int(t),s) for t,seeds in plan['train_seeds'].items() for s in seeds}
     used={(x['title'],x['seed']):x for x in learner['credits']}
     if set(used)!=wanted or learner['policy_sha256']!=digest(a.root/'policy/policy.ts'):raise ValueError('PPO checkpoint or source set differs')
