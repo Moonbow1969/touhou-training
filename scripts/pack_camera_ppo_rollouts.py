@@ -29,7 +29,10 @@ def main():
     if set(found)!=wanted:raise ValueError(f'Missing registered training credits: {sorted(wanted-set(found))}')
     a.out.mkdir(parents=True,exist_ok=True);items=[]
     for (title,seed),(receipt,r,outcome) in sorted(found.items()):
-        trace=receipt.parent/r.get('behavior',r.get('trajectory',r.get('file','missing')))
+        if title==11:
+            from scripts.train_th11_original_ppo import audit
+            audit(receipt.parent,'train',seed,fingerprint,plan)
+        trace=receipt.parent/('trajectory.npz' if title==11 else r.get('behavior',r.get('trajectory',r.get('file','missing'))))
         trace_sha=r.get('behavior_sha256',r.get('trajectory_sha256',r.get('sha256')))
         if digest(trace)!=trace_sha:raise ValueError(f'Changed original behavior {trace}')
         with np.load(trace,allow_pickle=False) as z:

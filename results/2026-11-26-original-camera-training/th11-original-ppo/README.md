@@ -1,5 +1,7 @@
 # TH11 original Hard and Lunatic PPO
 
+The frozen human SFT and TH11-only PPO each reached Stage 2 on 0/8 Hard and 0/8 Lunatic whole credits. Both exhausted their spare lives. On Lunatic, mean original score changed from 2,112,284 to 457,418 and mean effective Power casts from 1.00 to 0.25. The paired score difference was −1,654,866 (95% seed-bootstrap interval −2,751,488 to −430,727). The native stage reader was independently verified on a human replay that advanced from Stage 1 into Stage 2. [Paired metrics by difficulty](evaluation/paired-by-difficulty.json) · [Original evaluation archive](held-release.json) · [Stage evidence](stage2-qualification.json)
+
 The fitted checkpoint used 16 full original credits, with 2,083 decisions on Hard and 1,682 on Lunatic. All four PPO epochs passed the registered KL limit in both ranks. [Per-credit stock rewards](verified-stock-reward.json) · [Optimizer log and checkpoint fingerprint](policy/report.json) · [Complete native training archive](train-release.json)
 
 The camera policy starts with human SFT from TH10, TH12, TH13 and TH17. This study fine-tunes it by playing the TH11 standalone trial. Reimu A controls nine movement directions, focus, shooting and X. X spends Power. Each complete credit starts with two spare lives. A lost life contributes −1, including the loss of the final playable life. A gained life contributes +1. The actor receives the playing-field image and its absolute difference from the preceding decision image.

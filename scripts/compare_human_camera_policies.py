@@ -16,11 +16,15 @@ from scripts.train_replay_camera_encoder import save_json, sha
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--models',nargs='+',type=Path,required=True)
+    p.add_argument('--model-names',nargs='+',help='Unique display names in the same order as the model directories.')
     p.add_argument('--held',nargs='+',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--sft-parent',type=Path,help='Supervised parent directory for a first-generation PPO checkpoint')
     p.add_argument('--difference-ticks',choices=(4,8),type=int,default=4)
     a=p.parse_args()
+    names=a.model_names or [directory.name for directory in a.models]
+    if len(names)!=len(a.models) or len(set(names))!=len(names):
+        p.error('Supply one unique name per checkpoint')
     device='cuda' if torch.cuda.is_available() else 'cpu'
     torch.set_num_threads(2)
     rows=[load_replay(path,include_eight_tick_camera=a.difference_ticks==8) for path in a.held]
@@ -32,7 +36,7 @@ def main():
     groups={row['group'] for row in rows}
     results={}
     with torch.inference_mode():
-        for directory in a.models:
+        for name,directory in zip(names,a.models):
             report=json.loads((directory/'report.json').read_bytes())
             if 'train' in report:
                 provenance=report['train'];expected=report['torchscript_sha256']
@@ -55,7 +59,7 @@ def main():
                 matched=evaluation(row,probs)
                 shifted=evaluation(row,[np.roll(x,len(x)//2,axis=0) for x in probs])
                 metrics[row['name']]={'group':row['group'],'aligned':matched,'shifted':shifted,'sha256':row['sha256']}
-            results[directory.name]={'checkpoint':expected,'replays':metrics}
+            results[name]={'checkpoint':expected,'replays':metrics}
     a.out.mkdir(parents=True,exist_ok=True)
     save_json(a.out/'held.json',results)
     conditions=['all','change','start','turn']
