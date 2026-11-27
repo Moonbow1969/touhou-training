@@ -49,6 +49,11 @@ static void fail(const char *message) {
 }
 
 static void initialize(void) {
+#ifdef TH12_MULTI_RANK_HUD
+    const char *difficulty = getenv("TH12_DIFFICULTY");
+    if (difficulty && !strcmp(difficulty,"2")) hud_title.path = "/input/hud-hard.gray";
+    if (difficulty && !strcmp(difficulty,"3")) hud_title.path = "/input/hud-lunatic.gray";
+#endif
     void *x = dlopen("libX11.so.6", RTLD_NOW);
     void *t = dlopen("libXtst.so.6", RTLD_NOW);
     if (!x || !t) fail("X11 display libraries are unavailable.");

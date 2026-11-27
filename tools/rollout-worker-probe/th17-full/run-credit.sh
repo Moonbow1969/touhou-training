@@ -2,21 +2,23 @@
 # Collect one complete unassisted TH17 0.01a credit in an isolated Wine display.
 set -euo pipefail
 usage() {
-    echo 'run-credit.sh --game <local trial dir> --model <frozen policy.ts> --output <fresh episode dir> --seed N --rank hard|lunatic --arm NAME --split train|held|engineering [--lane NAME] [--cpus N] [--wine-image NAME] [--camera-image NAME] [--runtime-dir PATH] [--socket <shared actor.sock>]'
+    echo 'run-credit.sh --game <local trial dir> --model <frozen policy.ts> --output <fresh episode dir> --seed N --rank hard|lunatic --arm NAME --split train|held|engineering [--lane NAME] [--cpus N] [--observer v1|v2] [--wine-image NAME] [--actor-builder IMAGE] [--camera-image NAME] [--runtime-dir PATH] [--socket <shared actor.sock>]'
 }
 wine_image=toho-worker-trial
 camera_image=toho-camera-cpu
 lane=local
 cpus=2
 runtime_parent=${TMPDIR:-/tmp}
+observer=v1
 shared_socket=
+actor_builder=
 host_label=$(hostname)
 while (($#)); do
     case "$1" in
         --game) game=$2;; --model) model=$2;; --output) output=$2;; --seed) seed=$2;;
         --rank) difficulty=$2;; --arm) arm=$2;; --split) split=$2;; --lane) lane=$2;;
-        --cpus) cpus=$2;; --wine-image) wine_image=$2;; --camera-image) camera_image=$2;;
-        --runtime-dir) runtime_parent=$2;; --socket) shared_socket=$2;; --host-label) host_label=$2;;
+        --observer) observer=$2;; --cpus) cpus=$2;; --wine-image) wine_image=$2;; --camera-image) camera_image=$2;;
+        --runtime-dir) runtime_parent=$2;; --socket) shared_socket=$2;; --host-label) host_label=$2;; --actor-builder) actor_builder=$2;;
         --help|-h) usage; exit 0;; *) usage >&2; exit 2;;
     esac
     shift 2
@@ -24,6 +26,7 @@ done
 : "${game:?--game is required}" "${model:?--model is required}" "${output:?--output is required}" "${seed:?--seed is required}"
 : "${difficulty:?--rank is required}" "${arm:?--arm is required}" "${split:?--split is required}"
 case "$difficulty" in hard) rank=2;; lunatic) rank=3;; *) usage >&2;exit 2;; esac
+case "$observer" in v1) version=1;; v2) version=2;; *) usage >&2;exit 2;; esac
 case "$split" in train|held|engineering) ;; *) usage >&2;exit 2;; esac
 [[ $seed =~ ^[1-9][0-9]*$ && $lane =~ ^[a-zA-Z0-9_.-]+$ && $arm =~ ^[a-zA-Z0-9_.-]+$ ]]
 here=$(cd "$(dirname "$0")" && pwd)
@@ -54,11 +57,23 @@ PY
 }
 trap clean EXIT
 mkdir "$runtime/socket"
-cc -std=c11 -O2 -I"$repo/tools/rollout-worker-probe/th12-full" -I"$repo/tools/full_action" "$here/worker.c" -o "$runtime/worker" -ldl -lm
+if [[ -n $actor_builder ]]; then
+    docker run --rm --network none -v "$repo:/repo:ro" -v "$runtime:/input" --entrypoint cc "$actor_builder" \
+        -std=c11 -O2 -I/repo/tools/rollout-worker-probe/th12-full -I/repo/tools/full_action \
+        /repo/tools/rollout-worker-probe/th17-full/worker.c -o /input/worker -ldl -lm
+else
+    cc -std=c11 -O2 -I"$repo/tools/rollout-worker-probe/th12-full" -I"$repo/tools/full_action" "$here/worker.c" -o "$runtime/worker" -ldl -lm
+fi
+# With no arguments this worker returns 2. Check its ELF loader on the actual
+# deployment image before allocating a Wine instance or starting a replay.
+loader_rc=0
+docker run --rm --network none -v "$runtime:/input:ro" --entrypoint /input/worker "$wine_image" || loader_rc=$?
+[[ $loader_rc == 2 ]] || die "Actor failed in target runtime (code $loader_rc). Supply --actor-builder with a C compiler matching the Wine image's libc."
 # Pin the COFF timestamp. The registered Debian build reproduces its observer byte for byte.
 cp "$here/sensor.c" "$runtime/sensor.c"
 docker run --rm --network none -v "$runtime:/input" --entrypoint sh "$wine_image" -c \
-    'SOURCE_DATE_EPOCH=1795755599 i686-w64-mingw32-gcc-posix -O2 /input/sensor.c -o /input/sensor.exe'
+    'if test "$1" = v2; then set -- -DTH17_COMPLETE_STATE_LOG; else set --; fi
+     SOURCE_DATE_EPOCH=1795755599 i686-w64-mingw32-gcc-posix -O2 "$@" /input/sensor.c -o /input/sensor.exe' sh "$observer"
 sensor_sha=$(sha256sum "$runtime/sensor.exe" | cut -d' ' -f1)
 actor_sha=$(sha256sum "$runtime/worker" | cut -d' ' -f1)
 if [[ -n $shared_socket ]]; then
@@ -121,10 +136,10 @@ tap z;sleep 4;photo start-hud.png
 for i in $(seq 1 1800); do [[ -s $output/worker.rc ]] && break; sleep 2; done
 [[ -s $output/worker.rc && $(cat "$output/worker.rc") == 0 ]] || die 'Incomplete native credit; retained raw evidence'
 sleep 2;photo terminal.png
-python3 - "$output" "$seed" "$rank" "$arm" "$split" "$lane" "$host_label" "$model_sha" "$sensor_sha" "$actor_sha" "$cpus" <<'PY'
+python3 - "$output" "$seed" "$rank" "$arm" "$split" "$lane" "$host_label" "$model_sha" "$sensor_sha" "$actor_sha" "$cpus" "$version" <<'PY'
 import json,pathlib,sys
-path,seed,rank,arm,split,lane,host,sha,sensor,actor,cpus=sys.argv[1:]
-identity=dict(seed=int(seed),difficulty=int(rank),arm=arm,split=split,lane=lane,host=host,policy_sha256=sha,native_observer_sha256=sensor,actor_sha256=actor,cpu_quota=float(cpus))
+path,seed,rank,arm,split,lane,host,sha,sensor,actor,cpus,version=sys.argv[1:]
+identity=dict(seed=int(seed),difficulty=int(rank),arm=arm,split=split,lane=lane,host=host,policy_sha256=sha,native_observer_sha256=sensor,actor_sha256=actor,cpu_quota=float(cpus),observer_version=int(version))
 pathlib.Path(path,"identity.json").write_text(json.dumps(identity,indent=2)+"\n")
 PY
 helper receipt /capture --identity /capture/identity.json

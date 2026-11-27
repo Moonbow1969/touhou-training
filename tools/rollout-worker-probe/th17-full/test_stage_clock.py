@@ -7,7 +7,7 @@ here=Path(__file__).resolve().parent
 sys.path.insert(0,str(here.parents[2]))
 from scripts.verify_th17_original_credit import verify_stage_chronology
 from receipt import state_events
-from timeline import progressed_ticks
+from timeline import progressed_ticks, initialized_stock_rows
 
 class StageClockTest(unittest.TestCase):
     def setUp(self):
@@ -31,4 +31,11 @@ class StageClockTest(unittest.TestCase):
         self.rows['stage'][3:]=3
         with self.assertRaises(ValueError):verify_stage_chronology(self.rows)
         with self.assertRaises(ValueError):progressed_ticks(self.rows['stage'],self.rows['tick'])
+    def test_only_original_zero_initializer_precedes_stock(self):
+        dtype=[(k,'i4') for k in ('stage','start_stage','tick','power','spares','bombs','continues','score')]
+        rows=np.array([(1,1,0,0,0,0,0,0),(1,1,0,0,2,3,0,0),(1,1,1,100,2,3,0,0)],dtype=dtype)
+        trimmed,count=initialized_stock_rows(rows,2)
+        self.assertEqual((count,len(trimmed),trimmed[0]['spares'],trimmed[0]['bombs']),(1,2,2,3))
+        rows['tick'][0]=1
+        self.assertEqual(initialized_stock_rows(rows,2)[1],0)
 if __name__=='__main__':unittest.main()

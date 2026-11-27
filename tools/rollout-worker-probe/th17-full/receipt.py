@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 from original_ui import comparison
-from timeline import coordinates, progressed_ticks, event_coordinate
+from timeline import coordinates, progressed_ticks, event_coordinate, initialized_stock_rows
 from score_ranking import inspect as inspect_ranking
 
 BUILD = "3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba"
@@ -52,7 +52,7 @@ def state_events(native, decisions):
 def seal(root, identity):
     rank = identity["difficulty"]
     native = load_rows(root/"native.tsv")
-    native = native[native["stage"]>=1]
+    native, initialization_rows = initialized_stock_rows(native[native["stage"]>=1],identity.get("observer_version",1))
     decisions = load_rows(root/"decisions.tsv")
     n = len(decisions)
     if not len(native) or n<2:
@@ -91,7 +91,7 @@ def seal(root, identity):
     last_live = native[native["spares"]>=0][-1]
     entry = entries.get(2)
     receipt = dict(**identity, game="TH17", title=17, mode=identity["split"], policy=identity["arm"], actions=n, steps=n,
-        difficulty_name="Hard" if rank==2 else "Lunatic", difficulty_verified_native_samples=len(native), native_rank=rank,
+        difficulty_name="Hard" if rank==2 else "Lunatic", difficulty_verified_native_samples=len(native), native_preinitialization_rows=initialization_rows, native_rank=rank,
         character=0, beast=0, shot=0, continues=0, difficulty_evidence="Two original rank-menu photographs and native rank for complete story credit",
         rank_selection_template_score=rank_score, terminal_reason="game_over", terminal="game_over", terminal_observed=True, terminal_screen=terminal,
         terminal_template_recall=terminal_score, independent_ranking=ranking, maximum_stage=stage, stage2_reached=entry is not None,
@@ -122,4 +122,5 @@ if __name__=="__main__":
     a=parser.parse_args()
     r=seal(a.episode,json.loads(a.identity.read_bytes()))
     print(json.dumps({k:r[k] for k in ("actions","difficulty","terminal_screen","stage2_reached","last_live_bombs","trajectory_sha256")},indent=2))
+
 

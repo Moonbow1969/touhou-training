@@ -6,16 +6,22 @@ import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th17-full'))
 from timeline import progressed_ticks
 
-def report(root):
+def report(root,episode_prefix=''):
     credits=[]
     for p in sorted(root.glob('*-*-*/receipt.json')):
+        if episode_prefix and not p.parent.name.startswith(episode_prefix):continue
         r=json.loads(p.read_bytes())
         t=np.genfromtxt(p.with_name('decisions.tsv'),names=True,delimiter='\t')
         credits.append((r,np.r_[t['onset_ns'][0],t['observed_ns']]/1e9,progressed_ticks(np.r_[t['stage'][0],t['after_stage']],np.r_[t['tick'][0],t['after_tick']])))
     cell={};wall={}
     if not credits:return {}
-    # Count only seconds fully covered by every included active credit.
-    for start in np.arange(np.ceil(min(ts[0] for _,ts,_ in credits)),np.floor(max(ts[-1] for _,ts,_ in credits))):
+    # A released instance can be collecting another study. Restrict the load
+    # comparison to the common interval in which every observed lane belongs
+    # to this cohort, so an uncounted successor cannot contaminate a 1/2-lane cell.
+    lanes={r['lane'] for r,_,_ in credits}
+    common_begin=max(min(ts[0] for r,ts,_ in credits if r['lane']==lane) for lane in lanes)
+    common_end=min(max(ts[-1] for r,ts,_ in credits if r['lane']==lane) for lane in lanes)
+    for start in np.arange(np.ceil(common_begin),np.floor(common_end)):
         spans=[(r,ts,ticks) for r,ts,ticks in credits if ts[0]<=start<start+1<=ts[-1]]
         if not spans:continue
         # Drop windows where a new episode enters partway or another exits early.
@@ -30,7 +36,25 @@ def report(root):
         groups[count]=dict(overlap_seconds=len(values),mean_aggregate_native_ticks_per_second=float(np.mean(values)),
             median_aggregate_native_ticks_per_second=float(np.median(values)),p10_p90_aggregate_native_ticks_per_second=np.percentile(values,[10,90]).tolist(),
             mean_aggregate_four_head_decisions_per_second=float(np.mean(wall[count])))
-    return dict(credits=len(credits),original_cpu_quota_per_lane=2,host='Gamer-WSL',scope='Exact on-policy native ticks and applied four-head decisions per real second. Integer one-second bins on the shared monotonic clock; partial start/end windows excluded.',groups=groups)
+    span=common_end-common_begin
+    accounting={}
+    if span>0:
+        busy=sum(max(0,min(ts[-1],common_end)-max(ts[0],common_begin)) for _,ts,_ in credits)
+        steps=sum(np.count_nonzero((ts[1:]>common_begin)&(ts[1:]<=common_end)) for _,ts,_ in credits)
+        terminals=sum(common_begin<ts[-1]<=common_end for _,ts,_ in credits)
+        gaps=[]
+        for lane in lanes:
+            runs=sorted((ts[0],ts[-1]) for r,ts,_ in credits if r['lane']==lane)
+            gaps.extend(b[0]-a[-1] for a,b in zip(runs,runs[1:]) if common_begin<=a[-1]<=b[0]<=common_end)
+        accounting=dict(physical_wall_seconds=float(span),decisions=int(steps),native_credit_terminals=int(terminals),
+                        amortized_decisions_per_second=float(steps/span),native_terminals_per_hour=float(terminals*3600/span),
+                        fraction_available_game_slots_acting=float(busy/(span*len(lanes))),
+                        intercredit_gap_seconds_median=float(np.median(gaps)) if gaps else None,
+                        intercredit_gap_seconds_p90=float(np.percentile(gaps,90)) if gaps else None,
+                        gap_definition='Previous last action to next first action on same instance: includes title reset, UI evidence, packing, model readiness and dispatch.')
+    return dict(credits=len(credits),original_cpu_quota_per_lane=2,host='Gamer-WSL',
+                common_allocated_lanes=sorted(lanes),common_allocation_monotonic_seconds=[common_begin,common_end],
+                scope='Active native ticks and applied four-head decisions per real second. All instrumented lanes are allocated to this same study throughout the common window. Excludes initial rollout before the last lane joins, the tail after any lane completes, and partial one-second bins for the active-count comparison.',groups=groups,end_to_end=accounting)
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('out',type=Path);a=p.parse_args()
     o=report(a.root);a.out.write_text(json.dumps(o,indent=2)+'\n');print(json.dumps(o,indent=2))

@@ -16,8 +16,8 @@ def run(study):
         arms=list(data["group"])
         groups={name:{r["seed"]:r for r in data["credits"][name]} for name in arms}
         seeds=sorted(groups[arms[0]])
-        assert len(seeds)==12 and seeds==sorted(groups[arms[1]])
-        assert len(receipts)==24 and all(row["difficulty"]==rank for row in receipts)
+        assert len(seeds)>=2 and seeds==sorted(groups[arms[1]])
+        assert len(receipts)==len(arms)*len(seeds) and all(row["difficulty"]==rank for row in receipts)
         measures={};rng=np.random.default_rng(20261126+rank)
         for metric, extract in (
                 ("native_score",lambda row:row["raw_score"]),("settled_power",lambda row:row["final_power"]),
@@ -28,6 +28,21 @@ def run(study):
             means=rng.choice(delta,(20000,len(delta))).mean(1)
             measures[metric]=dict(mean=arr.mean(0).tolist(),paired_mean_change=float(delta.mean()),
                                   paired_bootstrap95=np.quantile(means,[.025,.975]).tolist())
+        if all("stage_clock_sha256" in r for r in receipts):
+            from scripts.th10_native_stage_clock import verify
+            times={}
+            for row in receipts:
+                d=native/row["arm"]/f"{row['host']}-{row['seed']}"
+                record=json.loads((d/"report.json").read_bytes());log=record["native_stage_clock"]
+                finish=verify(d,record)
+                assert finish==row["last_observed_stage1_tick"] and log["data_sha256"]==row["stage_clock_sha256"]
+                times[row["arm"],row["seed"]]=(finish,log["first_life_loss_tick"] if log["first_life_loss_stage"]==1 else None)
+            for i,label_ in enumerate(("final_stage1_native_tick","first_loss_stage1_native_tick")):
+                arr=np.array([[times[a,s][i] for a in arms] for s in seeds if all(times[a,s][i] is not None for a in arms)])
+                if len(arr):
+                    delta=arr[:,1]-arr[:,0];means=rng.choice(delta,(20000,len(delta))).mean(1)
+                    measures[label_]=dict(n=len(delta),mean=arr.mean(0).tolist(),paired_mean_change=float(delta.mean()),
+                                          paired_bootstrap95=np.quantile(means,[.025,.975]).tolist())
         analyses[label]=dict(arms=arms,matched_seeds=seeds,difficulty=rank,
                 native_rank_readings=sum(r["rank_samples"] for r in receipts),
                 verified_key_counts=[[data["group"][a]["decisions_matching_native_input"],data["group"][a]["decisions"]] for a in arms],

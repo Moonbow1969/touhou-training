@@ -4,7 +4,11 @@ export DISPLAY=:66 WINEPREFIX=/tmp/th12-wine WINEARCH=win32 WINEDEBUG=-all
 export WINEDLLOVERRIDES=mscoree,mshtml= LP_NUM_THREADS=2
 export PULSE_SERVER=unix:/tmp/th12-pulse.sock XDG_RUNTIME_DIR=/tmp/runtime
 # The original ranking screen has no active life. Relaunch only after explicit recognition.
-test "$(/input/th12-full-actor status)" = score_ranking
+case "$(/input/th12-full-actor status)" in
+  score_ranking) ;;
+  gameover|gameover_retry) test "${TH12_ALLOW_TERMINAL_RELAUNCH:-0}" = 1 ;;
+  *) exit 2 ;;
+esac
 wineserver -k || true
 sleep 1
 cd /tmp/th12-game

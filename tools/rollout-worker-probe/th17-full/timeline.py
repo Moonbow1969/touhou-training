@@ -19,3 +19,15 @@ def progressed_ticks(stages, ticks):
 
 def event_coordinate(stage, tick):
     return int(stage)*(1<<32)+int(tick)
+
+def initialized_stock_rows(rows, version):
+    """Discard only native zero-initialization before playable stage tick 1 in observer v2."""
+    start=0
+    if version==2:
+        while start<len(rows):
+            row=rows[start]
+            fields=tuple(int(row[k]) for k in ('stage','start_stage','tick','power','spares','bombs','continues','score'))
+            if fields!=(1,1,0,0,0,0,0,0):break
+            start+=1
+    if start==len(rows):raise ValueError('Original full-stock initialization never finished')
+    return rows[start:],start

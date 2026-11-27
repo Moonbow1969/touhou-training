@@ -20,7 +20,7 @@ def wait(path):
     while not path.is_file():time.sleep(4)
 
 
-def archive(study, role, seeds, arms, hosts, hashes):
+def archive(study, role, seeds, arms, hosts, hashes, ranks=None):
     native=study/"native13";out=study/f"th13-{role}-evaluation"
     for name in ("endpoints","action-traces"):(out/name).mkdir(parents=True,exist_ok=True)
     pictures={Path(r["path"]).parent.name:r for r in scan(native)["rows"]}
@@ -30,7 +30,7 @@ def archive(study, role, seeds, arms, hosts, hashes):
         for seed in seeds:
             for arm in arms:
                 folder=native/f"{role}-{arm}-{seed}";receipt=folder/"receipt.json";r=json.loads(receipt.read_bytes())
-                expected_rank=3-seed%2;data=np.fromfile(folder/"steps.bin","<f4").reshape(-1,143)
+                expected_rank=ranks[str(seed)] if ranks else 3-seed%2;data=np.fromfile(folder/"steps.bin","<f4").reshape(-1,143)
                 assert r["host"]==hosts[str(seed)] and r["policy_sha256"]==hashes[arm] and r["difficulty"]==expected_rank
                 assert r["seed"]==seed and r["terminal"] and r["continues"]==0 and r["steps"]==len(data)
                 assert list(data[0,[125,127,129]])==[1,2,2] and (data[:,141]==expected_rank).all()
@@ -47,6 +47,7 @@ def archive(study, role, seeds, arms, hosts, hashes):
             scores={}
             for rank,label in ((2,"hard"),(3,"lunatic")):
                 subset=[r for r in rows if r["difficulty"]==rank]
+                if not subset:continue
                 contrast=clock_score(subset,13,arms)
                 stats={}
                 for a in arms:
@@ -75,8 +76,9 @@ def run(root,workers):
         missing=[s for s in seeds if not (native/f"held-{arm}-{s}/receipt.json").is_file()]
         if not missing:return
         if host=="accelerator":
+            prior_complete=(root/"four-game-online/th13-accelerator-held.json").is_file()
             accelerator(SimpleNamespace(qualification=root/"engineering/th13-accelerator",connection_config=workers,
-                checkpoint=path,output=native,role="held",arm=arm,seeds=missing,workers=3,difficulty=rank))
+                checkpoint=path,output=native,role="held",arm=arm,seeds=missing,workers=3 if prior_complete else 2,difficulty=rank))
         else:
             options=SimpleNamespace(host="momentum",host_label="momentum",known_hosts=None,remote_root=f"/tmp/toho-v26-four-g2/rank{rank}",
                 prior_bridge="/tmp/toho-th13-cadence-261125/bridge",assets="/tmp/toho-th13-261125/assets/app",
@@ -85,8 +87,7 @@ def run(root,workers):
             actor=CameraPool(options);actor.prepare()
             with ThreadPoolExecutor(2) as pool:list(pool.map(actor.run_credit,missing))
     def host_run(host):
-        if host=="accelerator":wait(root/"four-game-online/th13-accelerator-held.json")
-        else:
+        if host=="momentum":
             for s in train:wait(native/f"train-{ref}-{s}/receipt.json")
             archive(study,"train",train,[ref],assignment["train_seed_host"],{ref:sha})
         assigned=[s for s in held if assignment["seed_host"][str(s)]==host]

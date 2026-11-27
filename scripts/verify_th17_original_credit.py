@@ -5,6 +5,7 @@ from scripts.checkpoint_storage import digest
 
 BUILD='3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba'
 OBSERVER='a561ed8f077b9d75fc380777722a67e59f9dbbad1dcbc1108c1083be8f1dff69'
+OBSERVER_V2='803154279225a61f80ed1b6a8b7a1b8a094b94bfdabd2f08052c549f7898b2ee'
 
 
 def verify_stage_chronology(native):
@@ -20,7 +21,8 @@ def verify_stage_chronology(native):
 
 def inspect(receipt_file,r,expected):
     folder=receipt_file.parent
-    if r['source_executable_sha256']!=BUILD or r['native_observer_sha256']!=OBSERVER or r['difficulty']!=expected:
+    source={1:OBSERVER,2:OBSERVER_V2}.get(r.get('observer_version',1))
+    if source is None or r['source_executable_sha256']!=BUILD or r['native_observer_sha256']!=source or r['difficulty']!=expected:
         raise ValueError('Unexpected TH17 build, observer or difficulty')
     for name,field in (('native.tsv','native_trace_sha256'),('decisions.tsv','decisions_sha256'),
                        ('observations.u8','frames_sha256'),('rank-initial.png','rank_initial_sha256'),
@@ -29,6 +31,15 @@ def inspect(receipt_file,r,expected):
         if digest(folder/name)!=r[field]:raise ValueError(f'Changed TH17 {name}')
     with (folder/'native.tsv').open(encoding='utf8') as stream:
         native=[{k:int(v) for k,v in row.items()} for row in csv.DictReader(stream,delimiter='\t') if int(row['stage'])>=1]
+    leading = 0
+    if r.get('observer_version',1)==2:
+        while leading<len(native):
+            birth=native[leading]
+            if (birth['stage'],birth['start_stage'],birth['tick'],birth['power'],birth['spares'],birth['bombs'],birth['continues'],birth['score'])!=(1,1,0,0,0,0,0,0):
+                break
+            leading+=1
+    if leading!=r.get('native_preinitialization_rows',0):raise ValueError('Unexpected pre-play stock initialization')
+    native=native[leading:]
     if len(native)!=r['difficulty_verified_native_samples'] or not native:raise ValueError('Incomplete TH17 original samples')
     first,last=native[0],native[-1]
     if tuple(first[k] for k in ('stage','start_stage','spares','bombs'))!=(1,1,2,3) or not 0<=first['tick']<180:
@@ -48,3 +59,5 @@ def inspect(receipt_file,r,expected):
                 stage2_reached=entry[0],stage2_spares=entry[1],stage2_bombs=entry[2],effective_bombs=casts,
                 stage2_evidence_sha256=r['native_trace_sha256'],terminal_bombs=last['bombs'],last_playable_bombs=live['bombs'],
                 last_playable_stage1_tick=max(row['tick'] for row in native if row['stage']==1 and row['spares']>=0))
+
+

@@ -1,11 +1,11 @@
-"""Audit actual native Bomb use and inventory just before death on training-only TH17 credits."""
+"""Audit native TH17 Bomb inventory, policy requests and life losses in a complete cohort."""
 from pathlib import Path
 import argparse,json
 import numpy as np
 
-def credit(folder):
+def credit(folder, expected_split="train"):
     r=json.loads((folder/'receipt.json').read_bytes())
-    if r['split']!='train':raise ValueError('Use TRAIN credits only')
+    if r['split']!=expected_split:raise ValueError('Unexpected credit split')
     z=np.genfromtxt(folder/'native.tsv',names=True,delimiter='\t')
     z=z[z['stage']>=1]
     d=np.genfromtxt(folder/'decisions.tsv',names=True,delimiter='\t')
@@ -35,7 +35,37 @@ def report(root):
                           requested_edges_at_zero_inventory=sum(r['edges_on_zero_inventory'] for r in subset))
     return dict(scope='Original TH17 Reimu/Wolf full credits, TRAIN only. Every loss is a native decrease in spare lives. A bomb request is a policy-sampled X input. A cast is a measured reduction of Bomb inventory during the same life. The last playable inventory precedes the native death refill. The 120-native-tick window is descriptive, not a deathbomb counterfactual.',by_rank=groups,credits=rows)
 
+def held_report(root):
+    protocol=json.loads((root.parent/'camera-protocol.json').read_bytes())
+    arms=(protocol['reference_arm'],protocol['candidate'])
+    expected={(seed,arm) for arm in arms for seed in protocol['eval_seeds']['17']}
+    rows=[]
+    for path in sorted(root.glob('held-*/receipt.json')):
+        receipt=json.loads(path.read_bytes())
+        r=credit(path.parent,'held')
+        rows.append(dict(**r,arm=receipt['arm'],lane=receipt['lane'],trajectory_sha256=receipt['trajectory_sha256']))
+    if len(rows)!=len(expected) or {(r['seed'],r['arm']) for r in rows}!=expected:
+        raise ValueError('Held cohorts must be complete before diagnostic analysis')
+    for seed in protocol['eval_seeds']['17']:
+        if len({r['lane'] for r in rows if r['seed']==seed})!=1:
+            raise ValueError('Unmatched held instance')
+    summary={}
+    for rank in (2,3):
+        summary[rank]={}
+        for arm in arms:
+            subset=[r for r in rows if r['rank']==rank and r['arm']==arm]
+            deaths=[d for r in subset for d in r['deaths']]
+            carrying=[d for d in deaths if d['bombs_on_last_playable_tick']>0]
+            summary[rank][arm]=dict(credits=len(subset),actions=sum(r['actions'] for r in subset),native_life_losses=len(deaths),
+                life_losses_holding_bombs=len(carrying),total_bombs_at_life_loss=sum(d['bombs_on_last_playable_tick'] for d in deaths),
+                stock_holding_losses_with_no_request_in_previous_120_ticks=sum(d['requested_bomb_controls_in_prior_120_native_ticks']==0 for d in carrying),
+                native_same_life_casts=sum(r['native_same_life_casts'] for r in subset),
+                requested_bomb_controls=sum(r['bomb_controls'] for r in subset),rising_edges=sum(r['bomb_rising_edges'] for r in subset),
+                edges_on_zero_inventory=sum(r['edges_on_zero_inventory'] for r in subset))
+    return dict(scope='Descriptive post-hoc analysis of fully sealed held pairs. Life losses within a credit are dependent. The original observer reports the latest pre-death stock, and a requested X does not guarantee a successful cast. The 120-tick window does not determine whether a particular death was preventable.',by_rank=summary,credits=rows)
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('output',type=Path);a=p.parse_args()
-    out=report(a.root);a.output.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out['by_rank'],indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('output',type=Path)
+    p.add_argument('--mode',choices=('train','held'),default='train');a=p.parse_args()
+    out=(report if a.mode=='train' else held_report)(a.root);a.output.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out['by_rank'],indent=2))
 

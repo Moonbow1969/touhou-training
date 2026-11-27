@@ -6,6 +6,7 @@ import gzip
 import json
 from pathlib import Path
 from threading import Event
+import time
 from types import SimpleNamespace
 
 import torch
@@ -43,7 +44,8 @@ def native_ledger(folders,seeds,rank):
     return records
 
 
-def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,total_held_lanes=None):
+def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,total_held_lanes=None,
+        reserve_until=None,reserved_lanes=0):
     torch.set_num_threads(2)
     root=root.resolve();workers=workers.resolve();experiment=root/experiment_name;out=experiment/'native10'
     plan=json.loads((experiment/'camera-protocol.json').read_bytes());ref=plan['reference_arm'];alt=plan['candidate']
@@ -59,8 +61,16 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
     train=plan['train_seeds']['10'];held=plan['eval_seeds']['10']
     assert len(set(train))==n_train and len(set(held))==24 and not set(train)&set(held)
     finished={rank:Event() for rank in (2,3)}
+    def frozen_candidate(path):
+        report=path.parent/'report.json'
+        while not report.is_file():time.sleep(4)
+        if digest(path)!=json.loads(report.read_bytes())['policy_sha256']:
+            raise ValueError('Candidate bytes differ from the frozen PPO receipt')
     if total_held_lanes is not None:
         assert parallel_ranks==2 and total_held_lanes>=2
+        if reserve_until is not None:
+            assert 0<reserved_lanes<=total_held_lanes-2
+            reserve_until=reserve_until.resolve()
         if candidate.is_file():
             assert digest(candidate)==json.loads((candidate.parent/'report.json').read_bytes())['policy_sha256']
     def group(rank,role):
@@ -78,10 +88,15 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
             arms=('held-'+ref,'held-'+alt)
             options=SimpleNamespace(out=folder,workers=workers,host='momentum',difficulty=rank,stage_sensor=sensor,
                 reference_name=arms[0],candidate_name=arms[1],reference=path,candidate=candidate,seeds=seeds,
-                concurrency=lanes,candidate_history=False)
+                concurrency=lanes,candidate_history=False,validate_candidate=frozen_candidate)
             if total_held_lanes is not None:
                 options.concurrency=(total_held_lanes+1)//2 if rank==2 else total_held_lanes//2
-                options.block_capacity=lambda:total_held_lanes if finished[5-rank].is_set() else options.concurrency
+                def block_capacity():
+                    available=total_held_lanes
+                    if reserve_until is not None and not reserve_until.is_file():available-=reserved_lanes
+                    if finished[5-rank].is_set():return available
+                    return (available+1)//2 if rank==2 else available//2
+                options.block_capacity=block_capacity
             paired(options)
             finished[rank].set()
             assert digest(candidate)==json.loads((candidate.parent/'report.json').read_bytes())['policy_sha256']
@@ -114,5 +129,7 @@ if __name__=='__main__':
     parser.add_argument('--lanes-per-rank',type=int,default=1)
     parser.add_argument('--parallel-ranks',type=int,choices=(1,2),default=2)
     parser.add_argument('--total-held-lanes',type=int)
+    parser.add_argument('--reserve-until',type=Path);parser.add_argument('--reserved-lanes',type=int,default=0)
     parser.add_argument('--experiment',choices=('high-rank-online','four-game-online','four-game-ppo-generation2'),default='high-rank-online')
-    args=parser.parse_args();run(args.root,args.workers,args.lanes_per_rank,args.experiment,args.parallel_ranks,args.total_held_lanes)
+    args=parser.parse_args();run(args.root,args.workers,args.lanes_per_rank,args.experiment,args.parallel_ranks,
+                                args.total_held_lanes,args.reserve_until,args.reserved_lanes)

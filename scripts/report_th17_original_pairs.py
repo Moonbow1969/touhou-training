@@ -2,9 +2,12 @@
 import argparse
 import json
 import math
+import sys
 from collections import defaultdict
 from pathlib import Path
 import numpy as np
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"tools/rollout-worker-probe/th17-full"))
+from timeline import initialized_stock_rows, progressed_ticks
 
 def summarize(rows):
     n=len(rows)
@@ -15,7 +18,7 @@ def summarize(rows):
     valid=[max(0,(p+z*z/(2*n)-delta)/denom),min(1,(p+z*z/(2*n)+delta)/denom)]
     actions=sum(r["actions"] for r in rows)
     moves=np.array([r["action_counts"] for r in rows]).sum(0)
-    fields=["seconds","last_stage_native_tick","first_loss_native_tick","remaining_spare_lives","last_live_bombs","remaining_bombs","actual_bomb_spends"]
+    fields=["seconds","last_stage_native_tick","first_loss_native_tick","remaining_spare_lives","last_live_bombs","remaining_bombs","actual_bomb_spends","last_observed_stage1_tick","native_ticks_since_full_stock","first_loss_elapsed_native_ticks"]
     return dict(credits=n,actions=actions,stage2_reaches=stage,stage2_rate=stage/n,stage2_wilson95=valid,
                 stage2_entry_resources=[dict(seed=r["seed"],spares=r["stage2_spare_lives"],bombs=r["stage2_bombs"]) for r in rows if r["stage2_reached"]],
                 means={k:float(np.mean([r[k] for r in rows])) for k in fields},
@@ -27,7 +30,7 @@ def compare(rows,reference,candidate):
     pairs=defaultdict(dict)
     for r in rows:pairs[r["seed"]][r["arm"]]=r
     result={};rng=np.random.default_rng(261126)
-    for feature in ("stage2_reached","last_stage_native_tick","first_loss_native_tick","seconds","last_live_bombs","actual_bomb_spends"):
+    for feature in ("stage2_reached","last_stage_native_tick","first_loss_native_tick","seconds","last_live_bombs","actual_bomb_spends","last_observed_stage1_tick","native_ticks_since_full_stock","first_loss_elapsed_native_ticks"):
         per_lane=defaultdict(list)
         for pair in pairs.values():
             a,b=pair[reference],pair[candidate]
@@ -55,6 +58,14 @@ def report(study,mode):
             raise ValueError("Original terminal incomplete")
         if r["difficulty"]!=int(protocol["rank_by_seed"]["17"][str(r["seed"])]) or r["continues"]!=0:raise ValueError("Original difficulty/Continue changed")
         r["actual_bomb_spends"]=sum(e["count"] for e in r["reward_events"] if e["kind"]=="spent_bombs")
+        trace=np.genfromtxt(native_trace,names=True,delimiter='\t',dtype=None,encoding='utf8')
+        trace,_=initialized_stock_rows(trace[trace['stage']>=1],r.get('observer_version',1))
+        elapsed=progressed_ticks(trace['stage'],trace['tick'])
+        first_loss=int(np.flatnonzero(np.diff(trace['spares'])<0)[0])+1
+        r["last_observed_stage1_tick"]=int(trace['tick'][trace['stage']==1][-1])
+        r["native_ticks_since_full_stock"]=int(elapsed[-1])
+        r["first_loss_stage"]=int(trace['stage'][first_loss])
+        r["first_loss_elapsed_native_ticks"]=int(elapsed[first_loss])
         rows.append(r)
     if len(rows)!=len(expected)*len(arms) or {(r["seed"],r["arm"]) for r in rows}!={(s,a) for s in expected for a in arms}:
         raise ValueError("Registered original cohorts are incomplete")
@@ -64,7 +75,7 @@ def report(study,mode):
         cells[rank]={"arms":{a:summarize([r for r in cell if r["arm"]==a]) for a in sorted(arms)}}
         if mode=="held":cells[rank]["paired"]=compare(cell,reference,candidate)
     published_fields=("seed","arm","host","lane","difficulty","actions","terminal_screen","maximum_stage","stage2_reached","stage2_spare_lives","stage2_bombs",
-        "first_loss_native_tick","last_stage_native_tick","last_live_bombs","remaining_bombs","seconds","actual_bomb_spends","policy_sha256","trajectory_sha256","native_trace_sha256","terminal_observation_sha256")
+        "first_loss_native_tick","last_stage_native_tick","last_observed_stage1_tick","native_ticks_since_full_stock","first_loss_stage","first_loss_elapsed_native_ticks","last_live_bombs","remaining_bombs","seconds","actual_bomb_spends","policy_sha256","trajectory_sha256","native_trace_sha256","terminal_observation_sha256")
     return dict(mode=mode,reference=reference,candidate=candidate if mode=="held" else None,cells=cells,
         scope="Full unassisted original TH17 trial credits. The seed controls 4-head policy sampling. The original game RNG is uncontrolled. Last playable Bomb stock excludes the post-death refill. Conditional stage-entry stocks are absent when no credit reaches Stage 2. Wilson intervals describe individual-arm stage arrival. Paired bootstrap intervals resample within fixed private game instance; zero-event bootstrap intervals do not bound population success probability.",
         credits=[{k:r[k]for k in published_fields} for r in sorted(rows,key=lambda r:(r["seed"],r["arm"]))])

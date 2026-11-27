@@ -69,7 +69,8 @@ actor=/input/th12-full-qual
 if test "$mode" != qualify; then actor=/input/th12-full-actor; fi
 if test "${TH12_ACTOR_KIND:-portable}" = camera; then
     test "$mode" != qualify
-    actor=/input/th12-camera-actor
+    actor=${TH12_CAMERA_ACTOR:-/input/th12-camera-actor}
+    if [ -n "${TH12_DIFFICULTY:-}" ]; then actor=/input/th12-rank-camera-actor; fi
 fi
 rc=0
 "$actor" "/input/$weight" "$seed" 120 "$mode" > outcome.txt 2> worker.log || rc=$?

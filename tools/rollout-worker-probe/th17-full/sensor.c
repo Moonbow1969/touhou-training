@@ -26,13 +26,23 @@ int main(void) {
     FILE *log=fopen("native.tsv","wb");if(!shared||!log)return 6;
     fprintf(log,"ms\tstage\tstart_stage\ttick\tlevel_tick\ttotal_tick\tcharacter\tbeast\tscore\trank\tcontinues\tpower\tspares\tlife_pieces\tbombs\tbomb_pieces\n");
     DWORD begin=GetTickCount();int last_tick=-1,armed=0,drained=0;
+#ifdef TH17_COMPLETE_STATE_LOG
+    State last_state={0};int have_previous=0;
+#endif
     for(;;){
         int32_t v[31];SIZE_T n=0;
         if(!ReadProcessMemory(game,(void*)0x4b1634,v,sizeof v,&n)||n!=sizeof v)return 7;
         State s={v[0],v[1],v[3],v[4],v[5],v[6],v[7],v[8],v[9],v[10],v[21],v[25],v[26],v[28],v[29]};
         InterlockedIncrement(&shared->sequence);shared->state=s;InterlockedIncrement(&shared->sequence);
         if(s.stage==1&&s.lives==2&&s.bombs==3&&s.tick>=0&&s.tick<200)armed=1;
-        if(last_tick!=s.total_tick || !drained && armed && s.lives<0){
+#ifdef TH17_COMPLETE_STATE_LOG
+        /* Stage, inventory and difficulty can change while the BGM timer is stopped. */
+        int changed=!have_previous || memcmp(&s,&last_state,sizeof s)!=0;
+        last_state=s;have_previous=1;
+#else
+        int changed=last_tick!=s.total_tick;
+#endif
+        if(changed || !drained && armed && s.lives<0){
             fprintf(log,"%lu\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",(unsigned long)(GetTickCount()-begin),
                 s.stage,s.start_stage,s.tick,s.level_tick,s.total_tick,s.character,s.beast,s.score,s.rank,s.continues,s.power,s.lives,s.life_pieces,s.bombs,s.bomb_pieces);
             fflush(log);last_tick=s.total_tick;

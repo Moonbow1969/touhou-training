@@ -35,7 +35,19 @@ for attempt in $(seq 1 95); do
         play)
             if [ "$reset" = 1 ]; then
                 sleep .65
-                if /input/th12-full-actor hud | grep -qx 'lives 2'; then break; fi
+                # During the previous loading fade the game can already report play
+                # while the reserve icons have not yet reached their final brightness.
+                # Do not pause/restart an otherwise valid fresh original credit.
+                ready=0
+                for check in $(seq 1 14); do
+                    hud=$(/input/th12-full-actor hud)
+                    printf 'startup-hud %s %s\n' "$attempt" "$hud" >> "$prefix.reset.log"
+                    if printf '%s\n' "$hud" | grep -qx 'lives 2' && printf '%s\n' "$hud" | grep -qx 'bombs 2'; then
+                        ready=1; break
+                    fi
+                    sleep .2
+                done
+                if [ "$ready" = 1 ]; then break; fi
             fi
             tap Escape
             reset=0
