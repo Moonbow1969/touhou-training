@@ -8,11 +8,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-import numpy as np
-from PIL import Image
-
 from scripts.checkpoint_storage import digest
-from scripts.score_native_full_actions import qualified_stage2, summarize
 
 
 @lru_cache(maxsize=1)
@@ -90,6 +86,9 @@ def records(root, camera, round2=False, *, include_held_endpoints=False):
 
 
 def verify(title, f, r, trace, arm, out):
+    import numpy as np
+    from PIL import Image
+    from scripts.score_native_full_actions import qualified_stage2
     endpoint_only=f.parent.name=='endpoint-only'
     if endpoint_only:
         if title!=12 or r['mode']!='held' or r['admitted_to_optimizer'] is not False or r['control_coverage']!='indeterminate' or r.get('covered_native_events'):
@@ -190,6 +189,7 @@ def verify(title, f, r, trace, arm, out):
 
 
 def main():
+    from scripts.score_native_full_actions import summarize
     p=argparse.ArgumentParser(description=__doc__)
     for k in ("root","protocol","parent","candidate","out"):p.add_argument("--"+k,type=Path,required=True)
     p.add_argument("--camera",action="store_true")
