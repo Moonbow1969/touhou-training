@@ -210,3 +210,5 @@ Three PPO generations in this independent lineage used 93,393 original decisions
 | TH10 | 0.00 → 0.00 Power | 9 → 6 |
 | TH12 | 0.83 → 0.67 Bombs | 41 → 43 |
 | TH13 | 0.58 → 0.42 Bombs | 52 → 56 |
+
+The mixed-difficulty PPO update consumed 28,364 decisions in 36 verified original credits, twelve per title. TH10 ran on Easy, and TH12 and TH13 ran on Normal. The learner restored the fourteen-player PPO actor and critic, applied the corrected TH13 clock, and accepted four epochs. [Training and checkpoint](easy-curriculum/policy/report.json) · [Original image/action archive](easy-curriculum/release-archive.json) · [Native reward overlay](easy-curriculum/reward-overlay/overlay.json)
