@@ -39,12 +39,12 @@ def one(rows):
 
 
 def summarize(rows, protocol, candidate):
-    baseline = "sft" if candidate in ("ppo1", "ppo2") else "ppo2"
+    baseline = protocol.get("reference_arm", "sft" if candidate in ("ppo1", "ppo2") else "ppo2")
     results = {}
     for title, seeds in protocol["eval_seeds"].items():
         title = int(title)
         host = None
-        if title == 12 and baseline == "sft":
+        if title == 12 and baseline == "sft" and candidate in ("ppo1", "ppo2"):
             host = "steamdeck" if candidate == "ppo1" else "entropy"
         by_arm = {arm: {} for arm in (baseline, candidate)}
         for row in rows:
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for key in ("credits", "protocol", "out"):
         parser.add_argument("--" + key, required=True, type=Path)
-    parser.add_argument("--candidate", choices=["ppo1", "ppo2", "ppo3", "ppo2-aux"], required=True)
+    parser.add_argument("--candidate", required=True)
     args = parser.parse_args()
     result = summarize(json.loads(args.credits.read_bytes()), json.loads(args.protocol.read_bytes()), args.candidate)
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf8")

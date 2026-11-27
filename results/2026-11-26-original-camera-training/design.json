@@ -1,0 +1,118 @@
+{
+  "train_credits_per_title": 16,
+  "held_seeds_per_title": 12,
+  "parent_sha256": "6f6197f0bc649e535facc5dbd7f321abbbe0a840995092074b924c99b16298fc",
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "sampling": "Same original Normal/starting stock, frozen controller seed within host; no Continue, aiming or automatic bomb. Native game RNG uncontrolled.",
+  "learner": "Four title-balanced PPO epochs. Same on-policy batch and initialization for the plain continuation and camera demonstration regularized PPO.",
+  "human_objective": {
+    "coefficient": 0.25,
+    "history_dropout": 0.5,
+    "teacher_fraction": 0.2,
+    "sample": "Equal replay weighting, half sampled from movement changes when available. Only training player groups enter imitation or distillation."
+  },
+  "train_seeds": {
+    "10": [
+      750101,
+      750102,
+      750103,
+      750104,
+      750105,
+      750106,
+      750107,
+      750108,
+      750109,
+      750110,
+      750111,
+      750112,
+      750113,
+      750114,
+      750115,
+      750116
+    ],
+    "12": [
+      760101,
+      760102,
+      760103,
+      760104,
+      760105,
+      760106,
+      760107,
+      760108,
+      760109,
+      760110,
+      760111,
+      760112,
+      760113,
+      760114,
+      760115,
+      760116
+    ],
+    "13": [
+      770101,
+      770102,
+      770103,
+      770104,
+      770105,
+      770106,
+      770107,
+      770108,
+      770109,
+      770110,
+      770111,
+      770112,
+      770113,
+      770114,
+      770115,
+      770116
+    ]
+  },
+  "evaluation_seeds": {
+    "10": [
+      751001,
+      751002,
+      751003,
+      751004,
+      751005,
+      751006,
+      751007,
+      751008,
+      751009,
+      751010,
+      751011,
+      751012
+    ],
+    "12": [
+      761001,
+      761002,
+      761003,
+      761004,
+      761005,
+      761006,
+      761007,
+      761008,
+      761009,
+      761010,
+      761011,
+      761012
+    ],
+    "13": [
+      771001,
+      771002,
+      771003,
+      771004,
+      771005,
+      771006,
+      771007,
+      771008,
+      771009,
+      771010,
+      771011,
+      771012
+    ]
+  }
+}

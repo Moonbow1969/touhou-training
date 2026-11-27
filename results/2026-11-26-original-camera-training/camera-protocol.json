@@ -1,0 +1,80 @@
+{
+  "name": "Full-resolution, human action supervised 96x112 CNN followed by full-policy on-policy PPO in three original games",
+  "train_seeds": {
+    "10": [
+      752101,
+      752102,
+      752103,
+      752104,
+      752105,
+      752106,
+      752107,
+      752108
+    ],
+    "12": [
+      762101,
+      762102,
+      762103,
+      762104,
+      762105,
+      762106,
+      762107,
+      762108
+    ],
+    "13": [
+      772101,
+      772102,
+      772103,
+      772104,
+      772105,
+      772106,
+      772107,
+      772108
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      754001,
+      754002,
+      754003,
+      754004,
+      754005,
+      754006
+    ],
+    "12": [
+      764001,
+      764002,
+      764003,
+      764004,
+      764005,
+      764006
+    ],
+    "13": [
+      774001,
+      774002,
+      774003,
+      774004,
+      774005,
+      774006
+    ]
+  },
+  "reference_arm": "camera-sft",
+  "candidate": "camera-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control."
+}

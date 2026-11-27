@@ -1,0 +1,9 @@
+# Human replay cameras and original-game online PPO
+
+The previous portable policy rarely changed its movement when we substituted another screen from the same credit. This run learns the action from synchronized original human gameplay pixels. All three original Normal trial workers use four heads (nine directions, focus, shoot and Bomb), original lives and terminal states. The seed controls policy sampling; the native game RNG is independent. Each tested pair runs on the same physical machine.
+
+Two training paths answer different questions. The portable continuation initializes from PPO3 and collects 16 new full credits per title. Its plain PPO control and its demonstration-regularized PPO use identical behavior data. The demonstration loss uses actual replay actions together with frozen camera-policy probabilities. Separately, a full-resolution CNN initializes directly from human camera SFT. It acts in fresh original games and receives its own PPO update from eight complete credits per title, with an independent six-seed paired test. These paths have different starting weights and data budgets.
+
+The spatial encoder takes a 96 × 112 grayscale playfield and the absolute difference from the preceding control observation. Its native training split uses actual TH10, TH12 and TH13 player positions as labels for pretraining. At evaluation or gameplay it receives only the camera. After 2,200 optimization steps its median held error in original-pixel units was 5.15 for TH10 (550 frames), 8.94 for TH12 (14 hand-labeled frames) and 4.74 for TH13 (2,465 frames). Repeated frames in a credit are correlated. Localizing the player is a separate endpoint from surviving a level. [Training loss and exact source fingerprints](encoder/report.json) · [Frozen encoder](encoder/encoder.pt)
+
+[Portable training and comparison design](design.json) · [Full-resolution PPO protocol](camera-protocol.json)

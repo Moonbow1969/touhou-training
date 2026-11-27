@@ -12,7 +12,7 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--folder", type=Path, required=True)
-    parser.add_argument("--candidates", nargs="+", choices=["ppo1", "ppo2", "ppo3", "ppo2-aux"], required=True)
+    parser.add_argument("--candidates", nargs="+", required=True)
     args = parser.parse_args()
     rows = json.loads((args.folder/"credits.json").read_bytes())
     titles = sorted({row["title"] for row in rows})
@@ -20,7 +20,8 @@ def main():
                              squeeze=False, layout="constrained")
     for row, candidate in enumerate(args.candidates):
         report = json.loads((args.folder/(candidate+".json")).read_bytes())
-        baseline = "sft" if candidate in ("ppo1", "ppo2") else "ppo2"
+        baseline = next(name for name, entry in next(iter(report.values())).items()
+                        if name != "candidate" and isinstance(entry, dict) and "n" in entry)
         for col, title in enumerate(titles):
             stats = report[str(title)]
             ax = axes[row, col]

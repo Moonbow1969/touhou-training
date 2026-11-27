@@ -29,6 +29,53 @@ def calculate_gae(rewards,values,gamma,lam):
     return advantage
 
 
+class HumanCameraDemonstrations:
+    """Train-only human decisions and frozen image-teacher probabilities."""
+    def __init__(self, path, settings, seed):
+        if path is None or digest(path) != settings["sha256"]:
+            raise ValueError("Missing or changed human demonstration bank")
+        with np.load(path, allow_pickle=False) as bank:
+            self.x = torch.from_numpy(bank["features"].copy()).float()
+            self.y = torch.from_numpy(bank["action"].copy()).long()
+            prior = torch.from_numpy(bank["prior"].copy())
+            self.teacher = torch.from_numpy(bank["teacher_probs"].copy()).float()
+            replay = torch.from_numpy(bank["replay_index"].copy())
+        n = len(self.y)
+        if n == 0 or self.x.shape != (n,110) or self.y.shape != (n,4) or self.teacher.shape != (n,15):
+            raise ValueError("Invalid human demonstration arrays")
+        for probs in self.teacher.split(WIDTHS, 1):
+            if not torch.isfinite(probs).all() or (probs < 0).any() or (probs.sum(1)-1).abs().max() > 1e-4:
+                raise ValueError("Invalid image-teacher probabilities")
+        self.replays = []
+        for group in replay.unique():
+            all_rows = torch.where(replay == group)[0]
+            changes = all_rows[self.y[all_rows,0] != prior[all_rows,0]]
+            self.replays.append((all_rows, changes if len(changes) else all_rows))
+        self.rng = torch.Generator().manual_seed(seed)
+        self.settings = settings
+
+    def loss(self, model):
+        samples = []
+        for draw in range(8):
+            replay_id = torch.randint(len(self.replays), (1,), generator=self.rng).item()
+            bank = self.replays[replay_id][draw % 2]
+            samples.append(bank[torch.randint(len(bank),(16,),generator=self.rng)])
+        ids = torch.cat(samples)
+        features = self.x[ids].clone()
+        # Preserve real control history on the rollout path. Masking on some
+        # demonstration rows makes pixels informative even when past keys predict holding.
+        mask = torch.rand(len(ids), generator=self.rng) < self.settings["history_dropout"]
+        features[mask,84:] = 0
+        heads, _ = model(features)
+        alpha = self.settings["teacher_fraction"]
+        terms = []
+        for k, (head, teacher) in enumerate(zip(heads,self.teacher[ids].split(WIDTHS,1))):
+            truth = F.one_hot(self.y[ids,k], WIDTHS[k]).float()
+            soft = (1-alpha)*truth + alpha*teacher
+            terms.append(-(soft*head.log_softmax(1)).sum(1).mean())
+        return torch.stack(terms).sum()
+
+
 def read_credit(record,manifest,model,parent_sha,gamma,lam,remove_bomb_cost=False):
     path=manifest.parent/record["file"]
     if record["role"]!="train" or record["policy_sha256"]!=parent_sha or digest(path)!=record["sha256"]:
@@ -75,9 +122,14 @@ def read_credit(record,manifest,model,parent_sha,gamma,lam,remove_bomb_cost=Fals
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ("manifest","parent","protocol","out"):p.add_argument("--"+name,type=Path,required=True)
+    p.add_argument("--demonstrations",type=Path)
     args=p.parse_args()
     protocol=json.loads(args.protocol.read_bytes())
     config=protocol["ppo"]
+    demo_settings=config.get("human_camera_demonstrations")
+    demos=HumanCameraDemonstrations(args.demonstrations,demo_settings,config["seed"]+700) if demo_settings else None
+    if args.demonstrations and not demo_settings:
+        raise ValueError("Demonstration data require an explicit training protocol")
     rows=json.loads(args.manifest.read_bytes())
     parent_sha=digest(args.parent)
     if Counter((int(r['title']),int(r['seed'])) for r in rows)!=Counter((int(t),s) for t,seeds in protocol['train_seeds'].items() for s in seeds):
@@ -137,6 +189,8 @@ def main():
                     loss=loss+aux_config["coefficient"]*aux_loss/valid.sum().clamp_min(1)
                 per_title.append(loss)
             loss=torch.stack(per_title).mean()
+            if demos is not None:
+                loss=loss+demo_settings["coefficient"]*demos.loss(model)
             opt.zero_grad(set_to_none=True);loss.backward()
             torch.nn.utils.clip_grad_norm_(parameters,.5);opt.step();losses.append(loss.item())
         kl={}
