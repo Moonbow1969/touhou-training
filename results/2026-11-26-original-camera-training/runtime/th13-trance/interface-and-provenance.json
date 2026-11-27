@@ -1,0 +1,140 @@
+{
+  "engineering_code": [
+    {
+      "path": "scripts/fit_th13_trance_head.py",
+      "sha256": "98154941d3c1fa499f37da7d9454e9603df27d4ba71e7ebcb834b403f0bf484a",
+      "symbols": {
+        "def features": 31,
+        "def run": 42
+      }
+    },
+    {
+      "path": "scripts/run_th13_five_head_pilot.py",
+      "sha256": "9a2fb78bc421d01859536a66f3c9056f26747d137c7eb4daab6dc2bff9f9bcae",
+      "symbols": {
+        "def actor_source": 15,
+        "def run": 35,
+        "five-head-actions.npz": 73
+      }
+    },
+    {
+      "path": "tools/rollout-worker-probe/th13-full/visual-trance-head.h",
+      "sha256": "0593201e899735b759e4403f9b2fce810082e7f3c5d40d43adb0d4fcb0439718",
+      "symbols": {
+        "trance_open": 8,
+        "trance_step": 23
+      }
+    },
+    {
+      "path": "tools/rollout-worker-probe/th13-full/observe-trance-trial.c",
+      "sha256": "29d8409793ee37fdfff5b3e7a19db247163156074fe32a513717270a7fdae208",
+      "symbols": {
+        "const uint32_t at[]": 30
+      }
+    },
+    {
+      "path": "scripts/qualify_th13_trance_key.py",
+      "sha256": "d748b1f43443770a6556bfab16b255d1e67d14c372484f6aa382319ea079a4dc",
+      "symbols": {
+        "def run": 15
+      }
+    },
+    {
+      "path": "scripts/witness_th13_trance_replay.py",
+      "sha256": "918bc251fc87bccaf9668aab65e461f792fa74e59fda444a4ae762974a0e1330",
+      "symbols": {
+        "def run": 13
+      }
+    },
+    {
+      "path": "scripts/seal_th13_trance.py",
+      "sha256": "cb1b9fea8f98d0dbe450c6811d342bce6a724768ce2c3352055e9f2e2e962073",
+      "symbols": {
+        "def seal": 23
+      }
+    },
+    {
+      "path": "scripts/th13_trance_replay_lane.py",
+      "sha256": "95ce68d267c4f39189f9c387c07c55c0236dbc135021a702ccdcc6eb5b0e4448"
+    },
+    {
+      "path": "tools/rollout-worker-probe/th13-full/trance-replay-start.sh",
+      "sha256": "48b61ece63fca21ad73908f06f0c12db6fb04a227c3a18cdfe659a8c30663c47"
+    }
+  ],
+  "existing_interfaces_for_joint_fifth_head": [
+    {
+      "path": "tools/full_action/camera_actor.h",
+      "sha256": "3a9696ca136853e99dba7e76cafd65beca2d4f8d6ab9032663c68d5b5d1a7229",
+      "symbols": {
+        "camera_connect": 27,
+        "static void actor_step": 72
+      }
+    },
+    {
+      "path": "tools/full_action/camera_service.py",
+      "sha256": "3f84a6de4dc67c532452f2bc351705890a51a2902081f85653b24d93b0335121",
+      "symbols": {
+        "def heads": 13,
+        "class Camera": 25
+      }
+    },
+    {
+      "path": "tools/rollout-worker-probe/th13-full/full-trial-actor.c",
+      "sha256": "3f13f9892fba0ba580002090147eea8662fd5bed5611ee9ec9b05da37a1f24cb",
+      "symbols": {
+        "static void control": 15,
+        "static int held": 19,
+        "static int mask": 35,
+        "float row[143]": 126
+      }
+    },
+    {
+      "path": "tools/rollout-worker-probe/th13-full/pack_credit.py",
+      "sha256": "49cba0651bcb3116078a6df52d36b82b56eefff0bf0725f6accd5ed4d08554b2",
+      "symbols": {
+        "def pack": 10
+      }
+    },
+    {
+      "path": "scripts/train_human_camera_policy.py",
+      "sha256": "b0b877bb318d8eab47b21b7175b289d46aa61df2e01cbf2120cde741bd9568ea",
+      "symbols": {
+        "class CameraPolicy": null
+      }
+    },
+    {
+      "path": "scripts/pack_camera_ppo_rollouts.py",
+      "sha256": "bee80504c32c22650b1baa73c2cba5973ff1bf5275357a6a3ae09de0f89dd02e",
+      "symbols": {
+        "def main": 12
+      }
+    },
+    {
+      "path": "scripts/train_full_resolution_camera_ppo.py",
+      "sha256": "8975fc3fa43d7692156b3a34b01e3912d001e5ad8335fe91d43acd2dc8b68d81",
+      "symbols": {
+        "class CameraActorCritic": 19,
+        "def chosen": 33,
+        "def credit": 43
+      }
+    }
+  ],
+  "fitted_prototype": "The fifth Bernoulli head reads the 84 grayscale/difference features already computed by the unmodified camera encoder diagnostics. It has independent frozen weights and RNG. The generated isolated native executable takes the physical C action. The production 4-action actor and service keep their original layouts.",
+  "future_abi": "For a joint title-specific policy, version the existing SHA handshake (e.g. negotiate action count, per-head widths, critic separately). The legacy 4-head binary response is 9+2+2+2 action logits plus one value, 16 little-endian float32. TH13 needs 9+2+2+2+2 action logits and one separate value, 18 float32. Using the optional fifth TorchScript output as a C head without negotiation would confuse it with the legacy critic.",
+  "future_dataset": "Store title and legal action mask. Add native X11 C to TH13 only. Package action/logp[T,5], per-step joint logp and value, request vs consumed mask, native gauge and activation as labeled telemetry. Other titles mask the extra head out of action generation, entropy, KL, advantage-ratio sum and all SFT losses. Original 4-head archives explicitly advertise 4 heads. Existing TH13 four-head inputs and returns remain usable under their original contract.",
+  "next_joint_learner": "First add disjoint-player rare-event data; current auxiliary head is worse than the train-prevalence NLL on held pilots. Validate manual activation independently from natural death trance, then measure from matched genuine full credits.",
+  "enrollment": {
+    "physical_key": "X11 c keysym 0x63",
+    "raw_replay_semantic": "0x800; physical C can cause a separate 0x200 auxiliary bit",
+    "frame": "post-tick native t = source[t\u22121]",
+    "shape": "96\u00d7112 grayscale plus the previous observed absolute difference"
+  },
+  "independent_reproduction": {
+    "archive": "standalone-repeat-uluk.zip",
+    "bytes": 3508248,
+    "sha256": "695da7fcb166a1966be7f888aac37a6a1833935e678fba4911a03450bb9bbdb4",
+    "native_word_matches": 1952,
+    "event_native_tick": 1239
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "scaled-human-sft/cnn-new-24/policy",
+  "parent_sha256": "d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573",
+  "inventory": "scaled-human-sft/difficulty-by-title.json",
+  "base_split": "spatial-policy-study/protocol.json",
+  "expanded_manifest": "human-train-incremental/registered-024-unique-train.json",
+  "updates": 3000,
+  "batch_size": 64,
+  "existing_high_rank_windows": 64952,
+  "th17_build": "470769ddfbac9404b3fdacbb05893fae387943c22605935ea5ec6caee8388d4d",
+  "new_train_sources": [
+    {
+      "player_group": "nbs",
+      "sha256": "0faca8224682a279c180c92321a38dfd3589b93066e756b51c816cf06c82d50b",
+      "difficulty": "Hard"
+    },
+    {
+      "player_group": "makon",
+      "sha256": "0480b6faf68f9a3bade146cfb801377012d54f64ff779a16e4db5a01410dfd70",
+      "difficulty": "Lunatic"
+    }
+  ],
+  "controls": "Both arms start at the frozen 38-pilot CNN. Uniformly sample title, then Hard/Lunatic, then a stage from that cell. The three-title arm sees six game-rank groups, the fourth-title addition eight. Same number of optimizer updates, no auxiliary labels, same original six held players. The two additional TH17 Stage1 TRAIN pilots are fixed before learning. Evaluate TH17 independent held Hard and Lunatic after native camera qualification.",
+  "future_movement_weight": 0.25,
+  "reference_policy": "510132b2cd0cd04b728d066fe73e8703440c7e3cce1dcd165393da691ce76220",
+  "hypothesis": "At fixed input resolution and duration, predicting subsequent human direction from the current causal camera may improve movement starts and turns. Add training-only heads at 4, 8, 12 native ticks with total loss weight 0.25. Use no subsequent pixels in the actor input. Mask source gaps and stage boundaries. Keep starting checkpoint, same 25 human stage recordings, sampler, augmentations and 3000 optimizer updates. Use existing repeated held players. No fresh TH17 wave-two observations.",
+  "endpoints": "Per-game held expert direction accuracy and NLL on all decisions, starts and direction changes. Test the candidate from original openings only if its held direction-change NLL improves in at least three of the four games without lowering mean all-decision accuracy across titles."
+}

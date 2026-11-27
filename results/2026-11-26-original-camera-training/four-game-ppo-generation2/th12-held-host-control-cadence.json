@@ -4,12 +4,28 @@
     "deck": {
       "native_ticks_per_second": 35.980365675014724,
       "decisions_per_second": 7.421551635217925,
-      "approx_native_ticks_per_decision": 4.841068702337656
+      "approx_native_ticks_per_decision": 4.841068702337656,
+      "credits": 24,
+      "per_credit_estimated_native_ticks_per_decision_quantiles": {
+        "min": 4.513972377593853,
+        "p10": 4.685627952354028,
+        "p50": 4.841068702337656,
+        "p90": 4.978438324485512,
+        "max": 5.024967256517295
+      }
     },
     "entropy": {
       "native_ticks_per_second": 49.73746953029996,
       "decisions_per_second": 7.616169530776929,
-      "approx_native_ticks_per_decision": 6.525789539212378
+      "approx_native_ticks_per_decision": 6.525789539212378,
+      "credits": 24,
+      "per_credit_estimated_native_ticks_per_decision_quantiles": {
+        "min": 5.5819551950452055,
+        "p10": 6.104802229390744,
+        "p50": 6.525789539212378,
+        "p90": 7.237422217274989,
+        "max": 7.395940901082866
+      }
     }
   },
   "credits": [
@@ -349,5 +365,12 @@
       "decisions_per_second": 7.6107314946469105,
       "approx_native_ticks_per_decision": 6.541437442900075
     }
-  ]
+  ],
+  "human_reference": {
+    "actual_camera_native_tick_stride": 4,
+    "train_qualified_pairs": 25392,
+    "held_qualified_pairs": 18735,
+    "original_probe": "../th12-four-tick-engineering/human-and-deployment-cadence.json",
+    "interpretation": "These ratios describe whole-credit averages from stock stage telemetry. Per-decision native timing was first instrumented in the separate hardware engineering study."
+  }
 }

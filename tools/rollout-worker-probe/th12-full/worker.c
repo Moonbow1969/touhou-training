@@ -6,6 +6,9 @@
 #include "full_actor.h"
 #endif
 #endif
+#ifdef TH12_FOUR_TICK_INPUT
+#include "native_tick_clock.h"
+#endif
 #define KEYS 7
 static unsigned codes[KEYS];
 static unsigned mask_for(const int a[4]) {
@@ -71,7 +74,11 @@ int main(int argc,char **argv){
     }
     if(argc!=5) fail("Expected model seed hold_ms qualify|train|held");
     const int qual=!strcmp(argv[4],"qualify");
-    const int training=!strcmp(argv[4],"train"),held=!strcmp(argv[4],"held");
+    const int training=!strcmp(argv[4],"train");
+    int held=!strcmp(argv[4],"held");
+#ifdef TH12_FOUR_TICK_INPUT
+    held=held || !strcmp(argv[4],"engineering");
+#endif
 #ifdef CAMERA_ACTOR
     const int save_frames=1;
 #else
@@ -105,14 +112,29 @@ int main(int argc,char **argv){
     unsigned current=0; int index=0; uint64_t started=now_ns(),last_live=started;
     XImage *im=image_now(d,root); const char *status=screen(im,0);
     if(strcmp(status,"play")||resource_hud(im,0)!=2||resource_hud(im,24)!=2)fail("Initial stock mismatch.");
+#ifdef TH12_FOUR_TICK_INPUT
+    open_tick_clock();
+    FILE *native_rows=fopen("engineering-decisions.tsv","wx");
+    if(!native_rows)fail("Cannot save native clock decision evidence.");
+    fprintf(native_rows,"action\tpre_stage\tpre_tick\tpre_raw_keys\tapply_stage\tapply_tick\tpost_stage\tpost_tick\tpost_raw_keys\trequested_x11\tobserved_x11\tcapture_retries\tfrozen_checks\n");
+    TickState sample={0},initial={0};
+    int retries=0,menu_checks=0;
+    XDestroyImage(im);im=tick_camera(d,root,initial,&sample,&retries,&menu_checks);status=screen(im,0);
+#endif
     const char *outcome="technical_censor";
     while(now_ns()-started<UINT64_C(1200000000000)){
         if(!strcmp(status,"gameover")||!strcmp(status,"gameover_retry")||!strcmp(status,"score_ranking")){outcome="game_over";break;}
         if(strcmp(status,"play")){
             set_keys(d,current,0);current=0;
             if(strcmp(status,"loading")||now_ns()-last_live>UINT64_C(35000000000))break;
-            XDestroyImage(im);wait_until(now_ns()+UINT64_C(50000000));
-            im=image_now(d,root);status=screen(im,0);continue;
+            XDestroyImage(im);
+#ifdef TH12_FOUR_TICK_INPUT
+            TickState previous_image=sample;
+            im=tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
+#else
+            wait_until(now_ns()+UINT64_C(50000000));im=image_now(d,root);
+#endif
+            status=screen(im,0);continue;
         }
         last_live=now_ns();
         int a[4];float lp[4]={0},value=0;
@@ -141,14 +163,25 @@ int main(int argc,char **argv){
         const unsigned next=mask_for(a);set_keys(d,current,next);current=next;
         unsigned verified=read_keys(d);
         if(verified!=next)fail("X keyboard map disagrees with sampled action.");
-        uint64_t onset=now_ns(),due=onset+(uint64_t)ms*1000000;
-        wait_until(due);im=image_now(d,root);status=screen(im,0);
+        uint64_t onset=now_ns();
+#ifdef TH12_FOUR_TICK_INPUT
+        TickState previous_image=sample,applied=native_tick();
+        im=tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
+        fprintf(native_rows,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\n",index,previous_image.stage,previous_image.tick,previous_image.keys,
+                applied.stage,applied.tick,sample.stage,sample.tick,sample.keys,next,verified,retries,menu_checks);
+#else
+        wait_until(onset+(uint64_t)ms*1000000);im=image_now(d,root);
+#endif
+        status=screen(im,0);
         unsigned long long stamp=now_ns();
         fprintf(rows,"%d\t%llu\t%llu\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\t%d\t%s\t%.9g\t%.9g\t%.9g\t%.9g\t%.9g\n",index,(unsigned long long)onset,stamp,a[0],a[1],a[2],a[3],next,verified,before_l,before_b,resource_hud(im,0),resource_hud(im,24),status,lp[0],lp[1],lp[2],lp[3],value);
         ++index;
         if(index%32==0)fflush(rows);
     }
     set_keys(d,current,0);
+#ifdef TH12_FOUR_TICK_INPUT
+    if(fclose(native_rows))fail("Cannot seal native tick evidence.");
+#endif
     if(!strcmp(outcome,"game_over")){
         save_terminal(im);
         FILE *state=fopen("terminal-state.txt","wx");

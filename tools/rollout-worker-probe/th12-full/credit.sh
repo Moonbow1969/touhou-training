@@ -6,7 +6,7 @@ label=$2
 seed=$3
 weight=$4
 hash=$5
-case "$mode" in qualify|train|held) ;; *) exit 2;; esac
+case "$mode" in qualify|train|held) ;; engineering) test "${TH12_TICK4_ENGINEERING:-0}" = 1;; *) exit 2;; esac
 case "$weight" in ""|*[!a-zA-Z0-9._-]*) exit 2;; esac
 if test "$mode" != qualify; then printf '%s  %s\n' "$hash" "/input/$weight" | sha256sum -c >&2; fi
 case "$label" in ""|*[!a-zA-Z0-9_.-]*) exit 2;; esac
@@ -29,6 +29,7 @@ mkdir evidence
 if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then printf '%s\n' "$credit_start" > credit-start-clock.txt; fi
 sensor_pid=
 rank_pid=
+engineering_pid=
 if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then
     test "$(cut -d' ' -f1 /capture/executable.sha256)" = c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a
     cp /capture/executable.sha256 game-exe-sha256.txt
@@ -51,6 +52,15 @@ if [ -n "${TH12_DIFFICULTY:-}" ]; then
     test -s difficulty-native.tsv
 fi
 printf '%s\n' CLOCK_MONOTONIC > evidence/clock-source.txt
+if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ]; then
+    test "$mode" = engineering
+    WINEPREFIX=/tmp/th12-wine WINEARCH=win32 WINEDEBUG=-all wine /input/th12-tick4-sensor.exe \
+        "Z:/capture/full/$label/engineering-native.tsv" "Z:/capture/full/$label/stopped" \
+        "Z:/capture/full/$label/engineering-clock.map" > engineering-sensor.log 2>&1 &
+    engineering_pid=$!
+    for count in $(seq 1 100); do test ! -s engineering-native.tsv || break; sleep .03; done
+    test -s engineering-native.tsv
+fi
 # Hold a timestamped color record through every stage and the original terminal menu.
 (
     i=0
@@ -71,10 +81,12 @@ if test "${TH12_ACTOR_KIND:-portable}" = camera; then
     test "$mode" != qualify
     actor=${TH12_CAMERA_ACTOR:-/input/th12-camera-actor}
     if [ -n "${TH12_DIFFICULTY:-}" ]; then actor=/input/th12-rank-camera-actor; fi
+    if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ]; then actor=/input/th12-tick4-camera-actor; fi
 fi
 rc=0
 "$actor" "/input/$weight" "$seed" 120 "$mode" > outcome.txt 2> worker.log || rc=$?
 touch stopped
+if [ -n "$engineering_pid" ]; then wait "$engineering_pid"; fi
 if [ -n "$sensor_pid" ]; then wait "$sensor_pid"; fi
 if [ -n "$rank_pid" ]; then wait "$rank_pid"; fi
 wait "$camera" || true

@@ -1,0 +1,137 @@
+{
+  "title": "TH12 original control timing",
+  "wall_driven_per_credit": {
+    "deck": {
+      "native_ticks_per_second": 35.980365675014724,
+      "decisions_per_second": 7.421551635217925,
+      "approx_native_ticks_per_decision": 4.841068702337656,
+      "credits": 24,
+      "per_credit_estimated_native_ticks_per_decision_quantiles": {
+        "min": 4.513972377593853,
+        "p10": 4.685627952354028,
+        "p50": 4.841068702337656,
+        "p90": 4.978438324485512,
+        "max": 5.024967256517295
+      }
+    },
+    "entropy": {
+      "native_ticks_per_second": 49.73746953029996,
+      "decisions_per_second": 7.616169530776929,
+      "approx_native_ticks_per_decision": 6.525789539212378,
+      "credits": 24,
+      "per_credit_estimated_native_ticks_per_decision_quantiles": {
+        "min": 5.5819551950452055,
+        "p10": 6.104802229390744,
+        "p50": 6.525789539212378,
+        "p90": 7.237422217274989,
+        "max": 7.395940901082866
+      }
+    }
+  },
+  "original_trial_human_stage_camera": {
+    "train": {
+      "pilots": [
+        "ken.",
+        "rb26",
+        "sasasasa"
+      ],
+      "stages": 9,
+      "observed_native_tick_gaps": {
+        "4": 25392,
+        "8": 3
+      },
+      "qualified_four_tick_supervised_pairs": 25392,
+      "manifest_sha256": "9d9568132c2eae93731168b13064462139c68e0e03fb58e999fefee8766a4c96"
+    },
+    "held": {
+      "pilots": [
+        "8/1_5",
+        "yen"
+      ],
+      "stages": 6,
+      "observed_native_tick_gaps": {
+        "4": 18735,
+        "8": 2,
+        "16": 1
+      },
+      "qualified_four_tick_supervised_pairs": 18735,
+      "manifest_sha256": "635990115d1ea6b0d96094f178166ec78ba627f2231ccfb283152a161df0138f"
+    }
+  },
+  "supervised_alignment": "Input planes are one 96x112 luminance image and absolute change from the image four original ticks earlier. Direction, focus and fire use the next original tick. Bomb is positive if any of the four forward genuine input words has the X bit.",
+  "engineering_exactly_four_tick": {
+    "deck": {
+      "seed": 1331201,
+      "actions": 407,
+      "seconds": 47.641388,
+      "steps_per_second": 8.542992072355238,
+      "native_tick_per_second": 34.62495135258031,
+      "cadence_native_tick_distribution": {
+        "4": 406
+      },
+      "exact_four_fraction": 1.0,
+      "missed_four_tick_slots": 0,
+      "duplicated_or_reversed": 0,
+      "frame_bracket_rejections": 0,
+      "longest_decision_wall_ms": 164.139926,
+      "native_input_samples": 1628,
+      "all_physical_X_states_equal": true,
+      "native_all_key_agreement_end_of_hold": 1.0,
+      "focus_controls": [
+        {
+          "requested": false,
+          "actions": 268,
+          "native_agreement": 1.0
+        },
+        {
+          "requested": true,
+          "actions": 139,
+          "native_agreement": 1.0
+        }
+      ],
+      "maximum_second_host_sampled_logp_error": 3.6954879760742188e-06,
+      "stage2": false,
+      "native_terminal": "gameover",
+      "terminal_spares": 0,
+      "terminal_bombs": 2,
+      "receipt_sha256": "7a87a969df7f9a059e1b13f4c14d47b230340f680dbda2ec12049e068c917e26"
+    },
+    "entropy": {
+      "seed": 1331201,
+      "actions": 610,
+      "seconds": 56.236003,
+      "steps_per_second": 10.847143599448204,
+      "native_tick_per_second": 43.85324903858755,
+      "cadence_native_tick_distribution": {
+        "4": 609
+      },
+      "exact_four_fraction": 1.0,
+      "missed_four_tick_slots": 0,
+      "duplicated_or_reversed": 0,
+      "frame_bracket_rejections": 0,
+      "longest_decision_wall_ms": 398.444417,
+      "native_input_samples": 2435,
+      "all_physical_X_states_equal": true,
+      "native_all_key_agreement_end_of_hold": 1.0,
+      "focus_controls": [
+        {
+          "requested": false,
+          "actions": 407,
+          "native_agreement": 1.0
+        },
+        {
+          "requested": true,
+          "actions": 203,
+          "native_agreement": 1.0
+        }
+      ],
+      "maximum_second_host_sampled_logp_error": 2.86102294921875e-06,
+      "stage2": false,
+      "native_terminal": "gameover",
+      "terminal_spares": 0,
+      "terminal_bombs": 1,
+      "receipt_sha256": "55fc177416a8dc01836ecaeec58d0e4fafbd5ab03b25d4e3df8996d5703e8676"
+    }
+  },
+  "limitation": "One independent complete Hard credit per host with the same controller seed. Stage1 losses on both hosts. Original game RNG and wall time can differ. The old and new controller clocks have not been compared in a randomized policy-performance test."
+}

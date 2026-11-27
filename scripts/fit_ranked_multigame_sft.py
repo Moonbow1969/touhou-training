@@ -59,6 +59,7 @@ def main():
         '--reference',str(a.reference),'--out',str(a.out),'--steps',str(plan['updates']),'--cpu-replay',
         '--natural-movement-frequency','--balance-titles','--balance-difficulties',
         '--bomb-label-smoothing',str(plan.get('bomb_label_smoothing',.025)),
+        *(['--future-movement-weight',str(plan['future_movement_weight'])] if plan.get('future_movement_weight') else []),
         '--train',*map(str,train),'--held',*map(str,held)],check=True)
     result=json.loads((a.out/'report.json').read_bytes())
     if not result['difficulty_balanced'] or not result['title_balanced'] or {r['sha256'] for r in result['train']}!={digest(f) for f in train}:

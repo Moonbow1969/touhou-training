@@ -1,0 +1,425 @@
+{
+  "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+  "physical_pulses": [
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 33
+      }
+    },
+    {
+      "key": "c",
+      "native_counts": {
+        "0": 12,
+        "2560": 36
+      }
+    },
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 33
+      }
+    },
+    {
+      "key": "c",
+      "native_counts": {
+        "0": 11,
+        "2560": 35
+      }
+    },
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 32
+      }
+    },
+    {
+      "key": "Shift_L",
+      "native_counts": {
+        "0": 12,
+        "8": 37
+      }
+    },
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 33
+      }
+    },
+    {
+      "key": "z",
+      "native_counts": {
+        "0": 10,
+        "1": 28
+      }
+    },
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 32
+      }
+    },
+    {
+      "key": "c",
+      "native_counts": {
+        "0": 11,
+        "2560": 37
+      }
+    },
+    {
+      "key": "none",
+      "native_counts": {
+        "0": 33
+      }
+    }
+  ],
+  "physical_probe_original_rank": 2,
+  "raw_header_correction": "In the original physical-pulse CSV the field labeled difficulty is the unqualified 0xb90b0, and score is unqualified 0xb9048. Ignore both. Independent qualified observer terminal stock reports Hard=2 and Reimu=0. Only native input, stage clock, stocks and Trance fields contribute.",
+  "memory_fields": {
+    "sampled_input": "image-base + 0xdf430",
+    "native_stage_tick": "image-base + 0xb90b4",
+    "stage": "image-base + 0xb90a8",
+    "spirit_gauge": "image-base + 0xb9094; 600 at full, loses one per original tick during verified Trance",
+    "trance_active": "image-base + 0xb9098; 0\u21922 on verified manual and can also change on death"
+  },
+  "witnesses": [
+    {
+      "source_sha256": "f50bec3196ac2c11b6ef5712a20310cd61a64167197b6efc03a009313e73823a",
+      "group": "taraka2",
+      "split": "train",
+      "stage": 1,
+      "exact_full_word_matches": 10489
+    },
+    {
+      "source_sha256": "cc1529a54a24bd34fc000f3d5a0d7f3edc277da1ec50ebe46537573760424b26",
+      "group": "uluk",
+      "split": "train",
+      "stage": 2,
+      "exact_full_word_matches": 14855
+    }
+  ],
+  "human_events": [
+    {
+      "source_sha256": "f50bec3196ac2c11b6ef5712a20310cd61a64167197b6efc03a009313e73823a",
+      "group": "taraka2",
+      "split": "train",
+      "stage": 1,
+      "exact_full_word_matches": 10489,
+      "tick": 5642,
+      "special_mask": "0x200",
+      "gauge_before": 600,
+      "gauge_on_edge": 600,
+      "gauge_next": 600,
+      "active_transitions": [
+        0,
+        0,
+        0
+      ],
+      "spares": 2,
+      "bombs": 2,
+      "manual_activation": false
+    },
+    {
+      "source_sha256": "f50bec3196ac2c11b6ef5712a20310cd61a64167197b6efc03a009313e73823a",
+      "group": "taraka2",
+      "split": "train",
+      "stage": 1,
+      "exact_full_word_matches": 10489,
+      "tick": 9885,
+      "special_mask": "0xa00",
+      "gauge_before": 600,
+      "gauge_on_edge": 600,
+      "gauge_next": 599,
+      "active_transitions": [
+        0,
+        2,
+        2
+      ],
+      "spares": 2,
+      "bombs": 2,
+      "manual_activation": true
+    },
+    {
+      "source_sha256": "cc1529a54a24bd34fc000f3d5a0d7f3edc277da1ec50ebe46537573760424b26",
+      "group": "uluk",
+      "split": "train",
+      "stage": 2,
+      "exact_full_word_matches": 14855,
+      "tick": 1239,
+      "special_mask": "0x800",
+      "gauge_before": 600,
+      "gauge_on_edge": 600,
+      "gauge_next": 599,
+      "active_transitions": [
+        0,
+        2,
+        2
+      ],
+      "spares": 2,
+      "bombs": 2,
+      "manual_activation": true
+    },
+    {
+      "source_sha256": "cc1529a54a24bd34fc000f3d5a0d7f3edc277da1ec50ebe46537573760424b26",
+      "group": "uluk",
+      "split": "train",
+      "stage": 2,
+      "exact_full_word_matches": 14855,
+      "tick": 6201,
+      "special_mask": "0x800",
+      "gauge_before": 291,
+      "gauge_on_edge": 291,
+      "gauge_next": 291,
+      "active_transitions": [
+        0,
+        0,
+        0
+      ],
+      "spares": 2,
+      "bombs": 2,
+      "manual_activation": false
+    },
+    {
+      "source_sha256": "cc1529a54a24bd34fc000f3d5a0d7f3edc277da1ec50ebe46537573760424b26",
+      "group": "uluk",
+      "split": "train",
+      "stage": 2,
+      "exact_full_word_matches": 14855,
+      "tick": 6227,
+      "special_mask": "0x800",
+      "gauge_before": 291,
+      "gauge_on_edge": 291,
+      "gauge_next": 291,
+      "active_transitions": [
+        0,
+        0,
+        0
+      ],
+      "spares": 2,
+      "bombs": 2,
+      "manual_activation": false
+    },
+    {
+      "source_sha256": "cc1529a54a24bd34fc000f3d5a0d7f3edc277da1ec50ebe46537573760424b26",
+      "group": "uluk",
+      "split": "train",
+      "stage": 2,
+      "exact_full_word_matches": 14855,
+      "tick": 14308,
+      "special_mask": "0x800",
+      "gauge_before": 600,
+      "gauge_on_edge": 600,
+      "gauge_next": 599,
+      "active_transitions": [
+        0,
+        2,
+        2
+      ],
+      "spares": 2,
+      "bombs": 3,
+      "manual_activation": true
+    }
+  ],
+  "raw_source_onsets_and_camera_coverage": {
+    "train": {
+      "raw_onsets_0x800": 36,
+      "raw_onsets_0x200": 6,
+      "independent_pilots_with_0x800": [
+        "calling",
+        "herei",
+        "taraka2",
+        "uluk"
+      ],
+      "camera_covered_0x800_onsets": 30
+    },
+    "held": {
+      "raw_onsets_0x800": 23,
+      "raw_onsets_0x200": 0,
+      "independent_pilots_with_0x800": [
+        "rider",
+        "spector"
+      ],
+      "camera_covered_0x800_onsets": 22
+    }
+  },
+  "held_camera_model": {
+    "camera_decisions": 20946,
+    "held_key_labels": 28,
+    "held_fraction": 0.0013367707438174353,
+    "predicted_fraction": 0.0011140757706016302,
+    "negative_log_likelihood": 0.01042823172642403,
+    "train_prevalence_baseline_nll": 0.010201644635427833,
+    "held_label_average_precision": 0.001516694785589403,
+    "upcoming_onset_rows": 22,
+    "upcoming_onset_average_precision": 0.0012562287140594633,
+    "upcoming_onset_base_rate": 0.0010503198701422706
+  },
+  "head_sha256": "bf2126e6242c045738895365a011312ef8269c321374c18070efbb8f49b73387",
+  "engineering_full_credits": [
+    {
+      "seed": 1311351,
+      "role": "engineering",
+      "steps": 582,
+      "c_decisions": 2,
+      "sum_requested_c_probability": 0.8554779529007419,
+      "c_native_bit_matches": 2,
+      "full_x11_acknowledgements": 582,
+      "logp_rescore_max_abs": 3.737765652545022e-10,
+      "trance_state_onsets": [
+        {
+          "native_tick": 334,
+          "gauge_before": 200,
+          "state_after": 2,
+          "native_keys": 81,
+          "recent_c": false
+        }
+      ],
+      "observed_same_frame_c_full_gauge_onsets": 0,
+      "post_replay_npz_sha256": "aa8208b27c6510a1f0f66e3d4be7ca7ae78fc42cc0c7a9d478a376a97e843f0c",
+      "native_trace_sha256": "c12397b6cb6f609362e10fc587284f2577b1e36a0b9eb78b9ffe33f3ba255f96",
+      "shared_four_head_rescore": {
+        "seed": 1311351,
+        "steps": 582,
+        "policy_sha256": "3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c",
+        "rollout_sha256": "2a47ea826f6b3a1243f45751a388004b5a99015849282c5e65c918c98e9377f1",
+        "role": "engineering",
+        "file": "rollout.npz",
+        "first_native_before_tick": 228,
+        "last_native_after_tick": 2585,
+        "max_logp_abs_error": 3.2186508178710938e-06,
+        "max_value_abs_error": 8.940696716308594e-08,
+        "rank_verified_steps": 582,
+        "true_native_key_matches": 582,
+        "original_ranking": {
+          "readout": 1,
+          "ranking_row": 5,
+          "word_f1": 1.0,
+          "digit_1_f1": 1.0,
+          "digit_2_f1": 0.625,
+          "rank_row_margin": 1.0
+        },
+        "original_ranking_sha256": "e83547da668dc0cdad4d601a02da36f0b837e045d8534dbcf81c0e99f67be726",
+        "only_policy_actions": true,
+        "prefix_decisions_in_train": 0
+      },
+      "stage2_reached": false,
+      "terminal_spares": 0,
+      "terminal_bombs": 0
+    },
+    {
+      "seed": 1311352,
+      "role": "engineering",
+      "steps": 651,
+      "c_decisions": 0,
+      "sum_requested_c_probability": 0.767715702027493,
+      "c_native_bit_matches": 0,
+      "full_x11_acknowledgements": 651,
+      "logp_rescore_max_abs": 4.976761190655932e-13,
+      "trance_state_onsets": [
+        {
+          "native_tick": 247,
+          "gauge_before": 200,
+          "state_after": 2,
+          "native_keys": 1,
+          "recent_c": false
+        },
+        {
+          "native_tick": 1545,
+          "gauge_before": 252,
+          "state_after": 2,
+          "native_keys": 65,
+          "recent_c": false
+        }
+      ],
+      "observed_same_frame_c_full_gauge_onsets": 0,
+      "post_replay_npz_sha256": "a9a51eeee1d8c2c92df1c52a605e3da8469bb6b1e155409a8da51b12059d0d06",
+      "native_trace_sha256": "3926145b85d6c049138b3c48eba9c38f5934db2d51d4ea6d4db2633b8c4a1020",
+      "shared_four_head_rescore": {
+        "seed": 1311352,
+        "steps": 651,
+        "policy_sha256": "3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c",
+        "rollout_sha256": "1977b089005fb1fe2556708d49457feaa703bb33b18ad7c928d0f6a04723a849",
+        "role": "engineering",
+        "file": "rollout.npz",
+        "first_native_before_tick": 228,
+        "last_native_after_tick": 2864,
+        "max_logp_abs_error": 4.0531158447265625e-06,
+        "max_value_abs_error": 1.043081283569336e-07,
+        "rank_verified_steps": 651,
+        "true_native_key_matches": 651,
+        "original_ranking": {
+          "readout": 1,
+          "ranking_row": 1,
+          "word_f1": 1.0,
+          "digit_1_f1": 1.0,
+          "digit_2_f1": 0.625,
+          "rank_row_margin": 1.0
+        },
+        "original_ranking_sha256": "54de803553db0c41c02b4afe08a3fc81df2c05d0d5bf029a3162b463a9374d53",
+        "only_policy_actions": true,
+        "prefix_decisions_in_train": 0
+      },
+      "stage2_reached": false,
+      "terminal_spares": 0,
+      "terminal_bombs": 0
+    },
+    {
+      "seed": 1311353,
+      "role": "engineering",
+      "steps": 604,
+      "c_decisions": 1,
+      "sum_requested_c_probability": 0.8483087135552567,
+      "c_native_bit_matches": 1,
+      "full_x11_acknowledgements": 604,
+      "logp_rescore_max_abs": 7.859934925136258e-11,
+      "trance_state_onsets": [
+        {
+          "native_tick": 257,
+          "gauge_before": 200,
+          "state_after": 2,
+          "native_keys": 9,
+          "recent_c": false
+        },
+        {
+          "native_tick": 1420,
+          "gauge_before": 222,
+          "state_after": 2,
+          "native_keys": 73,
+          "recent_c": false
+        }
+      ],
+      "observed_same_frame_c_full_gauge_onsets": 0,
+      "post_replay_npz_sha256": "7d11b78dbe2462906901734dd14a2055fd804db62030c6f636e83040be91ff3a",
+      "native_trace_sha256": "d283bdeaed606de7eac19a952ea6f339a54650ab9fb66dfcfb4d31a5b201e78d",
+      "shared_four_head_rescore": {
+        "seed": 1311353,
+        "steps": 604,
+        "policy_sha256": "3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c",
+        "rollout_sha256": "a7edb6602574970731a5b305935dad21303d6d4359b391059b00cd8494913baa",
+        "role": "engineering",
+        "file": "rollout.npz",
+        "first_native_before_tick": 228,
+        "last_native_after_tick": 2677,
+        "max_logp_abs_error": 3.0994415283203125e-06,
+        "max_value_abs_error": 8.940696716308594e-08,
+        "rank_verified_steps": 604,
+        "true_native_key_matches": 604,
+        "original_ranking": {
+          "readout": 1,
+          "ranking_row": 1,
+          "word_f1": 1.0,
+          "digit_1_f1": 1.0,
+          "digit_2_f1": 0.625,
+          "rank_row_margin": 1.0
+        },
+        "original_ranking_sha256": "50b1328993dd7683e4bc47decab8e3084272015a00baf8aa61627638f9332dd5",
+        "only_policy_actions": true,
+        "prefix_decisions_in_train": 0
+      },
+      "stage2_reached": false,
+      "terminal_spares": 0,
+      "terminal_bombs": 0
+    }
+  ],
+  "interpretation": "Three full-gauge manual positives and two low-gauge 0x800 non-activations, plus a full-gauge 0x200-only non-activation. These are two independent recorded human games. Five-head live engineering tests do not establish that the timing policy is useful."
+}

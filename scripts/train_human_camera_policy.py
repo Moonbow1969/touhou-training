@@ -89,6 +89,20 @@ def pool(rows, device, cpu_replay=False):
     return {key: torch.from_numpy(np.concatenate([r[key] for r in rows])).to(device) for key in keys}
 
 
+def future_movement_targets(row):
+    """Future supervised labels within one contiguous native stage. Inputs stay causal."""
+    clock=row['native_frame']
+    moves=row['action'][:,0]
+    labels=np.full((len(clock),3),-100,dtype=np.int64)
+    consecutive=np.diff(clock)==4
+    for h in (1,2,3):
+        n=len(clock)-h
+        if n<=0:continue
+        valid=np.logical_and.reduce([consecutive[i:i+n] for i in range(h)])
+        labels[:n,h-1]=np.where(valid,moves[h:],-100)
+    return labels
+
+
 def sample_host_images(rows, ends, ids, key):
     indices=ids.cpu().numpy()
     sources=np.searchsorted(ends,indices,side='right')
@@ -134,10 +148,12 @@ def main():
     parser.add_argument("--cpu-replay",action="store_true",help="Keep the full image bank in host RAM and transfer only selected minibatches.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
+    parser.add_argument('--future-movement-weight',type=float,default=0.,help='Auxiliary expert directions 4, 8 and 12 native ticks ahead. No extra runtime inputs or action heads.')
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
     if not 0<=args.bomb_label_smoothing<1:parser.error('Bomb label smoothing must lie in [0,1)')
     smoothing=(.025,.025,.025,args.bomb_label_smoothing)
     if args.player_location_weight<0:parser.error('Auxiliary weight must be nonnegative')
+    if args.future_movement_weight<0:parser.error('Future movement weight must be nonnegative')
     device="cuda" if torch.cuda.is_available() else "cpu"
     train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[load_replay(p) for p in args.held]
     if {r["group"] for r in train}&{r["group"] for r in held}:
@@ -155,6 +171,11 @@ def main():
                            {"params":model.policy.parameters(),"lr":.0005}],weight_decay=.001)
     data=pool(train,device,args.cpu_replay)
     replay_ends=np.cumsum([len(r['raw']) for r in train])
+    if args.future_movement_weight:
+        future_labels=torch.from_numpy(np.concatenate([future_movement_targets(r) for r in train])).to(device)
+        with torch.random.fork_rng():
+            future_readout=torch.nn.Linear(128,27).to(device)
+        opt.add_param_group({'params':future_readout.parameters(),'lr':.0005})
     if args.player_location_weight:
         opt.add_param_group({"params":model.player.parameters(),"lr":.00015})
         positions=torch.from_numpy(np.concatenate([r['player_xy'] for r in train])).to(device)/2
@@ -213,12 +234,24 @@ def main():
         flip=torch.rand(len(ids),device=device)<.5
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
         px*=.85+.3*torch.rand(len(ids),1,1,1,device=device)
-        if args.player_location_weight:
+        if args.future_movement_weight:
+            spatial=model.spatial(px)
+            latent=model.policy[:-1](spatial)
+            heads=model.policy[-1](latent).split(WIDTHS,dim=1)
+        elif args.player_location_weight:
             spatial=model.spatial(px);heads=model.policy(spatial).split(WIDTHS,dim=1)
         else:
             heads=model(px)
         per_move=F.cross_entropy(heads[0],y[:,0],label_smoothing=.025,reduction="none")
         loss=(move_weight[ids]*per_move).mean()+sum(F.cross_entropy(heads[k],y[:,k],label_smoothing=smoothing[k]) for k in range(1,4))
+        if args.future_movement_weight:
+            targets=future_labels[ids].clone()
+            reflect=flip[:,None] & (targets>=0)
+            targets[reflect]=targets[reflect]//3*3+2-targets[reflect]%3
+            errors=F.cross_entropy(future_readout(latent).reshape(-1,9),targets.reshape(-1),
+                                   reduction='none',ignore_index=-100).reshape_as(targets)
+            weights=move_weight[ids,None]*(targets>=0)
+            loss=loss+args.future_movement_weight*(errors*weights).sum()/weights.sum().clamp_min(1)
         if args.player_location_weight:
             xy=positions[ids].clone()
             valid=(xy[:,0]>=0)&(xy[:,0]<48)&(xy[:,1]>=0)&(xy[:,1]<56)
@@ -228,7 +261,10 @@ def main():
                 target=(-dist.flatten(1)/1.4).softmax(1)
                 predicted=model.player(spatial[valid]).flatten(1).log_softmax(1)
                 loss=loss-args.player_location_weight*(target*predicted).sum(1).mean()
-        opt.zero_grad(set_to_none=True);loss.backward();torch.nn.utils.clip_grad_norm_(model.parameters(),1.);opt.step()
+        opt.zero_grad(set_to_none=True);loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(),1.)
+        if args.future_movement_weight:torch.nn.utils.clip_grad_norm_(future_readout.parameters(),1.)
+        opt.step()
         if step==1 or step%100==0:
             with (args.out/"loss.jsonl").open("a") as f:f.write(json.dumps({"step":step,"loss":loss.item()})+"\n")
     model.eval()
@@ -262,6 +298,8 @@ def main():
               "title_balanced":args.balance_titles,"difficulty_balanced":args.balance_difficulties,
               "observed_sampled_windows_by_game_rank":{f'{t} {rank}':n for (t,rank),n in sorted(drawn.items())},
               "player_location_weight":args.player_location_weight,
+              **({'future_movement_weight':args.future_movement_weight,'future_movement_ticks':[4,8,12],
+                  'future_movement_training_rows':(future_labels>=0).sum(0).tolist()} if args.future_movement_weight else {}),
               "spatial_attention":args.spatial_attention,
               "cpu_replay":args.cpu_replay,
               "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
