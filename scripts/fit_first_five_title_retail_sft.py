@@ -16,6 +16,7 @@ def read(path):return json.loads(path.read_bytes())
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True);p.add_argument('--reference',type=Path,required=True)
+    p.add_argument('--complete-th11',action='store_true',help='Extend to all admitted members of the fixed ten-source TH11 training roster and validate on the separate four-player roster.')
     a=p.parse_args();d=a.data.resolve();root=d/'first-five-title-retail-sft';root.mkdir(exist_ok=True)
     base=d/'human-train-six-complete-credits/later-train-complete-roster-frozen.json'
     future=d/'th11-expansion/retail-original-camera/train-first-hard-lunatic-original-synchronized-frozen.json'
@@ -34,18 +35,30 @@ def main():
     tests=[(d/v['file'],v['sha256']) for v in read(dev)['split']['held']]
     tests.extend((d/v['path'],v['archive_sha256']) for m in (extra,pilot) for v in read(m)['qualified'])
     if any(digest(file)!=sha for file,sha in tests):raise ValueError('Changed held camera')
-    for name in ('four','five'):
+    if a.complete_th11:
+        complete=d/'th11-expansion/retail-original-camera/train-all-original-synchronized-frozen.json'
+        prospective=d/'th11-expansion/retail-supplemental-held-camera/held-original-synchronized-frozen.json'
+        freeze(root/'complete-th11-protocol.json',dict(first_study=digest(protocol),original_train_queue=digest(d/'th11-expansion/retail-camera-queue.json'),
+            additional_held_registration=digest(d/'th11-expansion/retail-supplemental-held-registration-v2.json'),
+            recipe='Reuse the fixed four-title base, optimizer and step budget. Replace the first two TH11 stages with every qualified member of the ten fixed TH11 training slots. Retain all unresolved slots outside the optimizer. Compare four-title, first two TH11 stages and complete TH11 roster on the four separately registered TH11 pilots.'))
+        while not complete.exists():time.sleep(20)
+    for name in (('five-complete',) if a.complete_th11 else ('four','five')):
         rows=common
-        if name=='five':
+        if name!='four':
             while not future.exists():time.sleep(15)
             new=read(future)['qualified']
             if len(new)!=2 or {v['difficulty'] for v in new}!={'Hard','Lunatic'} or len({v['player_group'].casefold() for v in new})!=2:
                 raise ValueError('Expected two distinct TH11 training players and both ranks')
+            if a.complete_th11:
+                all_rows=read(complete);full=all_rows['qualified']
+                if len(full)+len(all_rows['excluded'])!=10 or not {v['archive_sha256'] for v in new}<={v['archive_sha256'] for v in full}:
+                    raise ValueError('TH11 source roster is incomplete or no longer contains the original pair')
+                new=full
             for v in new:
                 if v['title']!='TH11' or v['split']!='train' or digest(d/v['original_sync_evidence_path'])!=v['original_sync_evidence_sha256']:
                     raise ValueError('Missing native TH11 human evidence')
             rows=common+new
-            freeze(root/'added-th11.json',dict(source=digest(future),players=new))
+            freeze(root/('added-complete-th11.json' if a.complete_th11 else 'added-th11.json'),dict(source=digest(complete if a.complete_th11 else future),players=new))
         files=[d/v['path'] for v in rows]
         if any(digest(file)!=v['archive_sha256'] for file,v in zip(files,rows)):raise ValueError('Changed training archive')
         dest=root/name
@@ -57,8 +70,23 @@ def main():
         if len(result['train'])!=len(rows) or digest(dest/'policy.ts')!=result['torchscript_sha256'] or sum(result['observed_sampled_windows_by_game_rank'].values())!=192000:
             raise ValueError('Unexpected completed fit')
         print('Fitted',name,len(rows),result['observed_sampled_windows_by_game_rank'],result['torchscript_sha256'],flush=True)
-    subprocess.run([sys.executable,'-u','-m','scripts.compare_human_camera_policies','--models',str(root/'four'),str(root/'five'),
-                    '--model-names','four','five','--held',*[str(path) for path,_ in tests],'--out',str(root/'development')],check=True)
+    models=['four','five']+(['five-complete'] if a.complete_th11 else [])
+    def evaluate(paths,dest):
+        subprocess.run([sys.executable,'-u','-m','scripts.compare_human_camera_policies','--models',*[str(root/k) for k in models],
+                        '--model-names',*models,'--held',*map(str,paths),'--out',str(root/dest)],check=True)
+    evaluate([path for path,_ in tests],'expanded-development' if a.complete_th11 else 'development')
+    if a.complete_th11:
+        while not prospective.exists():time.sleep(20)
+        final=read(prospective);members=final['qualified']+final['excluded']
+        registered=read(d/'th11-expansion/retail-supplemental-held-registration-v2.json')['sources']
+        if len(members)!=4 or {v['replay_sha256'] for v in members}!={v.get('replay_sha256',v.get('sha256')) for v in registered}:
+            raise ValueError('Independent TH11 outcome roster differs from registration')
+        files=[]
+        for v in final['qualified']:
+            path=d/v['path']
+            if v['split']!='held' or digest(path)!=v['archive_sha256']:raise ValueError('Changed independent TH11 file')
+            files.append(path)
+        if files:evaluate(files,'independent-th11')
 
 
 if __name__=='__main__':main()
