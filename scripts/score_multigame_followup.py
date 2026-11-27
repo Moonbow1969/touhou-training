@@ -13,7 +13,7 @@ from scripts.score_original_camera_run import records
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost','full-epochs-original','reviewed-five-human-online'),required=True)
+    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost','full-epochs-original','reviewed-five-human-online','feedback-ppo-independent-replication'),required=True)
     a=p.parse_args();d=a.data.resolve();root=d/a.study
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     five=a.study=='five-game-crossfit-advantages'
@@ -29,6 +29,11 @@ def main():
     if a.study=='full-epochs-original':
         reference=d/'four-title-complete-epochs'/plan['reference_arm']/'policy.ts'
         candidate=d/'four-title-complete-epochs'/plan['candidate']/'policy.ts'
+    if a.study=='feedback-ppo-independent-replication':
+        reference=d/'four-title-four-step-feedback/teacher/policy.ts'
+        candidate=d/'four-step-feedback-online/policy/policy.ts'
+        if digest(reference)!=plan['behavior_sha256'] or digest(candidate)!=plan['candidate_sha256']:
+            raise ValueError('Replication actors changed')
     while not candidate.with_name('report.json').is_file():time.sleep(15)
     refs={digest(reference),digest(candidate)}
     titles=sorted(int(t) for t in plan['eval_seeds'] if t!='8')

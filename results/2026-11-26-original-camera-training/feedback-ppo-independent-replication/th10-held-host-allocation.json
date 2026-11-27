@@ -1,0 +1,485 @@
+{
+  "protocol_sha256": "d109fdfa2850229857979cd21f4171532f37afc0c66d3cb6414da0f2eddf66cc",
+  "entropy_hex": "ec53b30df55c04e276931247af6cb7418a68544c10eca28aa216d00b13bab8b6",
+  "generation": "256 operating-system random bits seeded random.Random. Draw two uniformly sampled candidate-first seeds without replacement in each independent fixed block of four.",
+  "blocks": [
+    {
+      "id": "accelerator-2-1",
+      "host": "accelerator",
+      "rank": 2,
+      "seeds": [
+        1871001,
+        1871003,
+        1871005,
+        1871007
+      ],
+      "candidate_first": [
+        1871001,
+        1871005
+      ]
+    },
+    {
+      "id": "accelerator-2-2",
+      "host": "accelerator",
+      "rank": 2,
+      "seeds": [
+        1871009,
+        1871011,
+        1871013,
+        1871015
+      ],
+      "candidate_first": [
+        1871009,
+        1871011
+      ]
+    },
+    {
+      "id": "accelerator-2-3",
+      "host": "accelerator",
+      "rank": 2,
+      "seeds": [
+        1871017,
+        1871019,
+        1871021,
+        1871023
+      ],
+      "candidate_first": [
+        1871017,
+        1871023
+      ]
+    },
+    {
+      "id": "accelerator-3-1",
+      "host": "accelerator",
+      "rank": 3,
+      "seeds": [
+        1871051,
+        1871053,
+        1871055,
+        1871057
+      ],
+      "candidate_first": [
+        1871053,
+        1871057
+      ]
+    },
+    {
+      "id": "momentum-2-1",
+      "host": "momentum",
+      "rank": 2,
+      "seeds": [
+        1871002,
+        1871004,
+        1871006,
+        1871008
+      ],
+      "candidate_first": [
+        1871002,
+        1871004
+      ]
+    },
+    {
+      "id": "momentum-2-2",
+      "host": "momentum",
+      "rank": 2,
+      "seeds": [
+        1871010,
+        1871012,
+        1871014,
+        1871016
+      ],
+      "candidate_first": [
+        1871010,
+        1871014
+      ]
+    },
+    {
+      "id": "momentum-2-3",
+      "host": "momentum",
+      "rank": 2,
+      "seeds": [
+        1871018,
+        1871020,
+        1871022,
+        1871024
+      ],
+      "candidate_first": [
+        1871018,
+        1871022
+      ]
+    },
+    {
+      "id": "momentum-3-1",
+      "host": "momentum",
+      "rank": 3,
+      "seeds": [
+        1871052,
+        1871054,
+        1871056,
+        1871058
+      ],
+      "candidate_first": [
+        1871052,
+        1871058
+      ]
+    }
+  ],
+  "assignments": {
+    "1871001": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871003": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871005": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871007": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871009": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-2",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871011": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-2",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871013": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-2",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871015": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-2",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871017": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-3",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871019": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-3",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871021": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-3",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871023": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank2",
+      "rank": 2,
+      "block": "accelerator-2-3",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871051": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank3",
+      "rank": 3,
+      "block": "accelerator-3-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871053": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank3",
+      "rank": 3,
+      "block": "accelerator-3-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871055": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank3",
+      "rank": 3,
+      "block": "accelerator-3-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871057": {
+      "host": "accelerator",
+      "lane": "accelerator-th10-rank3",
+      "rank": 3,
+      "block": "accelerator-3-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871002": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871004": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871006": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871008": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871010": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-2",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871012": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-2",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871014": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-2",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871016": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-2",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871018": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-3",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871020": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-3",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871022": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-3",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871024": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank2",
+      "rank": 2,
+      "block": "momentum-2-3",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871052": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank3",
+      "rank": 3,
+      "block": "momentum-3-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    },
+    "1871054": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank3",
+      "rank": 3,
+      "block": "momentum-3-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871056": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank3",
+      "rank": 3,
+      "block": "momentum-3-1",
+      "order": [
+        "teacher",
+        "teacher-ppo"
+      ]
+    },
+    "1871058": {
+      "host": "momentum",
+      "lane": "momentum-th10-rank3",
+      "rank": 3,
+      "block": "momentum-3-1",
+      "order": [
+        "teacher-ppo",
+        "teacher"
+      ]
+    }
+  },
+  "seed_host": {
+    "1871001": "accelerator",
+    "1871003": "accelerator",
+    "1871005": "accelerator",
+    "1871007": "accelerator",
+    "1871009": "accelerator",
+    "1871011": "accelerator",
+    "1871013": "accelerator",
+    "1871015": "accelerator",
+    "1871017": "accelerator",
+    "1871019": "accelerator",
+    "1871021": "accelerator",
+    "1871023": "accelerator",
+    "1871051": "accelerator",
+    "1871053": "accelerator",
+    "1871055": "accelerator",
+    "1871057": "accelerator",
+    "1871002": "momentum",
+    "1871004": "momentum",
+    "1871006": "momentum",
+    "1871008": "momentum",
+    "1871010": "momentum",
+    "1871012": "momentum",
+    "1871014": "momentum",
+    "1871016": "momentum",
+    "1871018": "momentum",
+    "1871020": "momentum",
+    "1871022": "momentum",
+    "1871024": "momentum",
+    "1871052": "momentum",
+    "1871054": "momentum",
+    "1871056": "momentum",
+    "1871058": "momentum"
+  },
+  "condition": "Ordinary full-credit opening, two spares and zero Power, rank read back from the original. Original RNG uncontrolled. On Momentum wait for the higher-priority 184 rank when its candidate is frozen. Each cell uses its fixed physical lane.",
+  "inference": "All combinatorially valid first-actor order assignments within each four-seed block. Exact two-sided Fisher sharp-null test of the mean paired last Stage 1 native tick. Preserve host-stratified numeric bootstrap intervals and every outcome. Holm adjustment across the two prespecified Hard game tests is performed by the cross-title scorer."
+}

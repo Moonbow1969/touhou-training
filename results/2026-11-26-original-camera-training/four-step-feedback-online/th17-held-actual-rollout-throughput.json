@@ -1,0 +1,69 @@
+{
+  "credits": 64,
+  "original_cpu_quota_per_lane": 2,
+  "host": "Gamer-WSL",
+  "common_allocated_lanes": [
+    "th17-alpha-private-66",
+    "th17-beta-private-66",
+    "th17-delta-private-66",
+    "th17-gamma-private-66"
+  ],
+  "common_allocation_monotonic_seconds": [
+    560471.567296589,
+    562747.706467092
+  ],
+  "scope": "Active native ticks and applied four-head decisions per real second. All instrumented lanes are allocated to this same study throughout the common window. Excludes initial rollout before the last lane joins, the tail after any lane completes, and partial one-second bins for the active-count comparison.",
+  "groups": {
+    "4": {
+      "overlap_seconds": 207,
+      "mean_aggregate_native_ticks_per_second": 146.30317259724075,
+      "median_aggregate_native_ticks_per_second": 148.5302927285452,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        127.64551430615325,
+        162.20009803929378
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 29.93719806763285
+    },
+    "3": {
+      "overlap_seconds": 427,
+      "mean_aggregate_native_ticks_per_second": 109.5407112431252,
+      "median_aggregate_native_ticks_per_second": 109.32319463337296,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        95.40786959057144,
+        124.33476042680928
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 22.46838407494145
+    },
+    "2": {
+      "overlap_seconds": 622,
+      "mean_aggregate_native_ticks_per_second": 71.07975497110591,
+      "median_aggregate_native_ticks_per_second": 71.73829275359793,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        59.745453877271565,
+        82.55770287457514
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 14.979099678456592
+    },
+    "1": {
+      "overlap_seconds": 598,
+      "mean_aggregate_native_ticks_per_second": 36.40740748151828,
+      "median_aggregate_native_ticks_per_second": 37.12444779817815,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        29.549279635242648,
+        42.579300640292765
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 7.489966555183947
+    }
+  },
+  "end_to_end": {
+    "physical_wall_seconds": 2276.139170503011,
+    "decisions": 30935,
+    "native_credit_terminals": 46,
+    "amortized_decisions_per_second": 13.5909967197496,
+    "native_terminals_per_hour": 72.75477797932872,
+    "fraction_available_game_slots_acting": 0.45347034220495497,
+    "intercredit_gap_seconds_median": 32.155077301955316,
+    "intercredit_gap_seconds_p90": 195.97628231046258,
+    "gap_definition": "Previous last action to next first action on same instance: includes title reset, UI evidence, packing, model readiness and dispatch."
+  }
+}

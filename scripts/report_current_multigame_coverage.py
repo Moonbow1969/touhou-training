@@ -39,7 +39,7 @@ def main():
         lines.append('| '+game+' | '+' | '.join(f'{v:,}' for v in values)+' |')
     if totals[0]+totals[1]!=sum(x['decisions'] for x in report['train']) or totals[2]+totals[4]!=ppo['credits'] or totals[3]+totals[5]!=ppo['decisions']:raise ValueError('Coverage totals do not reconcile')
     lines.append('| **Total** | '+' | '.join(f'**{v:,}**' for v in totals)+' |')
-    lines+=['','TH08 also has separate action-history imitation research. TH16 season-release inputs are preserved in its human data. The six-title visual SFT predicts movement, focus, shooting and Bomb. The newest five-title SFT-to-PPO campaign has a separate acquisition protocol and enters the ledger after its optimizer finishes.', '',
+    lines+=['','TH08 also has separate action-history imitation research. TH16 season-release inputs are preserved in its human data. The six-title visual SFT predicts movement, focus, shooting and Bomb. The ledger counts a five-title SFT-to-PPO training game once the optimizer has consumed it.', '',
             '[Six-title SFT source and weights](six-title-human-camera-th16/README.md) · [PPO input ledger](learning-curves/hard-lunatic-training-coverage.json) · [192 independent original full-stock tests](six-game-return-horizon/all-six-original-results.md) · [Five-title human SFT to online PPO](reviewed-five-human-online/README.md)']
     (out/'training-coverage.md').write_text('\n'.join(lines)+'\n',encoding='utf8')
     print('Coverage verified',totals,flush=True)

@@ -40,7 +40,7 @@ def main():
         shutil.copytree(out/name,dest/name,dirs_exist_ok=True)
     weights=json.loads((out/'whole-game-controls.json').read_bytes())
     summary=['# Paired full-stock original-game results','',
-             f"Every title and difficulty supplied eight matched seeds for {plan['reference_arm']} and {plan['candidate']}. The full evaluation contains {expected} ordinary original-game starts. Both arms use the same build and host within each pair. In-game randomness is uncontrolled.",'',
+             f"The full evaluation contains {expected} ordinary original-game starts and {expected//2} matched pairs for {plan['reference_arm']} and {plan['candidate']}. Both arms use the same build and host within each pair. In-game randomness is uncontrolled.",'',
              '| Original game | Stage 2, reference → candidate | Mean spare lives at end | Mean Bombs or Power at end | Confirmed casts, reference → candidate |',
              '|---|---:|---:|---:|---:|']
     for label,cell in weights['cells'].items():

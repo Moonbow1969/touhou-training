@@ -58,7 +58,7 @@ def main():
     rows = [r for r in json.loads((evaluation/'credits.json').read_bytes()) if r['seed'] == seeds[r['title']] and r['arm'] in arms]
     by_source = {(r['title'],r['seed'],r['policy_sha256']):r for r in rows}
     runs = {}
-    for title, receipt in records(args.root, True, True):
+    for title, receipt in records(args.root, True, True, include_held_endpoints=True):
         data = json.loads(receipt.read_bytes())
         row = by_source.get((title,data.get('seed'),data.get('policy_sha256')))
         if row:
@@ -94,6 +94,8 @@ def main():
                     action = actions[i]
                     buttons = ' '.join(k for k,v in zip(('focus','shoot','Bomb'),action[1:]) if v)
                     draw.text((x,y+285),directions[action[0]]+'   '+buttons,font=small,fill='white')
+                    if row.get('input_control_coverage')=='indeterminate':
+                        draw.text((x,y+304),'Sampled input; native coverage incomplete',font=small,fill='#ffcb84')
                 else:
                     panel.paste(end,(x,y+47))
                     resource = f"{row['terminal_power']:.2f} Power" if key[0] in (10,11) else f"{row['terminal_bombs']} Bombs"
