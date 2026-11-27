@@ -1,0 +1,5 @@
+# TH17 independent replication of the five-title PPO update
+
+The 32 new matched pairs produced 64 original credits and 45,440 actions. The registered primary outcome was Hard Stage 1 progress. The second PPO generation reached 4,139.63 ticks on average versus 3,871.31 for the first. The +268.31 tick difference had a paired lane-bootstrap 95% interval from −524.01 to +1,086.38. The exact two-sided randomization p-value was 0.605 over 1,296 allowed assignments. The first cohort's +1,135.50 tick gain did not replicate. The newer actor won 9 of 16 fresh pairs. [Prespecified primary analysis](th17-preregistered-primary.json)
+
+Lunatic was secondary. The first generation averaged 2,726.75 ticks and the second 3,062.94, a difference of +336.19 ticks (+71.75 to +635.94). Terminal Bomb stock changed from 1.94 to 1.31 on Hard and 1.75 to 1.56 on Lunatic. On both difficulties both arms reached Stage 2 in 0/16 credits and ended with zero spare lives. [Paired outcomes](th17-held-statistics.json) · [First-seed full original recordings](videos/)
