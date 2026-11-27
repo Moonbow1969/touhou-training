@@ -37,6 +37,7 @@ def one(rows):
                 terminal_game_overs=sum(row["terminal"]=="game_over" for row in rows),
                 mean_decisions=average("decisions"), mean_seconds=average("wall_seconds"),
                 mean_terminal_spares=average("terminal_spares"), mean_terminal_bombs=average("terminal_bombs"),
+                **({'mean_last_playable_bombs':average('last_playable_bombs')} if any('last_playable_bombs' in r for r in rows) else {}),
                 mean_terminal_power=average("terminal_power"), mean_stage2_spares=average("stage2_spares", reached),
                 mean_stage2_bombs=average("stage2_bombs", reached), mean_stage2_power=average("stage2_power", reached),
                 total_decisions=decisions, nine_way_counts=movement.tolist(),
@@ -50,6 +51,8 @@ def qualified_stage2(row):
         if not row.get('stage2_evidence_sha256'):
             return None
     if row['title']==12 and row.get('game_sha256')=='c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a' and not row.get('stage2_evidence_sha256'):
+        return None
+    if row['title']==17 and not row.get('stage2_evidence_sha256'):
         return None
     return row['stage2_reached']
 
