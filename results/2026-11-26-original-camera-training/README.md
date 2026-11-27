@@ -186,3 +186,13 @@ The six new TH13 Stage 2 streams used in the spatial policy study are archived w
 The two 76,167-window supervised runs completed 12,000 updates each. On six held pilots across ten original replay stages, the CNN predicted 15,333/28,241 movement decisions correctly (54.3%). Adding spatial attention raised this to 16,477/28,241 (58.3%). Equal-stage movement NLL fell from 1.405 to 1.289, and mean NLL improved for all six held pilots. For frames where the expert changed direction the counts were 1,863/7,681 and 1,935/7,681. For movement starts from neutral they were 214/2,278 and 176/2,278. The deployable actor grew from 165,691 to 249,235 parameters. The same single-thread warm CPU probe took 2.59 and 2.81 ms median per inference on Gamer. [Weights, latency and held metrics](spatial-policy-study/summary.json) · [Individual held stages](spatial-policy-study/held-movement/held.json)
 
 The eight-player joint actor's third PPO generation used 47,106 new decisions across 72 verified original credits. The learner accepted four epochs. Its new seed-paired full-credit evaluation compares the first and third online generations. [PPO update and credit records](camera-cross-ppo3/report.json) · [Exact rollout archive](cross-campaign/g03/release-archive.json)
+
+### Fourteen-player SFT and its first native-clock PPO update
+
+The two frozen policies completed all 72 registered original Normal credits. Each reached Stage 2 in 0/12 credits per title. All credits ended with zero spare lives. TH10 Spirit Strikes consume Power. On TH13 the PPO policy advanced 753 fewer native stage ticks on average, with a 95% paired interval of [−1,866, +387]. The reward-clock gain from the earlier controlled sibling update did not establish a general SFT-to-PPO performance gain. [Whole-credit evidence](v2-online/evaluation/credits.json) · [TH13 native clock intervals](v2-online/evaluation/native13-stage-clock.json)
+
+| Original Normal trial | Mean final resource, SFT → PPO | Confirmed casts over twelve credits, SFT → PPO | Mean wall seconds, SFT → PPO |
+|---|---|---|---|
+| TH10 | 0.142 → 0.000 Power | 12 → 16 | 46.31 → 42.36 |
+| TH12 | 0.67 → 1.00 Bombs | 44 → 45 | 74.37 → 69.08 |
+| TH13 | 0.08 → 0.58 Bombs | 62 → 56 | 113.40 → 92.85 |

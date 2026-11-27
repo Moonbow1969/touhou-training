@@ -19,6 +19,10 @@ def main():
         ('PPO2 → PPO5','campaign/g05/evaluation','camera-ppo2','camera-ppo5'),
         ('Joint SFT → PPO1','cross-title-online/evaluation','cross-sft','cross-ppo'),
         ('Joint PPO1 → PPO3','cross-campaign/g03/evaluation','camera-cross-ppo','camera-cross-ppo3'),
+        ('14-player SFT → PPO1','v2-online/evaluation','v2-sft','v2-ppo'),
+        ('Mixed difficulty PPO','easy-curriculum/evaluation','v2-ppo','curriculum-ppo'),
+        ('Spatial attention SFT','spatial-policy-study/evaluation','cnn','spatial-attention'),
+        ('Attention SFT → PPO1','attention-online/evaluation','attention-sft','attention-ppo'),
         ('Progress bonus','native-progress-ablation/evaluation','ppo2','ppo2-progress'),
         ('Replay KL','replay-anchor/evaluation','plain-cross-ppo','anchored-cross-ppo'),
         ('Native-time reward','clock-reward/evaluation','wall-clock','native-clock')]
@@ -35,7 +39,14 @@ def main():
         if file.is_file():
             r=json.loads(file.read_bytes());n=next(iter(r['arms'].values()))['n']
             titles['TH14 · development transfer title'].append((name,n,r['mean_paired_stage1_tick_difference'],r['paired_bootstrap95_stage1_ticks']))
-    fig,axes=plt.subplots(1,2,figsize=(12,4.5),layout='constrained')
+    for label,folder in [('Easy: joint SFT → PPO1','easy-th14/joint-sft-ppo'),('Easy: movement temperature','easy-th14/movement-temperature'),
+                         ('Easy: spatial attention SFT','spatial-policy-study/held-th14-easy')]:
+        file=a.root/folder/'paired.json'
+        if file.is_file():
+            result=json.loads(file.read_bytes())
+            n=next(iter(result['arms'].values()))['n']
+            titles['TH14 · development transfer title'].append((label,n,result['mean_paired_stage1_tick_difference'],result['paired_bootstrap95_stage1_ticks']))
+    fig,axes=plt.subplots(1,2,figsize=(13, max(4.5, 1.5+.43*max(map(len,titles.values())))),layout='constrained')
     for ax,(title,rows) in zip(axes,titles.items()):
         ax.set_title(title);ax.axvline(0,ls='--',lw=1,color='#929ca1')
         for i,(name,n,delta,(lo,hi)) in enumerate(rows):
