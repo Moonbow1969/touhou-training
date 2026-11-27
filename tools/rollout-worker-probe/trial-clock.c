@@ -9,16 +9,27 @@
 #endif
 
 #ifdef TRIAL_CONTACT_TELEMETRY
+#ifdef TH14_RETAIL_CAMERA
+enum { PLAYER_CONTACT_STATE = 0x684, GAME_BOMBS = 0x4f5870 };
+#else
 /* Verified against the SHA-pinned trial's player-state getter and writes. */
 enum { PLAYER_CONTACT_STATE = 0x684, GAME_BOMBS = 0x4f1f90 };
 #endif
+#endif
 
-/* Addresses for the unmodified TH14 0.01b trial at image base 0x400000. */
+/* Fixed image-base offsets verified separately for each original build. */
 enum {
+#ifdef TH14_RETAIL_CAMERA
+    CLOCK_POINTER = 0x4db520, THREAD_POINTER = 0x4db558,
+    PLAYER_POINTER = 0x4db67c, BULLET_POINTER = 0x4db530,
+    GAME_STATE = 0x4f7ac8, GAME_STAGE = 0x4f58a4, GAME_LIVES = 0x4f5864,
+    GAME_DIFFICULTY = 0x4f5834, GAME_CHARACTER = 0x4f5828, GAME_SHOT = 0x4f582c,
+#else
     CLOCK_POINTER = 0x4d7c40, THREAD_POINTER = 0x4d7c78,
     PLAYER_POINTER = 0x4d7d9c, BULLET_POINTER = 0x4d7c50,
     GAME_STATE = 0x4f41e8, GAME_STAGE = 0x4f1fc4, GAME_LIVES = 0x4f1f84,
     GAME_DIFFICULTY = 0x4f1f54, GAME_CHARACTER = 0x4f1f48, GAME_SHOT = 0x4f1f4c,
+#endif
     CLOCK_FIELD = 0x191e0, STAGE_CLOCK = 0x14, PLAYER_POSITION = 0x5e0,
     BULLET_LIST = 0x7c, BULLET_FIELDS = 0xbc0, BULLET_FIELDS_SIZE = 0x50,
     MAX_ENTITIES = 96, MAX_LIST_LENGTH = 8192
@@ -57,7 +68,12 @@ static const WORD keys[] = {VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN, VK_SHIFT, 'Z', 'X
 static BOOL CALLBACK find_trial(HWND window, LPARAM value) {
     char title[128] = {0};
     GetWindowTextA(window, title, sizeof(title));
-    if (strstr(title, "Double Dealing Character. ver 0.01b") && IsWindowVisible(window)) {
+#ifdef TH14_RETAIL_CAMERA
+    const char *edition = "Double Dealing Character. ver 1.00b";
+#else
+    const char *edition = "Double Dealing Character. ver 0.01b";
+#endif
+    if (strstr(title, edition) && IsWindowVisible(window)) {
         *(HWND *)value = window;
         return FALSE;
     }
@@ -152,6 +168,15 @@ static int emit_state(const struct Target *game, const struct State *state, uint
            (unsigned long)state->mode, (unsigned long)state->stage, (long)state->lives,
            state->position[0], state->position[1], count);
     printf("\"difficulty\":%lu,", (unsigned long)selected_difficulty);
+#ifdef TH14_RETAIL_CAMERA
+    uint32_t flags, continues, screen;
+    if (!read_field(game, THREAD_POINTER, 0x80, &flags, sizeof(flags))
+        || !read_memory(game, 0x4f5838, &continues, sizeof(continues))
+        || !read_memory(game, 0x4d9648, &screen, sizeof(screen)))
+        return 0;
+    printf("\"ending\":%u,\"continues\":%lu,\"screen\":%lu,",
+           (unsigned)((flags >> 14) & 1), (unsigned long)continues, (unsigned long)screen);
+#endif
 #ifdef TRIAL_CONTACT_TELEMETRY
     printf("\"contact_schema\":1,\"player_state\":%lu,\"bombs\":%ld,\"held\":%u,",
            (unsigned long)state->player_state, (long)state->bombs, game->held);
@@ -238,12 +263,19 @@ static int start_stage(struct Target *game, struct State *state) {
     const char *easy_menu = getenv("TH14_EASY_MENU_TAP");
     const int easy_tap = easy_menu ? atoi(easy_menu) : 0;
     if (easy_menu && (easy_tap < 1 || easy_tap > 12)) return 0;
+    uint32_t expected_rank = easy_tap ? 0u : 1u;
+#ifdef TH14_RETAIL_CAMERA
+    const char *hard_menu = getenv("TH14_HARD_MENU_TAP");
+    const int hard_tap = hard_menu ? atoi(hard_menu) : 0;
+    if (hard_menu && (easy_menu || hard_tap < 1 || hard_tap > 12)) return 0;
+    if (hard_tap) expected_rank=2;
+#endif
     int selection = 0;
     while (GetTickCount64() < deadline) {
         if (ready(game, state)) {
             uint32_t character, shot;
             return read_memory(game, GAME_DIFFICULTY, &selected_difficulty, sizeof(selected_difficulty))
-                   && selected_difficulty == (easy_tap ? 0u : 1u)
+                   && selected_difficulty == expected_rank
                    && read_memory(game, GAME_CHARACTER, &character, sizeof(character)) && character == 0
                    && read_memory(game, GAME_SHOT, &shot, sizeof(shot)) && shot == 0;
         }
@@ -252,6 +284,9 @@ static int start_stage(struct Target *game, struct State *state) {
             && read_field(game, CLOCK_POINTER, CLOCK_FIELD, &clock, sizeof(clock))
             && clock >= next_selection) {
             if (++selection == easy_tap && !tap(game, VK_UP)) return 0;
+#ifdef TH14_RETAIL_CAMERA
+            if (selection == hard_tap && !tap(game,VK_DOWN)) return 0;
+#endif
             if (!tap(game, 'Z'))
                 return 0;
             next_selection = clock + 74;

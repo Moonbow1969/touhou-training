@@ -33,6 +33,13 @@ def score(prob,truth):
                 model_argmax_alerts=int((prob>=.5).sum()),model_argmax_true_onsets=int(truth[prob>=.5].sum()))
 
 
+def calibration(prob,truth):
+    p=np.clip(prob.astype(np.float64),1e-12,1-1e-12)
+    truth=np.asarray(truth,dtype=bool)
+    return dict(rows=len(truth),positive_windows=int(truth.sum()),expected_positive_windows=float(p.sum()),
+                expected_on_positives=float(p[truth].sum()),binary_nll=float(-np.where(truth,np.log(p),np.log1p(-p)).mean()))
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--models',nargs='+',type=Path,required=True);p.add_argument('--held',nargs='+',type=Path,required=True)
@@ -55,7 +62,8 @@ def main():
                 prob=torch.cat([model(x.to(device).float()/255)[3].softmax(1)[:,1].cpu()
                                 for x in torch.from_numpy(row['raw']).split(64)]).numpy()
                 report[folder.name][row['name']]=dict(group=row['group'],camera_sha256=row['sha256'],model_sha256=h,
-                    true_key_edges=edges,aligned=score(prob,truth),half_credit_shift=score(np.roll(prob,len(prob)//2),truth))
+                    true_key_edges=edges,aligned=score(prob,truth),half_credit_shift=score(np.roll(prob,len(prob)//2),truth),
+                    training_target_any_x=calibration(prob,row['action'][:,3]),rising_edge_target=calibration(prob,truth))
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(report,indent=2)+'\n')
 

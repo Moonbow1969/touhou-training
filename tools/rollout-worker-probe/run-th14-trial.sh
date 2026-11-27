@@ -5,8 +5,16 @@ case "${1:-}" in Left|Right|serve) mode=$1 ;; *) exit 2 ;; esac
 mkdir -p /tmp/game
 cd /tmp/game
 cp /input/game/th14.exe .
-ln -s /input/game/th14tr.dat /input/game/thbgm_tr.dat .
-printf '%s  %s\n' '6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48' th14.exe | sha256sum -c >&2
+if [ "${TH14_RETAIL_CAMERA:-0}" = 1 ]; then
+    ln -s /input/game/th14.dat /input/game/thbgm.dat .
+    build=4609e701b677b8317e43be92041f0c7075a292182848a7c11215c3a226034f90
+    edition='1.00b'
+else
+    ln -s /input/game/th14tr.dat /input/game/thbgm_tr.dat .
+    build=6c62bff1e6be644086c5811c36eb938818f14012f94ad5fce784ca7889c66d48
+    edition='0.01b'
+fi
+printf '%s  %s\n' "$build" th14.exe | sha256sum -c >&2
 
 export DISPLAY=:66 WINEDLLOVERRIDES=mscoree,mshtml= LP_NUM_THREADS=2
 export PULSE_SERVER=unix:/tmp/toho-pulse.sock
@@ -25,12 +33,36 @@ xdpyinfo >/dev/null
 pactl list short sinks >&2
 timeout 40 wineboot --init
 wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /t REG_SZ /d pulse /f >&2
-wine ./th14.exe > /capture/game-stdout.log 2>&1 &
+if [ "${TH14_RETAIL_CAMERA:-0}" = 1 ]; then
+    userdata="$WINEPREFIX/drive_c/users/$(id -un)/AppData/Roaming/ShanghaiAlice/th14"
+    mkdir -p "$userdata"
+    if [ -f /input/display.cfg ]; then cp /input/display.cfg "$userdata/th14.cfg"; fi
+    (set +e; WINEDEBUG=err+all wine ./th14.exe > /capture/game-stdout.log 2>&1
+     echo "$?" > /capture/game-exit.txt
+     if [ -f "$userdata/log.txt" ]; then cp "$userdata/log.txt" /capture/game-init.txt; fi) &
+else
+    wine ./th14.exe > /capture/game-stdout.log 2>&1 &
+fi
 
-dialog=$(timeout 20 xdotool search --sync --onlyvisible --name . | tail -1)
-test -n "$dialog"
-xdotool mousemove --window "$dialog" 20 34 click 1 mousemove --window "$dialog" 101 144 click 1
-game=$(timeout 20 xdotool search --sync --onlyvisible --name 'Double Dealing Character. ver 0.01b' | tail -1)
+if [ "${TH14_RETAIL_CAMERA:-0}" = 1 ]; then
+    game=''
+    for n in $(seq 1 60); do
+        game=$(xdotool search --onlyvisible --name "Double Dealing Character. ver $edition" 2>/dev/null | tail -1)
+        [ -z "$game" ] || break
+        xwininfo -root -tree > /capture/startup-windows.txt
+        if [ "$n" = 10 ] || [ "$n" = 40 ]; then scrot -o "/capture/startup-$n.png"; fi
+        modal=$(awk '/208x154/ {print $1; exit}' /capture/startup-windows.txt)
+        if [ -n "$modal" ]; then
+            xdotool mousemove --window "$modal" 20 34 click 1 mousemove --window "$modal" 101 144 click 1
+        fi
+        sleep 1
+    done
+else
+    dialog=$(timeout 20 xdotool search --sync --onlyvisible --name . | tail -1)
+    test -n "$dialog"
+    xdotool mousemove --window "$dialog" 20 34 click 1 mousemove --window "$dialog" 101 144 click 1
+    game=$(timeout 20 xdotool search --sync --onlyvisible --name "Double Dealing Character. ver $edition" | tail -1)
+fi
 test -n "$game"
 xdotool getwindowname "$game" >&2
 xdotool windowfocus --sync "$game"
