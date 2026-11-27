@@ -37,6 +37,7 @@ def main():
         if digest(trace)!=trace_sha:raise ValueError(f'Changed original behavior {trace}')
         with np.load(trace,allow_pickle=False) as z:
             arrays={k:z[k] for k in ('action','logp','value','reward','terminated')}
+            if 'native_action_eligible' in z:arrays['native_action_eligible']=z['native_action_eligible']
             frames=z['frames'] if 'frames' in z else None
         n=len(arrays['action'])
         if frames is None and title==10:
@@ -50,9 +51,15 @@ def main():
         target=a.out/f'th{title}-{seed}.npz'
         np.savez_compressed(target,frames=frames,**arrays)
         rank={}
+        boundary=r.get('covered_native_events',{}).get('postterminal_input_boundary')
+        if boundary is not None or 'native_action_eligible' in arrays:
+            from scripts.th12_playable_actions import verify_source
+            verified=verify_source(title,r,trace,receipt.parent.parent/'raw'/r['episode'])
+            if verified is None:raise ValueError('Missing native input-exclusion evidence')
+            rank['postterminal_input_boundary']=verified
         if 'rank_by_seed' in plan:
             from scripts.verify_original_difficulty import verify
-            rank=verify(title,receipt,r,plan['rank_by_seed'][str(title)][str(seed)])
+            rank.update(verify(title,receipt,r,plan['rank_by_seed'][str(title)][str(seed)]))
         items.append(dict(title=title,seed=seed,policy_sha256=fingerprint,role='train',outcome=outcome,**rank,
                           file=target.name,sha256=digest(target),source_log_sha256=digest(receipt),source_actions_sha256=trace_sha))
     (a.out/'credits.json').write_text(json.dumps(items,indent=2)+'\n',encoding='utf8')

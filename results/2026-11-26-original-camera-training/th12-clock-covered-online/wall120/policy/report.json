@@ -1,0 +1,144 @@
+{
+  "parent_sft_sha256": "e4ed3cc903eec31728237b7080c1fd4a11a0ad032bfe40a3b0f18d433c21a2e1",
+  "parent_actor_critic_sha256": null,
+  "native_behavior_sha256": "9958753c91c8b0fb28ee08d82e75e5d9ebd9df718f2f0a7e29460a8a5d0dcd89",
+  "policy_sha256": "c50422e9419a703fbffda4bcdf91cf9afcde28e069be56c4f0b00130437aec67",
+  "manifest_sha256": "f66481e43f54705fc2f6de07dc4895e518b4e6ca90b459d8b969c048fcce573c",
+  "steps": 3127,
+  "protocol_sha256": "98f6af289ca6b2b8b5807060cbcc3430cdf2305c1a2bf8075e23c2093809301b",
+  "credits": [
+    {
+      "title": 12,
+      "seed": 1401201,
+      "steps": 499,
+      "reward": -2.998014450073242,
+      "max_native_logp_error": 4.5299530029296875e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 2
+    },
+    {
+      "title": 12,
+      "seed": 1401202,
+      "steps": 424,
+      "reward": -3.007509231567383,
+      "max_native_logp_error": 5.602836608886719e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 3
+    },
+    {
+      "title": 12,
+      "seed": 1401203,
+      "steps": 386,
+      "reward": -3.011918783187866,
+      "max_native_logp_error": 4.0531158447265625e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 2
+    },
+    {
+      "title": 12,
+      "seed": 1401204,
+      "steps": 379,
+      "reward": -3.0427606105804443,
+      "max_native_logp_error": 3.2186508178710938e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 3
+    },
+    {
+      "title": 12,
+      "seed": 1401205,
+      "steps": 545,
+      "reward": -3.021746873855591,
+      "max_native_logp_error": 3.933906555175781e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 2
+    },
+    {
+      "title": 12,
+      "seed": 1401206,
+      "steps": 290,
+      "reward": -3.0238547325134277,
+      "max_native_logp_error": 7.152557373046875e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 3
+    },
+    {
+      "title": 12,
+      "seed": 1401207,
+      "steps": 327,
+      "reward": -2.9890389442443848,
+      "max_native_logp_error": 3.337860107421875e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 2
+    },
+    {
+      "title": 12,
+      "seed": 1401208,
+      "steps": 277,
+      "reward": -3.0256075859069824,
+      "max_native_logp_error": 4.887580871582031e-06,
+      "max_native_value_error": 0.0,
+      "difficulty": 3
+    }
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "lr": 2e-05,
+      "loss_per_minibatch": 0.029619932615835416,
+      "per_title_joint_kl": {
+        "TH12-Hard": 0.0017352563115764497,
+        "TH12-Lunatic": 0.0014228394882138673
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 2,
+      "lr": 2e-05,
+      "loss_per_minibatch": 0.011524497883663954,
+      "per_title_joint_kl": {
+        "TH12-Hard": 0.0020324734623500262,
+        "TH12-Lunatic": 0.0018467768400114437
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 3,
+      "lr": 2e-05,
+      "loss_per_minibatch": 0.0017428701915042965,
+      "per_title_joint_kl": {
+        "TH12-Hard": 0.002013550973515521,
+        "TH12-Lunatic": 0.0019339939703968412
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 4,
+      "lr": 2e-05,
+      "loss_per_minibatch": -0.005210339508362506,
+      "per_title_joint_kl": {
+        "TH12-Hard": 0.002949583812551282,
+        "TH12-Lunatic": 0.0028390620254867827
+      },
+      "accepted": true
+    }
+  ],
+  "equal_weight_strata": [
+    "TH12-Hard",
+    "TH12-Lunatic"
+  ],
+  "optimizer_decision_sampling": {
+    "TH12-Hard": {
+      "available": 1757,
+      "selected": 1370,
+      "sorted_indices_sha256": "79c27f5f2e3f7edb56b11ad36a1aeb791f83e55626e2b26e1af0331addb13e5f"
+    },
+    "TH12-Lunatic": {
+      "available": 1370,
+      "selected": 1370,
+      "sorted_indices_sha256": "617414041c807c3b0f229947a5a0a02891835affe683c0c0d48c23362c4c0689"
+    }
+  },
+  "replay_anchor_weight": 0.0,
+  "replay_anchor_training_sha256": [],
+  "native_procedure": "All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."
+}

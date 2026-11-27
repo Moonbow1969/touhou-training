@@ -19,6 +19,7 @@ def load_source(title, receipt, data, verified, evaluation):
     with np.load(trace, allow_pickle=False) as z:
         actions = z['action']
         images = z['frames'] if 'frames' in z else None
+        eligible = z['native_action_eligible'] if 'native_action_eligible' in z else None
     if images is None and title == 10:
         with np.load(receipt.parent/'original-pixels.npz') as z:
             images = z['obs']
@@ -26,6 +27,10 @@ def load_source(title, receipt, data, verified, evaluation):
             images = images[:-1]
     if images is None and title == 12:
         images = np.fromfile(receipt.parent.parent/'raw'/data['episode']/'observations.u8', np.uint8).reshape(-1,112,96)
+    if eligible is not None:
+        if len(eligible)!=verified.get('raw_sampled_decisions') or eligible.sum()!=verified['decisions']:
+            raise ValueError('Changed playable-action mask')
+        actions=actions[eligible];images=images[eligible]
     if images is None or images.shape != (len(actions),112,96) or len(actions) != verified['decisions']:
         raise ValueError('Camera and action count differ')
     with Image.open(evaluation/verified['endpoint']) as im:

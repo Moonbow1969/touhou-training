@@ -1,6 +1,6 @@
 {
   "scope": "Retrospective controller-coverage sensitivity on the originally frozen full-game evaluations. As-deployed includes all real original endpoints. The both-qualified subset retains a seed only if both policies controlled their complete playable credits. Inclusion can depend on achieved gameplay, so conditional outcomes describe that subset.",
-  "coverage_audit_sha256": "080d44ee5fae5672c348187953e04014dad07db192b36eff051d26a99d1c280e",
+  "coverage_audit_sha256": "ac18fd256ca08f910ffc4c08b1c2600301fda3077956159047e6ef462c6b2807",
   "cohorts": {
     "four-game-online": {
       "original_held_sha256": "c2ae884a43ceb9b80ac4659a4da975fe54f16b3088a0eb879ee3717beaabbde5",
@@ -811,6 +811,413 @@
           "tag": "held-four-ppo2-1251274-alpha",
           "coverage": "qualified",
           "signed_evidence_sha256": "ac22a19b7efce25974433a591832c87f72a9d2de41735827365086290462e526",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        }
+      }
+    },
+    "four-game-merged-online": {
+      "original_held_sha256": "59e76e97e984c65294de40dc421dd33deda5dfecef1c6d71962b1e96a75e0058",
+      "by_rank": {
+        "Hard": {
+          "physical_pairs": 12,
+          "coverage_qualified_pairs": 11,
+          "qualified_paired_seeds": [
+            1341251,
+            1341253,
+            1341255,
+            1341257,
+            1341259,
+            1341261,
+            1341265,
+            1341267,
+            1341269,
+            1341271,
+            1341273
+          ],
+          "merged-sft": {
+            "coverage_counts": {
+              "qualified": 11,
+              "error": 1
+            },
+            "as_deployed": {
+              "n": 12,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.5,
+              "mean_terminal_spares": 0
+            },
+            "both_arms_qualified": {
+              "n": 11,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.5454545454545454,
+              "mean_terminal_spares": 0
+            }
+          },
+          "merged-ppo": {
+            "coverage_counts": {
+              "qualified": 12
+            },
+            "as_deployed": {
+              "n": 12,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.3333333333333333,
+              "mean_terminal_spares": 0
+            },
+            "both_arms_qualified": {
+              "n": 11,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.4545454545454546,
+              "mean_terminal_spares": 0
+            }
+          }
+        },
+        "Lunatic": {
+          "physical_pairs": 12,
+          "coverage_qualified_pairs": 11,
+          "qualified_paired_seeds": [
+            1341252,
+            1341254,
+            1341256,
+            1341258,
+            1341260,
+            1341264,
+            1341266,
+            1341268,
+            1341270,
+            1341272,
+            1341274
+          ],
+          "merged-sft": {
+            "coverage_counts": {
+              "qualified": 11,
+              "error": 1
+            },
+            "as_deployed": {
+              "n": 12,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.1666666666666667,
+              "mean_terminal_spares": 0
+            },
+            "both_arms_qualified": {
+              "n": 11,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.2727272727272727,
+              "mean_terminal_spares": 0
+            }
+          },
+          "merged-ppo": {
+            "coverage_counts": {
+              "qualified": 12
+            },
+            "as_deployed": {
+              "n": 12,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.3333333333333333,
+              "mean_terminal_spares": 0
+            },
+            "both_arms_qualified": {
+              "n": 11,
+              "stage2": 0,
+              "unknown_stage": 0,
+              "mean_terminal_bombs": 1.2727272727272727,
+              "mean_terminal_spares": 0
+            }
+          }
+        }
+      },
+      "original_verdicts": {
+        "f7f498a769859971f4b83f3379805933334e9b010b4ba79528ef61780000cf2e": {
+          "tag": "held-merged-ppo-1341251-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "964665019707fcfa01be28d821c707bb8f3a730cc398f077fb2b9295204c406b",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "843397ea141f8e0ced29ceaf93d418c156d1df9b44f2ddac0deca1e607c8f471": {
+          "tag": "held-merged-ppo-1341252-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "89fe3bfd1fd6cd2b309e180ca4d6a08a19d4f94560aa1ea9448bf046d84e49a0",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "d8d9ef3c90c5d64a141538fd6cc0d454c14b9312d13326f37d51456373e2d6b4": {
+          "tag": "held-merged-ppo-1341253-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "154dd1f5020b615c9ed6a78a48248c4f4ccd387c7b19e5031d986f21d97b8ceb",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "13b4364f18934c1cb43f13a1167816ad90b787dad5ef07063251d1de497988d6": {
+          "tag": "held-merged-ppo-1341254-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a0266e8c281ccbe1d2949703d39047caf5cfa58e5dd0f11cf9a4d6ca6e374c58",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "e3fec9210e06ad77810b9a040517b50badf1d1de4183b09c8e03d82b9f3955b0": {
+          "tag": "held-merged-ppo-1341255-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "5dd7b414ce0f88c9bccc202875413d17d6c359a3ee49f97f4861e7fcfc60c37d",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "ee79fc5d945986947f2c90af2ebcb9c2e154e31699d3e1db531c27e3ad93d9c1": {
+          "tag": "held-merged-ppo-1341256-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "b785c327d0c5b61a9f6822cb61b9c2782aac427b2ce8297990d3791f21e117b9",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "5ac0e71a89af1b29d7f2d59597492286336e65cab057bce11486061c2dd1e6d8": {
+          "tag": "held-merged-ppo-1341257-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a008a67a6b831f954dd3d3ff60cff35455f19fa631751035f729f56c641799d8",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "b557b085a66381d473ec37cbd49be627438f0aefb610cc9c62214376f658755e": {
+          "tag": "held-merged-ppo-1341258-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "c0348ee84d97059a3f212b3615023644090166785bde85da0364a80f031bafea",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "6ac25789504a90f18c1223dd86bdee61fa42a9eee8a31bfea55d020f3df2b718": {
+          "tag": "held-merged-ppo-1341259-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "f99de585bf9aa1d7579c5ce2911bba60ca302bb6ded25a68953d8edd89873a63",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "7c01d1f6410835c832d1783725ca9138e488435aa9d7886dbeb86d49909fcda4": {
+          "tag": "held-merged-ppo-1341260-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "92abc14f620c60843fa3990c3fc7ae3c0085e0db02fe622b79c890bbf90d6841",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "7c1153d9fb1df0ca632bd114a150936f1729e6b7c369b4cefadf45ee0a74361d": {
+          "tag": "held-merged-ppo-1341261-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "df70c67cafd1262770d0ee5966e80530602dc774d76db7c69ad25814315a3962",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "3b0876df9ab214b292e16a126463dfc2fd17da56da2c5cfca258de1e64cb225d": {
+          "tag": "held-merged-ppo-1341262-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "6aa649814d89d1b9a9854b555688a405c4c9d7482b6d73fbedaee44aebcc8368",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "55ac9b2f12f6ee422ef9a2410810863a1f1bcc2d449dddcca068575ff59afed9": {
+          "tag": "held-merged-ppo-1341263-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "8393d08ecab278e69784dc2d22e8004995540eb9e1cf6e1c516ecd1b43e0ae86",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "a9f5c8d4eb8a99ef36351f7184fcdc51509735fb5fd5e8a085e281c7fa3439a8": {
+          "tag": "held-merged-ppo-1341264-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "371c4510a82c9991aa1a0c24ba7c8f6c0129b4db82f620e2bf666d203073edfb",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "b64bdaa9950298fbd4a3a3a4c0863e7ba6aadedeb9349ece884ea8094e62f5fb": {
+          "tag": "held-merged-ppo-1341265-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "0c23e44a674599815852f3403a78c72bff66e7290cb3101d77c2825b83e53923",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "9d1d57f9d80c0eedb47e8366ba36063dc7d9198abdc36fa7183d7140875c01a7": {
+          "tag": "held-merged-ppo-1341266-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "02ecd9136b1f1636350c13e4887fd470b21dee80bb58b9143b68d669df9a773d",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "dd52ed878b3f15f57a153759cb0e57b36307893775fb7817efe89a12f466bb6b": {
+          "tag": "held-merged-ppo-1341267-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "1562492e821132be5e1dd1e0f49f75461a3065962b0faff76ddeed0568493bef",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "dd86df80383b52acc652bb3071aa7bc5930e20948df28bec68c07df2ed682a68": {
+          "tag": "held-merged-ppo-1341268-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "505b892d4694b1af574bc0969ecbeddcf72e6dc5480dbdfea2d1bfcd3cec0385",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "20d987fab2cdc9940bea3f4f1af1ae6a3b3bf165a891a3e34b1bffd4a77bffcf": {
+          "tag": "held-merged-ppo-1341269-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a81955bbee6de2a4ba7fc48af13033ccc1bf29e27eaa82672f26d272e7cb0f34",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "8a8f172a3f69cb419bf0a567e0d4f734724cb7402187ee299eed0741d585052b": {
+          "tag": "held-merged-ppo-1341270-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "cb180f9593fe4dd6dce2c367f1e8232fcd75f5474e96ccf2af04040d68550447",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "b7b0a75b19fe42022e0e33e4e4a111e95ea99d160fdf86174736159cf5803e45": {
+          "tag": "held-merged-ppo-1341271-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "c52755c4ffc1cd6f62cb59d71497b6b9f3c3d4309929e4678e764848e940f4a8",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "a5ead6da4a58b4f29132c4d4828658a8170e803d7f2dfebff414d88e0a814a6b": {
+          "tag": "held-merged-ppo-1341272-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a26e4d717984adca16647fb6c52a250a80820fe8b8fb6b450c2429db73d62b2f",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "10a6e592cdd8525862a6dded95b688137f7482b94e57d9113721b43d88bb88f9": {
+          "tag": "held-merged-ppo-1341273-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "1a8e032c6b9fc098e015de4dc3e9bba8d03d4a3fcaf827c7cb18adecba51d1b2",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "ec797c7c8ca6033c47fcfd004710cfe94f1f150eeb888da3afcc04a56da81dd8": {
+          "tag": "held-merged-ppo-1341274-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "009cd4ef19a11a64bcb9c6b7b846dcfe6b73c64a5d2ee395be0d5cf88721460c",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "41767199f49fe84ab6248c785299e459504cb743943e76c288d2e9c31a6aa04c": {
+          "tag": "held-merged-sft-1341251-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "fa8ce5961a64cb16674909fad6753943f1bec275fb01277b0cead73b3d1884c6",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "4ba4d7304979ca4c2c8bd07b7b8f45b33a8b70a717108b8fe77ae59c08df4436": {
+          "tag": "held-merged-sft-1341252-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "571d77f9418b6474bd2f3d0ae07a02054b10cc8487b17db4a7884772ddf28747",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "f57ed170225b52124237290089242d3e06aae350ae4ef648d75181cbc8eb27e5": {
+          "tag": "held-merged-sft-1341253-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "c163584d7bbad50a7a4621387b0e686f6fcfd9cf329fddbf1e0dade095be45f6",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "2b55ba4c3005c1a8439cb27bd0b14facb3b97889758c284ab5fa9e40ca2afa90": {
+          "tag": "held-merged-sft-1341254-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "5d9bb23a12d6674befef45b5b69dd1ad123dec704d5a38b161378f00abb5263d",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "a1d384a51c636dd873174d688587f53588f1dee1998ef8d3a7a60372284e8c99": {
+          "tag": "held-merged-sft-1341255-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a7527a6ca988097152292aaa1e420e3b16db8136cbc3f57155c31c73946745d9",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "0221669019f8b500e140835f27ed0bdc782445a3241d642c0e366ba9ed7d3090": {
+          "tag": "held-merged-sft-1341256-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "ccf4d0744f2a21fd2245636904ed45cc3b0627da95a1234318574a0061acf4e8",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "c6f4f37eed5417043d6c77787acc0ec4ce225ab2cd480bbcc501ad4f18d3d1a1": {
+          "tag": "held-merged-sft-1341257-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "d9436054c055c7fe74ea32a0c92fbced66c4262a3fe6c8a0865f71f01610e36c",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "fe8cd7ee4b34a8cb53816e26562dffb702571d8fcb25994d0937b828bcef74cb": {
+          "tag": "held-merged-sft-1341258-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "411860c82148eb96da634a528bd01bd27730be3d8c891d891c9110b17f159b6b",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "28808e9620b981969c76dcc833664a4d10a9b363c7d36be0dfd9f68d16710228": {
+          "tag": "held-merged-sft-1341259-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "c95a493d8d060f6d27fca255021030e967fd5f54e91038a5554d4b3505de723c",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "4146e64a26712edc6bda0f7ea771233aad6e40850841869657339fa30ab18a0b": {
+          "tag": "held-merged-sft-1341260-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "a00c1f980999d9a363bc4c9b286adfb3bae1ac36106a571a45f57c6c97108fb6",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "94a902c4f4799d9656ac92e9ef2daab16a8b63e3d59ee1e67fc8fc876c73d72b": {
+          "tag": "held-merged-sft-1341261-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "37184edb73399462aa095c84516ce9579202cda7f5674b529cc186884255fbc2",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "23ec14a48482e4e4e4ee346031cbfae3490a0d62b4cc6ae08522ff82d1e37cb6": {
+          "tag": "held-merged-sft-1341262-beta",
+          "coverage": "error",
+          "signed_evidence_sha256": "eaccb660ef986be2c72f970859945200431c0771ba0c0572a6c7a4d07ab4b46a",
+          "reason": "Original timestamped photos visibly show Nazrin, active spell timer, moving bullet field and player during an explicit release of learned input. Original stage clock progresses while reserve remains playable."
+        },
+        "9da8a95e3732ad12bb1bf0d9a0d3382bc9f6fdf0c4f09bca3ea867cfd6c72ffe": {
+          "tag": "held-merged-sft-1341263-alpha",
+          "coverage": "error",
+          "signed_evidence_sha256": "b7c70cc399030be538dacccb2ee07fc4ac94420e9a8eb5e34266184c33a734e9",
+          "reason": "Original timestamped photos visibly show Nazrin, active spell timer, moving bullet field and player during an explicit release of learned input. Original stage clock progresses while reserve remains playable."
+        },
+        "b9fba2a36202c96afa7386d450d5e730d2307c3e9057e999553b4875a4bd79f8": {
+          "tag": "held-merged-sft-1341264-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "e75602236fe494dde75a567a0e058cb07a8c7a8a8aa760f2de1b0e06243dfc2d",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "bdb4a12bbcb698263ff797fb6b63fe66480d46a98069afc1f04856b7be5479bc": {
+          "tag": "held-merged-sft-1341265-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "f930a0c0850a879e087ceb50e140e2387c1952e4a10b5f26bb8a27d52ee86a26",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "ccfc06faa2a03c046420ea265761ab1e5c3284b6de914c46765671748ace2fec": {
+          "tag": "held-merged-sft-1341266-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "db1b734785dbce4bbdb03bd240b447d0b95020d5330a8e9c0846b5ab23ef1e7b",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "fae30ac6446c795697e5ee5910acd25576e9ef03835afabb11e6edb57bdbf880": {
+          "tag": "held-merged-sft-1341267-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "ba319fa6e763f524f03295efc7ee40aec92e796d054653370fbc9879d0f44ccf",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "86eedb3da193d28dd108eec23d1d91b570f5d18c5481e24178d66f7fa30b94ec": {
+          "tag": "held-merged-sft-1341268-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "b1ad6a56e449622f4daad6ea3dbe18cfd28135f38eb62c201273096a4ff2b19f",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "1333b61b5f7945745a8bd737b5271af3b5df2f5264a8295cb946987be756e3b2": {
+          "tag": "held-merged-sft-1341269-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "b9ad237b6451f5f7d2503c3e004f642ea4bc1658460a999f5db906cd7d6805af",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "8c9527d9d97faed99b4ab1d18ffb32f743bc33d8be8cc6ef7d26526b5646aa90": {
+          "tag": "held-merged-sft-1341270-beta",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "38e744ea7e1d8fae3067768567fb421925635d6341f78a5dee6fed5f18e57a35",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "ae7d5ff77cdf772bbc1ed8ef22674507f1b4781495dc0a34d966ff84f3bfd7ab": {
+          "tag": "held-merged-sft-1341271-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "392d647a6ee04a5cd665d7a8cf9503cfc01848112dbf8ad447eae40311612226",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "6a8ef19e47ce219c7535dc08e7884ec24caa5c1ff512223e2695c416f3f868db": {
+          "tag": "held-merged-sft-1341272-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "3a8d3f8581148eb003e6d6afe49ada911f5dee519f8d34a21e3c3e32cb708b8b",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "bb8cf23696e395324542a5ce19478da72e468260240c02458d3a96f56224bd44": {
+          "tag": "held-merged-sft-1341273-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "c9a4185eafdca5d40f2bb7de880dfa69d7379bfc54bacc51397920f9a9fef725",
+          "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
+        },
+        "fa6597b0fcf74782848da6e62e353737fd34789fcb39f2d0103dd5a3a387f108": {
+          "tag": "held-merged-sft-1341274-alpha",
+          "coverage": "qualified",
+          "signed_evidence_sha256": "033d25b7ec0d416928f00e3650891c7d0a0ccaef51c8c719e6bee668bd15fc5c",
           "reason": "Every original post-action visual status was playable until the same final action observed the real terminal menu. The actor contains no intervening release branch on play. Physical input matched every action. The independent stock/stage stream and native Game Over agree."
         }
       }

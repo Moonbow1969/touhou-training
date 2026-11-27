@@ -48,8 +48,9 @@ def credit(record, manifest, model, parent, device):
     with np.load(path,allow_pickle=False) as z:
         frames=z['frames']; action=z['action'].astype(np.int64); native_lp=z['logp']; native_v=z['value'].reshape(-1)
         reward=z['reward'].reshape(-1);done=z['terminated'].reshape(-1).astype(bool)
+        eligibility=z['native_action_eligible'] if 'native_action_eligible' in z else None
     n=len(action)
-    if not n or frames.shape!=(n,112,96) or frames.dtype!=np.uint8 or not done[-1] or done[:-1].any():
+    if not n or reward.shape!=(n,) or done.shape!=(n,) or frames.shape!=(n,112,96) or frames.dtype!=np.uint8 or not done[-1] or done[:-1].any():
         raise ValueError(f'Incomplete original camera sequence: {path.name}')
     if np.any(action<0) or np.any(action>=np.asarray(WIDTHS)) or not np.isfinite(reward).all():
         raise ValueError('Illegal native action or reward')
@@ -63,10 +64,18 @@ def credit(record, manifest, model, parent, device):
     verr=float((values[:,0]-torch.from_numpy(native_v)).abs().max())
     if err>8e-4 or verr>3e-4:
         raise ValueError(f'Actual camera inference mismatch {path.name}: {err:.6f}/{verr:.6f}')
+    from scripts.th12_playable_actions import playable_length
+    length=playable_length(record['title'],eligibility,reward,record.get('postterminal_input_boundary'))
+    eligibility_audit={}
+    if length!=n:
+        eligibility_audit=dict(raw_sampled_decisions=n,reforwarded_decisions=n,playable_decisions=length,
+                               postterminal_excluded_decisions=n-length,finite_terminal_index=length-1,bootstrap_value=0.)
+        images=images[:length];actions=actions[:length];native_lp=native_lp[:length]
+        native_v=native_v[:length];reward=reward[:length];heads=[h[:length] for h in heads]
     adv=calculate_gae(reward,native_v,.999,.985)
     arrays=(images,actions,torch.from_numpy(native_lp.sum(1)),torch.from_numpy(adv),
             torch.from_numpy(native_v+adv),torch.cat(heads,dim=1))
-    return arrays,dict(title=record['title'],seed=record['seed'],steps=n,reward=float(reward.sum()),
+    return arrays,dict(title=record['title'],seed=record['seed'],steps=length,reward=float(reward.sum()),**eligibility_audit,
                        max_native_logp_error=err,max_native_value_error=verr)
 
 

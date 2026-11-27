@@ -133,12 +133,18 @@ def verify(title, f, r, trace, arm, out):
     with np.load(trace,allow_pickle=False) as z:
         y=z["action"];done=z["terminated"].astype(bool)
         if len(y)!=steps or not done[-1] or done[:-1].any():raise ValueError("Invalid full-credit action trace")
+        raw_steps=steps
+        if "native_action_eligible" in z or r.get('covered_native_events',{}).get('postterminal_input_boundary'):
+            from scripts.th12_playable_actions import verify_source
+            boundary=verify_source(title,r,trace,raw)
+            if boundary is None:raise ValueError('Missing terminal input consumption evidence')
+            steps=boundary['live_actions'];y=y[:steps]
         counts=[np.bincount(y[:,k].astype(int),minlength=n).tolist() for k,n in enumerate((9,2,2,2))]
         if "stage" in z and "native_frame" in z:
             s1=z["native_frame"][z["stage"]==1]
             if len(s1):stage1_tick=int(s1.max())
         keys=["action","logp","value","reward","terminated","seconds","stage","spares","bombs","stock_hud","onset_ns","native_frame",
-              "reward_parts","reward_components","action_utc_ms","native_input_matches","native_keys","keys","observed_keys"]
+              "reward_parts","reward_components","action_utc_ms","native_input_matches","native_keys","keys","observed_keys","native_action_eligible"]
         target=out/"action-traces"/(name+".npz");np.savez_compressed(target,**{k:z[k] for k in keys if k in z})
     outcome=r.get("outcome",r.get("native_outcome",r.get("terminal_reason",""))).lower()
     if not any(x in outcome for x in ("final_life","game_over","ranking","clear","ending")):
@@ -161,6 +167,7 @@ def verify(title, f, r, trace, arm, out):
                 stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
+                **({'raw_sampled_decisions':raw_steps,'postterminal_excluded_decisions':raw_steps-steps} if raw_steps!=steps else {}),
                 **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),
                 native_log_sha256=digest(f),original_endpoint_sha256=digest(photo),
                 endpoint=image.relative_to(out).as_posix(),action_trace=target.relative_to(out).as_posix(),
