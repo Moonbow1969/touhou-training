@@ -140,12 +140,14 @@ def anchor_loss(model, by_title, rng, device):
     return sum(F.kl_div(h.log_softmax(1),ref.softmax(1),reduction='batchmean') for h,ref in zip(current,target))
 
 
-def fit(model,data,lr,device,anchor=None,anchor_weight=0.):
+def fit(model,data,lr,device,anchor=None,anchor_weight=0.,fixed_minibatches=None):
     opt=torch.optim.Adam(model.parameters(),lr=lr,eps=1e-5)
     history=[];anchor_rng=torch.Generator().manual_seed(734119)
     for epoch in range(4):
         previous=copy.deepcopy(model.state_dict())
-        chunks=max(1,round(sum(len(v[0]) for v in data.values())/144))
+        chunks=fixed_minibatches if fixed_minibatches is not None else max(1,round(sum(len(v[0]) for v in data.values())/144))
+        if fixed_minibatches is not None and not 1<=chunks<=min(len(v[0]) for v in data.values()):
+            raise ValueError('Matched update count must supply data from each stratum in every minibatch')
         order={t:torch.tensor_split(torch.randperm(len(v[0])),chunks) for t,v in data.items()}
         losses=[];anchor_terms=[]
         for k in range(chunks):
@@ -176,7 +178,7 @@ def fit(model,data,lr,device,anchor=None,anchor_weight=0.):
                              for h,g in zip(ref.split(WIDTHS,1),current)))
         accepted=max(kl.values())<=.025
         history.append(dict(epoch=epoch+1,lr=lr,loss_per_minibatch=sum(losses)/chunks,
-                            per_title_joint_kl=kl,accepted=accepted))
+                            per_title_joint_kl=kl,accepted=accepted,optimizer_steps=chunks))
         if anchor_terms:history[-1]['mean_joint_kl_on_training_replay']=float(np.mean(anchor_terms))
         print(history[-1],flush=True)
         if not accepted:
@@ -279,7 +281,7 @@ def main():
     history=[]
     for lr in plan['learning_rates']:
         torch.manual_seed(261127)
-        attempt=fit(model,data,lr,device,anchor,a.anchor_weight);history+=attempt
+        attempt=fit(model,data,lr,device,anchor,a.anchor_weight,plan.get('matched_optimizer_minibatches'));history+=attempt
         if any(v['accepted'] for v in attempt):break
     else:raise RuntimeError('No accepted update after reducing the learning rate')
     a.out.mkdir(parents=True,exist_ok=False)
