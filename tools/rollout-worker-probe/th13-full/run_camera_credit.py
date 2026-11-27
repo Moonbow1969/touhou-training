@@ -110,7 +110,7 @@ class CameraPool(Pool):
             with tarfile.open(fileobj=io.BytesIO(blob),mode="r:gz") as archive:
                 for filename in files:(folder/filename).write_bytes(archive.extractfile(filename).read())
             rollout=folder/"rollout.npz"
-            record=pack(folder,o.role,seed,o.checkpoint,rollout)
+            record=pack(folder,o.role,seed,o.checkpoint,rollout,getattr(o,'difficulty',1))
             native=np.fromfile(folder/'steps.bin',dtype='<f4').reshape(-1,143)
             rank=getattr(o,'difficulty',1)
             if not np.all(native[:,141]==rank):

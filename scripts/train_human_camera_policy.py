@@ -1,5 +1,6 @@
 """Fit four camera-only action heads from chronologically aligned original human replays."""
 import argparse
+from collections import Counter
 import json
 from pathlib import Path
 
@@ -22,7 +23,9 @@ def camera_labels(words, focus_bit=8):
 def load_replay(path, include_eight_tick_camera=False, include_player_position=False):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
     title=str(metadata["title"]).upper()
-    focus_bit={"TH10":4,"TH12":8,"TH13":8}.get(title)
+    focus_bit={"TH10":4,"TH12":8,"TH13":8,"TH17":8}.get(title)
+    if title=="TH17" and metadata.get("focus_bit")!=focus_bit:
+        raise ValueError('TH17 replay requires an explicitly qualified native focus bit')
     if focus_bit is None or metadata.get("focus_bit",focus_bit)!=focus_bit:
         raise ValueError(f"Unverified original input schema for {title}")
     with np.load(path, allow_pickle=False) as z:
@@ -66,6 +69,8 @@ def load_replay(path, include_eight_tick_camera=False, include_player_position=F
         raise ValueError("A replay needs an identified player group")
     result={"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
             "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep],"native_frame":frame[keep]}
+    rank_name=metadata.get("difficulty") or metadata.get("mode")
+    result["difficulty"]=str(rank_name).split()[-1].title() if rank_name else None
     if include_player_position:
         if native_xy.shape!=(len(frame),2):raise ValueError('Missing native player coordinates')
         native_xy[:,0]+=192
@@ -123,6 +128,7 @@ def main():
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
+    parser.add_argument("--balance-difficulties",action="store_true",help="Sample titles and their registered Hard/Lunatic ranks uniformly before choosing a training stage.")
     parser.add_argument("--spatial-attention",action="store_true",help="Learn residual multihead attention on the spatial policy grid.")
     parser.add_argument("--cpu-replay",action="store_true",help="Keep the full image bank in host RAM and transfer only selected minibatches.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
@@ -169,14 +175,27 @@ def main():
     by_title={}
     for i,row in enumerate(train):by_title.setdefault(row["title"],[]).append(i)
     titles=sorted(by_title)
+    rank_banks={}
+    drawn=Counter()
+    if args.balance_difficulties:
+        if not args.balance_titles:parser.error('Difficulty balancing requires title balancing')
+        for title,indices in by_title.items():
+            rank_banks[title]={rank:[i for i in indices if train[i]['difficulty']==rank] for rank in ('Hard','Lunatic')}
+            if any(not bank for bank in rank_banks[title].values()) or sum(map(len,rank_banks[title].values()))!=len(indices):
+                raise ValueError('A ranked training title must contain both Hard and Lunatic and no other ranks')
     for step in range(1,args.steps+1):
         chosen=[]
         for i in range(8):
             if args.balance_titles:
-                indices=by_title[titles[int(torch.randint(len(titles),(1,)))]]
+                title=titles[int(torch.randint(len(titles),(1,)))]
+                if args.balance_difficulties:
+                    indices=rank_banks[title][('Hard','Lunatic')[int(torch.randint(2,(1,)))]]
+                else:indices=by_title[title]
                 replay=indices[int(torch.randint(len(indices),(1,)))]
             else:
                 replay=int(torch.randint(len(chunks),(1,)))
+            if args.balance_difficulties:
+                drawn[(train[replay]['title'],train[replay]['difficulty'])]+=8
             bank=chunks[replay][i%2]
             chosen.append(bank[torch.randint(len(bank),(8,),device=device)])
         ids=torch.cat(chosen)
@@ -237,7 +256,8 @@ def main():
     manifest=lambda rows:[{**{k:r[k] for k in ("name","group","title","sha256")},"decisions":len(r["action"])} for r in rows]
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
               "natural_movement_frequency":args.natural_movement_frequency,
-              "title_balanced":args.balance_titles,
+              "title_balanced":args.balance_titles,"difficulty_balanced":args.balance_difficulties,
+              "observed_sampled_windows_by_game_rank":{f'{t} {rank}':n for (t,rank),n in sorted(drawn.items())},
               "player_location_weight":args.player_location_weight,
               "spatial_attention":args.spatial_attention,
               "cpu_replay":args.cpu_replay,

@@ -1,0 +1,207 @@
+{
+  "primary": "Final observed Stage 1 native script tick on the behavior trajectory, by matched controller sampling seed within host. Native RNG is independent.",
+  "groups": {
+    "base-cnn": {
+      "credits": 12,
+      "stage2": 0,
+      "independently_corroborated_rankings": 12,
+      "unresolved_rankings": 0,
+      "mean_last_stage1_tick": 4560.833333333333,
+      "mean_first_loss_tick": 2111.8333333333335,
+      "mean_original_score": 1203709.1666666667,
+      "casts": 50,
+      "mean_terminal_bombs": 0.5833333333333334,
+      "zero_remaining_lives": 12,
+      "decisions": 12556,
+      "native_key_matches": 12556
+    },
+    "base-attention": {
+      "credits": 12,
+      "stage2": 0,
+      "independently_corroborated_rankings": 12,
+      "unresolved_rankings": 0,
+      "mean_last_stage1_tick": 3831.25,
+      "mean_first_loss_tick": 1879.25,
+      "mean_original_score": 1155314.1666666667,
+      "casts": 54,
+      "mean_terminal_bombs": 0.9166666666666666,
+      "zero_remaining_lives": 12,
+      "decisions": 10391,
+      "native_key_matches": 10389
+    },
+    "new-cnn": {
+      "credits": 12,
+      "stage2": 0,
+      "independently_corroborated_rankings": 12,
+      "unresolved_rankings": 0,
+      "mean_last_stage1_tick": 5405.083333333333,
+      "mean_first_loss_tick": 2628.4166666666665,
+      "mean_original_score": 977424.1666666666,
+      "casts": 61,
+      "mean_terminal_bombs": 0.4166666666666667,
+      "zero_remaining_lives": 12,
+      "decisions": 14975,
+      "native_key_matches": 14973
+    },
+    "new-attention": {
+      "credits": 12,
+      "stage2": 0,
+      "independently_corroborated_rankings": 12,
+      "unresolved_rankings": 0,
+      "mean_last_stage1_tick": 4254.416666666667,
+      "mean_first_loss_tick": 1738.0,
+      "mean_original_score": 1161538.3333333333,
+      "casts": 55,
+      "mean_terminal_bombs": 0.4166666666666667,
+      "zero_remaining_lives": 12,
+      "decisions": 11634,
+      "native_key_matches": 11634
+    }
+  },
+  "contrasts": {
+    "new-cnn minus base-cnn": {
+      "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+      "title": 13,
+      "arms": [
+        "base-cnn",
+        "new-cnn"
+      ],
+      "n": 12,
+      "per_seed": {
+        "base-cnn": {
+          "1141351": 4419,
+          "1141352": 4694,
+          "1141353": 4256,
+          "1141354": 4067,
+          "1141355": 4140,
+          "1141356": 6577,
+          "1141357": 4400,
+          "1141358": 4867,
+          "1141359": 5957,
+          "1141360": 4933,
+          "1141361": 2710,
+          "1141362": 3710
+        },
+        "new-cnn": {
+          "1141351": 6408,
+          "1141352": 4260,
+          "1141353": 4787,
+          "1141354": 4554,
+          "1141355": 6130,
+          "1141356": 6409,
+          "1141357": 4078,
+          "1141358": 6046,
+          "1141359": 3642,
+          "1141360": 7202,
+          "1141361": 5062,
+          "1141362": 6283
+        }
+      },
+      "mean_ticks_by_arm": {
+        "base-cnn": 4560.833333333333,
+        "new-cnn": 5405.083333333333
+      },
+      "mean_paired_change": 844.25,
+      "paired_fixed_host_bootstrap95": [
+        6.98541666666668,
+        1610.7583333333325
+      ]
+    },
+    "new-attention minus base-attention": {
+      "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+      "title": 13,
+      "arms": [
+        "base-attention",
+        "new-attention"
+      ],
+      "n": 12,
+      "per_seed": {
+        "base-attention": {
+          "1141351": 3778,
+          "1141352": 4425,
+          "1141353": 3652,
+          "1141354": 4733,
+          "1141355": 3744,
+          "1141356": 3137,
+          "1141357": 2912,
+          "1141358": 4752,
+          "1141359": 5185,
+          "1141360": 2320,
+          "1141361": 3429,
+          "1141362": 3908
+        },
+        "new-attention": {
+          "1141351": 4022,
+          "1141352": 4740,
+          "1141353": 4691,
+          "1141354": 6409,
+          "1141355": 5170,
+          "1141356": 3832,
+          "1141357": 4484,
+          "1141358": 3425,
+          "1141359": 4526,
+          "1141360": 2818,
+          "1141361": 4199,
+          "1141362": 2737
+        }
+      },
+      "mean_ticks_by_arm": {
+        "base-attention": 3831.25,
+        "new-attention": 4254.416666666667
+      },
+      "mean_paired_change": 423.1666666666667,
+      "paired_fixed_host_bootstrap95": [
+        -148.58541666666667,
+        953.6729166666661
+      ]
+    },
+    "new-attention minus new-cnn": {
+      "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+      "title": 13,
+      "arms": [
+        "new-cnn",
+        "new-attention"
+      ],
+      "n": 12,
+      "per_seed": {
+        "new-cnn": {
+          "1141351": 6408,
+          "1141352": 4260,
+          "1141353": 4787,
+          "1141354": 4554,
+          "1141355": 6130,
+          "1141356": 6409,
+          "1141357": 4078,
+          "1141358": 6046,
+          "1141359": 3642,
+          "1141360": 7202,
+          "1141361": 5062,
+          "1141362": 6283
+        },
+        "new-attention": {
+          "1141351": 4022,
+          "1141352": 4740,
+          "1141353": 4691,
+          "1141354": 6409,
+          "1141355": 5170,
+          "1141356": 3832,
+          "1141357": 4484,
+          "1141358": 3425,
+          "1141359": 4526,
+          "1141360": 2818,
+          "1141361": 4199,
+          "1141362": 2737
+        }
+      },
+      "mean_ticks_by_arm": {
+        "new-cnn": 5405.083333333333,
+        "new-attention": 4254.416666666667
+      },
+      "mean_paired_change": -1150.6666666666667,
+      "paired_fixed_host_bootstrap95": [
+        -2187.0875,
+        -116.91250000000036
+      ]
+    }
+  }
+}

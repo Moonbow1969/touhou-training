@@ -1,0 +1,24 @@
+{
+  "parent": "scaled-human-sft/cnn-new-24/policy",
+  "parent_sha256": "d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573",
+  "inventory": "scaled-human-sft/difficulty-by-title.json",
+  "base_split": "spatial-policy-study/protocol.json",
+  "expanded_manifest": "human-train-incremental/registered-024-unique-train.json",
+  "updates": 3000,
+  "batch_size": 64,
+  "existing_high_rank_windows": 64952,
+  "th17_build": "470769ddfbac9404b3fdacbb05893fae387943c22605935ea5ec6caee8388d4d",
+  "new_train_sources": [
+    {
+      "player_group": "nbs",
+      "sha256": "0faca8224682a279c180c92321a38dfd3589b93066e756b51c816cf06c82d50b",
+      "difficulty": "Hard"
+    },
+    {
+      "player_group": "makon",
+      "sha256": "0480b6faf68f9a3bade146cfb801377012d54f64ff779a16e4db5a01410dfd70",
+      "difficulty": "Lunatic"
+    }
+  ],
+  "controls": "Both arms start at the frozen 38-pilot CNN. Uniformly sample title, then Hard/Lunatic, then a stage from that cell. The three-title arm sees six game-rank groups, the fourth-title addition eight. Same number of optimizer updates, no auxiliary labels, same original six held players. The two additional TH17 Stage1 TRAIN pilots are fixed before learning. Evaluate TH17 independent held Hard and Lunatic after native camera qualification."
+}

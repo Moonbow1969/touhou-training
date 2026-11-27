@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 
-def pack(folder, role, seed, checkpoint, output):
+def pack(folder, role, seed, checkpoint, output, expected_difficulty=1):
     data = np.fromfile(folder/"steps.bin", dtype="<f4").reshape(-1,143)
     if not len(data) or not np.isfinite(data).all():
         raise ValueError("Missing, truncated or nonfinite control trace")
@@ -15,8 +15,8 @@ def pack(folder, role, seed, checkpoint, output):
         raise ValueError("Require an uninterrupted full credit with no Continue")
     if not np.array_equal(data[:,122],data[:,123]):
         raise ValueError("X11 input acknowledgement differs from sampled commands")
-    if not np.all(data[:,141] == 1) or data[0,125] != 1:
-        raise ValueError("Expected a Normal credit starting in Stage 1")
+    if expected_difficulty not in (1,2,3) or not np.all(data[:,141]==expected_difficulty) or data[0,125]!=1:
+        raise ValueError(f"Expected native rank {expected_difficulty} starting in Stage 1")
     stage2 = np.flatnonzero(data[:,126] >= 2)
     actions = data[:,110:114].astype(np.int8)
     policy_hash = hashlib.sha256(checkpoint.read_bytes()).hexdigest()

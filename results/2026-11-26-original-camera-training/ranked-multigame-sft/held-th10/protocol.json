@@ -1,0 +1,75 @@
+{
+  "title": 10,
+  "host": "Momentum",
+  "game": "TH10 official 0.02a trial",
+  "eval_seeds": {
+    "10": [
+      1191051,
+      1191052,
+      1191053,
+      1191054,
+      1191055,
+      1191056,
+      1191057,
+      1191058,
+      1191059,
+      1191060,
+      1191061,
+      1191062,
+      1191063,
+      1191064,
+      1191065,
+      1191066,
+      1191067,
+      1191068,
+      1191069,
+      1191070,
+      1191071,
+      1191072,
+      1191073,
+      1191074
+    ]
+  },
+  "rank_by_seed": {
+    "10": {
+      "1191051": 2,
+      "1191052": 3,
+      "1191053": 2,
+      "1191054": 3,
+      "1191055": 2,
+      "1191056": 3,
+      "1191057": 2,
+      "1191058": 3,
+      "1191059": 2,
+      "1191060": 3,
+      "1191061": 2,
+      "1191062": 3,
+      "1191063": 2,
+      "1191064": 3,
+      "1191065": 2,
+      "1191066": 3,
+      "1191067": 2,
+      "1191068": 3,
+      "1191069": 2,
+      "1191070": 3,
+      "1191071": 2,
+      "1191072": 3,
+      "1191073": 2,
+      "1191074": 3
+    }
+  },
+  "reference_arm": "broad38",
+  "candidate": "ranked3",
+  "arms": {
+    "ranked3": "ranked-multigame-sft/three-title/policy.ts",
+    "broad38": "scaled-human-sft/cnn-new-24/policy/policy.ts"
+  },
+  "checkpoints": {
+    "ranked3": "17f3235c5ddf24034a25bb1f72cf697cd57e6817c29ee197bb9a260de43e13a0",
+    "broad38": "d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573"
+  },
+  "primary": "Original Stage 2 arrival and native life/Power stocks at arrival and Game Over, evaluated separately at Hard or Lunatic over 12 complete paired controller seeds per rank. Source 0x472b40, continuous native difficulty and Reimu A opening independently verified.",
+  "secondary": "Original score, confirmed Spirit Strikes, first life loss, full-credit wall time and actual native inputs. Game RNG and concurrent load are uncontrolled.",
+  "seed_order": "Within each rank, broad38 plays first for the first six controller seeds and ranked3 first for the second six. Both arms run on Momentum with the same native source per rank.",
+  "training": "Frozen human-replay SFT arms, no PPO, no geometry or other control assistance; Reimu A story stock, no Continues."
+}
