@@ -24,6 +24,18 @@ def main():
         if key in observed:raise ValueError(f'Duplicate physical training receipt {key}')
         observed[key]=digest(file)
         counts[t,plan['rank_by_seed'][str(t)][str(seed)]]+=1
+    grade=root/'th12-train-qualified-coverage.json'
+    grades=[]
+    if grade.is_file():
+        grades=json.loads(grade.read_bytes())['credits']
+        if {v['seed'] for v in grades}!=set(plan['train_seeds']['12']):raise ValueError('Incomplete TH12 grade roster')
+        for v in grades:
+            key=12,v['seed']
+            if digest(root.parent/v['receipt_path'])!=v['receipt_sha256']:raise ValueError('Unverified TH12 physical endpoint')
+            if key in observed:
+                if observed[key]!=v['receipt_sha256']:raise ValueError('Mismatched TH12 receipts')
+            else:
+                observed[key]=v['receipt_sha256'];counts[12,v['rank']]+=1
     print('Game   Hard   Lunatic   registered starts')
     for title,slots in plan['train_seeds'].items():
         t=int(title)
@@ -35,10 +47,8 @@ def main():
         print(f"Verified fit: {len(result['credits'])} credits, {result['steps']:,} playable decisions")
     else:
         print('PPO fit pending. The table counts readable full-game receipts before training selection.')
-    grade=root/'th12-train-qualified-coverage.json'
-    if grade.is_file():
-        grades=Counter(v['coverage'] for v in json.loads(grade.read_bytes())['credits'])
-        print('TH12 controller coverage:',dict(grades))
+    if grades:
+        print('TH12 controller coverage:',dict(Counter(v['coverage'] for v in grades)))
 
 
 if __name__=='__main__':main()

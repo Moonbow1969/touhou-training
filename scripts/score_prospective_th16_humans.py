@@ -28,9 +28,15 @@ def main():
          enrollment='Preserve all four registered distinct players across Hard and Lunatic and identify exclusions with source evidence. No held data goes into training. Evaluate only after completion of the entire roster.',
          models=list(arms),outcomes='For each player report overall movements, movement starts and turns, movement log loss, focus, shooting and Bomb. Direction figures are pooled over native four-tick windows. This human screen test supplies no campaign reach rate. The three models produce four common action heads.'))
     dest.mkdir(exist_ok=True);shutil.copy2(design,dest/design.name)
-    wait(roster);wait(final);wait(dest/'matched-inputs.json')
+    wait(roster)
+    planned=read(roster)['sources']
+    roster_binding=dict(original_roster=digest(roster),replays=sorted(v['replay_sha256'] for v in planned))
+    if len(set(roster_binding['replays']))!=4:raise ValueError('Four distinct original replay identities required')
+    freeze(dest/'prospective-th16-roster.json',roster_binding)
+    wait(final);wait(dest/'matched-inputs.json')
     results=read(final);rows=results['qualified'];excluded=results['excluded']
-    if len(rows)+len(excluded)!=4 or results['split']!='held' or any(v['split']!='held' for v in rows):
+    if (len(rows)+len(excluded)!=4 or results['split']!='held' or any(v['split']!='held' for v in rows)
+        or sorted(v['replay_sha256'] for v in rows+excluded)!=roster_binding['replays'] or digest(roster)!=roster_binding['original_roster']):
         raise ValueError('Unexpected prospective allocation')
     paths=[d/v['path'] for v in rows]
     if any(digest(f)!=v['archive_sha256'] for f,v in zip(paths,rows)):raise ValueError('Changed held cameras')

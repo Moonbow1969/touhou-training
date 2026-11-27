@@ -1,0 +1,1283 @@
+{
+  "design": "Exploratory original Stage 1 action frequencies. Equal weight per physical game. Compute a common first 256 native ticks after first actuation and the whole observed stage separately. Exclude missing/conflicting native key observations. No causal attribution to any individual action.",
+  "cells": [
+    {
+      "rank": 2,
+      "arm": "epoch-01",
+      "credits": 8,
+      "first_256": {
+        "unweighted_game_means": {
+          "moving": 0.706204044117647,
+          "horizontal": 0.5135416666666667,
+          "vertical": 0.46071537990196076,
+          "focus": 0.39070542279411763,
+          "shoot": 0.9701727175245098,
+          "bomb_key_down": 0.00978094362745098,
+          "move_change_per_tick": 0.17749166860420057
+        },
+        "original_readable_ticks": 2045,
+        "possible_ticks": 2048
+      },
+      "whole_observed_stage1": {
+        "unweighted_game_means": {
+          "moving": 0.7818887443563106,
+          "horizontal": 0.5525227137850245,
+          "vertical": 0.5073884324363378,
+          "focus": 0.3594804165251513,
+          "shoot": 0.9649599478824995,
+          "bomb_key_down": 0.01584077438653454,
+          "move_change_per_tick": 0.18276885414284824
+        },
+        "original_readable_ticks": 20632,
+        "possible_ticks": 20767
+      }
+    },
+    {
+      "rank": 2,
+      "arm": "epoch-20",
+      "credits": 8,
+      "first_256": {
+        "unweighted_game_means": {
+          "moving": 0.7308409353529798,
+          "horizontal": 0.4860473990900494,
+          "vertical": 0.497558865143006,
+          "focus": 0.12992679324436468,
+          "shoot": 0.9500205655589007,
+          "bomb_key_down": 0.01126504120348927,
+          "move_change_per_tick": 0.16622121141104032
+        },
+        "original_readable_ticks": 2042,
+        "possible_ticks": 2048
+      },
+      "whole_observed_stage1": {
+        "unweighted_game_means": {
+          "moving": 0.8046663338751263,
+          "horizontal": 0.5337525013514738,
+          "vertical": 0.5585284960337156,
+          "focus": 0.21101314439093155,
+          "shoot": 0.948682277293381,
+          "bomb_key_down": 0.01626652362254095,
+          "move_change_per_tick": 0.1779927157099879
+        },
+        "original_readable_ticks": 17757,
+        "possible_ticks": 17849
+      }
+    },
+    {
+      "rank": 3,
+      "arm": "epoch-01",
+      "credits": 8,
+      "first_256": {
+        "unweighted_game_means": {
+          "moving": 0.7404599306229234,
+          "horizontal": 0.481935530381477,
+          "vertical": 0.5097762928587521,
+          "focus": 0.3612058089037787,
+          "shoot": 0.9588612200129396,
+          "bomb_key_down": 0.016221269816605696,
+          "move_change_per_tick": 0.18176934328335456
+        },
+        "original_readable_ticks": 2038,
+        "possible_ticks": 2048
+      },
+      "whole_observed_stage1": {
+        "unweighted_game_means": {
+          "moving": 0.7983206143975745,
+          "horizontal": 0.5433496345296757,
+          "vertical": 0.5288638298015472,
+          "focus": 0.32444787287512467,
+          "shoot": 0.9500401418795961,
+          "bomb_key_down": 0.01622990489141402,
+          "move_change_per_tick": 0.18364133110173528
+        },
+        "original_readable_ticks": 16276,
+        "possible_ticks": 16376
+      }
+    },
+    {
+      "rank": 3,
+      "arm": "epoch-20",
+      "credits": 8,
+      "first_256": {
+        "unweighted_game_means": {
+          "moving": 0.7437463843929293,
+          "horizontal": 0.5032130824058152,
+          "vertical": 0.5636589317953361,
+          "focus": 0.14309364155721888,
+          "shoot": 0.9530322959116189,
+          "bomb_key_down": 0.009853753491764263,
+          "move_change_per_tick": 0.1685973606178437
+        },
+        "original_readable_ticks": 2030,
+        "possible_ticks": 2048
+      },
+      "whole_observed_stage1": {
+        "unweighted_game_means": {
+          "moving": 0.8164210999986387,
+          "horizontal": 0.5607317544204904,
+          "vertical": 0.5643707143506741,
+          "focus": 0.19047827059875103,
+          "shoot": 0.9431913865834801,
+          "bomb_key_down": 0.0193141974556371,
+          "move_change_per_tick": 0.18370426321916195
+        },
+        "original_readable_ticks": 14351,
+        "possible_ticks": 14426
+      }
+    }
+  ],
+  "games": [
+    {
+      "seed": 1821251,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "4bfad92cd68240daf638a3cdd1b84ef0a37688170ac52ceff66f5494b01373f4",
+      "clock_sha256": "50cb291a8dd603eee19565d783ff817950623db11c999b863332c9e511bf7d1d",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.8125,
+          "horizontal": 0.546875,
+          "vertical": 0.53125,
+          "focus": 0.09375,
+          "shoot": 0.890625,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.18823529411764706
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2971,
+        "observed_unambiguous_ticks": 2971,
+        "keys": {
+          "moving": 0.8209357118815214,
+          "horizontal": 0.5745540222147425,
+          "vertical": 0.5452709525412319,
+          "focus": 0.20329855267586672,
+          "shoot": 0.9515314708852238,
+          "bomb_key_down": 0.013463480309660047,
+          "move_change_per_tick": 0.17777777777777778
+        }
+      }
+    },
+    {
+      "seed": 1821251,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "d99e601b0fcac02b023537436a75343f88c9347569f8ecebea479e42e1a5d66b",
+      "clock_sha256": "1d277cb87cfdd39b6ba0fd0d06104822636ab72a80177b0f08894e102b2411e0",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.69140625,
+          "horizontal": 0.34375,
+          "vertical": 0.51953125,
+          "focus": 0.390625,
+          "shoot": 0.92578125,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.20392156862745098
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 3410,
+        "observed_unambiguous_ticks": 3410,
+        "keys": {
+          "moving": 0.8208211143695014,
+          "horizontal": 0.5621700879765396,
+          "vertical": 0.5407624633431085,
+          "focus": 0.3143695014662757,
+          "shoot": 0.9513196480938416,
+          "bomb_key_down": 0.01407624633431085,
+          "move_change_per_tick": 0.18509826928718098
+        }
+      }
+    },
+    {
+      "seed": 1821252,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": false,
+      "source_sha256": "b58f84c3044e87830f9a18fbac31cbd5278530a9601935c013bdb9eae4150a44",
+      "clock_sha256": "80c0e79c1ac0c4a14c19fc175cacf262713d9a14a3e6a2d37c1638055d4d2f6d",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.6875,
+          "horizontal": 0.375,
+          "vertical": 0.609375,
+          "focus": 0.265625,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.17254901960784313
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1352,
+        "observed_unambiguous_ticks": 1351,
+        "keys": {
+          "moving": 0.8201332346410066,
+          "horizontal": 0.4685418208734271,
+          "vertical": 0.6062176165803109,
+          "focus": 0.25166543301258326,
+          "shoot": 0.920059215396003,
+          "bomb_key_down": 0.014803849000740192,
+          "move_change_per_tick": 0.18235730170496664
+        }
+      }
+    },
+    {
+      "seed": 1821252,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "4cb9f058abb537a0e529620b8a0495b73e56d15f273f32fa1f8ae634ba2db112",
+      "clock_sha256": "7fd3e0860930f3d319781446cc851d2e222eafa0a8297ab85154d087a286d8ac",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.75,
+          "horizontal": 0.46875,
+          "vertical": 0.546875,
+          "focus": 0.34375,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.16470588235294117
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1889,
+        "observed_unambiguous_ticks": 1888,
+        "keys": {
+          "moving": 0.864406779661017,
+          "horizontal": 0.6048728813559322,
+          "vertical": 0.5789194915254238,
+          "focus": 0.3342161016949153,
+          "shoot": 0.9284957627118644,
+          "bomb_key_down": 0.014830508474576272,
+          "move_change_per_tick": 0.18928950159066807
+        }
+      }
+    },
+    {
+      "seed": 1821253,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "02e99160f0857cc26f34d0a9e02ed893f7c4e553a92ce102bde9f848b431a931",
+      "clock_sha256": "8d02c85d50aeffcc7319209904dc1f4a88e0c254c94f5c9e509d6b3c666d51f9",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.671875,
+          "horizontal": 0.515625,
+          "vertical": 0.484375,
+          "focus": 0.234375,
+          "shoot": 0.984375,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.21176470588235294
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1925,
+        "observed_unambiguous_ticks": 1925,
+        "keys": {
+          "moving": 0.7833766233766234,
+          "horizontal": 0.5797402597402598,
+          "vertical": 0.48,
+          "focus": 0.3054545454545455,
+          "shoot": 0.9542857142857143,
+          "bomb_key_down": 0.012467532467532468,
+          "move_change_per_tick": 0.17671517671517672
+        }
+      }
+    },
+    {
+      "seed": 1821253,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "92d30d344d87fe687c3df1d533921d7b27484e5f1b9c922adee7175d544555da",
+      "clock_sha256": "b08fe620b10e7c8516f01da7993c597d0f007c1b1d145e9e629830f064140d3c",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.75,
+          "horizontal": 0.609375,
+          "vertical": 0.46875,
+          "focus": 0.21875,
+          "shoot": 0.984375,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.19607843137254902
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1698,
+        "observed_unambiguous_ticks": 1698,
+        "keys": {
+          "moving": 0.8515901060070671,
+          "horizontal": 0.5959952885747939,
+          "vertical": 0.555359246171967,
+          "focus": 0.2055359246171967,
+          "shoot": 0.9263839811542992,
+          "bomb_key_down": 0.02120141342756184,
+          "move_change_per_tick": 0.19505008839127871
+        }
+      }
+    },
+    {
+      "seed": 1821254,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "a0304054ea647fa39e8b02436780f323e6dfaf7c6e07b51eeb6324d0fe78fdac",
+      "clock_sha256": "39d56fe0cde90366bed942ad491d539ec4eeecd62996e6fd3ee3b3bf6092fbbd",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.84375,
+          "horizontal": 0.5,
+          "vertical": 0.609375,
+          "focus": 0.09375,
+          "shoot": 0.9375,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.17647058823529413
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1614,
+        "observed_unambiguous_ticks": 1614,
+        "keys": {
+          "moving": 0.832094175960347,
+          "horizontal": 0.5768277571251549,
+          "vertical": 0.5762081784386617,
+          "focus": 0.1449814126394052,
+          "shoot": 0.9479553903345725,
+          "bomb_key_down": 0.01982651796778191,
+          "move_change_per_tick": 0.19342839429634223
+        }
+      }
+    },
+    {
+      "seed": 1821254,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "67113b745de66131363286268ae535072a1315464fab252aeea448a3dd5f9d4c",
+      "clock_sha256": "839c8966831585119d688fbbfa47b273486f31e41a4cf3561ec53af98751d052",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.640625,
+          "horizontal": 0.453125,
+          "vertical": 0.453125,
+          "focus": 0.43359375,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.16470588235294117
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1880,
+        "observed_unambiguous_ticks": 1880,
+        "keys": {
+          "moving": 0.7425531914893617,
+          "horizontal": 0.4957446808510638,
+          "vertical": 0.5,
+          "focus": 0.35904255319148937,
+          "shoot": 0.9404255319148936,
+          "bomb_key_down": 0.014893617021276596,
+          "move_change_per_tick": 0.18520489622139436
+        }
+      }
+    },
+    {
+      "seed": 1821255,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": false,
+      "source_sha256": "1cfffb8d5b0f529293727db4d65cee7a88b7f799588d771793cdb0bde5b3a2b1",
+      "clock_sha256": "787067fe8ff9645d0bb5512f50f0cf8ec7b946e2d4f03cc2603cfcb6c497ef26",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 254,
+        "keys": {
+          "moving": 0.905511811023622,
+          "horizontal": 0.7204724409448819,
+          "vertical": 0.5551181102362205,
+          "focus": 0.32677165354330706,
+          "shoot": 0.9803149606299213,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.18326693227091634
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1451,
+        "observed_unambiguous_ticks": 1429,
+        "keys": {
+          "moving": 0.7662701189643107,
+          "horizontal": 0.4807557732680196,
+          "vertical": 0.5598320503848845,
+          "focus": 0.20293911826452066,
+          "shoot": 0.9426172148355494,
+          "bomb_key_down": 0.012596221133659902,
+          "move_change_per_tick": 0.1816891412349184
+        }
+      }
+    },
+    {
+      "seed": 1821255,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "9f165f78620d7069a2ce1a2ce7fe10d569dd3b835e13280fa9f2965ef89af065",
+      "clock_sha256": "60ae0de77dd5f6370aba0cbb2eb5725d3943a2451f16cebb17d510136a9a63a0",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.6784313725490196,
+          "horizontal": 0.5098039215686274,
+          "vertical": 0.47058823529411764,
+          "focus": 0.3764705882352941,
+          "shoot": 0.9607843137254902,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.17391304347826086
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1823,
+        "observed_unambiguous_ticks": 1810,
+        "keys": {
+          "moving": 0.7585635359116022,
+          "horizontal": 0.5662983425414365,
+          "vertical": 0.5027624309392266,
+          "focus": 0.32541436464088397,
+          "shoot": 0.9574585635359116,
+          "bomb_key_down": 0.022651933701657457,
+          "move_change_per_tick": 0.1835372636262514
+        }
+      }
+    },
+    {
+      "seed": 1821256,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "ade11a721bc0deb27ab2a39665774243fe3859641be6c77695f17312753fbce8",
+      "clock_sha256": "11a34913e5d418731f985970314b7150179f13be49ba832d91904470b7ad5d0b",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 254,
+        "keys": {
+          "moving": 0.7519685039370079,
+          "horizontal": 0.4881889763779528,
+          "vertical": 0.5787401574803149,
+          "focus": 0.35039370078740156,
+          "shoot": 0.937007874015748,
+          "bomb_key_down": 0.031496062992125984,
+          "move_change_per_tick": 0.1553784860557769
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1846,
+        "observed_unambiguous_ticks": 1834,
+        "keys": {
+          "moving": 0.781897491821156,
+          "horizontal": 0.5479825517993457,
+          "vertical": 0.5005452562704471,
+          "focus": 0.29770992366412213,
+          "shoot": 0.9438386041439476,
+          "bomb_key_down": 0.021810250817884406,
+          "move_change_per_tick": 0.1706915477497256
+        }
+      }
+    },
+    {
+      "seed": 1821256,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "883d8e1adf27fd98a50628f92c00ba38fa1859b9f36ca0974daa9cc350e3f554",
+      "clock_sha256": "880c358a03430455342884f5f60255334023b53bc06e0265e1e004a5e7710077",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 254,
+        "keys": {
+          "moving": 0.7519685039370079,
+          "horizontal": 0.484251968503937,
+          "vertical": 0.6141732283464567,
+          "focus": 0.16141732283464566,
+          "shoot": 0.9409448818897638,
+          "bomb_key_down": 0.011811023622047244,
+          "move_change_per_tick": 0.15873015873015872
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1699,
+        "observed_unambiguous_ticks": 1690,
+        "keys": {
+          "moving": 0.8041420118343195,
+          "horizontal": 0.5727810650887574,
+          "vertical": 0.5473372781065089,
+          "focus": 0.1727810650887574,
+          "shoot": 0.9443786982248521,
+          "bomb_key_down": 0.026627218934911243,
+          "move_change_per_tick": 0.18441403926234384
+        }
+      }
+    },
+    {
+      "seed": 1821257,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "e37be40e26e21b2724dc5f3b3373da60c2c3d3b35f9897d4440f274afd3ff54a",
+      "clock_sha256": "af5394ad1934ac05387532d8e79e697520cc5b9cac41fdf5a5e39fd12db2fd1d",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 254,
+        "keys": {
+          "moving": 0.7795275590551181,
+          "horizontal": 0.4763779527559055,
+          "vertical": 0.515748031496063,
+          "focus": 0.15748031496062992,
+          "shoot": 0.889763779527559,
+          "bomb_key_down": 0.027559055118110236,
+          "move_change_per_tick": 0.20318725099601595
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2022,
+        "observed_unambiguous_ticks": 2008,
+        "keys": {
+          "moving": 0.8047808764940239,
+          "horizontal": 0.5841633466135459,
+          "vertical": 0.5413346613545816,
+          "focus": 0.19671314741035856,
+          "shoot": 0.9417330677290837,
+          "bomb_key_down": 0.0199203187250996,
+          "move_change_per_tick": 0.18655967903711135
+        }
+      }
+    },
+    {
+      "seed": 1821257,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "df3e40107f1d5d9578ea107ea4a04e05a7b4cff2587faedbcb899cf8521b2772",
+      "clock_sha256": "09eadd2b3f44fc5063d7eb4e85fc6098b09425929ea70a16939286838eaa5775",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.7803921568627451,
+          "horizontal": 0.5411764705882353,
+          "vertical": 0.49411764705882355,
+          "focus": 0.23529411764705882,
+          "shoot": 0.9686274509803922,
+          "bomb_key_down": 0.03137254901960784,
+          "move_change_per_tick": 0.20948616600790515
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 3959,
+        "observed_unambiguous_ticks": 3887,
+        "keys": {
+          "moving": 0.7090301003344481,
+          "horizontal": 0.4653974787754052,
+          "vertical": 0.46153846153846156,
+          "focus": 0.49961409827630565,
+          "shoot": 0.968356058657062,
+          "bomb_key_down": 0.020838693079495756,
+          "move_change_per_tick": 0.17516339869281045
+        }
+      }
+    },
+    {
+      "seed": 1821258,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "2aa02451f71c065fe52c03941cf2300c68dcfb4fef2542108a8eb426b8a804af",
+      "clock_sha256": "802e8a0db8e8de41e3c3d3921f64d5843e4dc335671fed1c85fca215acb1f25a",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 253,
+        "keys": {
+          "moving": 0.616600790513834,
+          "horizontal": 0.33992094861660077,
+          "vertical": 0.48221343873517786,
+          "focus": 0.1225296442687747,
+          "shoot": 0.9525691699604744,
+          "bomb_key_down": 0.011857707509881422,
+          "move_change_per_tick": 0.14056224899598393
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1888,
+        "observed_unambiguous_ticks": 1858,
+        "keys": {
+          "moving": 0.7992465016146394,
+          "horizontal": 0.5177610333692142,
+          "vertical": 0.5705059203444564,
+          "focus": 0.15285252960172227,
+          "shoot": 0.9407965554359526,
+          "bomb_key_down": 0.02099031216361679,
+          "move_change_per_tick": 0.18534718425369054
+        }
+      }
+    },
+    {
+      "seed": 1821258,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "a485255ae2676167d41879417e32865dfbf280b5a11084f97a94f5e9c830b896",
+      "clock_sha256": "ae4152fdf45be4956283c96c158467325d14ce1268a87188c9560f85946930eb",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.73828125,
+          "horizontal": 0.44140625,
+          "vertical": 0.45703125,
+          "focus": 0.24609375,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.03125,
+          "move_change_per_tick": 0.17254901960784313
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1683,
+        "observed_unambiguous_ticks": 1674,
+        "keys": {
+          "moving": 0.8219832735961768,
+          "horizontal": 0.5507765830346476,
+          "vertical": 0.5448028673835126,
+          "focus": 0.31780167264038234,
+          "shoot": 0.956989247311828,
+          "bomb_key_down": 0.023297491039426525,
+          "move_change_per_tick": 0.20072115384615385
+        }
+      }
+    },
+    {
+      "seed": 1821259,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "20692abdf02f492a89816963a066c1fd2c69ea4b2ea64412958a69df49911d87",
+      "clock_sha256": "597ec2318fff1b21bec1ad4abfc26feb20b67e43b3120d1a06a8b120d48dfef6",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.75,
+          "horizontal": 0.578125,
+          "vertical": 0.421875,
+          "focus": 0.296875,
+          "shoot": 0.96875,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.16470588235294117
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2688,
+        "observed_unambiguous_ticks": 2688,
+        "keys": {
+          "moving": 0.8125,
+          "horizontal": 0.5569196428571429,
+          "vertical": 0.5267857142857143,
+          "focus": 0.34188988095238093,
+          "shoot": 0.9702380952380952,
+          "bomb_key_down": 0.017857142857142856,
+          "move_change_per_tick": 0.18496464458503908
+        }
+      }
+    },
+    {
+      "seed": 1821259,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "a3a3ecd86a3e3e5165410a4b55e8fcf79e713971cf0a90450c9bf83cbd60a873",
+      "clock_sha256": "c29d09ecfaddfd22cf12bbcf8459f602c92e5617adfd7f871d9a4505d331c348",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.640625,
+          "horizontal": 0.265625,
+          "vertical": 0.578125,
+          "focus": 0.03125,
+          "shoot": 0.96875,
+          "bomb_key_down": 0.015625,
+          "move_change_per_tick": 0.13333333333333333
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1809,
+        "observed_unambiguous_ticks": 1809,
+        "keys": {
+          "moving": 0.8004422332780542,
+          "horizontal": 0.5218352681039248,
+          "vertical": 0.5616362631288004,
+          "focus": 0.23659480375898287,
+          "shoot": 0.966832504145937,
+          "bomb_key_down": 0.013266998341625208,
+          "move_change_per_tick": 0.16758849557522124
+        }
+      }
+    },
+    {
+      "seed": 1821260,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "42004211022b63b53b32c6cb8c99a7b524662b335f3b15387f5b658d6a255d25",
+      "clock_sha256": "02931aa94be381883af43ee1b248a6d1a8c9f7c06180fd3b2496e2a6193551c6",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.7176470588235294,
+          "horizontal": 0.48627450980392156,
+          "vertical": 0.43529411764705883,
+          "focus": 0.25098039215686274,
+          "shoot": 0.9372549019607843,
+          "bomb_key_down": 0.03137254901960784,
+          "move_change_per_tick": 0.2015810276679842
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1626,
+        "observed_unambiguous_ticks": 1625,
+        "keys": {
+          "moving": 0.7686153846153846,
+          "horizontal": 0.5193846153846153,
+          "vertical": 0.5046153846153846,
+          "focus": 0.24061538461538462,
+          "shoot": 0.963076923076923,
+          "bomb_key_down": 0.014769230769230769,
+          "move_change_per_tick": 0.17375231053604437
+        }
+      }
+    },
+    {
+      "seed": 1821260,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "9c4cda0a88b1a7e1b6e8732377c8bde435629b37355fe0ae0a9b2eb3b076773d",
+      "clock_sha256": "4ceace48e13330ce4474d86a3b510e660e3670165a47bd653a9ff29e088f1deb",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.78125,
+          "horizontal": 0.578125,
+          "vertical": 0.65625,
+          "focus": 0.078125,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.03125,
+          "move_change_per_tick": 0.19215686274509805
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1547,
+        "observed_unambiguous_ticks": 1547,
+        "keys": {
+          "moving": 0.7879767291531997,
+          "horizontal": 0.6069812540400775,
+          "vertical": 0.5171299288946348,
+          "focus": 0.18099547511312217,
+          "shoot": 0.9534583063994829,
+          "bomb_key_down": 0.015513897866839044,
+          "move_change_per_tick": 0.18240620957309184
+        }
+      }
+    },
+    {
+      "seed": 1821261,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "5fd4c3db8bc77582862fcb1687093c165c927b25f7ca9e16465b10b02bcedeb6",
+      "clock_sha256": "9ae94129e95a95b71560d86c351c20c569d68d524b8721a2100fcab891677779",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.56640625,
+          "horizontal": 0.23828125,
+          "vertical": 0.47265625,
+          "focus": 0.08984375,
+          "shoot": 0.984375,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.15294117647058825
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1476,
+        "observed_unambiguous_ticks": 1475,
+        "keys": {
+          "moving": 0.7891525423728813,
+          "horizontal": 0.471864406779661,
+          "vertical": 0.5911864406779661,
+          "focus": 0.14372881355932204,
+          "shoot": 0.9423728813559322,
+          "bomb_key_down": 0.02711864406779661,
+          "move_change_per_tick": 0.18058384249830278
+        }
+      }
+    },
+    {
+      "seed": 1821261,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "b8780305039fcf12e8f57e4cf04c68219100eb892a1ffafcf8465caefad8b433",
+      "clock_sha256": "a902bd35ebf8837afb1b956435ba10ab2c2329553f2eb46722784244824cc740",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.6875,
+          "horizontal": 0.53125,
+          "vertical": 0.390625,
+          "focus": 0.359375,
+          "shoot": 1.0,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.15294117647058825
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1775,
+        "observed_unambiguous_ticks": 1775,
+        "keys": {
+          "moving": 0.84,
+          "horizontal": 0.5814084507042253,
+          "vertical": 0.5808450704225352,
+          "focus": 0.3273239436619718,
+          "shoot": 0.9661971830985916,
+          "bomb_key_down": 0.022535211267605635,
+          "move_change_per_tick": 0.18207440811724915
+        }
+      }
+    },
+    {
+      "seed": 1821262,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "d7da89a009be3eacc54da82303afc900c8f9c5d5abfa85f27227cee7e577e6f4",
+      "clock_sha256": "d3a6cb2c375739a9036808a4736f45b37ce7fd31ad901ea4be365a5dc016cd28",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.8125,
+          "horizontal": 0.5,
+          "vertical": 0.59375,
+          "focus": 0.484375,
+          "shoot": 0.953125,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.16470588235294117
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1443,
+        "observed_unambiguous_ticks": 1443,
+        "keys": {
+          "moving": 0.7900207900207901,
+          "horizontal": 0.5128205128205128,
+          "vertical": 0.5183645183645184,
+          "focus": 0.4067914067914068,
+          "shoot": 0.9611919611919612,
+          "bomb_key_down": 0.002772002772002772,
+          "move_change_per_tick": 0.1622746185852982
+        }
+      }
+    },
+    {
+      "seed": 1821262,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "complete_control": false,
+      "source_sha256": "7956c433c2f5b90c71c8bb25f02e0a0bd8a990f55d99fa45c2dd9b956caf0f24",
+      "clock_sha256": "a7af01295f3ed0fe11e81d25ae9dd9c8870dd722957cdf0e3278631b6df5b4b0",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.76171875,
+          "horizontal": 0.65234375,
+          "vertical": 0.48046875,
+          "focus": 0.140625,
+          "shoot": 0.984375,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.16470588235294117
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2068,
+        "observed_unambiguous_ticks": 2068,
+        "keys": {
+          "moving": 0.8389748549323017,
+          "horizontal": 0.6146034816247582,
+          "vertical": 0.562862669245648,
+          "focus": 0.2538684719535783,
+          "shoot": 0.97678916827853,
+          "bomb_key_down": 0.013539651837524178,
+          "move_change_per_tick": 0.1761006289308176
+        }
+      }
+    },
+    {
+      "seed": 1821263,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "83cd32dee9476996c10e988efa81692e2065b91263d35911041cdbad51f38b08",
+      "clock_sha256": "f99d956ca202beaedbcf98d7b018d319eeb5859567f9f6c07a4193f4de750760",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 256,
+        "keys": {
+          "moving": 0.54296875,
+          "horizontal": 0.40625,
+          "vertical": 0.32421875,
+          "focus": 0.6796875,
+          "shoot": 0.96875,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.1450980392156863
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 3238,
+        "observed_unambiguous_ticks": 3211,
+        "keys": {
+          "moving": 0.7390221114917471,
+          "horizontal": 0.5256929305512301,
+          "vertical": 0.47991279975085643,
+          "focus": 0.36250389286826534,
+          "shoot": 0.9772656493304267,
+          "bomb_key_down": 0.012145748987854251,
+          "move_change_per_tick": 0.19058084772370487
+        }
+      }
+    },
+    {
+      "seed": 1821263,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "80561f147f4814a9b498e9b62430a340d3ec6e565eca13da0d7d814914086ce0",
+      "clock_sha256": "8e770188998b892f40a4b85c69dbe29e246b86214e23b78c220242db8979829b",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.6745098039215687,
+          "horizontal": 0.47058823529411764,
+          "vertical": 0.40784313725490196,
+          "focus": 0.047058823529411764,
+          "shoot": 0.9333333333333333,
+          "bomb_key_down": 0.01568627450980392,
+          "move_change_per_tick": 0.15019762845849802
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2493,
+        "observed_unambiguous_ticks": 2481,
+        "keys": {
+          "moving": 0.7827488915759774,
+          "horizontal": 0.5364772269246272,
+          "vertical": 0.5014107214832729,
+          "focus": 0.19306731156791615,
+          "shoot": 0.9653365578395808,
+          "bomb_key_down": 0.013301088270858524,
+          "move_change_per_tick": 0.1705834683954619
+        }
+      }
+    },
+    {
+      "seed": 1821264,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "32282733416a192e62ab36c6bfbe5f0fb90265683e78ff183de4c611ae3dacb5",
+      "clock_sha256": "e9180ce91eb4984e70eb7a84c80a0c9366873dbb5d3d5d68370e7d4834acbd6d",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 245,
+        "keys": {
+          "moving": 0.8693877551020408,
+          "horizontal": 0.6,
+          "vertical": 0.6204081632653061,
+          "focus": 0.2,
+          "shoot": 0.9183673469387755,
+          "bomb_key_down": 0.00816326530612245,
+          "move_change_per_tick": 0.18025751072961374
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2291,
+        "observed_unambiguous_ticks": 2268,
+        "keys": {
+          "moving": 0.8421516754850088,
+          "horizontal": 0.5529100529100529,
+          "vertical": 0.58994708994709,
+          "focus": 0.195326278659612,
+          "shoot": 0.9188712522045855,
+          "bomb_key_down": 0.01763668430335097,
+          "move_change_per_tick": 0.1870824053452116
+        }
+      }
+    },
+    {
+      "seed": 1821264,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "complete_control": true,
+      "source_sha256": "0fd68fc594ab13f82c256deb08a8ded5eccc34bf2dcc5a2b1a2a60c8ca3fd352",
+      "clock_sha256": "09e5ec7ef4a97a4e00b87da948c78a470101e4d9e1ed0d8b318d87192c68e62d",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 252,
+        "keys": {
+          "moving": 0.7023809523809523,
+          "horizontal": 0.4880952380952381,
+          "vertical": 0.3888888888888889,
+          "focus": 0.45634920634920634,
+          "shoot": 0.9841269841269841,
+          "bomb_key_down": 0.01984126984126984,
+          "move_change_per_tick": 0.20161290322580644
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 2318,
+        "observed_unambiguous_ticks": 2264,
+        "keys": {
+          "moving": 0.8087455830388692,
+          "horizontal": 0.5923144876325088,
+          "vertical": 0.48851590106007065,
+          "focus": 0.25309187279151946,
+          "shoot": 0.9368374558303887,
+          "bomb_key_down": 0.018109540636042403,
+          "move_change_per_tick": 0.19378098242451555
+        }
+      }
+    },
+    {
+      "seed": 1821265,
+      "arm": "epoch-01",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "98264a7b88932faf1bcc54ca6b0427d48b80adae24cb650ef4003ba375b61f0c",
+      "clock_sha256": "5110faa8d31a6ccf80bc824ba8566e5d0abeb2ceef7b1e3160b2f2d462b54d00",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.8470588235294118,
+          "horizontal": 0.6823529411764706,
+          "vertical": 0.5803921568627451,
+          "focus": 0.5529411764705883,
+          "shoot": 0.984313725490196,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.15810276679841898
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1949,
+        "observed_unambiguous_ticks": 1926,
+        "keys": {
+          "moving": 0.7917964693665628,
+          "horizontal": 0.5825545171339563,
+          "vertical": 0.48650051921079956,
+          "focus": 0.39927310488058154,
+          "shoot": 0.9745586708203531,
+          "bomb_key_down": 0.004153686396677051,
+          "move_change_per_tick": 0.18401682439537329
+        }
+      }
+    },
+    {
+      "seed": 1821265,
+      "arm": "epoch-20",
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "ae698f668f41870ecea55a6c4a388fcc96d9051565eb8e71e5df517cf73a1cad",
+      "clock_sha256": "dc9df0857d3e23fd58aee918ae50f636988c9c246921a6c268314325360cc34e",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 255,
+        "keys": {
+          "moving": 0.7176470588235294,
+          "horizontal": 0.5607843137254902,
+          "vertical": 0.45098039215686275,
+          "focus": 0.07450980392156863,
+          "shoot": 0.9686274509803922,
+          "bomb_key_down": 0.0,
+          "move_change_per_tick": 0.1225296442687747
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 3929,
+        "observed_unambiguous_ticks": 3886,
+        "keys": {
+          "moving": 0.8214101904271744,
+          "horizontal": 0.5043746783324755,
+          "vertical": 0.6121976325270201,
+          "focus": 0.30622748327328875,
+          "shoot": 0.952650540401441,
+          "bomb_key_down": 0.009264024704065878,
+          "move_change_per_tick": 0.16410923276983094
+        }
+      }
+    },
+    {
+      "seed": 1821266,
+      "arm": "epoch-01",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "539565f344b04bc306f223f84733445138c94f64a60a8ec8bed12ca4c10f80d2",
+      "clock_sha256": "9a31a87765ae52df8fa074508bd76a6efd890d3f8a8af3b850c93851b83d9d71",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 253,
+        "keys": {
+          "moving": 0.8102766798418972,
+          "horizontal": 0.5296442687747036,
+          "vertical": 0.6245059288537549,
+          "focus": 0.3241106719367589,
+          "shoot": 1.0,
+          "bomb_key_down": 0.015810276679841896,
+          "move_change_per_tick": 0.2289156626506024
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 3691,
+        "observed_unambiguous_ticks": 3668,
+        "keys": {
+          "moving": 0.8083424209378408,
+          "horizontal": 0.5229007633587787,
+          "vertical": 0.5951472191930207,
+          "focus": 0.38631406761177756,
+          "shoot": 0.9694656488549618,
+          "bomb_key_down": 0.01935659760087241,
+          "move_change_per_tick": 0.1934156378600823
+        }
+      }
+    },
+    {
+      "seed": 1821266,
+      "arm": "epoch-20",
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "complete_control": true,
+      "source_sha256": "409702b9c4eeea051beb45b94e3a3df60fa09282a32607aa85160402c67dddea",
+      "clock_sha256": "4107b59af0b195f224341f189f908f3b27167b5adb385c8b96f3d7c485434ca0",
+      "first_256": {
+        "expected_ticks": 256,
+        "observed_unambiguous_ticks": 254,
+        "keys": {
+          "moving": 0.6377952755905512,
+          "horizontal": 0.49606299212598426,
+          "vertical": 0.43700787401574803,
+          "focus": 0.08267716535433071,
+          "shoot": 0.984251968503937,
+          "bomb_key_down": 0.015748031496062992,
+          "move_change_per_tick": 0.16334661354581673
+        }
+      },
+      "whole_observed_stage1": {
+        "expected_ticks": 1967,
+        "observed_unambiguous_ticks": 1955,
+        "keys": {
+          "moving": 0.8066496163682865,
+          "horizontal": 0.5754475703324808,
+          "vertical": 0.5447570332480819,
+          "focus": 0.17135549872122763,
+          "shoot": 0.9432225063938618,
+          "bomb_key_down": 0.02557544757033248,
+          "move_change_per_tick": 0.17849794238683128
+        }
+      }
+    }
+  ]
+}
