@@ -45,6 +45,13 @@ def pack(folder, out, policy, prefix):
     if prefix and read(folder/'qualification.json').get('validated_handoff') is not True:
         raise ValueError('Human prefix qualification missing')
     f=folder/r['file']
+    eligible=read(folder/'eligible.json')
+    if (eligible['seed']!=r['seed'] or eligible['steps']!=r['steps'] or eligible['policy_sha256']!=policy
+        or eligible['rollout_sha256']!=r['sha256'] or eligible['role']!='train'
+        or eligible['max_logp_abs_error']>8e-4 or eligible['max_value_abs_error']>3e-4
+        or eligible['rank_verified_steps']!=r['steps'] or not eligible['only_policy_actions']
+        or eligible['prefix_decisions_in_train']!=0):
+        raise ValueError('Independent suffix qualification differs')
     if digest(f)!=r['sha256'] or digest(folder/'steps.bin')!=r['native_difficulty_trace_sha256']:
         raise ValueError('Original camera or telemetry hash differs')
     with np.load(f,allow_pickle=False) as z:arrays={k:z[k] for k in z.files}

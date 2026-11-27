@@ -1,7 +1,7 @@
 {
   "verified_unique_credits": 828,
   "verified_unique_decisions": 543391,
-  "definition": "Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel.",
+  "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
   "unique_updates": 16,
   "updates": [
     {
@@ -197,6 +197,24 @@
         "13": 9521,
         "17": 8151
       }
+    }
+  ],
+  "additional_native_curriculum": [
+    {
+      "arm": "opening-ppo",
+      "source_kind": "ordinary full credit",
+      "source_trajectories": 4,
+      "verified_policy_decisions": 2419,
+      "optimizer_decisions": 1536,
+      "checkpoint": "676e107fc80cd622a482a00fb84a65ed8efe2bc2e42d1075813244a269a441b7"
+    },
+    {
+      "arm": "prefix-ppo",
+      "source_kind": "policy-only suffix after human prefix",
+      "source_trajectories": 4,
+      "verified_policy_decisions": 2208,
+      "optimizer_decisions": 1536,
+      "checkpoint": "3af692daf1fe9baec3deb64cd0ff5d390bc5d50970a279acd9a2b3eb50b3c0ce"
     }
   ]
 }
