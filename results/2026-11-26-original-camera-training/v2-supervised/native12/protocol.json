@@ -1,0 +1,210 @@
+{
+  "title": 12,
+  "game": "TH12 official v0.02a original full credit, Normal Reimu A",
+  "hold_ms": 120,
+  "game_exe_sha256": "c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a",
+  "policy_heads": [
+    9,
+    2,
+    2,
+    2
+  ],
+  "observation": "Original native 112x96 grayscale and absolute difference from previous actor observation; previous zero at start. Learner NPZ frames store exactly model-aligned current camera.",
+  "transport": "Private per-lane on-host AF_UNIX, SHA-pinned TorchScript, same physical host within each arm/seed pair. Per-host exclusive cohort lock excludes simultaneous portable controls.",
+  "reset": "From original Normal Stage 1, two spares and two Bombs, no continue.",
+  "seed_scope": "Actor seed controlled, original game RNG uncontrolled.",
+  "plan": [
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895201,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-camera-cross-sft-895201-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895202,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-camera-cross-sft-895202-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895201,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-joint-v2-3000-895201-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895202,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-joint-v2-3000-895202-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895201,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-joint-v2-9000-895201-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895202,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-joint-v2-9000-895202-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895203,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-joint-v2-3000-895203-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895204,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-joint-v2-3000-895204-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895203,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-joint-v2-9000-895203-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895204,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-joint-v2-9000-895204-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895203,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-camera-cross-sft-895203-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895204,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-camera-cross-sft-895204-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895205,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-joint-v2-9000-895205-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895206,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-joint-v2-9000-895206-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895205,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-camera-cross-sft-895205-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895206,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-camera-cross-sft-895206-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895205,
+      "lane": "beta",
+      "host": "deck",
+      "tag": "held-joint-v2-3000-895205-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895206,
+      "lane": "alpha",
+      "host": "deck",
+      "tag": "held-joint-v2-3000-895206-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895207,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-camera-cross-sft-895207-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "camera-cross-sft",
+      "seed": 895208,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-camera-cross-sft-895208-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895207,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-joint-v2-3000-895207-alpha"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-3000",
+      "seed": 895208,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-joint-v2-3000-895208-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895207,
+      "lane": "beta",
+      "host": "entropy",
+      "tag": "held-joint-v2-9000-895207-beta"
+    },
+    {
+      "mode": "held",
+      "policy": "joint-v2-9000",
+      "seed": 895208,
+      "lane": "alpha",
+      "host": "entropy",
+      "tag": "held-joint-v2-9000-895208-alpha"
+    }
+  ]
+}
