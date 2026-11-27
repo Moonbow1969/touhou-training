@@ -19,6 +19,7 @@ PROBE = Path(__file__).resolve().parents[1] / "tools" / "rollout-worker-probe"
 GAME_SHA = "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8"
 FLEET = ("accelerator","momentum")
 FULL_KEYS = ("move","focus","shoot","bomb")
+QUALIFIED_SENSORS=("qualified-v2","qualified-v2-clock")
 DIFFICULTIES = ("Easy","Normal","Hard","Lunatic")
 
 
@@ -35,7 +36,7 @@ def save(path, data):
 def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False, difficulty=1, stage_sensor='qualified-v2'):
     files = {name:(PROBE/name).read_bytes() for name in
              ("run-th10-trial-probe.sh","th10-trial-state.h","th10-trial-observe.c","th10-full-stock.c","th10-full-actor.c")}
-    if stage_sensor not in ('legacy','qualified-v2'):raise ValueError('Unknown TH10 stage sensor.')
+    if stage_sensor not in ('legacy',*QUALIFIED_SENSORS):raise ValueError('Unknown TH10 stage sensor.')
     if stage_sensor=='legacy':
         # Resume historical preregistered arms with their exact native source SHA.
         for name in ('th10-trial-state.h','th10-full-stock.c'):
@@ -65,6 +66,17 @@ def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset
             launcher=launcher.replace(old,new)
         files['run-th10-trial-probe.sh']=launcher
         files['th10-rank-screen.pl']=(PROBE/'th10-rank-screen.pl').read_bytes()
+    if stage_sensor=='qualified-v2-clock':
+        files['th10-stage-clock.c']=(PROBE/'th10-stage-clock.c').read_bytes().replace(b'\r\n',b'\n')
+        launcher=files['run-th10-trial-probe.sh']
+        hooks=[
+            (b'sha256sum /tmp/th10-observe.exe >',b'i686-w64-mingw32-gcc-posix -O2 /tools/th10-stage-clock.c -o /tmp/th10-clock.exe\nsha256sum /tmp/th10-observe.exe >'),
+            (b'    wine /tmp/th10-stock.exe >native.csv',b'    wine /tmp/th10-clock.exe >native-stage-clock.csv & clock_pid=$!\n    wine /tmp/th10-stock.exe >native.csv'),
+            (b'    wait "$observer" || true',b'    wait "$observer" || true\n    wait "$clock_pid"')]
+        for old,new in hooks:
+            if launcher.count(old)!=1:raise ValueError('Native clock launcher integration changed')
+            launcher=launcher.replace(old,new)
+        files['run-th10-trial-probe.sh']=launcher
     if paired:
         for n in ("th10-paired-targets.c","th10-trial-step.c"):files[n]=(PROBE/n).read_bytes()
     if warm_reset:
@@ -208,7 +220,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
             raise ValueError('Selected character and shot differ from registered Reimu A.')
         data=read("native.csv")
         states=list(csv.DictReader(io.StringIO(data.decode())))
-        qualified_stage=pinned.get('stage_sensor')=='qualified-v2'
+        qualified_stage=pinned.get('stage_sensor') in QUALIFIED_SENSORS
+        clock_data=read('native-stage-clock.csv') if pinned.get('stage_sensor')=='qualified-v2-clock' else None
         if qualified_stage:
             if not states or 'legacy_start_field' not in states[0] or int(states[0]['stage'])!=1:
                 raise ValueError('Missing qualified progression telemetry or fresh Stage 1 opening.')
@@ -326,6 +339,12 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
     result.update(difficulty=difficulty,difficulty_name=DIFFICULTIES[difficulty],difficulty_verified_native_samples=len(states),
                   opening_native_character=int(opening['character']),opening_native_shot=int(opening['shot']))
     if difficulty!=1:result['difficulty_menu_sha256']=digest((folder/menu).read_bytes())
+    if clock_data is not None:
+        from scripts.th10_native_stage_clock import describe
+        clock=describe(clock_data,difficulty,int(states[-1]['utc_ms']))
+        packed=gzip.compress(clock_data,compresslevel=6,mtime=0)
+        (folder/'native-stage-clock.csv.gz').write_bytes(packed)
+        result['native_stage_clock']=dict(clock,data_sha256=digest(packed),source_sha256=pinned['sources']['th10-stage-clock.c'])
     save(folder/'report.json',result)
     return result
 
@@ -360,6 +379,8 @@ rm -f -- pixels.u8 features.f32 rich.bin
 """.replace('BUNDLE',pinned['bundle']).replace('GAME',GAME_SHA).replace('SHA',sha).replace('IMAGE',shlex.quote(client['runtime'])).replace('SEED',str(seed)).replace('HOLD',str(hold))
     script=script.replace("MODE","full-paired" if paired else "full-credit").replace(" RICH",(" rich.bin" if paired else "")+(" camera-logits.f32" if pinned.get("camera") else "")+(" previous-move.u8" if pinned.get("camera_history") else ""))
     difficulty=pinned.get('difficulty',1)
+    if pinned.get('stage_sensor')=='qualified-v2-clock':
+        script=script.replace('native.csv native-stop','native.csv native-stage-clock.csv native-stop')
     if difficulty!=1:
         menu=DIFFICULTIES[difficulty].lower()+'-rank.png'
         script=script.replace('endpoint.png settled-inventory.csv',f'endpoint.png {menu} settled-inventory.csv')
@@ -370,7 +391,8 @@ rm -f -- pixels.u8 features.f32 rich.bin
     for attempt in range(1,4):
         cadence_suffix="" if hold==120 else f"-h{hold}"
         if difficulty!=1:cadence_suffix+='-'+DIFFICULTIES[difficulty].lower()
-        if pinned.get('stage_sensor')=='qualified-v2':cadence_suffix+='-stagev2'
+        if pinned.get('stage_sensor') in QUALIFIED_SENSORS:cadence_suffix+='-stagev2'
+        if pinned.get('stage_sensor')=='qualified-v2-clock':cadence_suffix+='-clock'
         label=f"{seed}-{sha[:12]}{cadence_suffix}-{attempt}"
         directory=f'"$HOME/.local/share/toho-ml/th10-official-trial-002a/full-story/{label}"'
         endpoint=client["command"][:-1]
@@ -431,7 +453,7 @@ def main():
     p.add_argument("--camera",action="store_true",help="Deploy a hash-pinned TorchScript camera policy through the host's private Unix socket.")
     p.add_argument("--camera-history",action="store_true",help="Include the preceding sampled movement byte with each camera request.")
     p.add_argument("--difficulty",type=int,choices=range(4),default=1,help="Original menu rank: Easy, Normal, Hard, Lunatic (0–3).")
-    p.add_argument("--stage-sensor",choices=('legacy','qualified-v2'),
+    p.add_argument("--stage-sensor",choices=('legacy',*QUALIFIED_SENSORS),
                    help='New runs use qualified-v2. Existing arms preserve their frozen sensor. Legacy Stage 2 endpoints are unvalidated.')
     p.add_argument("--only-host",choices=FLEET)
     p.add_argument("--prepare-only",action="store_true");p.add_argument("--arm",default="sft")
@@ -448,7 +470,7 @@ def main():
     if args.stage_sensor and prior_sensors and args.stage_sensor not in prior_sensors:
         p.error('Use a separate output directory for an independent stage-sensor re-evaluation.')
     args.stage_sensor=args.stage_sensor or next(iter(prior_sensors),'qualified-v2')
-    if args.stage_sensor not in ('legacy','qualified-v2'):p.error('Invalid frozen stage-source lock.')
+    if args.stage_sensor not in ('legacy',*QUALIFIED_SENSORS):p.error('Invalid frozen stage-source lock.')
     with ThreadPoolExecutor(2) as pool:
         if (args.actor_header or args.locator_params or args.camera) and not args.expected_sha:p.error("Custom actors require --expected-sha")
         if args.camera and (args.actor_header or args.locator_params):p.error("The camera actor manages its own header.")

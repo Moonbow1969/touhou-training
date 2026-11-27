@@ -22,7 +22,11 @@ def package(out,directories):
                 if not r['terminal'] or r['continues']!=0 or r['title']!=10:raise ValueError(f'Incomplete native credit in {file}')
                 checks={}
                 files_to_package=['report.json','behavior.npz','native.csv.gz','endpoint.png']
-                if r['source'].get('difficulty',1)==0:files_to_package.extend(['opening.csv','easy-rank.png'])
+                if r.get('native_stage_clock'):files_to_package.append('native-stage-clock.csv.gz')
+                difficulty=r['source'].get('difficulty',1)
+                if difficulty!=1 or r.get('stage_sensor_validated'):
+                    files_to_package.append('opening.csv')
+                if difficulty!=1:files_to_package.append({0:'easy',2:'hard',3:'lunatic'}[difficulty]+'-rank.png')
                 for name in files_to_package:
                     data=(credit/name).read_bytes()
                     checked=sha(data)

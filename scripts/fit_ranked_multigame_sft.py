@@ -12,7 +12,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('data','plan','reference','out'):
         p.add_argument('--'+key,type=Path,required=True)
-    p.add_argument('--th17',nargs=2,type=Path,help='Qualified original Hard and Lunatic TH17 stage-one cameras from the frozen pilot roster')
+    p.add_argument('--th17',nargs='+',type=Path,help='Qualified original TH17 Hard and Lunatic stage cameras from the frozen pilot/stage roster')
     a=p.parse_args()
     root=a.data.resolve()
     plan=json.loads(a.plan.read_bytes())
@@ -37,18 +37,21 @@ def main():
         key=r['title']+' '+r['difficulty']
         exposure[key]=exposure.get(key,0)+r['usable_decisions']
     if a.th17:
-        expected={(r['player_group'],r['difficulty']):r['sha256'] for r in plan['new_train_sources']}
+        declared=plan['new_train_sources']
+        expected={(r['sha256'],r.get('stage',1)):(r['player_group'],r['difficulty']) for r in declared}
+        if len(expected)!=len(declared) or {r['difficulty'] for r in declared}!={'Hard','Lunatic'}:
+            raise ValueError('TH17 registration must cover both ranks with distinct source stages')
         seen=set()
         for f in a.th17:
             meta=json.loads(f.with_suffix('.json').read_bytes())
-            key=meta['player_group'],meta['difficulty']
-            if key in seen or expected.get(key)!=meta['replay_sha256'] or digest(f)!=meta['archive_sha256']:
+            key=meta['replay_sha256'],meta['stage']
+            if key in seen or expected.get(key)!=(meta['player_group'],meta['difficulty']) or digest(f)!=meta['archive_sha256']:
                 raise ValueError('TH17 training source differs from frozen roster')
-            if meta['title']!='TH17' or meta['stage']!=1 or meta['focus_bit']!=8 or meta['split']!='train':
+            if meta['title']!='TH17' or not 1<=meta['stage']<=6 or meta['focus_bit']!=8 or meta['split']!='train':
                 raise ValueError('Unqualified TH17 stage or input schema')
             if meta['original_software_exe_sha256']!=plan['th17_build']:raise ValueError('TH17 executable differs')
             seen.add(key);train.append(f)
-        if seen!=set(expected):raise ValueError('Missing one of the registered TH17 TRAIN difficulties')
+        if seen!=set(expected):raise ValueError('Missing a registered TH17 TRAIN replay stage')
     held=[root/r['file'] for r in base['held']]
     if any(digest(f)!=r['sha256'] for f,r in zip(held,base['held'])):raise ValueError('Held source changed')
     print('START',len(train),'training stages; original three-title source windows',exposure,flush=True)

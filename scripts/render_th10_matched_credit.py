@@ -35,7 +35,14 @@ def load(folder):
     with gzip.open(folder/'native.csv.gz','rt') as f:rows=list(csv.DictReader(f))
     clocks=(np.array([int(row['utc_ms']) for row in rows])-start)/1000
     assert len(frames)==r['steps']+1 and all(np.diff(ts)>0)
-    return dict(report=r,frames=frames,times=ts,states=rows,native_clocks=clocks,
+    stage_clock=None
+    if r.get('native_stage_clock'):
+        from scripts.th10_native_stage_clock import verify
+        verify(folder,r)
+        with gzip.open(folder/'native-stage-clock.csv.gz','rt') as stream:clock_rows=list(csv.DictReader(stream))
+        stage_clock=((np.array([int(v['utc_ms']) for v in clock_rows])-start)/1000,
+                     np.array([int(v['stage_tick']) for v in clock_rows]))
+    return dict(report=r,frames=frames,times=ts,states=rows,native_clocks=clocks,stage_clock=stage_clock,
                 endpoint=Image.open(folder/'endpoint.png').convert('RGB').resize((288,216),Image.Resampling.LANCZOS),
                 metadata=dict(policy_sha256=r['policy_sha256'],game_sha256=r['game_sha256'],build=r['source']['bundle'],
                     policy_camera_sha256=sha(folder/'original-pixels.npz'),behavior_sha256=r['behavior_sha256'],
@@ -94,6 +101,10 @@ def render(args):
                     right=f'{end:5.1f} s'
                 draw.text((x,436),left,font=fonts[2],fill='white')
                 draw.text((x+239,436),right,font=fonts[2],fill=colors[i])
+                if arm['stage_clock'] is not None:
+                    stamps,values=arm['stage_clock']
+                    j=int(np.searchsorted(stamps,t,side='right')-1)
+                    if j>=0:draw.text((x,455),f'Original stage tick  {values[j]:,}',font=fonts[2],fill=colors[i])
             draw.text((18,477),'Original 96 x 112 policy camera at ~8 Hz. Color images show the original Game Over screens.',
                       font=fonts[3],fill='#b9c8d6')
             video.append_data(np.asarray(panel))
