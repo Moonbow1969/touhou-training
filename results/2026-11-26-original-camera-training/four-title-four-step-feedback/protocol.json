@@ -1,0 +1,13 @@
+{
+  "parent": "dd7ed93f836eb16c9b5e0219c8c8fbc12431ed1c218ab36ee90837a27f82a006",
+  "source_manifest": "5707d139f0cd622f9de6c5974df35342ba365ed7df59516769cc6efdfc768554",
+  "repeated_held": "61f908b1417ed32379a58f3bd3c8be70b644c8c3c08127f6c19ade3c30c28ee3",
+  "future_held": "a604fe8356bbd9c8d4914647ec53fe8a3232fb6ea0b54995ec56d97583c843c9",
+  "seed": 1781101,
+  "updates": 1600,
+  "starts_per_game_rank": 8,
+  "horizon": 4,
+  "lr": 0.0003,
+  "design": "Freeze all 68-stage SFT camera parameters. Both residuals receive identical four-command subsequences, equal exposure over four titles and both ranks, optimizer, initialization, model and four CE losses. Teacher conditions every step on the actual preceding human action. Propagated starts from that same human action at step one, then uses its own exact nine-state marginal along subsequent expert screens. Both deployment models condition only on their own previous chosen direction and current image.",
+  "outcome": "Primary prospective outcome is the mean across eligible new pilots of mean start/turn NLL using own previous predicted directions on fixed expert images. Report changes, starts, turns, sampled reversals and all-command NLL, both on repeated TH17 and the prospective six TH10/12/13 pilots. The movement stats under fixed expert screens estimate control behavior only."
+}
