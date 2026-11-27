@@ -1,0 +1,18 @@
+{
+  "required_new_pilots": [
+    24,
+    64
+  ],
+  "expected_pilots": 96,
+  "base_train_sft_decisions": 76167,
+  "base_sha256": {
+    "final-human-sft/all-human-12k/report.json": "173a60cd070c4f10fde4fb110b4a37e84c449f5f3b13f0542c381b0c3f2612dc",
+    "human/eight-pilot-stage1-and-qualified-stage2-frozen.json": "c23592d7c6be06e356ba5ac1e4ee993b1c2ae156091ecc2ac35ddbd3f94c38c0",
+    "human-cross-title-v2-union/train-all-qualified-frozen.json": "fb36bb7489352364c4def0144b5f71e021e098b1405067b83ed63bfc88cfaae2",
+    "human-cross-title-v2-union/held-stage1-and-stage2-frozen.json": "3431507a1e60f540bd0fa2e9434b1dc725c8740884b92ad4b89b6a7983987051"
+  },
+  "roster_sha256": "0d41c68a66b10045b0a6848590fffbcb5efaa0d19982841a8bc4bcff7fb717ad",
+  "window_criterion": "stable chronological camera with previous admitted native_frame exactly four ticks earlier",
+  "ordering": "first 24/64 camera-verified by sealed_utc then replay SHA; the 64 manifest includes the exact first 24. Use either one once with baseline; do not add 24 on top of 64.",
+  "selections": "Only newly captured TRAIN player groups; exclude every held identity and every baseline training identity, native source SHA and camera archive SHA."
+}
