@@ -29,3 +29,13 @@ On Entropy a second isolated live credit ran the production observer through Sta
 Thirteen community archive files have the exact 0.02a header and independently decodable native input streams. All uploads from the two engineering-control pilots, POP and /=/, are excluded. One anonymous upload is quarantined. The remaining five named human pilots have 179,797 native input ticks across Easy, Normal, Hard and Lunatic. We froze KEN., RB26 and SASASASA for training and 8/1_5 and yen for held evaluation, with every stage from each pilot kept together. The selection was frozen before inspecting the other pilots' outcomes. The first KEN. Stage 1 stream has 2,476 paired camera/4-head rows, 98.46% stage span and 100% native movement/input agreement over 1,614 moving samples. It contains zero human Bomb examples. [Frozen split](human-frozen-split.json) · [Trial replay manifest](human-trial-manifest.json) · [Independent KEN. registration](independent-ken-s1.json)
 
 All fifteen Stage 1–3 streams passed the exact-build camera and input checks. The human-camera loader retained 25,392 consecutive four-tick decisions from nine training stages and 18,735 decisions from six held stages. Training covers 11 genuine Bomb press onsets and held evaluation covers 23. Every stream's native input word agreed with the independently decoded replay on 100% of moving alignment samples at tick minus one. The four-tick camera history drops rows with missing predecessors. KEN., RB26 and SASASASA all use Sanae A, while the two held players use Reimu A and Reimu B. A gap on these held pilots can reflect both player and shot-type shifts. The short final SASASASA stage ends after 2,098 original replay ticks and contributes 520 consecutive decisions. [Nine frozen training stages](human-train-qualified-09-stages-frozen.json) · [Six frozen held stages](human-held-qualified-06-stages-frozen.json)
+
+From the repository root, rebuild a shard with the original camera capture, its independent photos, the matching replay and the frozen pilot split. The public packer reproduced every array and the SHA-256 of the SASASASA Stage 3 archive.
+
+```sh
+python -m replays.pair_th12_trial_pixels \
+  --capture /path/to/th12-ud001349-s3 \
+  --replay /path/to/th12_ud001349.rpy --stage 3 \
+  --split-manifest results/2026-11-26-original-camera-training/resources/th12-stage-validation/human-frozen-split.json \
+  --out /path/to/rebuilt-sasasasa-s3.npz
+```

@@ -104,13 +104,14 @@ def verify(directory, model_path, model, seeds, role, write=True, host="momentum
             file=str(behavior), behavior=str(behavior), path=str(behavior), sha256=r["behavior_sha256"],
             pixels=str(pixels), pixel_file=str(pixels), pixel_sha256=digest(pixels), steps=n,
             native_outcome=r["native_outcome"], outcome="game_over" if r["game_over"] else "ending"))
-        if difficulty==0:
+        if difficulty!=1:
+            label={0:'Easy',2:'Hard',3:'Lunatic'}[difficulty]
             with gzip.open(folder/'native.csv.gz','rt') as raw:
                 native_difficulties=[int(row['difficulty']) for row in csv.DictReader(raw)]
-            assert len(native_difficulties)==r['native_samples']>0 and set(native_difficulties)=={0}
-            menu_hash=digest(folder/'easy-rank.png')
+            assert len(native_difficulties)==r['native_samples']>0 and set(native_difficulties)=={difficulty}
+            menu_hash=digest(folder/(label.lower()+'-rank.png'))
             assert r.get('difficulty_menu_sha256',menu_hash)==menu_hash
-            receipts[-1].update(difficulty=0,difficulty_label='Easy',native_difficulty_samples=r['native_samples'],
+            receipts[-1].update(difficulty=difficulty,difficulty_label=label,native_difficulty_samples=r['native_samples'],
                                 menu_sha256=menu_hash)
     if write:
         save(directory / "on-policy-validation.json", audits)

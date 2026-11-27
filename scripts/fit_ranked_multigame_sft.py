@@ -51,10 +51,11 @@ def main():
         if seen!=set(expected):raise ValueError('Missing one of the registered TH17 TRAIN difficulties')
     held=[root/r['file'] for r in base['held']]
     if any(digest(f)!=r['sha256'] for f,r in zip(held,base['held'])):raise ValueError('Held source changed')
-    print('START',len(train),'training stages',exposure,flush=True)
+    print('START',len(train),'training stages; original three-title source windows',exposure,flush=True)
     subprocess.run([sys.executable,'-u','-m','scripts.train_human_camera_policy','--encoder',str(parent/'camera-policy.pt'),
         '--reference',str(a.reference),'--out',str(a.out),'--steps',str(plan['updates']),'--cpu-replay',
         '--natural-movement-frequency','--balance-titles','--balance-difficulties',
+        '--bomb-label-smoothing',str(plan.get('bomb_label_smoothing',.025)),
         '--train',*map(str,train),'--held',*map(str,held)],check=True)
     result=json.loads((a.out/'report.json').read_bytes())
     if not result['difficulty_balanced'] or not result['title_balanced'] or {r['sha256'] for r in result['train']}!={digest(f) for f in train}:

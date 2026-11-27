@@ -44,7 +44,7 @@ def run(args):
     first,second=np.array_split(args.seeds,2)
     first,second=first.tolist(),second.tolist()
     difficulty=getattr(args,'difficulty',1)
-    difficulty_name={0:'Easy',1:'Normal'}[difficulty]
+    difficulty_name={0:'Easy',1:'Normal',2:'Hard',3:'Lunatic'}[difficulty]
     design=(f'Original TH10 {difficulty_name} official trial stage 1 with stock lives, four sampled actions and no Continue. '
             f'One {args.host} host per matched pair. First half of controller seeds plays {args.reference_name} '
             f'first; second half plays {args.candidate_name} first. Game RNG and concurrent host load uncontrolled. '
@@ -79,7 +79,7 @@ if __name__=='__main__':
         p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--reference-name',required=True);p.add_argument('--candidate-name',required=True)
     p.add_argument('--host',choices=('accelerator','momentum','fleet'),required=True)
-    p.add_argument('--difficulty',choices=(0,1),type=int,default=1)
+    p.add_argument('--difficulty',choices=(0,1,2,3),type=int,default=1)
     p.add_argument('--stage-sensor',choices=('legacy','qualified-v2'))
     p.add_argument('--candidate-history',action='store_true')
     p.add_argument('--seeds',required=True,nargs='+',type=int)

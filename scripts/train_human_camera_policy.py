@@ -129,11 +129,14 @@ def main():
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
     parser.add_argument("--balance-difficulties",action="store_true",help="Sample titles and their registered Hard/Lunatic ranks uniformly before choosing a training stage.")
+    parser.add_argument("--bomb-label-smoothing",type=float,default=.025,help="Target smoothing for the binary Bomb head only.")
     parser.add_argument("--spatial-attention",action="store_true",help="Learn residual multihead attention on the spatial policy grid.")
     parser.add_argument("--cpu-replay",action="store_true",help="Keep the full image bank in host RAM and transfer only selected minibatches.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
+    if not 0<=args.bomb_label_smoothing<1:parser.error('Bomb label smoothing must lie in [0,1)')
+    smoothing=(.025,.025,.025,args.bomb_label_smoothing)
     if args.player_location_weight<0:parser.error('Auxiliary weight must be nonnegative')
     device="cuda" if torch.cuda.is_available() else "cpu"
     train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[load_replay(p) for p in args.held]
@@ -215,7 +218,7 @@ def main():
         else:
             heads=model(px)
         per_move=F.cross_entropy(heads[0],y[:,0],label_smoothing=.025,reduction="none")
-        loss=(move_weight[ids]*per_move).mean()+sum(F.cross_entropy(heads[k],y[:,k],label_smoothing=.025) for k in range(1,4))
+        loss=(move_weight[ids]*per_move).mean()+sum(F.cross_entropy(heads[k],y[:,k],label_smoothing=smoothing[k]) for k in range(1,4))
         if args.player_location_weight:
             xy=positions[ids].clone()
             valid=(xy[:,0]>=0)&(xy[:,0]<48)&(xy[:,1]>=0)&(xy[:,1]<56)
@@ -263,7 +266,7 @@ def main():
               "cpu_replay":args.cpu_replay,
               "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
               "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
-              "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
+              "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"head_label_smoothing":smoothing,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})
 
 

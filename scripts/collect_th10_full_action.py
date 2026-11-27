@@ -19,6 +19,7 @@ PROBE = Path(__file__).resolve().parents[1] / "tools" / "rollout-worker-probe"
 GAME_SHA = "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8"
 FLEET = ("accelerator","momentum")
 FULL_KEYS = ("move","focus","shoot","bomb")
+DIFFICULTIES = ("Easy","Normal","Hard","Lunatic")
 
 
 def digest(data):
@@ -39,7 +40,7 @@ def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset
         # Resume historical preregistered arms with their exact native source SHA.
         for name in ('th10-trial-state.h','th10-full-stock.c'):
             files[name]=(PROBE/'th10-legacy-stage'/name).read_bytes()
-    if difficulty not in (0,1):raise ValueError('Full-credit capture supports Easy (0) and Normal (1).')
+    if difficulty not in range(4):raise ValueError('Expected a stock story difficulty from 0 to 3.')
     if difficulty==0:
         # Build a distinct Easy-only launcher from the same verified difficulty-menu detector.
         # The existing Normal source bundle and cache identity stay byte-for-byte reproducible.
@@ -49,6 +50,18 @@ def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset
                         (b'xdotool keydown Down; sleep .18; xdotool keyup Down',b'xdotool keydown Up; sleep .18; xdotool keyup Up'),
                         (b'/capture/hard-rank.png',b'/capture/easy-rank.png')]:
             if launcher.count(old)!=1:raise ValueError('Original difficulty-menu launcher changed.')
+            launcher=launcher.replace(old,new)
+        files['run-th10-trial-probe.sh']=launcher
+        files['th10-rank-screen.pl']=(PROBE/'th10-rank-screen.pl').read_bytes()
+    elif difficulty in (2,3):
+        launcher=files['run-th10-trial-probe.sh']
+        updates=[(b'difficulty=1\n',f'difficulty={difficulty}\n'.encode())]
+        if difficulty==3:
+            down=b'xdotool keydown Down; sleep .18; xdotool keyup Down'
+            updates.extend([(b'if test "$difficulty" -eq 2; then\n    rank=',b'if test "$difficulty" -eq 3; then\n    rank='),
+                            (down,down+b'; sleep .35; '+down),(b'/capture/hard-rank.png',b'/capture/lunatic-rank.png')])
+        for old,new in updates:
+            if launcher.count(old)!=1:raise ValueError('Original story difficulty launcher changed.')
             launcher=launcher.replace(old,new)
         files['run-th10-trial-probe.sh']=launcher
         files['th10-rank-screen.pl']=(PROBE/'th10-rank-screen.pl').read_bytes()
@@ -191,6 +204,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
         difficulty=pinned.get('difficulty',1)
         if [int(opening[k]) for k in ("stage","difficulty","lives","score")]!=[1,difficulty,2,0]:
             raise ValueError("A fresh original credit at the specified difficulty was not verified.")
+        if [int(opening[k]) for k in ('character','shot')]!=[0,0]:
+            raise ValueError('Selected character and shot differ from registered Reimu A.')
         data=read("native.csv")
         states=list(csv.DictReader(io.StringIO(data.decode())))
         qualified_stage=pinned.get('stage_sensor')=='qualified-v2'
@@ -198,9 +213,10 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
             if not states or 'legacy_start_field' not in states[0] or int(states[0]['stage'])!=1:
                 raise ValueError('Missing qualified progression telemetry or fresh Stage 1 opening.')
             (folder/'opening.csv').write_bytes(read('opening.csv'))
-        if difficulty==0:
-            if any(int(row['difficulty'])!=0 for row in states):raise ValueError('Native Easy difficulty changed during the credit.')
-            (folder/'easy-rank.png').write_bytes(read('easy-rank.png'))
+        if any(int(row['difficulty'])!=difficulty for row in states):raise ValueError('Native difficulty changed during the credit.')
+        menu=DIFFICULTIES[difficulty].lower()+'-rank.png'
+        if difficulty!=1:
+            (folder/menu).write_bytes(read(menu))
             (folder/'opening.csv').write_bytes(read('opening.csv'))
         logs=list(csv.DictReader(io.StringIO(read("action.csv").decode())))
         feature_data=np.frombuffer(read("features.f32"),dtype="<f4")
@@ -307,8 +323,9 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
             stage_column='stage',stage_register='0x472b40',legacy_column='legacy_start_field',legacy_register='0x472b44',
             state_header_sha256=pinned['sources']['th10-trial-state.h'],stock_source_sha256=pinned['sources']['th10-full-stock.c'],
             source_bundle=pinned['bundle'],first_stage2=entry,highest_native_stage=result['highest_observed_native_stage'])
-    if difficulty==0:result.update(difficulty=0,difficulty_name='Easy',difficulty_verified_native_samples=len(states),
-                                   difficulty_menu_sha256=digest((folder/'easy-rank.png').read_bytes()))
+    result.update(difficulty=difficulty,difficulty_name=DIFFICULTIES[difficulty],difficulty_verified_native_samples=len(states),
+                  opening_native_character=int(opening['character']),opening_native_shot=int(opening['shot']))
+    if difficulty!=1:result['difficulty_menu_sha256']=digest((folder/menu).read_bytes())
     save(folder/'report.json',result)
     return result
 
@@ -342,14 +359,17 @@ tar -tzf behavior.tar.gz >/dev/null
 rm -f -- pixels.u8 features.f32 rich.bin
 """.replace('BUNDLE',pinned['bundle']).replace('GAME',GAME_SHA).replace('SHA',sha).replace('IMAGE',shlex.quote(client['runtime'])).replace('SEED',str(seed)).replace('HOLD',str(hold))
     script=script.replace("MODE","full-paired" if paired else "full-credit").replace(" RICH",(" rich.bin" if paired else "")+(" camera-logits.f32" if pinned.get("camera") else "")+(" previous-move.u8" if pinned.get("camera_history") else ""))
-    if pinned.get('difficulty',1)==0:script=script.replace('endpoint.png settled-inventory.csv','endpoint.png easy-rank.png settled-inventory.csv')
+    difficulty=pinned.get('difficulty',1)
+    if difficulty!=1:
+        menu=DIFFICULTIES[difficulty].lower()+'-rank.png'
+        script=script.replace('endpoint.png settled-inventory.csv',f'endpoint.png {menu} settled-inventory.csv')
     script=script.replace('IDENTITY',shlex.quote(json.dumps(dict(source=pinned,seed=seed,hold_ms=hold,policy_sha256=sha),separators=(',',':'))))
     if pinned.get("camera"):
         mount='--env TOHO_CAMERA_SHA='+sha+' --mount "type=bind,source=$base/camera-services/'+sha+'-'+pinned['bundle']+',target=/camera,readonly" '
         script=script.replace("--entrypoint /bin/sh",mount+"--entrypoint /bin/sh")
     for attempt in range(1,4):
         cadence_suffix="" if hold==120 else f"-h{hold}"
-        if pinned.get('difficulty',1)==0:cadence_suffix+='-easy'
+        if difficulty!=1:cadence_suffix+='-'+DIFFICULTIES[difficulty].lower()
         if pinned.get('stage_sensor')=='qualified-v2':cadence_suffix+='-stagev2'
         label=f"{seed}-{sha[:12]}{cadence_suffix}-{attempt}"
         directory=f'"$HOME/.local/share/toho-ml/th10-official-trial-002a/full-story/{label}"'
@@ -410,7 +430,7 @@ def main():
     p.add_argument("--expected-sha")
     p.add_argument("--camera",action="store_true",help="Deploy a hash-pinned TorchScript camera policy through the host's private Unix socket.")
     p.add_argument("--camera-history",action="store_true",help="Include the preceding sampled movement byte with each camera request.")
-    p.add_argument("--difficulty",type=int,choices=(0,1),default=1,help="Select Easy (0) or Normal (1) in the original menu.")
+    p.add_argument("--difficulty",type=int,choices=range(4),default=1,help="Original menu rank: Easy, Normal, Hard, Lunatic (0–3).")
     p.add_argument("--stage-sensor",choices=('legacy','qualified-v2'),
                    help='New runs use qualified-v2. Existing arms preserve their frozen sensor. Legacy Stage 2 endpoints are unvalidated.')
     p.add_argument("--only-host",choices=FLEET)

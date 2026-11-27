@@ -91,16 +91,18 @@ def score(out, plan):
             sample=sorted((r for r in rows if r['seed']==seed),key=lambda r:r['plot_order'])
             axes[0].plot(range(4),[r['latest_observed_stage1_native_tick'] for r in sample],color='#74828e',alpha=.45,lw=.8)
         axes[0].scatter(range(4),[groups[n]['mean_last_stage1_tick'] for n in names],color='#1b5e78',zorder=3)
-        axes[0].set_xticks(range(4),[n.replace('-','\n') for n in names]);axes[0].set_ylabel('Last observed Stage 1 script tick')
+        axes[0].set_xticks(range(4),['14-player\nCNN','14-player\nattention','38-player\nCNN','38-player\nattention'])
+        axes[0].set_ylabel('Last observed Stage 1 script tick')
         for i,(label,stats) in enumerate(comparisons.items()):
             lower,upper=stats['paired_fixed_host_bootstrap95']
             axes[1].hlines(i,lower,upper,color='#1b5e78',lw=2)
             axes[1].scatter(stats['mean_paired_change'],i,color='#1b5e78',zorder=3)
         axes[1].axvline(0,color='#738290',ls='--',lw=.9)
-        axes[1].set_yticks(range(len(comparisons)),[s.replace(' minus ',' − ') for s in comparisons])
-        axes[1].set_xlabel('Paired change in native ticks (95% bootstrap interval)')
+        axes[1].set_yticks(range(len(comparisons)),['38 − 14 players\nCNN','38 − 14 players\nattention','Attention − CNN\n38 players'])
+        axes[1].set_xlabel('Paired change in native ticks')
         for ax in axes:ax.spines[['right','top']].set_visible(False)
         fig.suptitle('TH13 Normal original game · 12 full credits per frozen policy')
+        fig.supxlabel('Lines on the left pair controller seeds. Bars on the right show unadjusted 95% paired bootstrap intervals.',fontsize=9)
         fig.savefig(public/'paired-stage-clock.png',dpi=150);plt.close(fig)
         for p in [out/'protocol.json',out/'dispatch.jsonl',public/'credits.json',public/'ranking-readout.json',public/'paired.json',public/'paired-stage-clock.png']:
             z.write(p,p.relative_to(out).as_posix())
