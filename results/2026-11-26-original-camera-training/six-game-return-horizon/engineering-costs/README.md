@@ -1,5 +1,9 @@
 # Measured throughput, transfer and storage
 
+Gamer streamed an 11,865,273-byte sealed game archive three times each to Momentum and Steam Deck over SSH with compression disabled. The receivers hashed and discarded the bytes. Median end-to-end time, including authentication and checksum, was 1.35 seconds to Momentum (70.5 Mbit/s) and 1.58 seconds to Steam Deck (60.0 Mbit/s). One transfer includes thousands of actions. These measurements quantify batched transport only. [Durations and verified digest](verified-lan-transfers.json)
+
+The 128 PNG evidence images from 32 held TH17 games had 128 distinct checksums. Re-encoding the existing PNGs with lossless WebP saved 16.0% at method 0 and 25.4% at method 2. Their serial break-even link rates were 21.5 and 4.2 Mbit/s, below both measured transfer rates. On these routes we retain the original evidence and batch it after each credit. Re-encoding on the rollout path would add CPU time. [All pixel-equivalence checks and encode timings](lossless-evidence-encoding.md)
+
 | Original game | Original credits | PPO decisions | Exact compressed learner input (MiB) | Archive bytes per decision |
 |---|---:|---:|---:|---:|
 | TH08 | 32 | 22,962 | 163.5 | 7,464 |

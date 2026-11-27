@@ -1,0 +1,1461 @@
+{
+  "rules": "Exact native menu masks plus an independent whole-stock rank trace and native difficulty HUD. One exact label may be recognized at any position within +/-20 native pixels of the selection center. The translucent fallback stays within +/-6 and requires gradient correlation >=0.68, alternate-label margin >=0.45 and same-position brightness-cut Dice >=0.88. The last fallback admits only a unique +/-20 px glyph retaining >=99.5% of ink and exactly zero extra foreground pixels across the full menu patch. At the early +/-21..40 px selection scroll, require >=99.5% Dice and aligned two-axis gradient correlation >=0.74 at the same position for a unique label.",
+  "initial_hud_rule": "The opening fade also permits a single brightness cut that reproduces an entire original difficulty glyph exactly.",
+  "rank_photos": 48,
+  "correct": 48,
+  "other_photos": 60,
+  "false_positives": 0,
+  "original_start_hud_photos": 24,
+  "correct_start_huds": 24,
+  "nonhud_menu_photos": 48,
+  "false_start_huds": 0,
+  "implementation_sha256": "60ff649ce4a683e1ef3a551b76058838e1818604fa36a23d7134c107d955e948",
+  "positives": [
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "60783bf0c5792cc8a21969d57e0280fabac8abefcde9c5ba92ff93abcba05898"
+    },
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.99963113242346,
+      "sha256": "5617beb741b849de28b3b7f9f7a3ddbdcb6e9e998cdbca80346807924a79f95e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "7825153eba0ec53cbbadc10c5abf4dd7552a40b5ca0694385139643d54228279"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "cf6d754289c4ee34fac3a43ed583c0794d48735347f07d16442066da276b8b10"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "453a0d8da29bce24d49c6a537e1c21b40394c6c87003c2cc3d414833e5fa6554"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 1.0,
+      "sha256": "bc3a0eb59c317fb88c501c798c5ea2c54e7b2977ce71f8b11280b479100703c0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "dc23f47afd07dcab29628cd2f9a69826502e669a44cbb7d88eb26b0979e8ec91"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.9996267263904441,
+      "sha256": "522721aba801ec698ce2ca58fa4c21992e390456a826ae16f0d38de3b6c53339"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "9463a0db031ff5f7479a7d093d30fa8ce3ce0c1b8f12c4d2b16fff1c72d2f811"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.9988925802879292,
+      "sha256": "68b08bb014617b802aad07adec6d10635d50a6143e70bc7775ab9e244abb6795"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "b2a7292fee4d512d06613e50cb5788e700cb0c6c38d9a18a3f3b00f09f1cebdc"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.9996267263904441,
+      "sha256": "5df4aeb4b909700058262db3fb59344c8bb1851db6172fbbff6210fa712ce3b3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "395f2c4f6092fe5ecdd2aed134e6ba4c09947f37dc2557929bccbba783d2087f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 1.0,
+      "sha256": "4dbb5728e95b17ea6ebcf10e02706c7642a063cff8513b8edd92a44997465565"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "23100a301c217a04d461fe46130747b635f184091a3119a2374fb71e1d0c8963"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.9996267263904441,
+      "sha256": "54de63696f7d6240a1cc864cd1ab055e94e11c3ccc22319f8a2f35dc77e1d6ee"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "9b7ceb11d6bf70e687665f85a0e9b06ec82af27164a309c3213fe6bba2601492"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.99963113242346,
+      "sha256": "4f491d80f0d4305dbe5e74680f94687969845423acec67f456fb86c1ddcf9f86"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "300e5131a77425e670e53129660c5e4cab8fe66ad61b4c4ce92b2fb49c3982a7"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "766c305faff90e2588af4a2a243ce8433ef0f80881cc2944216dfbf1d7d84711"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "50e590bde2fa540519ac3c1f883f6b6d1f728d5a08d5b184488625b51cbc5b13"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.99963113242346,
+      "sha256": "64ef58d4401de7c6231f808833cd932f090c722753a7ff19562984e4bbbe402f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "04b593c851bc634f3a3ffaf260407909c298eb2e967668a7672f484a24766aa4"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "f03f9d3e8150989e979c595b4f758e13d03f8a1a172c64497e4d43f25292b609"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "20f5c49d346a37f5de20e9a274c6be36756b6aa94f60a9d613a178ba7742d553"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 1.0,
+      "sha256": "b013210bef0bb957f79c19094be993cc406b7520d5ae33644f7dbdb3f794cc53"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "35499330f3d308cf802fb2da2990cf1dc2c8c5381bc4472f99660eb4ac89adec"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.9996267263904441,
+      "sha256": "73f31ba3760c04efa5d742705d3c15b0989dd7cb0641356182c69fe6f6e35fe3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "6d36aa4287530a3ee0a269b59c13b87762a11fede2a6a30a64ff5aaad2ae5f70"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.9985228951255539,
+      "sha256": "4d39261db8aadb0bda8dd05c3523b73e186bed9eab5f939c95e7232f22c25a54"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "e865aa82fa0621714f169573dd6a6aca40f7e36154310689e32a74f3e5b81ae5"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.9996267263904441,
+      "sha256": "d83235b4361c6e27f6d9c8a28ed6216c955cc7e646d2d45f4ea9ecc59a4c8957"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "a016e57ee2b0c7d05c54607474ac403c9d080f41c2546afe58006869215b64e9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.99963113242346,
+      "sha256": "b4341d67661feee1d940a39fee099319b6ed3391d1de7fafa8858a4d66fd0f2e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "013742a7aba8470834334eb7170ef65e8c4b4a26639196a030d7884c5d834a83"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "d7904bc1e3336d68f4379677fdcc791fdcfb905725ad3dc728c1d8022b4927f9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "b74398b11ba0242b79aca929b36029cd7f673439fb8fbccc5228d6e0dd601ff8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 0.99963113242346,
+      "sha256": "0b6a74be6e0db3f5926fbd0416d203c416908514ed0799abde399e6490440dfd"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 0.999536822603057,
+      "sha256": "ade9b83c60fae44fb2be5823c9df7d4c3541a89138b10a496cb8a5d6946d8be3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "6562b40ccb2a2acc3910adccf83a51fd9d5f22c199ef27b2df07e2d5dc31f17d"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "c7908b9553ff02082371a45189125fad6a9f81baab15bba816c95038ad695cca"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 1.0,
+      "sha256": "25c5a5285fec6f6a250eb9635c61f9149c7fd4b7b1986b5809116c40bddfa527"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "037d6a71312dacecf0df9bc765317cf1a0fac0e0681eb02f2b5296a0877debb3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 0.996268656716418,
+      "sha256": "60d1d99acbee4f41348dd2ebe51723214a9ac07cacf8fef3c4f0353ac9af5858"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "9236c3548109db484bce1ec671db6df0171ec59908192a60ad0b3bf1be04d0a4"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 2,
+      "observed": 2,
+      "dice": 1.0,
+      "sha256": "e95016b7691cd6752920a3f680af32ee744807f82a462a0122f1b3c97d116d72"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-menu-initial.png",
+      "expected": 1,
+      "observed": 1,
+      "dice": 1.0,
+      "sha256": "8a1d0533b1d63dd68f2fb5a11dc856408730a80e4b31049d7370ec7b90424f82"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-menu-selected.png",
+      "expected": 3,
+      "observed": 3,
+      "dice": 1.0,
+      "sha256": "33958df04a092470f82b81bdd83b70f32d330c52e56fc4005d626d25f804741e"
+    }
+  ],
+  "negatives": [
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "f3427bd2c6ce1a7ceae995d94578d2611b800f930fa1c2a9112c739397810303"
+    },
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.2280243690165361,
+      "sha256": "e222ecee022e75c65175a0c9c642aced3ebb94f3354dc68b1debd495bdf4868e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.22669584245076588,
+      "sha256": "ba49b1f8fbef93941b570a2d59459ec5a98ddba982c00de646099d8641942270"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "36eed0b16c8ec998a7ca58632876cfb8324497ad948f63bb0914e6a8508323a0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.18867924528301888,
+      "sha256": "9959e053231164cfbd89b85319ca23e08740e71a37b54d96344f217a8b4c7cd9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.1814038286235187,
+      "sha256": "354e6bcc7bacd766155bf80790a008fc21305df191a4ae6afc1da55a56f067cc"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "96ef8eff1622d3edccecf42c6a5ff86f53669df46785437fb98ffcf149ab9f6c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17130801687763714,
+      "sha256": "54c396f074c7d798a49e2d615b7c5ade92c0d00f430b63a284eda1c13125a68a"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17482517482517482,
+      "sha256": "6f2bef8c87d206c7fb75d0bf3a7ac1668bfa875e77070f16629f3506950f11d1"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "9d6d9b307cad3052d00348dd4aaf27332185e75075624e087e1d74ed89e31f09"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.009873060648801129,
+      "sha256": "65a52ed512d535cf873eaaac0be1f1ca4bb06f5cc666ca066d3a4ec98dca53d8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "68f0fd3063224c20308b502145606a49ba294763463aad6ed545c1500f6bd229"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17458945548833188,
+      "sha256": "9f1f23a18d1d1980fb5e488626467d30a9ca080eac11c259215b0efe5973486e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17155361050328227,
+      "sha256": "193d58678361dee87588f42c6e6fac4a1ff23983b4c244c973f8b07a30db7ace"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "ea4978ee9bd14a40a9b4287d65bdd2ee4782a2681386535d2d68f9e5c049ec23"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.008784773060029283,
+      "sha256": "6c70850b3626974889a56f6a0c00d286facc75952ab230ac849ae30998ade007"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "84153276bf608d4d8c179bdb59e0841265e5e02ee8c297e3b5b96ecec5098df0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "86204f29a1ca562d0b73a993e3427981472fd0d7cd2128a0736776fe9d7e0130"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "ab5e35bf426c843df6a9242b3a38f3e01ddde6638efea12341e95b157557704c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "0567edabbc126ee053933653336811adcf72ac8efd72a65f660d9cb96f32ea7d"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "a45206bace2e84e872c4a5b98a67d334a0ad8af0897afd38fcbbe9fecf57f8ea"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17739872068230278,
+      "sha256": "fc9135e1f2d5fb01fc50cdaccd892980845b5dd9671cadd3fe58fae5b9117c7e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17115551694178974,
+      "sha256": "c8a223c148bef506489e410c631fc63f71a7649d676d9a28471a4c046c4b7d55"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "b05a7b8edd61401d63413064b914973c8845b6a1431163f21b8a2cad284e6cd9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "c751f3d5e1f71157bb1346fc5e64e2c9f42e8bf4292ea3d4d90bb0935327ede8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "40b4c330530e6f4746aab33dca3573291a9164863c950d7aed78bdf83484c438"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.23298143429195486,
+      "sha256": "d397f8e69433586065739a0fe92a946155abf1616e52df7b13f4e1310a7cb69f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.21052631578947367,
+      "sha256": "aff096039df373f8a9e6dac9a3cb261bf870c71ce1557d1a6e628422291ae372"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "01d7e1365dcff9c67732b1a2ac9de5064a83acfbe1a29262f34bbb79d9920b64"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.293896006028636,
+      "sha256": "201426e36ea3a99579ca27d2f188cd87f95c66e067543feb0f5f2ba3b4830173"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.26166733147187876,
+      "sha256": "975b238abc38ef3b863cfe8f844ac5d9b26c48ca9140c006d209b8db0585d42e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "0870a918e45e469e90bdadddd63badd27e9ae4432a0710ca144061de1efb838f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.23631350925561245,
+      "sha256": "3b79668be8ae2184a7db123e6ca91ff4eee4e17da9cf9c37a3884e573069f0f5"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.21502698215026983,
+      "sha256": "d71ef8c616d537e297cbefa574916db3c80759658589260eea030070024dfa00"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "5c162841f8aea4c53bb09eca4ef4336685e2a5d4c718795668b120d995e46340"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.2248421052631579,
+      "sha256": "4570d9ae4c1f6427ceb0542ed62193eedfebd316204b82ee5311f3f7b0843219"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.2285215874400349,
+      "sha256": "85e277b2a681e8b617a28331875107a1043882f8756d09b8c576e4a80e4f79a2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "a4bb6c4c4f58b7b64e3e6274c34f970d5777d6a88c13d684e7e01a5ca9863d6c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "2974baf0d5c9170e9a62a9becc8a9d816004cb3516ae770eafe143ea15ea4994"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "78f364e9a95cdb9d7555d2d4551fe9ff444a850bf932bf5e4cd9732919977935"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.012511170688114389,
+      "sha256": "cfeb93f0bd8ef2217abd94472d8f7000a3baee5a213f1a34a21e96d84f76ce95"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "5461be421c4b97baa13600091dca5a92e6e178cc4c57e91e926096bfac18eef8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.2248995983935743,
+      "sha256": "154800f101560ba40c2eb66c904ad3a7f221ed0cc0df8eaf710fcc77b38a1814"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.19566142067205444,
+      "sha256": "b1a4e0f474e5bb25dbbbdb44e0b1b4208bd6faaf3ddba5d08871870c6e4f0dac"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "4ea5b721f53d9f1d27c3feb4bf0f6a35db6d339c3443ac3d3e725feacd0883db"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17801998183469572,
+      "sha256": "762458bd64645387722128f0a81ee42ce84d875cc6d670ef1ac18b4d28b6c8a2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.17684594348222424,
+      "sha256": "7565acf1ff491a9eb159019c1b47b6bc119469d6af901a6c2bf46b154ccbfc29"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "036512a6aaa99c0fc8e4575b88c16abb06999106875198e9627262cda375f05f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "stage-ranking.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.232355273592387,
+      "sha256": "8ec37013c3b7d7eb30b0949bc3408984935e07cd0155b662206734cdbefcb9f5"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.20881863560732114,
+      "sha256": "cdb4698cc883a4b5a6b75834acbabb22b5ae4fd67d66eb9689b5788609da119b"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "2942d08565e0e48c9538a2493b4c5cb8f06605b386b2ddb036cd9add7724ce0d"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "f158d9b4c90c1e6c6965d8eb38b5ce8650b9e484dc33a8411c1a070a25094c02"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "a85644b413972ccd81a009b94a47c53e347c2bdd7e028dcdd27b26e281d5d1e2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.35471930906847626,
+      "sha256": "4dacd08ba585af82e921d19a5e2268e89c31c70e132a6ebd91d265aef96fbaab"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "b8a2e4d614b0c2ccdb76cd126a1834bfd4fc142559ed5ac4266ba2a12a9fe7e2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "6ba294baec92a108b3e901d301688d223f49dd76294d9a505d5cce3ff2dc07b0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "288f70f95718c98432f21731683e70d3687e5da9a29d5d6b5491af79cd10ecf2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "96ff1bc215b0b2a414c4a037894a2fb679d4220f3090db7086bf159154f47d50"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-start-hud.png",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "40f4241412dafecf38842800b29a5b6c200455c7e43e341909f3e62497db2008"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "terminal-at-control.ppm",
+      "expected": null,
+      "observed": null,
+      "dice": 0.0,
+      "sha256": "e089ca8d88aea529e1eed81c8f3043b96673b50f12ee12ccfad654c53859abc7"
+    }
+  ],
+  "original_start_hud": [
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "f3427bd2c6ce1a7ceae995d94578d2611b800f930fa1c2a9112c739397810303"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "36eed0b16c8ec998a7ca58632876cfb8324497ad948f63bb0914e6a8508323a0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "96ef8eff1622d3edccecf42c6a5ff86f53669df46785437fb98ffcf149ab9f6c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "9d6d9b307cad3052d00348dd4aaf27332185e75075624e087e1d74ed89e31f09"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "68f0fd3063224c20308b502145606a49ba294763463aad6ed545c1500f6bd229"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "ea4978ee9bd14a40a9b4287d65bdd2ee4782a2681386535d2d68f9e5c049ec23"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "84153276bf608d4d8c179bdb59e0841265e5e02ee8c297e3b5b96ecec5098df0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "ab5e35bf426c843df6a9242b3a38f3e01ddde6638efea12341e95b157557704c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "a45206bace2e84e872c4a5b98a67d334a0ad8af0897afd38fcbbe9fecf57f8ea"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "b05a7b8edd61401d63413064b914973c8845b6a1431163f21b8a2cad284e6cd9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "40b4c330530e6f4746aab33dca3573291a9164863c950d7aed78bdf83484c438"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "01d7e1365dcff9c67732b1a2ac9de5064a83acfbe1a29262f34bbb79d9920b64"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "0870a918e45e469e90bdadddd63badd27e9ae4432a0710ca144061de1efb838f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "5c162841f8aea4c53bb09eca4ef4336685e2a5d4c718795668b120d995e46340"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 0.9460431654676259,
+      "sha256": "a4bb6c4c4f58b7b64e3e6274c34f970d5777d6a88c13d684e7e01a5ca9863d6c"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "78f364e9a95cdb9d7555d2d4551fe9ff444a850bf932bf5e4cd9732919977935"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "5461be421c4b97baa13600091dca5a92e6e178cc4c57e91e926096bfac18eef8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "4ea5b721f53d9f1d27c3feb4bf0f6a35db6d339c3443ac3d3e725feacd0883db"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "036512a6aaa99c0fc8e4575b88c16abb06999106875198e9627262cda375f05f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "2942d08565e0e48c9538a2493b4c5cb8f06605b386b2ddb036cd9add7724ce0d"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "a85644b413972ccd81a009b94a47c53e347c2bdd7e028dcdd27b26e281d5d1e2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "b8a2e4d614b0c2ccdb76cd126a1834bfd4fc142559ed5ac4266ba2a12a9fe7e2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 2,
+      "expected": 2,
+      "dice": 1.0,
+      "sha256": "288f70f95718c98432f21731683e70d3687e5da9a29d5d6b5491af79cd10ecf2"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-start-hud.png",
+      "observed": 3,
+      "expected": 3,
+      "dice": 1.0,
+      "sha256": "40f4241412dafecf38842800b29a5b6c200455c7e43e341909f3e62497db2008"
+    }
+  ],
+  "nonhud_controls": [
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "60783bf0c5792cc8a21969d57e0280fabac8abefcde9c5ba92ff93abcba05898"
+    },
+    {
+      "tag": "train-reviewed-sft-1841201-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "5617beb741b849de28b3b7f9f7a3ddbdcb6e9e998cdbca80346807924a79f95e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "7825153eba0ec53cbbadc10c5abf4dd7552a40b5ca0694385139643d54228279"
+    },
+    {
+      "tag": "train-reviewed-sft-1841202-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.01951219512195122,
+      "sha256": "cf6d754289c4ee34fac3a43ed583c0794d48735347f07d16442066da276b8b10"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0106951871657754,
+      "sha256": "453a0d8da29bce24d49c6a537e1c21b40394c6c87003c2cc3d414833e5fa6554"
+    },
+    {
+      "tag": "train-reviewed-sft-1841203-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "bc3a0eb59c317fb88c501c798c5ea2c54e7b2977ce71f8b11280b479100703c0"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "dc23f47afd07dcab29628cd2f9a69826502e669a44cbb7d88eb26b0979e8ec91"
+    },
+    {
+      "tag": "train-reviewed-sft-1841204-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "522721aba801ec698ce2ca58fa4c21992e390456a826ae16f0d38de3b6c53339"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.25667090216010163,
+      "sha256": "9463a0db031ff5f7479a7d093d30fa8ce3ce0c1b8f12c4d2b16fff1c72d2f811"
+    },
+    {
+      "tag": "train-reviewed-sft-1841205-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "68b08bb014617b802aad07adec6d10635d50a6143e70bc7775ab9e244abb6795"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.24834874504623514,
+      "sha256": "b2a7292fee4d512d06613e50cb5788e700cb0c6c38d9a18a3f3b00f09f1cebdc"
+    },
+    {
+      "tag": "train-reviewed-sft-1841206-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "5df4aeb4b909700058262db3fb59344c8bb1851db6172fbbff6210fa712ce3b3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.2250351617440225,
+      "sha256": "395f2c4f6092fe5ecdd2aed134e6ba4c09947f37dc2557929bccbba783d2087f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841207-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "4dbb5728e95b17ea6ebcf10e02706c7642a063cff8513b8edd92a44997465565"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.29475982532751094,
+      "sha256": "23100a301c217a04d461fe46130747b635f184091a3119a2374fb71e1d0c8963"
+    },
+    {
+      "tag": "train-reviewed-sft-1841208-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.016172506738544475,
+      "sha256": "54de63696f7d6240a1cc864cd1ab055e94e11c3ccc22319f8a2f35dc77e1d6ee"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "9b7ceb11d6bf70e687665f85a0e9b06ec82af27164a309c3213fe6bba2601492"
+    },
+    {
+      "tag": "train-reviewed-sft-1841209-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "4f491d80f0d4305dbe5e74680f94687969845423acec67f456fb86c1ddcf9f86"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "300e5131a77425e670e53129660c5e4cab8fe66ad61b4c4ce92b2fb49c3982a7"
+    },
+    {
+      "tag": "train-reviewed-sft-1841210-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "766c305faff90e2588af4a2a243ce8433ef0f80881cc2944216dfbf1d7d84711"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "50e590bde2fa540519ac3c1f883f6b6d1f728d5a08d5b184488625b51cbc5b13"
+    },
+    {
+      "tag": "train-reviewed-sft-1841211-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "64ef58d4401de7c6231f808833cd932f090c722753a7ff19562984e4bbbe402f"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "04b593c851bc634f3a3ffaf260407909c298eb2e967668a7672f484a24766aa4"
+    },
+    {
+      "tag": "train-reviewed-sft-1841212-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "f03f9d3e8150989e979c595b4f758e13d03f8a1a172c64497e4d43f25292b609"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.2395693135935397,
+      "sha256": "20f5c49d346a37f5de20e9a274c6be36756b6aa94f60a9d613a178ba7742d553"
+    },
+    {
+      "tag": "train-reviewed-sft-1841213-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.026058631921824105,
+      "sha256": "b013210bef0bb957f79c19094be993cc406b7520d5ae33644f7dbdb3f794cc53"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.20926756352765322,
+      "sha256": "35499330f3d308cf802fb2da2990cf1dc2c8c5381bc4472f99660eb4ac89adec"
+    },
+    {
+      "tag": "train-reviewed-sft-1841214-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "73f31ba3760c04efa5d742705d3c15b0989dd7cb0641356182c69fe6f6e35fe3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.30656934306569344,
+      "sha256": "6d36aa4287530a3ee0a269b59c13b87762a11fede2a6a30a64ff5aaad2ae5f70"
+    },
+    {
+      "tag": "train-reviewed-sft-1841215-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.010471204188481676,
+      "sha256": "4d39261db8aadb0bda8dd05c3523b73e186bed9eab5f939c95e7232f22c25a54"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.30656934306569344,
+      "sha256": "e865aa82fa0621714f169573dd6a6aca40f7e36154310689e32a74f3e5b81ae5"
+    },
+    {
+      "tag": "train-reviewed-sft-1841216-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "d83235b4361c6e27f6d9c8a28ed6216c955cc7e646d2d45f4ea9ecc59a4c8957"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "a016e57ee2b0c7d05c54607474ac403c9d080f41c2546afe58006869215b64e9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841217-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "b4341d67661feee1d940a39fee099319b6ed3391d1de7fafa8858a4d66fd0f2e"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "013742a7aba8470834334eb7170ef65e8c4b4a26639196a030d7884c5d834a83"
+    },
+    {
+      "tag": "train-reviewed-sft-1841218-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "d7904bc1e3336d68f4379677fdcc791fdcfb905725ad3dc728c1d8022b4927f9"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "b74398b11ba0242b79aca929b36029cd7f673439fb8fbccc5228d6e0dd601ff8"
+    },
+    {
+      "tag": "train-reviewed-sft-1841219-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "0b6a74be6e0db3f5926fbd0416d203c416908514ed0799abde399e6490440dfd"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "ade9b83c60fae44fb2be5823c9df7d4c3541a89138b10a496cb8a5d6946d8be3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841220-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.14785992217898833,
+      "sha256": "6562b40ccb2a2acc3910adccf83a51fd9d5f22c199ef27b2df07e2d5dc31f17d"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.30656934306569344,
+      "sha256": "c7908b9553ff02082371a45189125fad6a9f81baab15bba816c95038ad695cca"
+    },
+    {
+      "tag": "train-reviewed-sft-1841221-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "25c5a5285fec6f6a250eb9635c61f9149c7fd4b7b1986b5809116c40bddfa527"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.29978586723768735,
+      "sha256": "037d6a71312dacecf0df9bc765317cf1a0fac0e0681eb02f2b5296a0877debb3"
+    },
+    {
+      "tag": "train-reviewed-sft-1841222-alpha",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.01078167115902965,
+      "sha256": "60d1d99acbee4f41348dd2ebe51723214a9ac07cacf8fef3c4f0353ac9af5858"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.2724014336917563,
+      "sha256": "9236c3548109db484bce1ec671db6df0171ec59908192a60ad0b3bf1be04d0a4"
+    },
+    {
+      "tag": "train-reviewed-sft-1841223-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "e95016b7691cd6752920a3f680af32ee744807f82a462a0122f1b3c97d116d72"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-menu-initial.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.0,
+      "sha256": "8a1d0533b1d63dd68f2fb5a11dc856408730a80e4b31049d7370ec7b90424f82"
+    },
+    {
+      "tag": "train-reviewed-sft-1841224-beta",
+      "file": "difficulty-menu-selected.png",
+      "observed": null,
+      "expected": null,
+      "dice": 0.189873417721519,
+      "sha256": "33958df04a092470f82b81bdd83b70f32d330c52e56fc4005d626d25f804741e"
+    }
+  ]
+}
