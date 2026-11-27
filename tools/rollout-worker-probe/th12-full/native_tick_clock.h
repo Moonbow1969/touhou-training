@@ -49,3 +49,12 @@ static XImage *tick_camera(Display *d,Window root,TickState prior,TickState *obs
         nanosleep(&nap,NULL);
     }
 }
+/* Read both native edges without introducing a phase wait into the 120ms control. */
+static XImage *wall_camera(Display *display,Window root,TickState *state,int *edge_changed,int *checks){
+    TickState before=native_tick();
+    XImage *image=image_now(display,root);
+    *state=native_tick();
+    *edge_changed=(before.tick!=state->tick || before.stage!=state->stage);
+    *checks=0;
+    return image;
+}

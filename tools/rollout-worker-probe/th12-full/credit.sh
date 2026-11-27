@@ -52,8 +52,8 @@ if [ -n "${TH12_DIFFICULTY:-}" ]; then
     test -s difficulty-native.tsv
 fi
 printf '%s\n' CLOCK_MONOTONIC > evidence/clock-source.txt
-if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ]; then
-    test "$mode" = engineering
+if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ] || [ -n "${TH12_CONTROL_CLOCK:-}" ]; then
+    case "${TH12_CONTROL_CLOCK:-engineering}" in tick4|wall120) test "$mode" = train || test "$mode" = held ;; engineering) test "$mode" = engineering ;; *) exit 2 ;; esac
     WINEPREFIX=/tmp/th12-wine WINEARCH=win32 WINEDEBUG=-all wine /input/th12-tick4-sensor.exe \
         "Z:/capture/full/$label/engineering-native.tsv" "Z:/capture/full/$label/stopped" \
         "Z:/capture/full/$label/engineering-clock.map" > engineering-sensor.log 2>&1 &
@@ -81,7 +81,7 @@ if test "${TH12_ACTOR_KIND:-portable}" = camera; then
     test "$mode" != qualify
     actor=${TH12_CAMERA_ACTOR:-/input/th12-camera-actor}
     if [ -n "${TH12_DIFFICULTY:-}" ]; then actor=/input/th12-rank-camera-actor; fi
-    if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ]; then actor=/input/th12-tick4-camera-actor; fi
+    if [ "${TH12_TICK4_ENGINEERING:-0}" = 1 ] || [ -n "${TH12_CONTROL_CLOCK:-}" ]; then actor=/input/th12-tick4-camera-actor; fi
 fi
 rc=0
 "$actor" "/input/$weight" "$seed" 120 "$mode" > outcome.txt 2> worker.log || rc=$?
@@ -109,3 +109,4 @@ cat outcome.txt
 flock -u 8
 flock -u 9
 exit "$rc"
+

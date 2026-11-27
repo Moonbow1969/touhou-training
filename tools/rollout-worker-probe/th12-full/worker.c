@@ -113,13 +113,14 @@ int main(int argc,char **argv){
     XImage *im=image_now(d,root); const char *status=screen(im,0);
     if(strcmp(status,"play")||resource_hud(im,0)!=2||resource_hud(im,24)!=2)fail("Initial stock mismatch.");
 #ifdef TH12_FOUR_TICK_INPUT
+    const int wall_clock = getenv("TH12_CONTROL_CLOCK") && !strcmp(getenv("TH12_CONTROL_CLOCK"),"wall120");
     open_tick_clock();
     FILE *native_rows=fopen("engineering-decisions.tsv","wx");
     if(!native_rows)fail("Cannot save native clock decision evidence.");
     fprintf(native_rows,"action\tpre_stage\tpre_tick\tpre_raw_keys\tapply_stage\tapply_tick\tpost_stage\tpost_tick\tpost_raw_keys\trequested_x11\tobserved_x11\tcapture_retries\tfrozen_checks\n");
     TickState sample={0},initial={0};
     int retries=0,menu_checks=0;
-    XDestroyImage(im);im=tick_camera(d,root,initial,&sample,&retries,&menu_checks);status=screen(im,0);
+    XDestroyImage(im);im=wall_clock ? wall_camera(d,root,&sample,&retries,&menu_checks) : tick_camera(d,root,initial,&sample,&retries,&menu_checks);status=screen(im,0);
 #endif
     const char *outcome="technical_censor";
     while(now_ns()-started<UINT64_C(1200000000000)){
@@ -130,7 +131,8 @@ int main(int argc,char **argv){
             XDestroyImage(im);
 #ifdef TH12_FOUR_TICK_INPUT
             TickState previous_image=sample;
-            im=tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
+            if(wall_clock)wait_until(now_ns()+UINT64_C(50000000));
+            im=wall_clock ? wall_camera(d,root,&sample,&retries,&menu_checks) : tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
 #else
             wait_until(now_ns()+UINT64_C(50000000));im=image_now(d,root);
 #endif
@@ -166,7 +168,8 @@ int main(int argc,char **argv){
         uint64_t onset=now_ns();
 #ifdef TH12_FOUR_TICK_INPUT
         TickState previous_image=sample,applied=native_tick();
-        im=tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
+        if(wall_clock)wait_until(onset+(uint64_t)ms*1000000);
+        im=wall_clock ? wall_camera(d,root,&sample,&retries,&menu_checks) : tick_camera(d,root,previous_image,&sample,&retries,&menu_checks);
         fprintf(native_rows,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\n",index,previous_image.stage,previous_image.tick,previous_image.keys,
                 applied.stage,applied.tick,sample.stage,sample.tick,sample.keys,next,verified,retries,menu_checks);
 #else
@@ -195,3 +198,4 @@ int main(int argc,char **argv){
     printf("%s %d %.6f\n",outcome,index,(now_ns()-started)/1e9);
     return !strcmp(outcome,"technical_censor")?3:0;
 }
+

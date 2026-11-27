@@ -23,6 +23,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('reference','candidate','out'):
         p.add_argument('--'+key,required=True,type=Path)
+    p.add_argument('--labels', nargs=2, help='Names for the two models on the chart')
     a=p.parse_args()
     models=[json.loads((d/'report.json').read_bytes()) for d in (a.reference,a.candidate)]
     if models[0]['held']!=models[1]['held'] or any(digest(d/'policy.ts')!=r['torchscript_sha256'] for d,r in zip((a.reference,a.candidate),models)):
@@ -44,7 +45,9 @@ def main():
             pilot_bootstrap95_nll_change=np.quantile(nll[idx].mean(1),[.025,.975]).tolist() if len(nll) else None)
     a.out.mkdir(parents=True,exist_ok=True)
     (a.out/'paired-human.json').write_text(json.dumps(dict(
-        count_unit='Four-tick human action window. Pooled metrics weight windows; paired uncertainty resamples the distinct held players with equal weight. Training pilots and presentation budgets both changed.',
+        count_unit='Four-tick human action window. Pooled metrics weight windows; paired uncertainty resamples the distinct held players with equal weight.',
+        optimizer_steps=[m['steps'] for m in models],
+        training_sources_identical={r['sha256'] for r in models[0]['train']}=={r['sha256'] for r in models[1]['train']},
         train_pilots=[len({r['group'] for r in m['train']}) for m in models],
         held_pilots=sorted(people),held_stages=len(names),checkpoints=[m['torchscript_sha256'] for m in models],results=results),indent=2)+'\n',encoding='utf8')
     fig,axes=plt.subplots(1,2,figsize=(10,4.4),layout='constrained')
@@ -56,8 +59,9 @@ def main():
         ax.set_yticks(range(4),['All actions','Change direction or stop/start','Start moving','Turn while moving'])
         ax.invert_yaxis();ax.set_xlabel(label);ax.grid(axis='x',alpha=.2);ax.spines[['top','right','left']].set_visible(False)
     from matplotlib.lines import Line2D
-    handles=[Line2D([],[],marker='o',ls='',color=c,label=f"{len({r['group'] for r in m['train']})} training pilots")
-             for c,m in zip(('#435764','#157469'),models)]
+    labels=a.labels or [f"{len({r['group'] for r in m['train']})} training pilots" for m in models]
+    handles=[Line2D([],[],marker='o',ls='',color=c,label=label)
+             for c,label in zip(('#435764','#157469'),labels)]
     fig.legend(handles=handles,loc='outside lower center',ncol=2,frameon=False)
     fig.suptitle(f'Human replay control prediction on {len(people)} held pilots',fontsize=12)
     fig.savefig(a.out/'paired-human.png',dpi=165);plt.close(fig)

@@ -51,12 +51,13 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
     plan=json.loads((experiment/'camera-protocol.json').read_bytes());ref=plan['reference_arm'];alt=plan['candidate']
     models={'high-rank-online':('scaled-human-sft/cnn-new-24/policy/policy.ts','d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573',16),
         'four-game-online':('ranked-multigame-sft/four-title/policy.ts','510132b2cd0cd04b728d066fe73e8703440c7e3cce1dcd165393da691ce76220',8),
+        'four-game-merged-online':('specialist-vs-shared/merged-equal/policy.ts','1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a',8),
         'four-game-ppo-generation2':('four-game-online/policy/policy.ts','3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c',16)}
     source,expected_sha,n_train=models[experiment_name]
     path=root/source;candidate=experiment/'policy/policy.ts'
     metadata=json.loads((path.parent/'report.json').read_bytes())
     intended=metadata.get('policy_sha256') or metadata['torchscript_sha256']
-    sensor='qualified-v2-clock' if experiment_name=='four-game-ppo-generation2' else 'qualified-v2'
+    sensor='qualified-v2-clock' if experiment_name in ('four-game-ppo-generation2','four-game-merged-online') else 'qualified-v2'
     assert digest(path)==intended==expected_sha
     train=plan['train_seeds']['10'];held=plan['eval_seeds']['10']
     assert len(set(train))==n_train and len(set(held))==24 and not set(train)&set(held)
@@ -130,6 +131,6 @@ if __name__=='__main__':
     parser.add_argument('--parallel-ranks',type=int,choices=(1,2),default=2)
     parser.add_argument('--total-held-lanes',type=int)
     parser.add_argument('--reserve-until',type=Path);parser.add_argument('--reserved-lanes',type=int,default=0)
-    parser.add_argument('--experiment',choices=('high-rank-online','four-game-online','four-game-ppo-generation2'),default='high-rank-online')
+    parser.add_argument('--experiment',choices=('high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online'),default='high-rank-online')
     args=parser.parse_args();run(args.root,args.workers,args.lanes_per_rank,args.experiment,args.parallel_ranks,
                                 args.total_held_lanes,args.reserve_until,args.reserved_lanes)

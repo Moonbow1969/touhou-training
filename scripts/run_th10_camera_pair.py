@@ -54,10 +54,13 @@ def run(args):
     models={}
     for (name,path),block in [(arms[0],first),(arms[1],second),(arms[1],first),(arms[0],second)]:
         history=name==args.candidate_name and args.candidate_history
-        if name not in models:models[name]=checkpoint(path,history)
+        if name not in models:
+            if name==args.candidate_name and hasattr(args,"validate_candidate"):args.validate_candidate(path)
+            models[name]=checkpoint(path,history)
         if len(models)==2 and digest(arms[0][1])==digest(arms[1][1]):
             raise ValueError('Reference and candidate files are identical.')
-        collect(args,name,path,block,args.out/name,args.concurrency,True,history)
+        slots=args.block_capacity() if hasattr(args,"block_capacity") else args.concurrency
+        collect(args,name,path,block,args.out/name,slots,True,history)
     data={};movement={}
     for name,path in arms:
         folder=args.out/name
