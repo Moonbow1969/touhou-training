@@ -12,7 +12,9 @@ enum {
     TH10_IMAGE = 0x400000,
     TH10_SCORE = 0x472b0c,
     TH10_TITLE_FIELDS = 0x472b30,
-    TH10_STAGE = 0x472b44,
+    /* A paired native-register and original camera witness confirmed Stage 1 -> Stage 2. */
+    TH10_STAGE = 0x472b40,
+    TH10_LEGACY_START_FIELD = 0x472b44,
     TH10_PLAYER = 0x475594,
     TH10_PLAYER_XY = 0x3c0
 };

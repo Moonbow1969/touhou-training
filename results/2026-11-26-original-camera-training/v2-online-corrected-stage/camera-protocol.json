@@ -1,0 +1,75 @@
+{
+  "name": "Fourteen-player human SFT to full-action PPO with native-clock TH13 survival reward",
+  "train_seeds": {
+    "10": [
+      981001,
+      981002,
+      981003,
+      981004,
+      981005,
+      981006,
+      981007,
+      981008
+    ],
+    "12": [
+      981201,
+      981202,
+      981203,
+      981204,
+      981205,
+      981206,
+      981207,
+      981208
+    ],
+    "13": [
+      981301,
+      981302,
+      981303,
+      981304,
+      981305,
+      981306,
+      981307,
+      981308
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      981051,
+      981052,
+      981053,
+      981054,
+      981055,
+      981056,
+      981057,
+      981058,
+      981059,
+      981060,
+      981061,
+      981062
+    ]
+  },
+  "reference_arm": "v2-sft",
+  "candidate": "v2-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "initialization": "Fixed 3000-update, 14-player SFT with lowest six-player mean movement NLL of the two registered training budgets. Both original TH10 variants scored above the old corpus; neither established a Stage 2 gain.",
+  "reward": "TH13 native script survival clock, same event terms; TH10/12 unchanged. These two titles lack verified per-action native script time in the shared camera batch.",
+  "test": "Full original Normal credits. Same original executable and physical host inside each controller-seed pair. Eight training credits per title and twelve held pairs per title.",
+  "repeats_earlier_seeds": true,
+  "stage_measurement": "Separate fresh TH10 0.02a original games, corrected qualified stage channel, same controller seeds/build/physical host within pair, native RNG independent. Historical original outcomes retained as unknown."
+}

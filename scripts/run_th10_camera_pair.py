@@ -80,6 +80,7 @@ if __name__=='__main__':
     p.add_argument('--reference-name',required=True);p.add_argument('--candidate-name',required=True)
     p.add_argument('--host',choices=('accelerator','momentum','fleet'),required=True)
     p.add_argument('--difficulty',choices=(0,1),type=int,default=1)
+    p.add_argument('--stage-sensor',choices=('legacy','qualified-v2'))
     p.add_argument('--candidate-history',action='store_true')
     p.add_argument('--seeds',required=True,nargs='+',type=int)
     p.add_argument('--concurrency',type=int,default=3)

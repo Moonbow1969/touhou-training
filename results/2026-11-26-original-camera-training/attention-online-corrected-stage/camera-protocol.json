@@ -1,0 +1,99 @@
+{
+  "name": "Spatial attention human SFT to original three-title PPO",
+  "train_seeds": {
+    "10": [
+      1121001,
+      1121002,
+      1121003,
+      1121004,
+      1121005,
+      1121006,
+      1121007,
+      1121008,
+      1121009,
+      1121010,
+      1121011,
+      1121012,
+      1121013,
+      1121014,
+      1121015,
+      1121016
+    ],
+    "12": [
+      1121201,
+      1121202,
+      1121203,
+      1121204,
+      1121205,
+      1121206,
+      1121207,
+      1121208,
+      1121209,
+      1121210,
+      1121211,
+      1121212,
+      1121213,
+      1121214,
+      1121215,
+      1121216
+    ],
+    "13": [
+      1121301,
+      1121302,
+      1121303,
+      1121304,
+      1121305,
+      1121306,
+      1121307,
+      1121308,
+      1121309,
+      1121310,
+      1121311,
+      1121312,
+      1121313,
+      1121314,
+      1121315,
+      1121316
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      1121051,
+      1121052,
+      1121053,
+      1121054,
+      1121055,
+      1121056,
+      1121057,
+      1121058,
+      1121059,
+      1121060,
+      1121061,
+      1121062
+    ]
+  },
+  "reference_arm": "attention-sft",
+  "candidate": "attention-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "initialization": "Frozen attention model trained on 76,167 camera decisions, 14 human pilots. Best held movement NLL of the two preregistered architectures. Same four sampled heads, same unassisted original controls.",
+  "reward": "TH13 native script survival clock, same event terms; TH10/12 unchanged. These two titles lack verified per-action native script time in the shared camera batch.",
+  "test": "Sixteen fresh on-policy Normal credits per original title, then twelve independent paired Normal full credits per title with matching physical hosts inside each pair.",
+  "repeats_earlier_seeds": true,
+  "stage_measurement": "Separate fresh TH10 0.02a original games, corrected qualified stage channel, same controller seeds/build/physical host within pair, native RNG independent. Historical original outcomes retained as unknown."
+}

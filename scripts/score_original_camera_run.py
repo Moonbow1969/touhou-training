@@ -1,6 +1,8 @@
 """Index completed native full-credit receipts, their original endpoints and matched metrics."""
 import argparse
 import collections
+import csv
+import gzip
 import json
 from pathlib import Path
 
@@ -9,6 +11,39 @@ from PIL import Image
 
 from scripts.checkpoint_storage import digest
 from scripts.score_native_full_actions import qualified_stage2, summarize
+
+
+def verified_th10_entry(receipt, folder):
+    """Re-read the qualified 0.02a stage channel independently of the collector's counts."""
+    evidence=receipt.get('stage2_evidence')
+    if not evidence:return None,None,(None,None,None)
+    expected={'schema':'th10-native-stage-v2','stage_register':'0x472b40','legacy_register':'0x472b44',
+              'stage_column':'stage','legacy_column':'legacy_start_field','native_trace_file':'native.csv.gz',
+              'state_header_sha256':'24cf34bc5406a0526357548375a22f6441123f9d6b5d4ad72a6326ebaaabbf8b',
+              'stock_source_sha256':'437c829fd5ef287ed6579a318f23e69d8cc253ae1a13cc4670879554f631add7'}
+    if any(evidence.get(k)!=v for k,v in expected.items()) or not receipt.get('stage_sensor_validated'):
+        raise ValueError('Unqualified TH10 stage evidence')
+    source=receipt['source']
+    if (source['bundle']!=evidence['source_bundle'] or source['sources']['th10-trial-state.h']!=expected['state_header_sha256']
+            or source['sources']['th10-full-stock.c']!=expected['stock_source_sha256']):
+        raise ValueError('TH10 stage proof belongs to another collector')
+    trace=folder/'native.csv.gz'
+    checksum=digest(trace)
+    if checksum!=evidence['native_trace_sha256']:raise ValueError('TH10 native stage trace changed')
+    with gzip.open(trace,'rt') as f:rows=list(csv.DictReader(f))
+    if len(rows)!=evidence['native_rows'] or not rows or 'legacy_start_field' not in rows[0]:
+        raise ValueError('Incomplete TH10 native stage trace')
+    stages=[int(row['stage']) for row in rows]
+    if stages[0]!=1 or max(stages)!=evidence['highest_native_stage']:raise ValueError('TH10 stage range mismatch')
+    entered=2 in stages
+    if entered!=receipt['stage2_reached'] or entered!=(evidence['first_stage2'] is not None) or (max(stages)>2 and not entered):
+        raise ValueError('TH10 stage result disagrees with native stream')
+    if not entered:return False,checksum,(None,None,None)
+    pos=stages.index(2);row=rows[pos];record=evidence['first_stage2']
+    if stages[pos-1]!=1 or record['native_row']!=pos or any(int(row[k])!=record[j] for k,j in
+        [('utc_ms','utc_ms'),('lives','spares'),('power_units','power_units'),('legacy_start_field','legacy_start_field')]):
+        raise ValueError('TH10 stage entry or resource evidence differs')
+    return True,checksum,(int(row['lives']),None,int(row['power_units'])/20)
 
 
 def records(root, camera, round2=False):
@@ -66,11 +101,14 @@ def verify(title, f, r, trace, arm, out):
     outcome=r.get("outcome",r.get("native_outcome","")).lower()
     if not any(x in outcome for x in ("final_life","game_over","ranking","clear","ending")):
         raise ValueError("Unrecognized end state")
+    stage_evidence=None
     stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r['stage2_reached']))
+    if title==10:stage_flag,stage_evidence,entry=verified_th10_entry(r,f.parent)
     if stage_flag is None:entry=(None,None,None)
     return dict(title=title,arm=arm,seed=r["seed"],host=host,game_sha256=build,policy_sha256=r["policy_sha256"],
                 terminal="game_over" if any(x in outcome for x in ("final_life","game_over","ranking")) else "ending",
-                stage2_reached=stage_flag,stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
+                stage2_reached=stage_flag,stage2_evidence_sha256=stage_evidence,
+                stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
                 native_log_sha256=digest(f),original_endpoint_sha256=digest(photo),

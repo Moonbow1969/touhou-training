@@ -46,6 +46,7 @@ def collect(args, arm, model, seeds, destination, active, camera, history=False)
     if camera:
         cmd.append("--camera")
     if getattr(args,'difficulty',1)!=1:cmd.extend(['--difficulty',str(args.difficulty)])
+    if getattr(args,'stage_sensor',None):cmd.extend(['--stage-sensor',args.stage_sensor])
     if history:cmd.append("--camera-history")
     host=getattr(args,"host","momentum")
     if host!="fleet":cmd.extend(["--only-host",host])

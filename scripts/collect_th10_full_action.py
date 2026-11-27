@@ -31,9 +31,14 @@ def save(path, data):
     tmp.replace(path)
 
 
-def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False, difficulty=1):
+def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False, difficulty=1, stage_sensor='qualified-v2'):
     files = {name:(PROBE/name).read_bytes() for name in
              ("run-th10-trial-probe.sh","th10-trial-state.h","th10-trial-observe.c","th10-full-stock.c","th10-full-actor.c")}
+    if stage_sensor not in ('legacy','qualified-v2'):raise ValueError('Unknown TH10 stage sensor.')
+    if stage_sensor=='legacy':
+        # Resume historical preregistered arms with their exact native source SHA.
+        for name in ('th10-trial-state.h','th10-full-stock.c'):
+            files[name]=(PROBE/'th10-legacy-stage'/name).read_bytes()
     if difficulty not in (0,1):raise ValueError('Full-credit capture supports Easy (0) and Normal (1).')
     if difficulty==0:
         # Build a distinct Easy-only launcher from the same verified difficulty-menu detector.
@@ -84,6 +89,7 @@ sha256sum "$src/full-actor" | cut -d' ' -f1
     if reply.returncode:raise RuntimeError(reply.stderr.decode(errors="replace")[-700:])
     result=dict(bundle=bundle,sources=sources,executable=digest(files["th10-full-actor.c"]),linux_binary=reply.stdout.decode().strip(),camera=camera,camera_history=camera_history)
     if difficulty!=1:result['difficulty']=difficulty
+    if stage_sensor!='legacy':result['stage_sensor']=stage_sensor
     return result
 
 
@@ -150,6 +156,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
                     raise ValueError('The original worker used a different observation contract.')
             if identity['source'].get('difficulty',1)!=pinned.get('difficulty',1):
                 raise ValueError('The original worker used another difficulty selection.')
+            if identity['source'].get('stage_sensor','legacy')!=pinned.get('stage_sensor','legacy'):
+                raise ValueError('The original worker used a different stage register.')
             pinned=identity['source']
         stop=read("native-stop").decode().strip()
         if stop!="native_final_life_lost":
@@ -167,6 +175,11 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
             raise ValueError("A fresh original credit at the specified difficulty was not verified.")
         data=read("native.csv")
         states=list(csv.DictReader(io.StringIO(data.decode())))
+        qualified_stage=pinned.get('stage_sensor')=='qualified-v2'
+        if qualified_stage:
+            if not states or 'legacy_start_field' not in states[0] or int(states[0]['stage'])!=1:
+                raise ValueError('Missing qualified progression telemetry or fresh Stage 1 opening.')
+            (folder/'opening.csv').write_bytes(read('opening.csv'))
         if difficulty==0:
             if any(int(row['difficulty'])!=0 for row in states):raise ValueError('Native Easy difficulty changed during the credit.')
             (folder/'easy-rank.png').write_bytes(read('easy-rank.png'))
@@ -259,6 +272,25 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
         result.update(camera_policy=True,camera_model_inputs="original-pixels.npz obs[:-1]; [gray,abs(gray-previous)] / 255; first difference zero",features_role="Portable diagnostic features; raw camera is the model input.")
         if pinned.get('camera_history'):result['additional_policy_input']='Previous sampled movement; 4 (neutral) at the start of each credit.'
     if result['median_control_ms']<hold-3:raise ValueError('Observed camera cadence is faster than the registered native hold.')
+    result.update(stage_sensor='qualified-v2' if qualified_stage else 'legacy-unvalidated',
+                  stage_register='0x472b40' if qualified_stage else '0x472b44',
+                  stage_sensor_validated=qualified_stage)
+    if qualified_stage:
+        result['highest_observed_native_stage']=max(int(s['stage']) for s in states)
+        result['legacy_start_field_values']=sorted({int(s['legacy_start_field']) for s in states})
+        first_stage2=next((j for j,row in enumerate(states) if int(row['stage'])==2),None)
+        entry=None
+        if first_stage2 is not None:
+            row=states[first_stage2]
+            assert first_stage2>0 and int(states[first_stage2-1]['stage'])==1
+            entry=dict(native_row=first_stage2,utc_ms=int(row['utc_ms']),action_step=at(int(row['utc_ms'])),
+                       spares=int(row['lives']),power_units=int(row['power_units']),power=int(row['power_units'])/20,
+                       legacy_start_field=int(row['legacy_start_field']))
+        result['stage2_evidence']=dict(schema='th10-native-stage-v2',native_trace_file='native.csv.gz',
+            native_trace_sha256=digest((folder/'native.csv.gz').read_bytes()),native_rows=len(states),
+            stage_column='stage',stage_register='0x472b40',legacy_column='legacy_start_field',legacy_register='0x472b44',
+            state_header_sha256=pinned['sources']['th10-trial-state.h'],stock_source_sha256=pinned['sources']['th10-full-stock.c'],
+            source_bundle=pinned['bundle'],first_stage2=entry,highest_native_stage=result['highest_observed_native_stage'])
     if difficulty==0:result.update(difficulty=0,difficulty_name='Easy',difficulty_verified_native_samples=len(states),
                                    difficulty_menu_sha256=digest((folder/'easy-rank.png').read_bytes()))
     save(folder/'report.json',result)
@@ -272,6 +304,8 @@ def one(task):
         cached=json.loads((folder/'report.json').read_bytes())
         if cached['policy_sha256']!=sha:raise ValueError("Cannot resume with different weights.")
         if cached['source'].get('difficulty',1)!=pinned.get('difficulty',1):raise ValueError("Cannot resume another difficulty.")
+        if cached['source'].get('stage_sensor','legacy')!=pinned.get('stage_sensor','legacy'):
+            raise ValueError('Cannot reuse an original credit from a different stage sensor.')
         if cached.get('requested_hold_ms',120)!=hold:raise ValueError("Cannot resume a different control cadence.")
         if not paired or ((folder/'privileged-targets.json').is_file() and (folder/'privileged-targets.npz').is_file()):
             return cached
@@ -300,6 +334,7 @@ rm -f -- pixels.u8 features.f32 rich.bin
     for attempt in range(1,4):
         cadence_suffix="" if hold==120 else f"-h{hold}"
         if pinned.get('difficulty',1)==0:cadence_suffix+='-easy'
+        if pinned.get('stage_sensor')=='qualified-v2':cadence_suffix+='-stagev2'
         label=f"{seed}-{sha[:12]}{cadence_suffix}-{attempt}"
         directory=f'"$HOME/.local/share/toho-ml/th10-official-trial-002a/full-story/{label}"'
         endpoint=client["command"][:-1]
@@ -360,6 +395,8 @@ def main():
     p.add_argument("--camera",action="store_true",help="Deploy a hash-pinned TorchScript camera policy through the host's private Unix socket.")
     p.add_argument("--camera-history",action="store_true",help="Include the preceding sampled movement byte with each camera request.")
     p.add_argument("--difficulty",type=int,choices=(0,1),default=1,help="Select Easy (0) or Normal (1) in the original menu.")
+    p.add_argument("--stage-sensor",choices=('legacy','qualified-v2'),
+                   help='New runs use qualified-v2. Existing arms preserve their frozen sensor. Legacy Stage 2 endpoints are unvalidated.')
     p.add_argument("--only-host",choices=FLEET)
     p.add_argument("--prepare-only",action="store_true");p.add_argument("--arm",default="sft")
     p.add_argument("--out",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int)
@@ -368,16 +405,24 @@ def main():
     workers=json.loads(args.workers.read_bytes())
     fleet=(args.only_host,) if args.only_host else FLEET
     args.out.mkdir(parents=True,exist_ok=True)
+    prior_sensors={json.loads(p.read_bytes())['source'].get('stage_sensor','legacy') for p in args.out.glob('*/report.json')}
+    lock=args.out/'stage-sensor-lock.json'
+    if lock.is_file():prior_sensors.add(json.loads(lock.read_bytes())['stage_sensor'])
+    if len(prior_sensors)>1:p.error('A frozen arm contains conflicting native stage sources.')
+    if args.stage_sensor and prior_sensors and args.stage_sensor not in prior_sensors:
+        p.error('Use a separate output directory for an independent stage-sensor re-evaluation.')
+    args.stage_sensor=args.stage_sensor or next(iter(prior_sensors),'qualified-v2')
+    if args.stage_sensor not in ('legacy','qualified-v2'):p.error('Invalid frozen stage-source lock.')
     with ThreadPoolExecutor(2) as pool:
         if (args.actor_header or args.locator_params or args.camera) and not args.expected_sha:p.error("Custom actors require --expected-sha")
         if args.camera and (args.actor_header or args.locator_params):p.error("The camera actor manages its own header.")
         if args.camera_history and not args.camera:p.error('--camera-history requires --camera')
-        pins=dict(zip(fleet,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params,camera=args.camera,camera_history=args.camera_history,difficulty=args.difficulty),fleet)))
+        pins=dict(zip(fleet,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params,camera=args.camera,camera_history=args.camera_history,difficulty=args.difficulty,stage_sensor=args.stage_sensor),fleet)))
         if args.prepare_only:save(args.out/'builds.json',pins);return
         shas=list(pool.map(lambda h:install_weights(workers[h],args.model,args.expected_sha),fleet))
         if args.camera:list(pool.map(lambda h:start_camera_service(workers[h],pins[h],shas[0]),fleet))
     if len(set(shas))!=1 or len(args.seeds)!=len(set(args.seeds)):raise ValueError("Invalid seed assignment or model distribution.")
-    plan=dict(arm=args.arm,policy_sha256=shas[0],holds_ms=args.hold,seeds=args.seeds,
+    plan=dict(arm=args.arm,policy_sha256=shas[0],holds_ms=args.hold,seeds=args.seeds,stage_sensor=args.stage_sensor,
               assignment={str(s):fleet[(s-1)%len(fleet)] for s in args.seeds},
               complete_credits=0,technical_failures=[],receipts=[])
     save(args.out/'collection.json',plan)
