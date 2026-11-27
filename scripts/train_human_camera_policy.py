@@ -1,6 +1,7 @@
 """Fit four camera-only action heads from chronologically aligned original human replays."""
 import argparse
 from collections import Counter
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -158,6 +159,7 @@ def main():
     for key in ("encoder","reference","out"):
         parser.add_argument("--"+key,type=Path,required=True)
     parser.add_argument("--steps",type=int,default=800)
+    parser.add_argument("--audit-draws",action="store_true",help="Digest ordered sampled indices, horizontal flips and brightness multipliers.")
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--active-change-weight",type=float,choices=(1.,2.),default=1.,
@@ -236,6 +238,7 @@ def main():
             rank_banks[title]={rank:[i for i in indices if train[i]['difficulty']==rank] for rank in ('Hard','Lunatic')}
             if any(not bank for bank in rank_banks[title].values()) or sum(map(len,rank_banks[title].values()))!=len(indices):
                 raise ValueError('A ranked training title must contain both Hard and Lunatic and no other ranks')
+    draw_trace=hashlib.sha256() if args.audit_draws else None
     for step in range(1,args.steps+1):
         chosen=[]
         for i in range(8):
@@ -262,7 +265,11 @@ def main():
         y=data["action"][ids].clone()
         flip=torch.rand(len(ids),device=device)<.5
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
-        px*=.85+.3*torch.rand(len(ids),1,1,1,device=device)
+        brightness=.85+.3*torch.rand(len(ids),1,1,1,device=device)
+        px*=brightness
+        if draw_trace is not None:
+            for sampled in (ids,flip,brightness):
+                draw_trace.update(sampled.detach().cpu().contiguous().numpy().tobytes())
         if args.future_movement_weight:
             spatial=model.spatial(px)
             latent=model.policy[:-1](spatial)
@@ -335,6 +342,7 @@ def main():
               **({'future_movement_weight':args.future_movement_weight,'future_movement_ticks':[4,8,12],
                   'future_movement_training_rows':(future_labels>=0).sum(0).tolist()} if args.future_movement_weight else {}),
               "spatial_attention":args.spatial_attention,
+              **({'ordered_draw_flip_brightness_sha256':draw_trace.hexdigest()} if draw_trace is not None else {}),
               "cpu_replay":args.cpu_replay,
               **({'file_backed_replay':True} if args.file_backed_replay else {}),
               "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
