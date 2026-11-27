@@ -41,7 +41,8 @@ def main():
     summary={};markers=[];labels=[]
     for (title,rank),items in sorted(cells.items()):
         seeds=sorted(items[arms[0]])
-        if len(seeds)!=8 or seeds!=sorted(items[arms[1]]):raise ValueError('Missing registered pair')
+        expected=sorted(s for s in plan['eval_seeds'][str(title)] if plan['rank_by_seed'][str(title)][str(s)]==rank)
+        if seeds!=expected or seeds!=sorted(items[arms[1]]):raise ValueError('Missing registered pair')
         for s in seeds:
             a,b=(items[arm][s] for arm in arms)
             if (a['host'],a['game_sha256'])!=(b['host'],b['game_sha256']):raise ValueError('Incomparable physical pair')
@@ -77,7 +78,7 @@ def main():
         ax.set_xlabel(label,fontsize=9);ax.grid(axis='x',alpha=.2)
     axs[0].set_xlim(-4,104);axs[2].set_xlim(-4,104)
     axs[0].legend(loc='lower right',fontsize=8)
-    fig.suptitle(f'Ordinary full stock · {len(rows)} original games · eight matched pairs per cell')
+    fig.suptitle(f'Ordinary full stock · {len(rows)} original games · {len(rows)//2} matched pairs')
     fig.savefig(evaluation/(args.out_stem+'.png'),dpi=160);plt.close(fig)
     out=dict(credits_sha256=digest(file),reference=arms[0],candidate=arms[1],complete_credits=len(rows),cells=summary)
     (evaluation/(args.out_stem+'.json')).write_text(json.dumps(out,indent=2,allow_nan=False)+'\n',encoding='utf8')
