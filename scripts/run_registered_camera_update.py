@@ -14,6 +14,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('root','parent','protocol'):
         p.add_argument('--'+key,type=Path,required=True)
+    p.add_argument('--from-sft',action='store_true',help='Restore the human camera policy with a zero-initialized value head.')
     args=p.parse_args()
     root=args.root.resolve()
     plan=json.loads(args.protocol.read_bytes())
@@ -21,6 +22,10 @@ def main():
     fingerprint=digest(behavior)
     if fingerprint!=plan['behavior_sha256']:
         raise ValueError('Unexpected parent actor')
+    if args.from_sft:
+        supervised=json.loads((args.parent/'report.json').read_bytes())
+        if supervised['sft']!=digest(args.parent/'camera-policy.pt') or supervised['torchscript_sha256']!=fingerprint:
+            raise ValueError('Supervised training and deployed behavior disagree')
     reference=plan['reference_arm']
     candidate=plan['candidate']
     def run(module,*params):
@@ -52,8 +57,9 @@ def main():
         run('normalize_th13_survival_clock','--original',root,'--out',root/'corrected')
     policy=root/'policy'
     if not (policy/'report.json').is_file():
+        restore=('--sft',args.parent/'camera-policy.pt') if args.from_sft else ('--parent-actor-critic',args.parent/'camera-ppo.pt')
         run('train_full_resolution_camera_ppo','--manifest',root/'corrected/credits.json','--protocol',args.protocol,
-            '--parent-actor-critic',args.parent/'camera-ppo.pt','--behavior',behavior,'--out',policy)
+            *restore,'--behavior',behavior,'--out',policy)
     result=json.loads((policy/'report.json').read_bytes())
     if result['native_behavior_sha256']!=fingerprint or result['policy_sha256']!=digest(policy/'policy.ts') or result['protocol_sha256']!=digest(args.protocol):
         raise ValueError('Trained checkpoint or registration differs')
