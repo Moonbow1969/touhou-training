@@ -1,0 +1,75 @@
+{
+  "study": "feedback-ppo-independent-replication",
+  "closure": {
+    "study": "feedback-ppo-independent-replication",
+    "physical_credits": 128,
+    "protocol_sha256": "d109fdfa2850229857979cd21f4171532f37afc0c66d3cb6414da0f2eddf66cc",
+    "ledger_sha256": "33bb2f2f800c22f46e2d57ce17e3cec77ae5d74c8ee4950c06d1de5fb804bf6a",
+    "published_summary_sha256": "247901ad8cba7390fa3bc21429a4ef55f51f5ab9b5168f3246cae5ae96bd3017"
+  },
+  "complete": true,
+  "services": [
+    {
+      "site": "Gamer WSL",
+      "lane": "shared-model-service",
+      "arm": "teacher",
+      "request": {
+        "study": "feedback-ppo-independent-replication",
+        "engine": "docker",
+        "registered_consumers": [
+          "feedback-ppo-independent-replication",
+          "four-step-feedback-online",
+          "four-step-feedback-original"
+        ],
+        "completion": {
+          "study": "feedback-ppo-independent-replication",
+          "physical_credits": 128,
+          "protocol_sha256": "d109fdfa2850229857979cd21f4171532f37afc0c66d3cb6414da0f2eddf66cc",
+          "ledger_sha256": "33bb2f2f800c22f46e2d57ce17e3cec77ae5d74c8ee4950c06d1de5fb804bf6a",
+          "published_summary_sha256": "247901ad8cba7390fa3bc21429a4ef55f51f5ab9b5168f3246cae5ae96bd3017"
+        },
+        "service": "toho-th17-teacher-service-261126",
+        "policy_sha256": "5782c537a496eb912e4d12b4521739e34d979e9dbf1d531576b051294c3266b3",
+        "inside_model": "/input/teacher/model.ts",
+        "socket_name": "actor.sock",
+        "container_ids": [
+          "f34ef0bd4e2d9420b836f6a7c81ae4f37d6564b2ef8cd03278e704489f067107"
+        ]
+      },
+      "status": "shared-or-unowned",
+      "retryable": false
+    },
+    {
+      "site": "Gamer WSL",
+      "lane": "shared-model-service",
+      "arm": "teacher-ppo",
+      "request": {
+        "study": "feedback-ppo-independent-replication",
+        "engine": "docker",
+        "registered_consumers": [
+          "feedback-ppo-independent-replication",
+          "four-step-feedback-online"
+        ],
+        "completion": {
+          "study": "feedback-ppo-independent-replication",
+          "physical_credits": 128,
+          "protocol_sha256": "d109fdfa2850229857979cd21f4171532f37afc0c66d3cb6414da0f2eddf66cc",
+          "ledger_sha256": "33bb2f2f800c22f46e2d57ce17e3cec77ae5d74c8ee4950c06d1de5fb804bf6a",
+          "published_summary_sha256": "247901ad8cba7390fa3bc21429a4ef55f51f5ab9b5168f3246cae5ae96bd3017"
+        },
+        "service": "toho-th17-teacher-ppo-service-261126",
+        "policy_sha256": "fd0b571ce8c286db02855c14250f8bb2f274d81ebcc87faf27d6b327f4a2d01a",
+        "inside_model": "/input/teacher-ppo/model.ts",
+        "socket_name": "actor.sock",
+        "container_ids": [
+          "1c590c036037a79838a9debaccad906a1ecf7a28b64565a91db98cd01044663c"
+        ]
+      },
+      "status": "shared-or-unowned",
+      "retryable": false
+    }
+  ],
+  "retryable_services": [],
+  "scope": "Only the single registered owner can retire a full-SHA matched private inference container. Shared instances remain online. A busy socket or unavailable native lane lock defers the operation. Game containers are never targeted.",
+  "audited_utc": "2026-11-27T16:20:01.109184+00:00"
+}
