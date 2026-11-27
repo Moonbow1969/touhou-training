@@ -17,12 +17,12 @@ from scripts.run_th10_camera_pair import run as paired
 from scripts.score_original_camera_run import verified_th10_entry
 
 
-def native_ledger(folders,seeds,rank):
+def native_ledger(folders,seeds,rank,host="momentum"):
     records=[]
     menu=DIFFICULTIES[rank].lower()+'-rank.png'
     for folder in folders:
         for seed in seeds:
-            credit=folder/f'momentum-{seed}';r=json.loads((credit/'report.json').read_bytes())
+            credit=folder/f'{host}-{seed}';r=json.loads((credit/'report.json').read_bytes())
             assert r['difficulty']==rank and r['terminal'] and not r['continues']
             with (credit/'opening.csv').open() as f:opening=next(csv.DictReader(f))
             assert [int(opening[k]) for k in ('stage','difficulty','character','shot','lives','score')]==[1,rank,0,0,2,0]
@@ -45,11 +45,12 @@ def native_ledger(folders,seeds,rank):
 
 
 def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,total_held_lanes=None,
-        reserve_until=None,reserved_lanes=0):
+        reserve_until=None,reserved_lanes=0,host="momentum"):
     torch.set_num_threads(2)
     root=root.resolve();workers=workers.resolve();experiment=root/experiment_name;out=experiment/'native10'
     plan=json.loads((experiment/'camera-protocol.json').read_bytes());ref=plan['reference_arm'];alt=plan['candidate']
-    models={'high-rank-online':('scaled-human-sft/cnn-new-24/policy/policy.ts','d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573',16),
+    models={'human78-online':('scaled-human-sft/new-64/policy/policy.ts','5fa285072ead0cc62cae6c6f1e5051e12a40e1e96068388c9360119a29113bb2',16),
+        'high-rank-online':('scaled-human-sft/cnn-new-24/policy/policy.ts','d6004d78f43c8b55262e24fd1d90cd99852d43826a788265a04d67a05f128573',16),
         'four-game-online':('ranked-multigame-sft/four-title/policy.ts','510132b2cd0cd04b728d066fe73e8703440c7e3cce1dcd165393da691ce76220',8),
         'four-game-merged-online':('specialist-vs-shared/merged-equal/policy.ts','1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a',8),
         'four-game-ppo-generation2':('four-game-online/policy/policy.ts','3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c',16)}
@@ -57,7 +58,7 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
     path=root/source;candidate=experiment/'policy/policy.ts'
     metadata=json.loads((path.parent/'report.json').read_bytes())
     intended=metadata.get('policy_sha256') or metadata['torchscript_sha256']
-    sensor='qualified-v2-clock' if experiment_name in ('four-game-ppo-generation2','four-game-merged-online') else 'qualified-v2'
+    sensor='qualified-v2-clock' if experiment_name in ('four-game-ppo-generation2','four-game-merged-online','human78-online') else 'qualified-v2'
     assert digest(path)==intended==expected_sha
     train=plan['train_seeds']['10'];held=plan['eval_seeds']['10']
     assert len(set(train))==n_train and len(set(held))==24 and not set(train)&set(held)
@@ -78,16 +79,16 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
         label=DIFFICULTIES[rank].lower();folder=out/label;folder.mkdir(exist_ok=True,parents=True)
         expected_parity=1 if rank==2 else 0
         seeds=[s for s in (train if role=='train' else held) if s%2==expected_parity]
-        jobs=SimpleNamespace(workers=workers,host='momentum',difficulty=rank,stage_sensor=sensor)
+        jobs=SimpleNamespace(workers=workers,host=host,difficulty=rank,stage_sensor=sensor)
         if role=='train':
             assert len(seeds)==n_train//2
             collect(jobs,ref,path,seeds,folder,lanes,True)
-            valid=native_ledger([folder],seeds,rank)
-            receipts,_=verify(folder,path,checkpoint(path),seeds,'train',host='momentum',difficulty=rank)
+            valid=native_ledger([folder],seeds,rank,host)
+            receipts,_=verify(folder,path,checkpoint(path),seeds,'train',host=host,difficulty=rank)
         else:
             assert len(seeds)==12
             arms=('held-'+ref,'held-'+alt)
-            options=SimpleNamespace(out=folder,workers=workers,host='momentum',difficulty=rank,stage_sensor=sensor,
+            options=SimpleNamespace(out=folder,workers=workers,host=host,difficulty=rank,stage_sensor=sensor,
                 reference_name=arms[0],candidate_name=arms[1],reference=path,candidate=candidate,seeds=seeds,
                 concurrency=lanes,candidate_history=False,validate_candidate=frozen_candidate)
             if total_held_lanes is not None:
@@ -101,7 +102,7 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
             paired(options)
             finished[rank].set()
             assert digest(candidate)==json.loads((candidate.parent/'report.json').read_bytes())['policy_sha256']
-            valid=native_ledger([folder/a for a in arms],seeds,rank);receipts=[]
+            valid=native_ledger([folder/a for a in arms],seeds,rank,host);receipts=[]
         save(folder/(role+'-qualified-native-ranks.json'),valid)
         return valid,receipts
     with ThreadPoolExecutor(parallel_ranks) as pool:
@@ -112,7 +113,7 @@ def run(root,workers,lanes,experiment_name='high-rank-online',parallel_ranks=2,t
                 for rank in (2,3):
                     seeds=[s for s in held if 3-s%2==rank][:6]
                     target=out/DIFFICULTIES[rank].lower()/('held-'+ref)
-                    jobs=SimpleNamespace(workers=workers,host='momentum',difficulty=rank,stage_sensor=sensor)
+                    jobs=SimpleNamespace(workers=workers,host=host,difficulty=rank,stage_sensor=sensor)
                     collect(jobs,'held-'+ref,path,seeds,target,lanes,True)
             results=[f.result() for f in [pool.submit(group,rank,role) for rank in (2,3)]]
             save(out/(role+'-qualified-native-ranks.json'),[r for items,_ in results for r in items])
@@ -131,6 +132,7 @@ if __name__=='__main__':
     parser.add_argument('--parallel-ranks',type=int,choices=(1,2),default=2)
     parser.add_argument('--total-held-lanes',type=int)
     parser.add_argument('--reserve-until',type=Path);parser.add_argument('--reserved-lanes',type=int,default=0)
-    parser.add_argument('--experiment',choices=('high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online'),default='high-rank-online')
+    parser.add_argument('--experiment',choices=('high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online','human78-online'),default='high-rank-online')
+    parser.add_argument("--host",choices=("momentum","accelerator"),default="momentum")
     args=parser.parse_args();run(args.root,args.workers,args.lanes_per_rank,args.experiment,args.parallel_ranks,
-                                args.total_held_lanes,args.reserve_until,args.reserved_lanes)
+                                args.total_held_lanes,args.reserve_until,args.reserved_lanes,args.host)

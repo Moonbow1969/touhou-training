@@ -1,8 +1,8 @@
 {
-  "verified_unique_credits": 852,
-  "verified_unique_decisions": 555539,
+  "verified_unique_credits": 876,
+  "verified_unique_decisions": 561614,
   "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
-  "unique_updates": 17,
+  "unique_updates": 19,
   "updates": [
     {
       "path": "camera-ppo/report.json",
@@ -197,6 +197,29 @@
         "13": 9521,
         "17": 8151
       }
+    },
+    {
+      "path": "four-game-merged-online/policy/report.json",
+      "learner_report_sha256": "04b20b818f06de105ec507c00ab14cc44cafd6ad3cb8a6512c33218cc36a1feb",
+      "policy_sha256": "e69e667987fed0fceb721cbabefbb1e03f956af0a99f763de341d64298e59c18",
+      "unique_credits": 32,
+      "unique_decisions": 14458,
+      "by_title": {
+        "10": 1591,
+        "12": 2310,
+        "13": 6340,
+        "17": 4217
+      }
+    },
+    {
+      "path": "th11-original-ppo/policy/report.json",
+      "learner_report_sha256": "956859159e3f8cbd90ed8d6fffb87fb0d4d87377687efe3f83fc52005429f4c9",
+      "policy_sha256": "1ca78172b9fbb65e28f74e16e88524ad63bf86fb54f8444cfba4335414c57579",
+      "unique_credits": 16,
+      "unique_decisions": 3765,
+      "by_title": {
+        "11": 3765
+      }
     }
   ],
   "shared_collection_updates": [
@@ -205,8 +228,8 @@
       "policy_sha256": "be648b0fc6a3000e349d0e278cbf675ca5b3f2abc9b3e1ee44914ff3bd1b7b14",
       "optimizer_source_credits": 24,
       "optimizer_source_decisions": 12148,
-      "new_physical_credits": 24,
-      "new_physical_decisions": 12148,
+      "new_physical_credits": 0,
+      "new_physical_decisions": 0,
       "excluded_game": "TH12",
       "original_collection": "four-game-merged-online"
     }

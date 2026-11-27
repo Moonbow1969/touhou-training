@@ -1,0 +1,109 @@
+{
+  "controls": "No geometry, aim, automatic shoot, automatic bomb, programmed movement route or Continue. Raw original 112x96 grayscale camera and preceding absolute-difference image. One categorical movement head and three independent focus, shot and bomb heads.",
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "balanced_title_rank": true,
+  "name": "First TH11 original 0.02a Hard and Lunatic full-credit online PPO",
+  "games": {
+    "TH11": "Original standalone trial 0.02a, first three stages"
+  },
+  "reference_arm": "merged-sft",
+  "candidate": "th11-ppo",
+  "behavior_sha256": "1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a",
+  "native_executable_sha256": "360f542349a08707de5c788ef5a950d5d3ad0fd727a23e74b6813db40dfe77a9",
+  "train_seeds": {
+    "11": [
+      1401101,
+      1401102,
+      1401103,
+      1401104,
+      1401105,
+      1401106,
+      1401107,
+      1401108,
+      1401109,
+      1401110,
+      1401111,
+      1401112,
+      1401113,
+      1401114,
+      1401115,
+      1401116
+    ]
+  },
+  "eval_seeds": {
+    "11": [
+      1401151,
+      1401152,
+      1401153,
+      1401154,
+      1401155,
+      1401156,
+      1401157,
+      1401158,
+      1401159,
+      1401160,
+      1401161,
+      1401162,
+      1401163,
+      1401164,
+      1401165,
+      1401166
+    ]
+  },
+  "rank_by_seed": {
+    "11": {
+      "1401101": 2,
+      "1401102": 3,
+      "1401103": 2,
+      "1401104": 3,
+      "1401105": 2,
+      "1401106": 3,
+      "1401107": 2,
+      "1401108": 3,
+      "1401109": 2,
+      "1401110": 3,
+      "1401111": 2,
+      "1401112": 3,
+      "1401113": 2,
+      "1401114": 3,
+      "1401115": 2,
+      "1401116": 3,
+      "1401151": 2,
+      "1401152": 3,
+      "1401153": 2,
+      "1401154": 3,
+      "1401155": 2,
+      "1401156": 3,
+      "1401157": 2,
+      "1401158": 3,
+      "1401159": 2,
+      "1401160": 3,
+      "1401161": 2,
+      "1401162": 3,
+      "1401163": 2,
+      "1401164": 3,
+      "1401165": 2,
+      "1401166": 3
+    }
+  },
+  "reward": "For each confirmed change in native spare lives, credit the actual stock delta to its active policy interval. Final transition from zero spares to -1 is a death. No score, Power, wall clock, stage threshold, graze or Bomb term in this first fit.",
+  "initialization": "Restore the merged TH10/12/13/17 human SFT camera and all four action heads. Initialize the critic to zero.",
+  "controls_in_game": "Original Reimu A, no continue. Record native spent Power per confirmed X activation and stock on both the fatal and settled frames. Save complete observed control sequence through the terminal.",
+  "qualification": "1391101 and all engineering sessions are excluded. The Stage 2 rate needs an independently verified original positive transition. Until then report unknown, together with observed terminal lives, Power and original score.",
+  "evaluation": "Eight fresh paired full credits per rank. Pair physical host, original build, character and lane for a controller seed. Record original RNG as uncontrolled. Separate training and held cohorts."
+}

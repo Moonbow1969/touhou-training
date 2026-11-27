@@ -1,0 +1,584 @@
+{
+  "study": "Corrected TH12 native and wall-clock whole-credit PPO with verified playable coverage",
+  "parent": "exact-build-human/43-stage-pair/trial-augmented/policy.ts",
+  "parent_sha256": "9958753c91c8b0fb28ee08d82e75e5d9ebd9df718f2f0a7e29460a8a5d0dcd89",
+  "learner_outputs": {
+    "tick4-ppo": "th12-clock-covered-online/tick4/policy/policy.ts",
+    "wall120-ppo": "th12-clock-covered-online/wall120/policy/policy.ts"
+  },
+  "training": "Exactly 8 complete original credits per clock, four Hard/four Lunatic, matched controller seed and physical host/lane per pair. Original RNG uncontrolled. Central learner equalizes valid decision counts across the two full-origin cohorts.",
+  "held": "Two newly fitted heads execute the common exact four-original-tick clock. Eight fresh pairs per native rank. Reimu A from normal stock start, no continue; controller seed and physical original lane are shared inside a pair. Rotation fixed before outcomes.",
+  "controls": "Nine-way direction, focus, Z, X. 96x112 luminance and absolute difference since preceding genuine pre-action camera. Zero geometric aim, avoidance, autobomb. Same native reward and terminal HUD schema in both arms.",
+  "schema": {
+    "root": "th12-clock-covered-online/<cohort>/native12",
+    "raw": "raw/<tag>",
+    "receipt": "credits/<tag>.json",
+    "trajectory": "credits/<tag>.npz",
+    "training_keys": [
+      "frames",
+      "action",
+      "logp",
+      "value",
+      "reward",
+      "terminated"
+    ],
+    "timing": "raw/<tag>/engineering-decisions.tsv; per-decision pre/apply/post original stage/tick, selected/physical X key mask. engineering-native.tsv logs original consumed mask and stage/tick. Receipt includes native timing distribution, input match rate with numerator/denominator, and both source SHA. Exactly one genuine terminal marker."
+  },
+  "plan": [
+    {
+      "mode": "train",
+      "seed": 1401201,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401201-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401201,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401201-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401202,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401202-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401202,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401202-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401203,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401203-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401203,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401203-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401204,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401204-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401204,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401204-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401205,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401205-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401205,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401205-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401206,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401206-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401206,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401206-alpha"
+    },
+    {
+      "mode": "train",
+      "seed": 1401207,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401207-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401207,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401207-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401208,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "tick4",
+      "policy": "trial-augmented",
+      "execution_clock": "tick4",
+      "tag": "train-trial-augmented-tick4-1401208-beta"
+    },
+    {
+      "mode": "train",
+      "seed": 1401208,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "wall120",
+      "policy": "trial-augmented",
+      "execution_clock": "wall120",
+      "tag": "train-trial-augmented-wall120-1401208-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401251,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401251-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401251,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401251-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401252,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401252-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401252,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401252-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401253,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401253-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401253,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401253-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401254,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401254-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401254,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401254-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401255,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401255-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401255,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401255-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401256,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401256-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401256,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401256-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401257,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401257-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401257,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401257-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401258,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401258-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401258,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401258-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401259,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401259-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401259,
+      "rank": 2,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401259-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401260,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401260-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401260,
+      "rank": 3,
+      "host": "deck",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401260-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401261,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401261-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401261,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401261-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401262,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401262-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401262,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401262-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401263,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401263-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401263,
+      "rank": 2,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401263-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401264,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401264-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401264,
+      "rank": 3,
+      "host": "entropy",
+      "lane": "alpha",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401264-alpha"
+    },
+    {
+      "mode": "held",
+      "seed": 1401265,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401265-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401265,
+      "rank": 2,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401265-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401266,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "tick4-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-tick4-ppo-1401266-beta"
+    },
+    {
+      "mode": "held",
+      "seed": 1401266,
+      "rank": 3,
+      "host": "deck",
+      "lane": "beta",
+      "cohort": "common-tick4",
+      "policy": "wall120-ppo",
+      "execution_clock": "tick4",
+      "tag": "held-wall120-ppo-1401266-beta"
+    }
+  ],
+  "supersedes_diagnostic_snapshot": "057ce3951affaccf14dfa12d7c5497c9983e2d7f5c3202f3fdeeaf49be580bc1",
+  "native_binaries": {
+    "deck": {
+      "th12-coverage-final-camera-actor": "4362a6b141032f50d0c0cfa44247d17ee228ad508ecc639bc66cf11027ef917e",
+      "th12-coverage-final-sensor.exe": "585cad1cfd2b2f32643ffbb02a04fb9db4f217b8188fcba143a125b0931e73a5",
+      "th12-coverage-final-credit.sh": "552cda84b26714bed84ad12c9a779f1ca2f4ce2e3951aa732639a18238f89a1f"
+    },
+    "entropy": {
+      "th12-coverage-final-camera-actor": "4362a6b141032f50d0c0cfa44247d17ee228ad508ecc639bc66cf11027ef917e",
+      "th12-coverage-final-sensor.exe": "585cad1cfd2b2f32643ffbb02a04fb9db4f217b8188fcba143a125b0931e73a5",
+      "th12-coverage-final-credit.sh": "552cda84b26714bed84ad12c9a779f1ca2f4ce2e3951aa732639a18238f89a1f"
+    }
+  },
+  "enrollment": "Both clock arms are blocked before the first fresh action until the identical native worker and sensor demonstrate real policy movement in dark spell combat, five original pause snapshots with released keys, subsequent return to normal input and genuine dead terminal with zero physical controls. The human checkpoint and observations stay identical. QA prefix and directed pause run only in engineering mode; TRAIN/HELD cannot enter that path.",
+  "behavior_integrity": "Failure of a covered playable interval in either arm suspends that binary on both arms. Fresh paired reruns are prespecified only after correcting a technical defect. No score-based retries. A failed or superseded seed and its matching opposite arm remain in the original cohort and are excluded from optimization.",
+  "technical_replacement": "If an externally interrupted or corrupt acquisition is irrecoverable before pair outcomes are compared, retain both old attempts and register a matching spare pair at the same rank, site and lane, using source seed + 100. Only one spare per pair. A recurring controller bug freezes the cohort to independent review.",
+  "coverage_evidence": {
+    "train": "th12-train-qualified-coverage.json (all 16 TRAIN original credits from the two clocks)",
+    "held": "th12-held-qualified-coverage.json (all 32 truly matched HELD original credits)",
+    "credit_keys": [
+      "receipt_sha256",
+      "coverage",
+      "evidence_sha256",
+      "evidence_path"
+    ],
+    "admission": "Every qualified document hashes verified pre-action pixels, input/clock edges, native consumed keys, native spares until death and the terminal screenshot. The terminal penalty is assigned to the decision whose held input covers the native exhausted-life event. Files are written atomically after the full registered cohort is observed."
+  }
+}

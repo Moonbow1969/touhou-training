@@ -8,6 +8,7 @@ from collections import Counter
 from pathlib import Path
 
 from scripts.checkpoint_storage import digest
+from scripts.run_registered_camera_update import wait_th12_coverage
 
 
 def freeze(path, value):
@@ -35,8 +36,16 @@ def wait_for_receipts(root, rows, fingerprints):
         key = row['policy']
         if (receipt['episode'] != row['tag'] or receipt['seed'] != row['seed']
                 or receipt['difficulty'] != row['rank'] or receipt['policy_sha256'] != fingerprints[key]
+                or any(receipt[field] != row[field] for field in ('host', 'lane', 'mode', 'execution_clock'))
                 or not receipt.get('terminal', True) or receipt.get('continues', 0) != 0):
             raise ValueError(f'Original credit differs from registered cell {path}')
+        clock = receipt['control_clock_verification']
+        raw = path.parent.parent / 'raw' / row['tag']
+        if (clock['clock'] != row['execution_clock'] or clock['physical_key_matches'] != receipt['actions']
+                or clock['decisions'] != receipt['actions'] or clock['eligible_native_end_of_hold'] <= 0
+                or digest(raw / 'engineering-native.tsv') != clock['native_trace_sha256']
+                or digest(raw / 'engineering-decisions.tsv') != clock['decision_trace_sha256']):
+            raise ValueError(f'Unverified native clock or key stream at {path}')
         counts[row['cohort'], row['rank']] += receipt['actions']
     return counts
 
@@ -44,10 +53,14 @@ def wait_for_receipts(root, rows, fingerprints):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', required=True, type=Path)
+    parser.add_argument('--study', default='th12-clock-online')
+    parser.add_argument('--require-coverage', action='store_true')
     args = parser.parse_args()
     data = args.data.resolve()
-    root = data / 'th12-clock-online'
+    root = data / args.study
     source = root / 'clock-protocol.json'
+    while not source.is_file():
+        time.sleep(10)
     plan = json.loads(source.read_bytes())
     parent = data / plan['parent']
     if digest(parent) != plan['parent_sha256']:
@@ -66,6 +79,11 @@ def main():
                         optimizer_budget='min(1536, available decisions in each of the four clock by rank cells). Full-credit GAE precedes sampling.')
     freeze(root / 'learner-registration.json', registration)
     counts = wait_for_receipts(root, train, {'trial-augmented': digest(parent)})
+    def await_coverage(phase, cells):
+        if args.require_coverage:
+            paths=[root/r['cohort']/'native12/credits'/(r['tag']+'.json') for r in cells]
+            wait_th12_coverage(root/f'th12-{phase}-qualified-coverage.json',paths)
+    await_coverage('train',train)
     arms = ('wall120', 'tick4')
     budget = min(1536, *(counts[arm, rank] for arm in arms for rank in (2, 3)))
     if budget < 2:
@@ -91,6 +109,7 @@ def main():
         policies[arm + '-ppo'] = report['policy_sha256']
         print(arm, report['steps'], 'native decisions;', 2 * budget, 'optimizer rows', flush=True)
     wait_for_receipts(root, held, policies)
+    await_coverage('held',held)
     out = root / 'evaluation'
     run('score_original_camera_run', '--root', root / 'common-tick4', '--round2', '--protocol', protocol,
         '--parent', root / 'wall120/policy/policy.ts', '--candidate', root / 'tick4/policy/policy.ts',
