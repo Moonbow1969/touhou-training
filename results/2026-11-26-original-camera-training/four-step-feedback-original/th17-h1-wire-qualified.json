@@ -1,0 +1,37 @@
+{
+  "worker_sha256": "242679f0a903cd8c03982cdf4b8887eff26a6d337275a401108b76948f684475",
+  "previous_action_wire": "H1",
+  "compile": "cc -std=c11 -O2 -DFA_CAMERA_EXPLICIT_PREVIOUS_MOVE worker.c -o worker-h1 -ldl -lm",
+  "sources_sha256": {
+    "worker.c": "6106d07977e065cb838118996866f549863d70d63c50dbde58603aa0c6045d6e",
+    "hud.h": "ec0e41406b718eae8b88d55d96497824abb3415f2987141a8a83e6487879ee8d",
+    "camera_actor.h": "3a9696ca136853e99dba7e76cafd65beca2d4f8d6ab9032663c68d5b5d1a7229",
+    "camera_service.py": "3f84a6de4dc67c532452f2bc351705890a51a2902081f85653b24d93b0335121"
+  },
+  "legacy_worker_sha256": "95b44b132f7b2d91eb38c566c46dc89a5fb876295fd8db60a346aa436baa7fc8",
+  "frozen_models": {
+    "teacher": {
+      "policy_sha256": "5782c537a496eb912e4d12b4521739e34d979e9dbf1d531576b051294c3266b3",
+      "first_previous_move": 4,
+      "checked_inputs": [
+        4,
+        0,
+        8
+      ],
+      "max_output_error": 8.344650268554688e-07,
+      "head_direction_effect": 3.4334001541137695
+    },
+    "propagated": {
+      "policy_sha256": "05b6867153470776d2818ec46faa9684cf153110d3890da6ab1be18ce460ffd4",
+      "first_previous_move": 4,
+      "checked_inputs": [
+        4,
+        0,
+        8
+      ],
+      "max_output_error": 9.5367431640625e-07,
+      "head_direction_effect": 1.9694684743881226
+    }
+  },
+  "central_registration_sha256": "df6a5b81352fd6c93cc66e96dc6817072048b78d8f44b00bb30144c97a3b3ee4"
+}
