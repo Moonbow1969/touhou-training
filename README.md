@@ -4,6 +4,8 @@ Open research for training agents across the original Touhou Project games. The 
 
 ## Current result
 
+One camera policy has trained across TH10, TH11, TH12, TH13 and TH17 on both Hard and Lunatic. The second joint PPO generation used 80 fresh complete games and 38,623 playable decisions, restoring the first generation’s actor and critic. Five machines supplied original game trajectories. The policy selects movement, focus, shooting and Bomb use. In the first generation’s registered 160-game comparison, the human SFT and the five-title PPO each reached Stage 2 on 0/80 credits. [Five-title checkpoint and compute timings](results/2026-11-26-original-camera-training/five-game-generation2/README.md) · [Full-credit metrics and recordings](results/2026-11-26-original-camera-training/five-game-online/README.md) · [Human replay models, learning curves and replications](results/2026-11-26-original-camera-training/README.md)
+
 Five Linux hosts have run the original TH10, TH12, TH13 and TH14 trials. The cluster report includes captured game clients, a 72-credit closed-loop comparison across three machines, and a replay transfer experiment for TH13, TH14 and TH17. [Multi-title cluster results](results/2026-11-25-multi-title-cluster/README.md)
 
 Two TH14 1.00b Normal Reimu A story trials cleared all six stages with zero continues. The first scored 296,778,700 with six misses and 23 bombs. Replacing the base SFT checkpoint with the expanded, title-balanced policy scored 253,575,700 with five misses and 22 bombs. Both runs used geometric dodging, learned boss aim, and emergency bombing. The world model scored forecasts in shadow mode. Separate native PPO comparisons measured Stage 1 performance.
@@ -14,6 +16,7 @@ The fixed-speed Hard pilot with the expanded checkpoint cleared four stages and 
 - [Late-stage practice and title transfer](docs/devlog/261123-transfer-and-late-stages.md)
 - [Overnight training recipes](docs/devlog/261123-overnight-recipes.md)
 - [Native environment, models, and evaluation design](docs/design.md)
+- [Moonbow Toho ML target training recipe](docs/target-training-recipe.md)
 - [Training logs and reproduction commands](docs/experiments.md)
 - [Machine-readable results](results/2026-11-23.json)
 - [Overnight machine-readable results](results/2026-11-23-overnight.json)

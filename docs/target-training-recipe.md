@@ -1,5 +1,7 @@
 # 261123 Moonbow Toho ML | Target Training Recipe
 
+2026 年 11 月 27 日。五作主线已经把 TH10、TH11、TH12、TH13、TH17 的 Hard 和 Lunatic 放进同一个全动作 PPO。第二代沿用第一代的 actor 和 critic，每作每个难度新增 8 局，共 80 局、38,623 次有效决策。首代和纯 SFT 的 80 对整局测试中，两者均为 0/80 到达二面。训练和整局评估分开记账。五机这轮用了 73 分 50 秒，采集及核验占 70 分 22 秒，learner 重算、优化和导出共 2 分 23 秒。[权重、轨迹与逐机计时](../results/2026-11-26-original-camera-training/five-game-generation2/README.md) · [分作品、分难度的剩余资源](../results/2026-11-26-original-camera-training/five-game-online/evaluation/README.md) · [带上一步移动输入的四作 SFT](../results/2026-11-26-original-camera-training/four-title-direction-feedback/README.md)
+
 2026 年 11 月 26 日更新。TH10、TH12、TH13、TH17 已从同一份人类 replay SFT 出发，在 Hard、Lunatic 上共同训练纯视觉全动作 PPO。第一代用了 32 局完整原作、14,578 次策略决策。分作训练、联合训练、模型权重平均已有同预算人类动作对照。原作评估按作品、难度和剩余资源独立报告。[四作 PPO 日志](../results/2026-11-26-original-camera-training/four-game-online/) · [人类动作与权重合并对照](../results/2026-11-26-original-camera-training/specialist-vs-shared/) · [论文资源](resources.md)
 
 **项目定位。** 以东方 Project 原作为共同实验平台，建设覆盖经典控制、模仿学习、强化学习、世界模型和语言模型控制的开源基准库。工作名为 **Toho ML**，**Toho AI** 和 **Moonbow Toho ML** 可用于后续品牌讨论。长期目标是做到这个方向规模最大，用可复现的算法家族数、已验证的作品与难度覆盖、公开运行记录和实验数据规模来衡量。每次发布同时保留正结果、负结果和失败记录。
