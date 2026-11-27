@@ -1,0 +1,20 @@
+{
+  "title": "TH13 retail 1.00c",
+  "source_replay": "th13_ud0c5d",
+  "stage": 1,
+  "baseline": "../human/train/th13_ud0c5d-s1.npz",
+  "candidate": "ordinary stock left Ctrl during original human replay only",
+  "gates": {
+    "exact_native_tick_pairs_at_least": 400,
+    "native_moving_word_agreement_min": 0.99,
+    "source_stage_span_min": 0.9,
+    "decision_row_ratio_to_baseline_min": 0.9,
+    "adjacent_4tick_pair_ratio_to_baseline_min": 0.9,
+    "p95_native_xy_delta_px_max": 1.0,
+    "median_mean_abs_pixel_difference_uint8_max": 3.0,
+    "same_tick_to_shifted_8tick_pixel_MAE_ratio_max": 0.66,
+    "covered_original_bomb_onsets_min": 2,
+    "native_tick_rate_speedup_min": 1.5
+  },
+  "order": "Resume full-rate Hard Stage2 first, then run this calibration on a training-stage replay for which the ordinary-speed original pictures are already sealed. Apply acceleration only to later acquisition if all gates pass."
+}

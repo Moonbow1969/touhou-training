@@ -80,3 +80,19 @@ The joint SFT used 19,127 unique usable observations from eight training players
 On eight separate TH10 training credits, independent native movement measurements estimated 7.57 simulation ticks per deployed control decision. Human replay observations are four ticks apart. An otherwise matched six-player SFT mixed four- and eight-tick differences while predicting the same next action. On eight-tick held observations, movement NLL changed from 1.580 to 1.496 on MON and 1.819 to 1.770 on SHAOfLan. The four-tick NLLs were 1.486 → 1.482 and 1.765 → 1.777. Native movement-derived tick estimates and wall milliseconds are distinct measurements. [Native motion-based timing estimate](runtime/native-motion-cadence.json) · [Matched four-tick test](multilag-held-4/held-camera.png) · [Matched eight-tick test](multilag-held-8/held-camera.png)
 
 The second online CNN checkpoint was also run on the same six independent TH14 controllers. Its mean maximum Stage 1 native tick was 3,990 compared with 3,812 for CNN PPO1. The difference was +178 [−457, +887] ticks, with 0/6 reaching Stage 2 for both. [Paired evidence](zero-shot-th14/ppo2-comparison/paired.json) · [Full SFT, PPO1 and PPO2 recording for the first registered seed](zero-shot-th14/TH14-Normal-787001-SFT-PPO1-PPO2.mp4)
+
+### Second online update on the three training titles
+
+Seventy-two complete held credits compared the two frozen PPO policies on 12 fresh controller seeds per title. Each pair shared its physical host and executable. Every credit ended in native Stage 1 Game Over with zero spare lives. Stage 2 resources are unobserved. TH13's mean last observed Stage 1 script tick advanced from 4,509 to 5,619. The paired difference was +1,110 ticks with a fixed-host 95% bootstrap interval of [+133, +2,061]. This is a within-stage result for this seed cohort. [Per-credit native script ticks](camera-round2/evaluation/native13-stage-clock.json) · [All endpoints and executed controls](camera-round2/evaluation/credits.json)
+
+| Original Normal trial | Stage 2, PPO1 → PPO2 | Terminal resource | Successful casts across 12 credits | Change in wall seconds, 95% interval |
+|---|---|---|---|---|
+| TH10 | 0/12 → 0/12 | 0.033 → 0.000 Power | 35 → 43 | −1.88 [−15.02, +11.73] |
+| TH12 | 0/12 → 0/12 | 0.58 → 0.75 Bombs | 48 → 50 | −2.13 [−9.95, +5.43] |
+| TH13 | 0/12 → 0/12 | 0.42 → 0.00 Bombs | 58 → 69 | +15.67 [−1.81, +32.58] |
+
+[Matched results across successive PPO generations](learning-curves/paired-generations.png) · [Machine-readable results](camera-round2/evaluation/camera-ppo2.json)
+
+The TH10 action-persistence experiment measured whether offline imitation translated into control. Correcting the frequency weights increased switching in the live game. A learned head conditioned on the previously executed movement reduced switching from 69.9% to 45.2% on six fresh pairs. Both arms ended 0/6 at Stage 2. On 24 independent TH10 training credits, a confirmed spirit strike cost 0.03 reward, equivalent to 30 seconds of survival shaping. Every credit had net life reward −3. Recomputing the discounted return with the spend penalty removed increased its rank correlation with duration from 0.817 to 0.925. This retrospective calculation does not measure how training with the changed reward affects the policy. [Movement results](transition-native10/paired.json) · [Original weighting comparison](frequency-native10/paired.json) · [Reward audit](runtime/reward-alignment.json)
+
+The 48-credit second round took 1,181 seconds from parent readiness to a sealed batch and 76 seconds to train and export. For the next TH10 batch, six workers on two hosts sustained 25.0 decisions/second including process startup across 24 credits. [End-to-end timings](runtime/learner-vs-rollout.json) · [TH10 worker measurements](runtime/fleet-throughput.json)
