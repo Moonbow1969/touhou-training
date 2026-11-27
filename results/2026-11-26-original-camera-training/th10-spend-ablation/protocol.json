@@ -1,0 +1,24 @@
+{
+  "train": "Exactly the original PPO2 48-credit three-title batch; only remove the 0.03 TH10 confirmed-spirit-strike cost.",
+  "optimizer_seed": 261127,
+  "learner": "scripts.train_full_resolution_camera_ppo",
+  "comparison": "Existing plain camera PPO2 vs zero-TH10-spend-cost PPO2",
+  "held": [
+    881001,
+    881002,
+    881003,
+    881004,
+    881005,
+    881006,
+    881007,
+    881008,
+    881009,
+    881010,
+    881011,
+    881012
+  ],
+  "host": "accelerator",
+  "game": "Official original TH10 Normal trial 0.02a, all starting lives, all four actions, no Continue",
+  "nominal_control_hold_ms": 120,
+  "design": "First six prespecified seeds see plain PPO2 first, last six see the reward variant first. Record both native endpoints and full sensor traces. Highest reached native stage, entry stocks, power-paid strikes, original score, and movement switching."
+}

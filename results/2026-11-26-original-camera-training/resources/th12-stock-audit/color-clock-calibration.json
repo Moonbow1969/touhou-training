@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-26",
+  "periodic_color_clock": "Linux /proc/uptime / CLOCK_BOOTTIME, sampled immediately before scrot",
+  "action_clock": "CLOCK_MONOTONIC",
+  "host_boottime_minus_monotonic_seconds": {
+    "deck": 2.908339,
+    "entropy": -0.0
+  },
+  "independent_original_color_alignment": {
+    "deck": {
+      "original_credit": "train-camera-ppo-765102-beta",
+      "periodic_pictures_compared": 44,
+      "median_abs_corrected_frame_residual_s": 0.0331,
+      "median_abs_uncorrected_s": 2.8863,
+      "p90_corrected_s": 0.0772
+    },
+    "entropy": {
+      "original_credit": "train-camera-ppo-765104-beta",
+      "periodic_pictures_compared": 22,
+      "median_abs_corrected_frame_residual_s": 0.0315,
+      "median_abs_uncorrected_s": 0.0315,
+      "p90_corrected_s": 0.0872
+    }
+  },
+  "archive_first_color_minus_first_action_after_correction": {
+    "deck": {
+      "credits": 124,
+      "min_s": -0.0396,
+      "median_s": -0.018,
+      "max_s": -0.0047
+    },
+    "entropy": {
+      "credits": 140,
+      "min_s": -0.0731,
+      "median_s": -0.0145,
+      "max_s": -0.0047
+    }
+  },
+  "effect": "Subtract the host offset only from the independently sampled color JPEG timestamp. Native actor pixels, actions, stock observations, rewards, exact terminal, elapsed time and every per-action training tensor use the same monotonic clock. Newly built workers stamp both streams using the actor clock."
+}

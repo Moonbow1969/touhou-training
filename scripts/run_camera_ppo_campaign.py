@@ -20,21 +20,31 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--poll-seconds',type=int,default=15)
-    a=p.parse_args();root=a.root.resolve();campaign=root/'campaign';campaign.mkdir(exist_ok=True)
+    p.add_argument('--joint-replay',action='store_true',help='Continue the independent three-title human replay SFT lineage for two further updates.')
+    a=p.parse_args();root=a.root.resolve()
+    campaign=root/('cross-campaign' if a.joint_replay else 'campaign');campaign.mkdir(exist_ok=True)
     basis=json.loads((root/'camera-protocol.json').read_bytes());plans={}
-    for g in (3,4,5):
-        base={t:800000+10000*g+100*t for t in (10,12,13)}
-        plans[g]={**basis,'generation':g,'name':f'Camera PPO generation {g} on 72 new original credits',
-                  'train_seeds':{t:list(range(v+1,v+25)) for t,v in base.items()},
-                  'eval_seeds':{t:list(range(v+51,v+63)) for t,v in base.items()} if g==5 else {},
-                  'reference_arm':'camera-ppo2','candidate':f'camera-ppo{g}',
-                  'registered_parent':f'camera-ppo{g-1}','registered_train_credits_per_title':24,
-                  'selection':'Fixed training budget and same reward. No checkpoint selection against held outcomes. Final paired live test compares generation 5 with generation 2.'}
+    generations=(2,3) if a.joint_replay else (3,4,5)
+    prefix='camera-cross-ppo' if a.joint_replay else 'camera-ppo'
+    reference='camera-cross-ppo' if a.joint_replay else 'camera-ppo2'
+    for g in generations:
+        base={t:(900000 if a.joint_replay else 800000)+10000*g+100*t for t in (10,12,13)}
+        n=16 if a.joint_replay and g==2 else 24
+        parent=reference if g==generations[0] else f'{prefix}{g-1}'
+        label='Three-title human replay camera PPO' if a.joint_replay else 'Camera PPO'
+        selection=(f'Fixed training budget and reward. Final paired live test compares {prefix}{generations[-1]} with {reference}.'
+                   if a.joint_replay else 'Fixed training budget and same reward. No checkpoint selection against held outcomes. Final paired live test compares generation 5 with generation 2.')
+        plans[g]={**basis,'generation':g,'name':f'{label} generation {g} on {3*n} new original credits',
+                  'train_seeds':{t:list(range(v+1,v+n+1)) for t,v in base.items()},
+                  'eval_seeds':{t:list(range(v+51,v+63)) for t,v in base.items()} if g==generations[-1] else {},
+                  'reference_arm':reference,'candidate':f'{prefix}{g}',
+                  'registered_parent':parent,'registered_train_credits_per_title':n,
+                  'selection':selection}
         folder=campaign/f'g{g:02}';folder.mkdir(exist_ok=True)
         atomic(folder/'camera-protocol.json',plans[g])
     atomic(campaign/'registration.json',plans)
     for g,plan in plans.items():
-        folder=campaign/f'g{g:02}';parent=root/plan['registered_parent'];dest=root/f'camera-ppo{g}'
+        folder=campaign/f'g{g:02}';parent=root/plan['registered_parent'];dest=root/plan['candidate']
         while not (parent/'report.json').is_file():time.sleep(a.poll_seconds)
         fingerprint=digest(parent/'policy.ts')
         if (dest/'report.json').is_file():

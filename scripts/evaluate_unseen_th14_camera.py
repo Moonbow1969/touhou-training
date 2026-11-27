@@ -16,6 +16,7 @@ parser.add_argument('--image',default='toho-gamer-trial:v6')
 parser.add_argument('--transfer-ablation',action='store_true')
 parser.add_argument('--ppo-generation',type=int,choices=(2,3,4,5),help="Evaluate one later frozen generation on the registered six held-title seeds")
 parser.add_argument('--transfer-arm',choices=('matched-th13','cross-sft','cross-ppo'),help="Evaluate one arm of the preregistered 12-seed transfer study")
+parser.add_argument('--anchor-arm',choices=('plain-cross-ppo','anchored-cross-ppo'),help="Evaluate one replay-regularization arm on 12 fresh controllers")
 parser.add_argument('--workers',type=int,choices=range(1,9),default=3)
 opts=parser.parse_args()
 def linux(path):
@@ -36,6 +37,10 @@ if opts.transfer_arm:
     if extra or opts.ppo_generation:parser.error("Choose one experiment arm group")
     folder={'matched-th13':'camera-sft-th13-matched','cross-sft':'camera-cross-sft','cross-ppo':'camera-cross-ppo'}[opts.transfer_arm]
     models={opts.transfer_arm:d/folder/'policy.ts'}
+if opts.anchor_arm:
+    if extra or opts.ppo_generation or opts.transfer_arm:parser.error("Choose one experiment arm group")
+    folder='camera-cross-ppo' if opts.anchor_arm=='plain-cross-ppo' else 'replay-anchor/policy'
+    models={opts.anchor_arm:d/folder/'policy.ts'}
 plan={'title':14,'edition':'Official original trial 0.01b Normal Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
       'arms':{k:sha(v) for k,v in models.items()},'seeds':list(range(787001,787007)),
       'zero_shot':'Both direct checkpoints trained only on TH10/12/13. No TH14 optimizer input. Exclude technical failures from results.',
@@ -49,6 +54,10 @@ protocol_name=f'ppo{opts.ppo_generation}-protocol.json' if opts.ppo_generation e
 if opts.transfer_arm:
     plan['seeds']=list(range(789001,789013));plan['source_mixture']='Matched supervised step budget and loss; single-title vs three-title human inputs, then multi-title on-policy PPO.'
     protocol_name=opts.transfer_arm+'-protocol.json'
+if opts.anchor_arm:
+    plan['seeds']=list(range(791001,791013))
+    plan['training']='Identical 24 original credits and supervised parent, optional joint KL on its training replay images.'
+    protocol_name=opts.anchor_arm+'-protocol.json'
 save_json(root/protocol_name,plan);torch.set_num_threads(1)
 
 def play(arm,seed):
@@ -102,7 +111,7 @@ if extra:
         pair=['frequency','transition'] if i%2==0 else ['transition','frequency']
         jobs.append(('expanded',787001+i))
         jobs.extend((arm,788001+i) for arm in pair)
-elif opts.ppo_generation or opts.transfer_arm:
+elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm:
     jobs=[(next(iter(models)),seed) for seed in plan['seeds']]
 else:jobs=[(arm,seed) for i,seed in enumerate(plan['seeds']) for arm in (['sft','ppo1'] if i%2==0 else ['ppo1','sft'])]
 def retry(arm,seed):

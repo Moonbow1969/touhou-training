@@ -1,0 +1,11 @@
+{
+  "steps": [
+    3000,
+    9000
+  ],
+  "samples_per_step": 64,
+  "optimization": "Same encoder initialization, AdamW, natural movement frequency and uniform title sampling as joint SFT v1.",
+  "supervision": "Stage 1 only. Four distinct TH10 and four distinct TH12 training players, plus the former six TH13 players. Two held players per title.",
+  "metrics": "Compare v1, v2 at 3000, v2 at 9000 on the same six unseen players. Report movement NLL, switching, starts, turns and Bomb onset counts.",
+  "selection": "Keep both checkpoints; this is a controlled training-budget and data experiment. Original game evaluation is separate."
+}

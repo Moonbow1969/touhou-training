@@ -1,0 +1,84 @@
+{
+  "name": "Anchor three-title PPO to its human SFT on its eight original training player cameras.",
+  "train_seeds": {
+    "10": [
+      861101,
+      861102,
+      861103,
+      861104,
+      861105,
+      861106,
+      861107,
+      861108
+    ],
+    "12": [
+      862101,
+      862102,
+      862103,
+      862104,
+      862105,
+      862106,
+      862107,
+      862108
+    ],
+    "13": [
+      863101,
+      863102,
+      863103,
+      863104,
+      863105,
+      863106,
+      863107,
+      863108
+    ]
+  },
+  "eval_seeds": {
+    "13": [
+      891001,
+      891002,
+      891003,
+      891004,
+      891005,
+      891006,
+      891007,
+      891008
+    ]
+  },
+  "reference_arm": "plain-cross-ppo",
+  "candidate": "anchored-cross-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "initialization": "Training cameras and controls from distinct actual TH10, TH12, TH13 retail source players; original trial PPO has 8 complete credits per title.",
+  "th14_controller_seeds": [
+    791001,
+    791002,
+    791003,
+    791004,
+    791005,
+    791006,
+    791007,
+    791008,
+    791009,
+    791010,
+    791011,
+    791012
+  ],
+  "anchor_weight": 1.0,
+  "isolation": "Same checked 24 original credits, reward, actions, optimizer seed, PPO epochs and initial SFT. Only add mean joint KL to the frozen SFT on 12 random training images per title per PPO minibatch. Independent sampling generator. No held source enters training.",
+  "outcomes": "Original complete TH13 and TH14 credits, Stage 2; last native Stage 1 script tick and terminal stock. TH14 is a repeatedly evaluated development-transfer title. No held-title checkpoint selection."
+}

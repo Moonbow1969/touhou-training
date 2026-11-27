@@ -24,12 +24,13 @@ sh /input/th12-full-reset.sh "$label"
 cd "/capture/full/$label"
 test ! -e decisions.tsv
 mkdir evidence
+printf '%s\n' CLOCK_MONOTONIC > evidence/clock-source.txt
 # Hold a timestamped color record through every stage and the original terminal menu.
 (
     i=0
     while [ ! -e stopped ]; do
         file=$(printf '%05d.jpg' "$i")
-        read t other </proc/uptime
+        t=$(/input/th12-full-actor clock) || break
         scrot --overwrite -q 60 -a 3,22,640,480 "evidence/$file" || break
         printf '%s %s\n' "$t" "$file" >> evidence/clock.txt
         i=$((i+1)); sleep 1.5

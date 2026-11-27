@@ -18,6 +18,7 @@ def main():
     p.add_argument('--models',nargs='+',type=Path,required=True)
     p.add_argument('--held',nargs='+',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--sft-parent',type=Path,help='Supervised parent directory for a first-generation PPO checkpoint')
     p.add_argument('--difference-ticks',choices=(4,8),type=int,default=4)
     a=p.parse_args()
     device='cuda' if torch.cuda.is_available() else 'cpu'
@@ -33,19 +34,28 @@ def main():
     with torch.inference_mode():
         for directory in a.models:
             report=json.loads((directory/'report.json').read_bytes())
-            if groups.intersection(x['group'] for x in report['train']):
+            if 'train' in report:
+                provenance=report['train'];expected=report['torchscript_sha256']
+            else:
+                if a.sft_parent is None:raise ValueError('Missing SFT parent for PPO provenance')
+                source=json.loads((a.sft_parent/'report.json').read_bytes())
+                if (report['parent_sft_sha256']!=source['sft'] or
+                    report['native_behavior_sha256']!=source['torchscript_sha256']):
+                    raise ValueError('PPO does not descend directly from this supervised checkpoint')
+                provenance=source['train'];expected=report['policy_sha256']
+            if groups.intersection(x['group'] for x in provenance):
                 raise ValueError("Training player in held set")
             model_path=directory/'policy.ts'
-            if sha(model_path)!=report['torchscript_sha256']:raise ValueError("Frozen artifact has changed")
+            if sha(model_path)!=expected:raise ValueError("Frozen artifact has changed")
             model=torch.jit.load(str(model_path),map_location=device).eval()
             metrics={}
             for row in rows:
                 calls=[model(b.to(device).float()/255) for b in torch.from_numpy(row['raw']).split(64)]
-                probs=[torch.cat(outputs).softmax(1).cpu().numpy() for outputs in zip(*calls)]
+                probs=[torch.cat(outputs).softmax(1).cpu().numpy() for outputs in list(zip(*calls))[:4]]
                 matched=evaluation(row,probs)
                 shifted=evaluation(row,[np.roll(x,len(x)//2,axis=0) for x in probs])
                 metrics[row['name']]={'group':row['group'],'aligned':matched,'shifted':shifted,'sha256':row['sha256']}
-            results[directory.name]={'checkpoint':report['torchscript_sha256'],'replays':metrics}
+            results[directory.name]={'checkpoint':expected,'replays':metrics}
     a.out.mkdir(parents=True,exist_ok=True)
     save_json(a.out/'held.json',results)
     conditions=['all','change','start','turn']

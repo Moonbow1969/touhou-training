@@ -53,6 +53,12 @@ static void save_terminal(XImage *im){
     if(fclose(fp))fail("Terminal image close failed.");
 }
 int main(int argc,char **argv){
+    if(argc==2 && !strcmp(argv[1],"clock")){
+        uint64_t stamp=now_ns();
+        printf("%llu.%09llu\n",(unsigned long long)(stamp/1000000000ULL),
+               (unsigned long long)(stamp%1000000000ULL));
+        return 0;
+    }
     if(argc==2 && (!strcmp(argv[1],"status") || !strcmp(argv[1],"hud"))){
         initialize();load_patch(&rank_title);load_patch(&pause_title);load_patch(&game_over_title);
         load_patch(&retry_selected);load_patch(&confirm_title);load_patch(&hud_title);load_patch(&opening_title);

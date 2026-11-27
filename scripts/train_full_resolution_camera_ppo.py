@@ -12,6 +12,7 @@ from torch.nn import functional as F
 from scripts.train_replay_camera_encoder import CameraPolicy, channels, save_json, sha
 from scripts.train_shared_full_ppo import calculate_gae
 from scripts.train_portable_full_sft import WIDTHS
+from scripts.train_human_camera_policy import load_replay
 
 
 class CameraActorCritic(nn.Module):
@@ -68,14 +69,40 @@ def credit(record, manifest, model, parent, device):
                        max_native_logp_error=err,max_native_value_error=verr)
 
 
-def fit(model,data,lr,device):
+def replay_anchor(paths, supervised_directory, model, device):
+    report=json.loads((supervised_directory/'report.json').read_bytes())
+    expected={r['sha256'] for r in report['train']}
+    if len(paths)!=len(expected) or {sha(path) for path in paths}!=expected:
+        raise ValueError('Replay anchor requires the exact supervised training split')
+    by_title={}
+    for path in paths:
+        row=load_replay(path)
+        images=torch.from_numpy(row['raw'])
+        *heads,_=logits_on(model,images,device)
+        by_title.setdefault(row['title'],[]).append((images,torch.cat(heads,dim=1)))
+    return by_title
+
+
+def anchor_loss(model, by_title, rng, device):
+    # Draw a replay uniformly inside each title, independent of the PPO permutation.
+    images=[];teachers=[]
+    for replays in by_title.values():
+        source,logits=replays[int(torch.randint(len(replays),(1,),generator=rng))]
+        ids=torch.randint(len(source),(12,),generator=rng)
+        images.append(source[ids]);teachers.append(logits[ids])
+    *current,_=model(torch.cat(images).to(device).float()/255)
+    target=torch.cat(teachers).to(device).split(WIDTHS,dim=1)
+    return sum(F.kl_div(h.log_softmax(1),ref.softmax(1),reduction='batchmean') for h,ref in zip(current,target))
+
+
+def fit(model,data,lr,device,anchor=None,anchor_weight=0.):
     opt=torch.optim.Adam(model.parameters(),lr=lr,eps=1e-5)
-    history=[]
+    history=[];anchor_rng=torch.Generator().manual_seed(734119)
     for epoch in range(4):
         previous=copy.deepcopy(model.state_dict())
         chunks=max(1,round(sum(len(v[0]) for v in data.values())/144))
         order={t:torch.tensor_split(torch.randperm(len(v[0])),chunks) for t,v in data.items()}
-        losses=[]
+        losses=[];anchor_terms=[]
         for k in range(chunks):
             opt.zero_grad(set_to_none=True)
             for t,(images,a,old,adv,returns,_) in data.items():
@@ -91,6 +118,10 @@ def fit(model,data,lr,device):
                     objective=-clip.mean()+.25*F.smooth_l1_loss(value[:,0],returns[small].to(device))-.002*entropy.mean()
                     weighted=objective*len(small)/len(ids)/len(data)
                     weighted.backward();losses.append(weighted.detach().item())
+            if anchor is not None:
+                term=anchor_loss(model,anchor,anchor_rng,device)
+                (term*anchor_weight).backward()
+                anchor_terms.append(term.detach().item())
             torch.nn.utils.clip_grad_norm_(model.parameters(),.5);opt.step()
         kl={}
         for t,(images,_,_,_,_,ref) in data.items():
@@ -100,6 +131,7 @@ def fit(model,data,lr,device):
         accepted=max(kl.values())<=.025
         history.append(dict(epoch=epoch+1,lr=lr,loss_per_minibatch=sum(losses)/chunks,
                             per_title_joint_kl=kl,accepted=accepted))
+        if anchor_terms:history[-1]['mean_joint_kl_on_training_replay']=float(np.mean(anchor_terms))
         print(history[-1],flush=True)
         if not accepted:
             model.load_state_dict(previous);break
@@ -112,7 +144,11 @@ def main():
     initial=p.add_mutually_exclusive_group(required=True)
     initial.add_argument('--sft',type=Path)
     initial.add_argument('--parent-actor-critic',type=Path)
+    p.add_argument('--replay-anchor',nargs='+',type=Path,help='Exact human image training shards for KL to the initial SFT actor')
+    p.add_argument('--anchor-weight',type=float,default=0.)
     a=p.parse_args();torch.set_num_threads(2);torch.manual_seed(261127)
+    if (a.replay_anchor and (not a.sft or a.anchor_weight<=0)) or (not a.replay_anchor and a.anchor_weight!=0.):
+        p.error('A replay anchor needs an SFT parent, its training shards, and a positive weight')
     # Native actors execute full FP32 convolutions on CPU. TF32 can shift a
     # rare action's log probability enough to invalidate the behavior check.
     torch.backends.cudnn.allow_tf32=False
@@ -135,10 +171,11 @@ def main():
     for t,records in by_title.items():
         x,actions,lp,adv,ret,ref=[torch.cat(v) for v in zip(*records)]
         data[t]=(x,actions,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret,ref)
+    anchor=replay_anchor(a.replay_anchor,a.sft.parent,model,device) if a.replay_anchor else None
     history=[]
     for lr in plan['learning_rates']:
         torch.manual_seed(261127)
-        attempt=fit(model,data,lr,device);history+=attempt
+        attempt=fit(model,data,lr,device,anchor,a.anchor_weight);history+=attempt
         if any(v['accepted'] for v in attempt):break
     else:raise RuntimeError('No accepted update after reducing the learning rate')
     a.out.mkdir(parents=True,exist_ok=False)
@@ -154,6 +191,7 @@ def main():
               parent_actor_critic_sha256=sha(a.parent_actor_critic) if a.parent_actor_critic else None,native_behavior_sha256=parent,
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
+              replay_anchor_weight=a.anchor_weight,replay_anchor_training_sha256=[sha(p) for p in (a.replay_anchor or [])],
               native_procedure="All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."))
 
 
