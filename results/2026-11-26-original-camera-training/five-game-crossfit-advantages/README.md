@@ -1,0 +1,5 @@
+# Cross-fitted advantages for five-game PPO
+
+The comparison policy finished four PPO epochs on the same 160 original games and 78,740 playable decisions as the third five-game checkpoint. It uses an elapsed-decision baseline fitted on twelve disjoint complete games for each target trajectory. The value loss retains the original G3 critic targets. Both optimization runs used the same initial weights, four input/output action heads, sampling seed, learning rate schedule and native behavior evidence. The largest accepted joint KL was 0.00697. [Frozen experiment](camera-protocol.json) · [Out-of-fold membership](folds.json) · [Exact training-time baselines](actor-baselines.npz) · [Learner report](policy/report.json) · [Playable actor](policy/policy.ts)
+
+The two actors are compared on 80 new paired original-game starts, eight per title and difficulty. No elapsed-time feature or game label is supplied to either deployed policy. The main outcome is reaching Stage 2 before a continue. Environments share the build, stock, and host within each pair.

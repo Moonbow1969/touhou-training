@@ -33,7 +33,7 @@ def hardlink(source,target,sha):
         raise ValueError(f'Existing optimizer view changed {target.name}')
 
 
-def optimize(root, sources, parent, protocol, stem):
+def optimize(root, sources, parent, protocol, stem, registration=None):
     sub=root/stem;sub.mkdir(exist_ok=True)
     batch=sub/'optimizer-input';batch.mkdir(exist_ok=True)
     inputs=[];by_title={};ranks={}
@@ -45,7 +45,7 @@ def optimize(root, sources, parent, protocol, stem):
         inputs.append(row);by_title.setdefault(key,[]).append(seed);ranks.setdefault(key,{})[str(seed)]=row['difficulty']
     freeze(batch/'credits.json',inputs)
     freeze(sub/'fit-protocol.json',dict(reference='five-ppo2',behavior_sha256=protocol['parent_actor'],
-           training_registration=digest(root/'protocol.json'),train_seeds=by_title,rank_by_seed=ranks,
+           training_registration=digest(registration or root/'protocol.json'),train_seeds=by_title,rank_by_seed=ranks,
            balanced_title_rank=True,learning_rates=[2e-5,1e-5,5e-6,2.5e-6]))
     if not (sub/'policy/report.json').exists():
         subprocess.run([sys.executable,'-u','-m','scripts.train_full_resolution_camera_ppo','--manifest',str(batch/'credits.json'),

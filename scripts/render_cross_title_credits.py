@@ -45,12 +45,15 @@ def main():
     parser.add_argument('--out', type=Path, required=True)
     difficulties = ('Easy', 'Normal', 'Hard', 'Lunatic')
     parser.add_argument('--difficulty', choices=difficulties, help='Select the first paired seed of this registered difficulty per title.')
+    parser.add_argument('--titles',type=int,nargs='+',help='Original titles included in this scored cohort.')
     args = parser.parse_args()
     evaluation = args.root/'evaluation'
     plan = json.loads((args.root/'camera-protocol.json').read_bytes())
     rank = difficulties.index(args.difficulty) if args.difficulty else None
     seeds = {int(t):min(s for s in group if rank is None or plan['rank_by_seed'][t][str(s)]==rank)
-             for t, group in plan['eval_seeds'].items()}
+             for t, group in plan['eval_seeds'].items() if not args.titles or int(t) in args.titles}
+    if args.titles and set(seeds)!=set(args.titles):
+        raise ValueError('Video title is absent from the registered evaluation')
     arms = (plan['reference_arm'], plan['candidate'])
     rows = [r for r in json.loads((evaluation/'credits.json').read_bytes()) if r['seed'] == seeds[r['title']] and r['arm'] in arms]
     by_source = {(r['title'],r['seed'],r['policy_sha256']):r for r in rows}

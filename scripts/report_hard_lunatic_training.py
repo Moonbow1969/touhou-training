@@ -42,7 +42,7 @@ def main():
     table={f'TH{t:02}':{name:{k:counts[t,r,k] for k in ('credits','decisions')} for r,name in ((2,'Hard'),(3,'Lunatic'))}
            for t in sorted({k[0] for k in counts})}
     reused={}
-    for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score'):
+    for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score','five-game-crossfit-advantages'):
         path=data/study/'policy/report.json'
         if not path.exists():continue
         result=json.loads(path.read_bytes())

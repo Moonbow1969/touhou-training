@@ -1,0 +1,166 @@
+{
+  "name": "Six-title PPO with four original TH08 teams",
+  "parent_actor": "835fbf3e37ed5c50fd000463c8ecd6493e0ff38eb0c33ce318714de098cbff96",
+  "parent_actor_critic": "4cc6816bd286a10691db4085ac8dfe6532b3d2933940129d50d7b7b61ac3a6cf",
+  "five_title_manifest": "19f28948f7e4039f5be9fed29138d2b7eb0eb1789b29562e4907b798342c51d7",
+  "multiteam_registration": "3618bdbc2088b8d2195b21e09f1ddbafe83f6c02e0e61e37d1f17d8ee4306a74",
+  "border_registration": "65dd5c095487fab2166550f64ac4dead04154a89c0dc265f82cd8cb204095696",
+  "common_border_slots": [
+    1630801,
+    1630802,
+    1630803,
+    1630804,
+    1630805,
+    1630806,
+    1630807,
+    1630808
+  ],
+  "registered_training_slots": [
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670801,
+      "rank": "Hard"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670802,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670803,
+      "rank": "Hard"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670804,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670805,
+      "rank": "Hard"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670806,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670807,
+      "rank": "Hard"
+    },
+    {
+      "team": "Magic",
+      "role": "train",
+      "seed": 1670808,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670809,
+      "rank": "Hard"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670810,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670811,
+      "rank": "Hard"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670812,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670813,
+      "rank": "Hard"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670814,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670815,
+      "rank": "Hard"
+    },
+    {
+      "team": "Scarlet",
+      "role": "train",
+      "seed": 1670816,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670817,
+      "rank": "Hard"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670818,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670819,
+      "rank": "Hard"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670820,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670821,
+      "rank": "Hard"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670822,
+      "rank": "Lunatic"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670823,
+      "rank": "Hard"
+    },
+    {
+      "team": "Ghost",
+      "role": "train",
+      "seed": 1670824,
+      "rank": "Lunatic"
+    }
+  ],
+  "design": "Reuse exactly the 160 original five-title training credits, the first eight Border Team credits, initial parameters, optimizer and 12 equally weighted title/rank cells. In the comparison policy replace 24 other Border Team games with eight each for Magic, Scarlet and Ghost. Each TH08 team contributes four Hard and four Lunatic original games across the complete four-team fit. Outcome-dependent selection is forbidden. The host and physical timing can differ between team collectors. The number of decisions may differ even at equal numbers of original games.",
+  "evaluation": "Keep training data separate from ordinary-start held games. Compare policies within original host, team, difficulty and sampled policy seed. Freeze the held roster before measuring the four-team policy."
+}

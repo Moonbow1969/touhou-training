@@ -11,7 +11,7 @@ import numpy as np
 import torch
 
 from scripts.checkpoint_storage import digest
-from scripts.continue_th08_online_extension import atomic_json, launch, selected_credit
+from scripts.continue_th08_online_extension import atomic_json, launch_after_entry_failures, selected_credit
 from scripts.train_five_original_games import freeze
 from scripts.score_th08_original_ranking import inspect_results
 
@@ -41,15 +41,22 @@ def main():
     for k in ('data','assets'):
         p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--postcredit-assets',type=Path)
+    p.add_argument('--joint-six',action='store_true',help='Evaluate the registered five-title versus six-title comparison on TH08.')
     a=p.parse_args();data=a.data.resolve();assets=a.assets.resolve()
-    root=data/'six-game-online';sub=root/'first-eight';out=sub/'evaluation'
+    collection=data/'six-game-online'
+    root=data/'six-game-retention' if a.joint_six else collection
+    sub=root/'th08' if a.joint_six else root/'first-eight';out=sub/'evaluation'
     out.mkdir(exist_ok=True,parents=True)
-    study=json.loads((root/'protocol.json').read_bytes())
-    seeds=study['first_th08_fit']['comparisons']
+    registry=root/('camera-protocol.json' if a.joint_six else 'protocol.json')
+    if a.joint_six:wait(registry)
+    study=json.loads(registry.read_bytes())
+    original=json.loads((collection/'protocol.json').read_bytes())
+    seeds=study['eval_seeds']['8'] if a.joint_six else original['first_th08_fit']['comparisons']
     qualifiers=Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th08-trial'
-    arms=['five-ppo2','th08-ppo']
+    arms=[study['reference_arm'],study['candidate']] if a.joint_six else ['five-ppo2','th08-ppo']
     orders={str(seed):arms if (index//2)%2==0 else arms[::-1] for index,seed in enumerate(seeds)}
-    plan=dict(parent_registration_sha256=digest(root/'protocol.json'),ranks={str(s):study['rank_by_seed'][str(s)] for s in seeds},
+    ranks={str(s):({2:'Hard',3:'Lunatic'}[study['rank_by_seed']['8'][str(s)]] if a.joint_six else original['rank_by_seed'][str(s)]) for s in seeds}
+    plan=dict(parent_registration_sha256=digest(registry),ranks=ranks,
               order_by_seed=orders,lane='Gamer WSL2 private Wine Xvfb; one lane per rank. Wait for the rank training allocation to complete to avoid adding CPU contention.',
               endpoint='First original continue prompt. Wriggle Nightbug visible on the terminal screen certifies Stage 1 and hence no Stage 2. Other endpoints need independent native stage evidence; report unknown count and bounds.',
               native_stage1_reference_sha256=digest(qualifiers/'terminal-stage1-boss.npz'),
@@ -62,17 +69,24 @@ def main():
               calibration_source=digest(qualifiers/'score-row-stage-one.npz'),
               scope='After game control ends and all policy keys are released, use the original continue menu to expose the new score row. The physical gameplay stream, language, game version, policy and data split remain as registered.',
               acceptance='Require the original score-table header and a unique dated row with a margin greater than .30 over the other nine baseline entries. The native Stage 1 glyph must correlate above .88 in at least two independent captured ranking frames. Other stage digits require separate original-image adjudication.'))
-    wait(sub/'policy/report.json')
-    files={'five-ppo2':data/'five-game-generation2/policy/policy.ts','th08-ppo':sub/'policy/policy.ts'}
+    parent=data/('five-game-generation3' if a.joint_six else 'five-game-generation2')/'policy'
+    candidate=collection/('joint-six' if a.joint_six else 'first-eight')/'policy'
+    wait(candidate/'report.json')
+    files={arms[0]:parent/'policy.ts',arms[1]:candidate/'policy.ts'}
     digests={k:digest(v) for k,v in files.items()}
-    if digests['five-ppo2']!=study['parent_actor'] or digests['th08-ppo']!=json.loads((sub/'policy/report.json').read_bytes())['policy_sha256']:
+    if digests[arms[0]]!=study['parent_actor'] or digests[arms[1]]!=json.loads((candidate/'report.json').read_bytes())['policy_sha256']:
         raise ValueError('Held checkpoint changed')
     freeze(out/'checkpoint-binding.json',digests)
     torch.set_num_threads(1)
     def lane(rank):
-        for s in study['th08_train_seeds']:
-            if study['rank_by_seed'][str(s)]==rank:
-                wait(root/'selected-training'/f'{s}.json')
+        if a.joint_six:
+            for s in original['first_th08_fit']['comparisons']:
+                if original['rank_by_seed'][str(s)]==rank:
+                    wait(collection/'first-eight/evaluation'/f'pair-{s}.json')
+        else:
+            for s in original['th08_train_seeds']:
+                if original['rank_by_seed'][str(s)]==rank:
+                    wait(collection/'selected-training'/f'{s}.json')
         models={k:torch.jit.load(str(path),map_location='cpu').eval() for k,path in files.items()}
         for s in seeds:
             if plan['ranks'][str(s)]!=rank:continue
@@ -83,6 +97,7 @@ def main():
                 seed=s+attempt*10000;rows={};bad=[]
                 for arm in orders[str(s)]:
                     dest=root/'native08'/f'held-{arm}-{seed}'
+                    entry_failures=[]
                     if not (dest/'receipt.json').exists():
                         runtime=assets
                         if a.postcredit_assets:
@@ -91,12 +106,13 @@ def main():
                             if not (dest/'original-stream').exists():os.link(assets/'stream',dest/'original-stream')
                             if digest(dest/'original-stream')!=digest(assets/'stream'):
                                 raise ValueError('Changed physical gameplay capture')
-                        launch(runtime,files[arm],dest,rank,seed,'held')
+                        dest,entry_failures=launch_after_entry_failures(runtime,files[arm],dest,rank,seed,'held')
                     item,reason=selected_credit(root,dest,models[arm],digests[arm],seed,rank,'held',sub/'packed-held'/arm)
                     if reason:
                         bad.append(dict(arm=arm,**reason))
                     else:
                         terminal=root/item['qualified_source']/'terminal.png'
+                        if entry_failures:item['technical_entries']=entry_failures
                         item.update(known_stage_one(terminal))
                         ranking=inspect_results(dest)
                         item['original_ranking']=ranking
