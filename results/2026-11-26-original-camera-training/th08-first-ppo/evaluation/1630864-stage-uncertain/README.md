@@ -1,0 +1,3 @@
+# Stage evidence for Lunatic seed 1630864
+
+The policy reached the first native Continue screen with zero spare lives. The game reported a Wine program error while opening the post-credit result, after the policy had relinquished its controls. The required rank row and stage digit were unavailable. The terminal image does not meet the registered boss-name criterion. The original credit remains in all survival and stock denominators. The candidate has seven confirmed Stage 1 endpoints and one unknown on Lunatic, giving Stage 2 identification bounds of 0/8 through 1/8. [Native Continue](terminal.png) · [Post-credit program error](post-credit-6.png) · [Machine-readable terminal evidence](receipt.json)

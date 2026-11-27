@@ -1,0 +1,127 @@
+{
+  "title": 13,
+  "difficulty": 0,
+  "opening_spares": 2,
+  "opening_bombs": 2,
+  "host": "accelerator",
+  "character": "Reimu",
+  "game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+  "policy_sha256": "1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a",
+  "role": "engineering",
+  "control": "Unassisted original story, all four policy heads; four native ticks per decision.",
+  "waves": [
+    {
+      "block": 1,
+      "concurrency": 4,
+      "seeds": [
+        1611301,
+        1611302,
+        1611303,
+        1611304
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 1,
+      "seeds": [
+        1611301
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 1,
+      "seeds": [
+        1611302
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 1,
+      "seeds": [
+        1611303
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 1,
+      "seeds": [
+        1611304
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 2,
+      "seeds": [
+        1611301,
+        1611302
+      ]
+    },
+    {
+      "block": 1,
+      "concurrency": 2,
+      "seeds": [
+        1611303,
+        1611304
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 2,
+      "seeds": [
+        1611305,
+        1611306
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 2,
+      "seeds": [
+        1611307,
+        1611308
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 1,
+      "seeds": [
+        1611305
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 1,
+      "seeds": [
+        1611306
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 1,
+      "seeds": [
+        1611307
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 1,
+      "seeds": [
+        1611308
+      ]
+    },
+    {
+      "block": 2,
+      "concurrency": 4,
+      "seeds": [
+        1611305,
+        1611306,
+        1611307,
+        1611308
+      ]
+    }
+  ],
+  "unit": "Eight controller seeds repeated at each concurrency, every credit fresh and independently subject to the original RNG. Block 1 order 4,1,2; block 2 order 2,1,4.",
+  "primary": "Total verified decisions / sum of active whole-host acquisition seconds across all waves at this level; report native ticks / same denominator. Wave wall starts at parallel dispatch and ends after all native receipts and transfer complete. Staging and formal-study parking time excluded and reported separately.",
+  "quality": "Every credit requires original Easy 0, full 2/2 opening, original Game Over, no Continue, physical command acknowledgement, actual action consumption. Report action-clock quantiles, confirmed ticks per decision, original endpoint and model identity.",
+  "resources": "Linux host CPU jiffies and available RAM/tmpfs before and after each wave; each Wine cgroup CPU and I/O at exit plus PyTorch inference CPU and capture-directory bytes. Monitor nonbenchmark games, avoid formal 159/160 contention.",
+  "cost_provenance": "One-time code/model upload outside measured waves. All individual games start fresh Wine/Xvfb and inference process."
+}

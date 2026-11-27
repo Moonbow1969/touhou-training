@@ -24,7 +24,11 @@ def main():
     for file in args.files:
         file=file.resolve()
         relative=file.relative_to(base)
-        if file.suffix!='.zip' or len(relative.parts)!=2:raise ValueError(f'Expected a study record bundle {file}')
+        bundle=file.suffix=='.zip' and len(relative.parts)==2
+        film=file.suffix=='.mp4' and len(relative.parts)==3 and relative.parts[1]=='evaluation'
+        if not (bundle or film):raise ValueError(f'Expected a study record bundle or verified evaluation film {file}')
+        if film and json.loads(file.with_suffix('.json').read_bytes())['sha256']!=digest(file):
+            raise ValueError('Film bytes differ from the native rendering receipt')
         name=relative.parts[0]+'-'+file.name
         checksum=digest(file)
         for attempt in range(4):
