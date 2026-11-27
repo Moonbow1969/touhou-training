@@ -33,6 +33,22 @@ def read_rank_stage(screen, reference, reference_y, reference_stage):
             'word_dice': word_score, 'digit_dice': number_score}
 
 
+def confirmed_ranking_terminal(screen, reference, reference_y=228, reference_stage=1):
+    """Independently require the original white ranking title and yellow result row."""
+    def title_mask(path):
+        with Image.open(path) as image:
+            crop=np.asarray(image.convert("RGB"))[58:81,150:300]
+            return crop.min(axis=2)>205
+    known=title_mask(reference)
+    if int(known.sum())<200:
+        raise ValueError("Missing native Score Ranking title in reference.")
+    title_score=dice(title_mask(screen),known)
+    stage=read_rank_stage(screen,reference,reference_y,reference_stage)
+    if title_score>=.98 and stage["stage"]==reference_stage:
+        return dict(state="score_ranking",title_dice=title_score,**stage)
+    return None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('screen', type=Path)

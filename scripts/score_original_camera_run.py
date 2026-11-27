@@ -31,6 +31,9 @@ def verified_th12_stage(raw):
     for name,row in result['rank_evidence'].items():
         if row['stage'] is not None:
             return value,digest(raw/name)
+    sensor=result.get('native_telemetry')
+    if sensor and sensor['qualified']:
+        return value,sensor['trace_sha256']
     return value,digest(raw/'evidence'/result['stage2_title_files'][0])
 
 
@@ -164,6 +167,20 @@ def main():
         raise SystemExit(f"Waiting for verified whole credits {len(found)}/{len(wanted)} {collections.Counter((t,a) for t,s,a in found)}")
     for k in ("endpoints","action-traces"):(args.out/k).mkdir(parents=True,exist_ok=True)
     rows=[verify(*found[k],args.out) for k in sorted(found)]
+    if 'rank_by_seed' in protocol:
+        from scripts.verify_original_difficulty import verify as verify_rank
+        for key,row in zip(sorted(found),rows):
+            title,path,receipt,_,_=found[key]
+            row.update(verify_rank(title,path,receipt,protocol['rank_by_seed'][str(title)][str(row['seed'])]))
+        from scripts.score_native_stage_clock import summarize as clock_summary
+        strata={}
+        for rank,name in ((2,'Hard'),(3,'Lunatic')):
+            selected=[r for r in rows if r['difficulty']==rank]
+            seeds={t:[s for s in ss if protocol['rank_by_seed'][t][str(s)]==rank] for t,ss in protocol['eval_seeds'].items()}
+            stats=summarize(selected,dict(protocol,eval_seeds=seeds),arms[1])
+            strata[name]=dict(by_title=stats)
+            if '13' in seeds:strata[name]['th13_native_ticks']=clock_summary(selected,13,arms)
+        (args.out/'paired-by-difficulty.json').write_text(json.dumps(strata,indent=2)+'\n')
     result=summarize(rows,protocol,arms[1])
     (args.out/"credits.json").write_text(json.dumps(rows,indent=2)+"\n")
     (args.out/(arms[1]+".json")).write_text(json.dumps(result,indent=2)+"\n")

@@ -59,13 +59,15 @@ class Pool:
         base=self.o.remote_root+'/'+identifier;folder=base+'/a'
         self.remote(f'mkdir -p {shlex.quote(folder+"/lib")}; cp {self.o.remote_root}/bridge/actor {self.o.remote_root}/bridge/observe.exe {self.o.remote_root}/bridge/sft.bin {self.o.remote_root}/bridge/collect-credit.sh {shlex.quote(folder+"/lib/")}; printf "%d\\n" {int(ticks)} > {shlex.quote(folder+"/lib/decision-ticks")}')
         args=[self.o.launcher,self.o.assets,base,self.o.image,prefix]
-        self.remote('TH13_LANES=a sh '+shlex.join(args),timeout=180)
+        rank=getattr(self.o,'difficulty',1)
+        if rank not in (1,2,3):raise ValueError('Unsupported native difficulty')
+        self.remote(f'TH13_RANK={rank} TH13_LANES=a sh '+shlex.join(args),timeout=180)
         self.exec(name,'for i in $(seq 1 50); do wine /capture/lib/observe.exe >/capture/observer.log 2>&1 && break; sleep 1; done',True)
         restarts=0
         for i in range(65):
             s=self.state(folder)
-            if s and s[1]==7 and s[2]==0 and s[3]==1 and s[4]==2 and s[5]==2 and s[7]==0 and s[8]==1:return name,folder
-            if s and s[1]==7 and s[2]==0 and s[3]==1 and s[7]==0 and s[8]==1 and restarts<2:
+            if s and s[1]==7 and s[2]==0 and s[3]==1 and s[4]==2 and s[5]==2 and s[7]==0 and s[8]==rank:return name,folder
+            if s and s[1]==7 and s[2]==0 and s[3]==1 and s[7]==0 and s[8]==rank and restarts<2:
                 # A slow Wine startup can reach gameplay before the observer
                 # attaches. Use the original pause-menu restart to recover stock.
                 self.exec(name,'xdotool keydown r; sleep .18; xdotool keyup r; sleep 1.8')
@@ -73,7 +75,7 @@ class Pool:
             elif s and s[1]==7 and s[2]==2 and s[3]==1:self.exec(name,'xdotool keydown Escape; sleep .18; xdotool keyup Escape')
             elif s and s[1]==4 and i%2==0:self.exec(name,'xdotool keydown z; sleep .18; xdotool keyup z')
             time.sleep(1.2)
-        raise RuntimeError(f'Paused Normal Stage 1 not qualified in {name}: {s}')
+        raise RuntimeError(f'Paused rank {rank} Stage 1 not qualified in {name}: {s}')
     def release(self,name):
         if not name.startswith('th13-cadence-') or self.remote("docker inspect --format '{{.Name}}' "+shlex.quote(name)).decode().strip()!='/'+name:raise ValueError('Unexpected capture container')
         self.remote('docker stop -t 2 '+shlex.quote(name)+' >/dev/null && docker rm '+shlex.quote(name)+' >/dev/null')

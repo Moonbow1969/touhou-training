@@ -20,17 +20,43 @@ fi
 # The display belongs to exactly one active credit, including reset and evidence capture.
 exec 8>/capture/active-credit-v2.lock
 flock -x 8
-sh /input/th12-full-reset.sh "$label"
+clock_reader=${TH12_CLOCK_READER:-/input/th12-full-actor}
+if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then credit_start=$("$clock_reader" clock); fi
+sh "${TH12_RESET_SCRIPT:-/input/th12-full-reset.sh}" "$label"
 cd "/capture/full/$label"
 test ! -e decisions.tsv
 mkdir evidence
+if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then printf '%s\n' "$credit_start" > credit-start-clock.txt; fi
+sensor_pid=
+rank_pid=
+if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then
+    test "$(cut -d' ' -f1 /capture/executable.sha256)" = c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a
+    cp /capture/executable.sha256 game-exe-sha256.txt
+    sha256sum /input/th12-stage-sensor.exe | cut -d' ' -f1 > stage-sensor-sha256.txt
+    "$clock_reader" clock > stage-sensor-clock.txt
+    WINEPREFIX=/tmp/th12-wine WINEARCH=win32 WINEDEBUG=-all wine /input/th12-stage-sensor.exe \
+        "Z:/capture/full/$label/stage-native.tsv" "Z:/capture/full/$label/stopped" > stage-sensor.log 2>&1 &
+    sensor_pid=$!
+    for count in $(seq 1 100); do test ! -s stage-native.tsv || break; sleep .03; done
+    test -s stage-native.tsv
+    "$clock_reader" clock >> stage-sensor-clock.txt
+fi
+if [ -n "${TH12_DIFFICULTY:-}" ]; then
+    case "$TH12_DIFFICULTY" in 2|3) ;; *) exit 2;; esac
+    sha256sum /input/th12-difficulty.exe | cut -d' ' -f1 > difficulty-observer-sha256.txt
+    WINEPREFIX=/tmp/th12-wine WINEARCH=win32 WINEDEBUG=-all wine /input/th12-difficulty.exe \
+        "Z:/capture/full/$label/difficulty-native.tsv" "Z:/capture/full/$label/stopped" > difficulty-sensor.log 2>&1 &
+    rank_pid=$!
+    for count in $(seq 1 100); do test ! -s difficulty-native.tsv || break; sleep .03; done
+    test -s difficulty-native.tsv
+fi
 printf '%s\n' CLOCK_MONOTONIC > evidence/clock-source.txt
 # Hold a timestamped color record through every stage and the original terminal menu.
 (
     i=0
     while [ ! -e stopped ]; do
         file=$(printf '%05d.jpg' "$i")
-        t=$(/input/th12-full-actor clock) || break
+        t=$("$clock_reader" clock) || break
         scrot --overwrite -q 60 -a 3,22,640,480 "evidence/$file" || break
         printf '%s %s\n' "$t" "$file" >> evidence/clock.txt
         i=$((i+1)); sleep 1.5
@@ -48,6 +74,8 @@ fi
 rc=0
 "$actor" "/input/$weight" "$seed" 120 "$mode" > outcome.txt 2> worker.log || rc=$?
 touch stopped
+if [ -n "$sensor_pid" ]; then wait "$sensor_pid"; fi
+if [ -n "$rank_pid" ]; then wait "$rank_pid"; fi
 wait "$camera" || true
 trap - EXIT
 scrot --overwrite -a 3,22,640,480 endpoint.png

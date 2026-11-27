@@ -1,6 +1,8 @@
 """Recognize the unmodified TH12 0.02a stage banner and highlighted result row."""
 from functools import lru_cache
 from pathlib import Path
+import csv
+import hashlib
 
 import cv2
 import numpy as np
@@ -57,6 +59,70 @@ def actor_banner_scores(frames):
                      for im in frames], dtype=np.float32)
 
 
+def native_stage_telemetry(raw):
+    """Authenticate a complete live recording against the independent native loss and actor clock."""
+    path = raw / "stage-native.tsv"
+    if not path.is_file():
+        return None
+    observer_hash = (raw / "stage-sensor-sha256.txt").read_text().strip()
+    expected = "4763d18112c63e1639bd8f5ce32fca0b1825fe3b489722ecb362963211450bd6"
+    if observer_hash != expected:
+        raise ValueError(f"Unrecognized TH12 stage observer {observer_hash}")
+    with path.open() as stream:
+        rows = [{k:int(v) for k,v in r.items()} for r in csv.DictReader(stream, delimiter="\t")]
+    with (raw / "decisions.tsv").open() as stream:
+        decisions = list(csv.DictReader(stream,delimiter="\t"))
+    actor_s = (int(decisions[-1]["observed_ns"])-int(decisions[0]["onset_ns"]))/1e9
+    relative_s = (rows[-1]["ms"]-rows[0]["ms"])/1000 if rows else 0
+    valid = [r for r in rows if r["mode"]==0 and r["stage"]==r["manager_stage"]
+             and 1<=r["stage"]<=3 and r["tick"]>=0]
+    result = dict(qualified=False, max_stage=None, sensor_sha256=observer_hash,
+                  trace_sha256=hashlib.sha256(path.read_bytes()).hexdigest(), sampled_rows=len(rows),
+                  recording_rows=len(valid), sensor_seconds=relative_s, actor_seconds=actor_s,
+                  stage2_observed_ms=None, stage2_first_tick=None, entry_spares=None, entry_bombs=None)
+    build_path=raw/"game-exe-sha256.txt"
+    if not build_path.is_file() or build_path.read_text().split()[0]!="c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a":
+        return result
+    end_path=raw/"outcome.txt"
+    if not end_path.is_file() or not end_path.read_text().startswith("game_over "):
+        return result
+    if not any((raw/name).is_file() for name in ("terminal-at-control.ppm","endpoint.png","stage-ranking.png")):
+        return result
+    if len(valid)<5 or not actor_s-.35<=relative_s<=actor_s+8:
+        return result
+    if valid[0]["stage"]!=1 or valid[0]["spares"]!=2 or any(
+            b["ms"]-a["ms"]>1000 for a,b in zip(rows,rows[1:])):
+        return result
+    if valid[-1]["spares"]!=-1:
+        return result
+    sequence = [r["stage"] for r in valid]
+    if any(right-left not in (0,1) for left,right in zip(sequence,sequence[1:])):
+        return result
+    if any(sequence.count(i)<3 for i in range(1,max(sequence)+1)):
+        return result
+    if any(r["stage"]>max(sequence) for r in rows if r["mode"]==0):
+        return result
+    result.update(qualified=True,max_stage=max(sequence))
+    stage2 = [r for r in valid if r["stage"]==2]
+    if stage2:
+        first=stage2[0]
+        result.update(stage2_observed_ms=first["ms"],stage2_first_tick=first["tick"])
+        clock_path=raw/"stage-sensor-clock.txt"
+        if clock_path.is_file():
+            brackets=[float(t) for t in clock_path.read_text().split()]
+            if len(brackets)==2 and 0<=brackets[1]-brackets[0]<=1:
+                result["observer_start_bracket_s"]=brackets
+                # The first policy action after the upper bound is certainly in the new stage.
+                onset=(brackets[1]+first["ms"]/1000)*1e9
+                positions=[i for i,r in enumerate(decisions) if int(r["onset_ns"])>=onset]
+                if positions:result["first_stage2_action"]=positions[0]
+        if first["tick"]<=4:
+            for key,dest in (("spares","entry_spares"),("bombs","entry_bombs")):
+                if first[key]>=0 and all(r[key]==first[key] for r in stage2[:2]):
+                    result[dest]=first[key]
+    return result
+
+
 def inspect_credit(raw):
     """Audit the score and entire available action trace without inferring an unobserved rank."""
     files = [raw / name for name in ("stage-ranking.png", "terminal-at-control.ppm", "endpoint.png")]
@@ -65,6 +131,10 @@ def inspect_credit(raw):
     if len(verified_stages) > 1:
         raise ValueError(f"Conflicting native ranking stages in {raw}")
     rank = next(iter(verified_stages), None)
+    telemetry = native_stage_telemetry(raw)
+    max_stage = telemetry["max_stage"] if telemetry and telemetry["qualified"] else None
+    if rank is not None and max_stage is not None and rank!=max_stage:
+        raise ValueError(f"Original ranking and qualified native stage trace disagree in {raw}")
     camera = raw / "observations.u8"
     action_step = None
     highest_action_score = None
@@ -85,15 +155,17 @@ def inspect_credit(raw):
     if action_count == 0 or highest_action_score >= .90 or (rank is not None and rank >= 2):
         color_hits = [p.name for p in color_files if native_banner(p)["detected"]]
     banner = bool(color_hits)
-    if rank == 1 and banner:
+    if (rank == 1 or max_stage == 1) and banner:
         raise ValueError(f"Stage 1 native ranking disagrees with Stage 2 original banner in {raw}")
     if rank is not None:
         reached = rank >= 2
+    elif max_stage is not None:
+        reached = max_stage >= 2
     elif banner:
         reached = True
     else:
         reached = None
-    return dict(stage2_reached=reached, rank=rank, rank_evidence=dict(ranks),
+    return dict(stage2_reached=reached, rank=rank, rank_evidence=dict(ranks),native_telemetry=telemetry,
                 stage2_title_files=color_hits, first_confirmed_action_step=action_step if banner else None,
                 first_title_step_candidate=action_step, peak_camera_correlation=highest_action_score,
                 camera_actions=action_count, periodic_captures=len(color_files))

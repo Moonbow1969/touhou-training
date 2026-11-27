@@ -111,6 +111,14 @@ class CameraPool(Pool):
                 for filename in files:(folder/filename).write_bytes(archive.extractfile(filename).read())
             rollout=folder/"rollout.npz"
             record=pack(folder,o.role,seed,o.checkpoint,rollout)
+            native=np.fromfile(folder/'steps.bin',dtype='<f4').reshape(-1,143)
+            rank=getattr(o,'difficulty',1)
+            if not np.all(native[:,141]==rank):
+                raise ValueError('Original difficulty changed within a credit')
+            if rank!=1:
+                (folder/'selected-difficulty.png').write_bytes(self.remote('cat '+shlex.quote(remote_dir+'/difficulty.png')))
+            record.update(difficulty=rank,difficulty_verified_native_samples=len(native),
+                          native_difficulty_trace_sha256=digest(folder/'steps.bin'))
             frames=np.fromfile(folder/"observations.u8",np.uint8).reshape(-1,112,96)
             if len(frames)!=record["steps"]:raise ValueError("Unpaired camera/action sequence")
             with np.load(rollout) as z:arrays={k:z[k] for k in z.files}
@@ -138,5 +146,6 @@ if __name__=="__main__":
     p.add_argument("--python-executable",default="python3",help="Worker-local Python containing CPU PyTorch")
     p.add_argument("--output",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int,required=True)
     p.add_argument("--workers",type=int,default=3)
+    p.add_argument("--difficulty",type=int,choices=(1,2,3),default=1)
     opts=p.parse_args();controller=CameraPool(opts);controller.prepare()
     with ThreadPoolExecutor(opts.workers) as pool:list(pool.map(controller.run_credit,opts.seeds))

@@ -10,6 +10,8 @@ capture=$(realpath -m "$2")
 image=$3
 prefix=$4
 lanes=${TH13_LANES:-"a b"}
+rank=${TH13_RANK:-1}
+case "$rank" in 1|2|3) ;; *) exit 2;; esac
 for lane in $lanes; do case "$lane" in a|b) ;; *) exit 2 ;; esac; done
 src=$(CDPATH= cd "$(dirname "$0")" && pwd)
 case "$prefix" in ""|*[!a-z0-9-]*) exit 2 ;; esac
@@ -29,7 +31,7 @@ for w in $lanes; do
         -v "$capture/pixel-capture:/tmp/pixel-capture:ro" --entrypoint /bin/sh "$image" /run-th13.sh
 done
 for w in $lanes; do
-    docker exec -e DISPLAY=:66 "$prefix$w" sh -eu -c '
+    docker exec -e DISPLAY=:66 -e TH13_RANK="$rank" "$prefix$w" sh -eu -c '
         # The Wine process exposes an invisible IME before its resolution dialog becomes actionable.
         # Wait for the actual 208x154 modal and retry until the title window exists.
         window=""
@@ -46,6 +48,11 @@ for w in $lanes; do
         xdotool windowfocus --sync "$window"
         sleep 16
         for screen in title difficulty character; do
+            if [ "$screen" = difficulty ] && [ "$TH13_RANK" -gt 1 ]; then
+                for _ in $(seq 2 "$TH13_RANK"); do
+                    xdotool keydown Down; sleep .12; xdotool keyup Down; sleep .35
+                done
+            fi
             scrot --overwrite "/capture/$screen.png"
             xdotool keydown z; sleep .25; xdotool keyup z; sleep 3
         done

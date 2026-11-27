@@ -169,7 +169,14 @@ def main():
     by_title={};quality=[]
     for r in rows:
         arrays,details=credit(r,a.manifest,model,parent,device)
-        by_title.setdefault(r['title'],[]).append(arrays);quality.append(details)
+        group=r['title']
+        if plan.get('balanced_title_rank'):
+            rank=plan['rank_by_seed'][str(group)][str(r['seed'])]
+            if r.get('difficulty')!=rank or not r.get('difficulty_evidence_sha256'):
+                raise ValueError('Unverified native title/difficulty stratum')
+            details['difficulty']=rank
+            group=f'TH{group}-'+{2:'Hard',3:'Lunatic'}[rank]
+        by_title.setdefault(group,[]).append(arrays);quality.append(details)
     data={}
     for t,records in by_title.items():
         x,actions,lp,adv,ret,ref=[torch.cat(v) for v in zip(*records)]
@@ -194,6 +201,7 @@ def main():
               parent_actor_critic_sha256=sha(a.parent_actor_critic) if a.parent_actor_critic else None,native_behavior_sha256=parent,
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
+              equal_weight_strata=sorted(data),
               replay_anchor_weight=a.anchor_weight,replay_anchor_training_sha256=[sha(p) for p in (a.replay_anchor or [])],
               native_procedure="All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."))
 

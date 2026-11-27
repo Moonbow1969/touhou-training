@@ -6,9 +6,10 @@ from pathlib import Path
 
 import numpy as np
 from PIL import Image, ImageDraw
+from stage_transition import inspect_credit, read_native_rank
 
 
-def summarize(raw, output, stage2_step=None):
+def summarize(raw, output, stage2_step=None, ranking_reference=None):
     mode, seed, fingerprint, episode=(raw/"identity.txt").read_text().split()
     end, count, wall=(raw/"outcome.txt").read_text().split()
     if end != "game_over":
@@ -21,6 +22,7 @@ def summarize(raw, output, stage2_step=None):
         raise ValueError("Missing original terminal frame or action rows.")
     last_status = rows[-1]["status"]
     terminal_state = last_status
+    terminal_ranking_evidence = None
     if last_status == "loading":
         # No policy decisions are issued while the original game fades into its terminal menu.
         # The worker saves the exact terminal XImage separately after this no-input wait.
@@ -34,6 +36,11 @@ def summarize(raw, output, stage2_step=None):
             if review["sha256"] != hashlib.sha256(exact_terminal.read_bytes()).hexdigest():
                 raise ValueError("Reviewed terminal screen hash mismatch.")
             terminal_state = review["state"]
+        elif exact_terminal.is_file():
+            result = read_native_rank(exact_terminal)
+            if result["stage"] is not None:
+                terminal_ranking_evidence = result
+                terminal_state = "score_ranking"
     if terminal_state not in terminal_labels:
         raise ValueError("Missing original terminal frame or action rows.")
     action=np.array([[int(r[k]) for k in ("move","focus","shoot","bomb")] for r in rows],np.int8)
@@ -70,6 +77,13 @@ def summarize(raw, output, stage2_step=None):
     stage2_spares = None
     stage2_bombs = None
     stage2_stock_source = None
+    stage_evidence = inspect_credit(raw)
+    verified_entry = stage2_step is not None
+    if verified_entry and stage_evidence["rank"] == 1:
+        raise ValueError("Verified Stage 2 entry conflicts with the original Stage 1 ranking.")
+    if stage2_step is None:
+        sensor = stage_evidence.get("native_telemetry") or {}
+        stage2_step = sensor.get("first_stage2_action",stage_evidence["first_confirmed_action_step"])
     if stage2_step is not None:
         if not 0<=stage2_step<n:raise ValueError("Invalid verified stage transition.")
         rewards[stage2_step,3]=2
@@ -85,6 +99,18 @@ def summarize(raw, output, stage2_step=None):
         stage2_stock_source = ("native HUD at the verified Stage 2 action, confirmed by the next two active observations"
                                if stage2_spares is not None or stage2_bombs is not None
                                else "entry HUD obscured or unstable")
+        if not verified_entry:
+            # The title can arrive after the new stage has started. An accurate HUD here
+            # measures reserve stock at the visible title, not at the first playable tick.
+            stage2_stock_source = "entry HUD unknown; first authenticated title occurs after stage start"
+    displayed_stocks = (stage2_spares, stage2_bombs)
+    if not verified_entry:
+        stage2_spares = stage2_bombs = None
+        sensor=stage_evidence.get("native_telemetry") or {}
+        if sensor.get("qualified") and sensor.get("stage2_first_tick") is not None:
+            stage2_spares=sensor["entry_spares"]
+            stage2_bombs=sensor["entry_bombs"]
+            stage2_stock_source=f"Read-only recording-mode native counters at first consistent Stage 2 tick {sensor['stage2_first_tick']}"
     rewards[-1,4]=-1
     terminated=np.zeros(n,dtype=bool); terminated[-1]=True
     if inventory[0]!=0:raise ValueError("Native spare stock before Game Over requires review.")
@@ -128,11 +154,13 @@ def summarize(raw, output, stage2_step=None):
     terminal_hash = hashlib.sha256(terminal_image.read_bytes()).hexdigest() if terminal_image.exists() else None
     report=dict(title=12,game="TH12 UFO official trial 0.02a",episode=episode,seed=int(seed),mode=mode,
                 lane=episode.split('-')[-1],policy_sha256=fingerprint,actions=n,seconds=float(wall),
-                native_outcome=end,stage2_reached=stage2_step is not None,stage2_step=stage2_step,
+                native_outcome=end,stage2_reached=True if verified_entry else stage_evidence["stage2_reached"],stage2_step=stage2_step,
                 native_terminal_state=terminal_state,terminal_observation_sha256=terminal_hash,
                 stage2_remaining_spare_lives=stage2_spares,stage2_remaining_bombs=stage2_bombs,
                 stage2_stock_source=stage2_stock_source,
-                stage2_review="Review the time-stamped original color progression and terminal screen for each credit.",
+                stage2_review=stage_evidence,
+                stage2_observed_title_spares=displayed_stocks[0] if not verified_entry else None,
+                stage2_observed_title_bombs=displayed_stocks[1] if not verified_entry else None,
                 remaining_spare_lives=inventory[0],remaining_bombs=inventory[1],initial_spares=2,initial_bombs=2,
                 event_history=events,move_counts=np.bincount(action[:,0],minlength=9).tolist(),
                 key_positive_counts=action[:,1:].sum(axis=0).tolist(),reward_parts=rewards.sum(axis=0).tolist(),
@@ -145,5 +173,7 @@ def summarize(raw, output, stage2_step=None):
         report.update(camera_frames=n, camera_shape=[112, 96], max_camera_logp_error=camera_logp_error)
     if last_status != terminal_state:
         report.update(last_action_observation_state=last_status,terminal_seen_after_action_release=True)
+        if terminal_ranking_evidence is not None:
+            report["post_release_rank_evidence"] = terminal_ranking_evidence
     (output/(episode+".json")).write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     return report

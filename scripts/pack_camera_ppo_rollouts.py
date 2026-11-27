@@ -46,7 +46,11 @@ def main():
         if not n or not done[-1] or done[:-1].any():raise ValueError(f'Unverified terminal in {trace}')
         target=a.out/f'th{title}-{seed}.npz'
         np.savez_compressed(target,frames=frames,**arrays)
-        items.append(dict(title=title,seed=seed,policy_sha256=fingerprint,role='train',outcome=outcome,
+        rank={}
+        if 'rank_by_seed' in plan:
+            from scripts.verify_original_difficulty import verify
+            rank=verify(title,receipt,r,plan['rank_by_seed'][str(title)][str(seed)])
+        items.append(dict(title=title,seed=seed,policy_sha256=fingerprint,role='train',outcome=outcome,**rank,
                           file=target.name,sha256=digest(target),source_log_sha256=digest(receipt),source_actions_sha256=trace_sha))
     (a.out/'credits.json').write_text(json.dumps(items,indent=2)+'\n',encoding='utf8')
 
