@@ -92,6 +92,8 @@ def main():
     for key in ("encoder","reference","out"):
         parser.add_argument("--"+key,type=Path,required=True)
     parser.add_argument("--steps",type=int,default=800)
+    parser.add_argument("--natural-movement-frequency",action="store_true",
+                        help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
     device="cuda" if torch.cuda.is_available() else "cpu"
     train=[load_replay(p) for p in args.train];held=[load_replay(p) for p in args.held]
@@ -108,9 +110,15 @@ def main():
     data=pool(train,device)
     # Give each replay equal sampling weight; half of its draws are movement transitions when available.
     chunks=[];offset=0
+    move_weight=torch.ones(len(data["action"]),device=device)
     for row in train:
         ids=torch.arange(offset,offset+len(row["action"]),device=device);offset+=len(ids)
         changes=ids[data["action"][ids,0]!=data["prior"][ids,0]]
+        if len(changes) and args.natural_movement_frequency:
+            # Within a replay the actual marginal proposal mixes 1/2 uniform
+            # rows and 1/2 uniform changes. Undo this tilt for movement only.
+            move_weight[ids]=2.
+            move_weight[changes]=2./(1.+len(ids)/len(changes))
         chunks.append((ids,changes if len(changes) else ids))
     for step in range(1,args.steps+1):
         chosen=[]
@@ -124,7 +132,8 @@ def main():
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
         px*=.85+.3*torch.rand(len(ids),1,1,1,device=device)
         heads=model(px)
-        loss=sum(F.cross_entropy(h,y[:,k],label_smoothing=.025) for k,h in enumerate(heads))
+        per_move=F.cross_entropy(heads[0],y[:,0],label_smoothing=.025,reduction="none")
+        loss=(move_weight[ids]*per_move).mean()+sum(F.cross_entropy(heads[k],y[:,k],label_smoothing=.025) for k in range(1,4))
         opt.zero_grad(set_to_none=True);loss.backward();torch.nn.utils.clip_grad_norm_(model.parameters(),1.);opt.step()
         if step==1 or step%100==0:
             with (args.out/"loss.jsonl").open("a") as f:f.write(json.dumps({"step":step,"loss":loss.item()})+"\n")
@@ -155,6 +164,7 @@ def main():
                         teacher_probs=demo_probs,replay_index=np.repeat(np.arange(len(train)),[len(r["action"]) for r in train]))
     manifest=lambda rows:[{**{k:r[k] for k in ("name","group","sha256")},"decisions":len(r["action"])} for r in rows]
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
+              "natural_movement_frequency":args.natural_movement_frequency,
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})
 

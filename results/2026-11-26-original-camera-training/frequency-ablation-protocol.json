@@ -1,0 +1,20 @@
+{
+  "train": [
+    "th13_ud0a42-s1.npz",
+    "th13_ud0c5d-s1.npz"
+  ],
+  "held": [
+    "th13_ud0cd3-s1.npz",
+    "th13_ud0d02-s1.npz"
+  ],
+  "steps": 900,
+  "change": "Same transition-enriched sampler and training players, exact importance weights for the movement loss only. Shooting/focus/Bomb objectives unchanged.",
+  "rationale": "Two held players change direction on 24-25% of usable decisions. The original SFT distribution would sample a change on 57-63% of those same observations given the preceding expert movement.",
+  "endpoints": [
+    "all-rows movement NLL",
+    "start/turn/change hits",
+    "expected change rate vs preceding expert action",
+    "sensitivity to circularly shifted screens"
+  ],
+  "selection": "Diagnostic on previously inspected held players. No game success claim from replay fit."
+}
