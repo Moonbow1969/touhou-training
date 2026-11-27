@@ -43,6 +43,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--original',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--native-root',type=Path,help='Original receipt tree when the selected packed training batch lives elsewhere.')
     a=p.parse_args();base=a.original/'camera-batch';a.out.mkdir(parents=True,exist_ok=True)
     manifest=base/'credits.json';rows=json.loads(manifest.read_bytes());audit=[]
     for row in rows:
@@ -54,7 +55,7 @@ def main():
                 except OSError:shutil.copyfile(source,target)
             if digest(target)!=row['sha256']:raise ValueError('Control title changed')
             continue
-        (receipt,)=list((a.original/'native13').glob(f"train-*-{row['seed']}/receipt.json"))
+        (receipt,)=list(((a.native_root or a.original)/'native13').glob(f"train-*-{row['seed']}/receipt.json"))
         record=json.loads(receipt.read_bytes())
         if digest(receipt)!=row['source_log_sha256'] or record['role']!='train':raise ValueError('Wrong native source')
         raw=np.fromfile(receipt.parent/'steps.bin',dtype='<f4').reshape(-1,143)

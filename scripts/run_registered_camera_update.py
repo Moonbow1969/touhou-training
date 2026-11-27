@@ -10,11 +10,25 @@ from scripts.checkpoint_storage import digest
 from scripts.score_original_camera_run import records, verified_th10_entry
 
 
+def wait_th12_coverage(path, files):
+    """Bind a stage/terminal input-coverage adjudication to each exact original receipt."""
+    while not path.is_file():
+        time.sleep(15)
+    report=json.loads(path.read_bytes())
+    expected={digest(f) for f in files}
+    rows=report['credits']
+    if (not expected or len(rows)!=len(expected)
+            or {r['receipt_sha256'] for r in rows}!=expected
+            or any(r['coverage']!='qualified' or not r.get('evidence_sha256') for r in rows)):
+        raise ValueError(f'Unresolved playable control coverage in {path}')
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('root','parent','protocol'):
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--from-sft',action='store_true',help='Restore the human camera policy with a zero-initialized value head.')
+    p.add_argument('--th12-coverage',action='store_true',help='Require per-credit playable-control coverage before fitting and publishing held outcomes.')
     args=p.parse_args()
     root=args.root.resolve()
     plan=json.loads(args.protocol.read_bytes())
@@ -51,6 +65,8 @@ def main():
             seen[key]=f
         if len(seen)!=start:print('Verified full training credits',len(seen),'/',len(wanted),flush=True)
         if set(seen)!=wanted:time.sleep(15)
+    if args.th12_coverage:
+        wait_th12_coverage(root/'th12-train-qualified-coverage.json',[f for (t,_),f in seen.items() if t==12])
     if not (root/'camera-batch/credits.json').is_file():
         run('pack_camera_ppo_rollouts','--root',root,'--round2','--protocol',args.protocol,'--behavior',behavior,'--out',root/'camera-batch')
     if not (root/'corrected/clock-audit.json').is_file():
@@ -64,6 +80,20 @@ def main():
     if result['native_behavior_sha256']!=fingerprint or result['policy_sha256']!=digest(policy/'policy.ts') or result['protocol_sha256']!=digest(args.protocol):
         raise ValueError('Trained checkpoint or registration differs')
     out=root/'evaluation'
+    if args.th12_coverage:
+        seeds=set(plan['eval_seeds']['12'])
+        hashes={fingerprint,result['policy_sha256']}
+        files={}
+        while len(files)!=len(seeds)*len(hashes):
+            for title,f in records(root,True,True):
+                if title!=12:continue
+                receipt=json.loads(f.read_bytes())
+                key=receipt['seed'],receipt['policy_sha256']
+                if key[0] in seeds and key[1] in hashes:
+                    if key in files and files[key]!=f:raise ValueError('Duplicate TH12 evaluation receipt')
+                    files[key]=f
+            if len(files)!=len(seeds)*len(hashes):time.sleep(15)
+        wait_th12_coverage(root/'th12-held-qualified-coverage.json',files.values())
     while True:
         proc=subprocess.run([sys.executable,'-m','scripts.score_original_camera_run','--root',str(root),'--round2','--protocol',str(args.protocol),
             '--parent',str(behavior),'--candidate',str(policy/'policy.ts'),'--arm-names',reference,candidate,'--out',str(out)],capture_output=True,text=True)

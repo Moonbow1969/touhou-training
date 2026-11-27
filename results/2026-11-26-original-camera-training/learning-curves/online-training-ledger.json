@@ -1,8 +1,8 @@
 {
-  "verified_unique_credits": 828,
-  "verified_unique_decisions": 543391,
+  "verified_unique_credits": 852,
+  "verified_unique_decisions": 555539,
   "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
-  "unique_updates": 16,
+  "unique_updates": 17,
   "updates": [
     {
       "path": "camera-ppo/report.json",
@@ -199,6 +199,18 @@
       }
     }
   ],
+  "shared_collection_updates": [
+    {
+      "path": "merged-three-control-coverage/policy/report.json",
+      "policy_sha256": "be648b0fc6a3000e349d0e278cbf675ca5b3f2abc9b3e1ee44914ff3bd1b7b14",
+      "optimizer_source_credits": 24,
+      "optimizer_source_decisions": 12148,
+      "new_physical_credits": 24,
+      "new_physical_decisions": 12148,
+      "excluded_game": "TH12",
+      "original_collection": "four-game-merged-online"
+    }
+  ],
   "additional_native_curriculum": [
     {
       "arm": "opening-ppo",
@@ -216,5 +228,6 @@
       "optimizer_decisions": 1536,
       "checkpoint": "3af692daf1fe9baec3deb64cd0ff5d390bc5d50970a279acd9a2b3eb50b3c0ce"
     }
-  ]
+  ],
+  "th12_control_coverage": "Physical original credits with true terminals can contain unscheduled HUD-controller input gaps. Per-credit TH12 scientific eligibility is under separate review."
 }
