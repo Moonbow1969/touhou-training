@@ -14,6 +14,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('root','public'):p.add_argument('--'+name,type=Path,required=True)
     a=p.parse_args();root=a.root.resolve();pub=a.public.resolve()/root.name;out=root/'evaluation'
+    while not (root/'camera-protocol.json').exists():time.sleep(10)
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     titles=sorted(int(t) for t in plan['eval_seeds'] if t!='8')
     expected=sum(len(plan['eval_seeds'][str(t)])*2 for t in titles)

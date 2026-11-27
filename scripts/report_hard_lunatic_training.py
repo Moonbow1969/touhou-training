@@ -15,7 +15,7 @@ def main():
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
              'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3',
              'six-game-online/first-eight','six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams',
-             'later-human-online','six-game-return-horizon/six-gae985','four-step-feedback-online','reviewed-five-human-online']
+             'later-human-online','six-game-return-horizon/six-gae985','four-step-feedback-online','reviewed-five-human-online','chained-five-game-ppo']
     counts=Counter();seen=set();steps_by_source={};reports={}
     for study in studies:
         path=data/study/'policy/report.json'

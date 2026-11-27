@@ -1,9 +1,23 @@
-# Five-title online PPO from the 84-stage human policy
+# Full-action five-title PPO from the reviewed 84-stage human SFT
 
-The same supervised camera policy begins ordinary credits in TH10, TH11, TH12, TH13 and TH17 on Hard and Lunatic. Its 84 original human stages supplied 284,222 four-tick windows. Online training updates movement, focus, shooting and Bomb decisions with a fresh zero-initialized critic. The original trial games supply the observations and consume the sampled keys.
+The human visual source trained on 84 stages and 284,222 available windows across these five games. All four action heads and the visual encoder initialized the shared on-policy actor. Training and held evaluation use separate ordinary full-stock starts on Hard and Lunatic. The TH12 training selection uses strict native input evidence. Held evaluation preserves both physical and coverage-qualified populations.
 
-The collection allocates 88 physical training starts. TH10, TH11, TH13 and TH17 contribute eight starts per rank. TH12 allocates twelve per rank and selects the first eight with complete native control evidence in controller-seed order. Both TH12 ranks use the smaller qualifying count if either falls short. The first two TH11 training games started on Momentum. Training and test trajectories use disjoint controller seeds.
+| Policy | Original PPO training games | Decisions | Accepted epochs | Final maximum title/rank KL |
+|---|---:|---:|---:|---:|
+| reviewed-ppo | 80 | 35,897 | 4 | 0.00491 |
 
-The held comparison allocates 160 full-stock credits across ten game and difficulty cells. Each cell compares direct SFT with its online PPO child on eight paired starts. The primary outcome is Stage 2. Each game also reports life stock, Bomb or Power and original progress. [Frozen allocations and settings](camera-protocol.json) · [Source policy and human results](../first-five-title-retail-sft/README.md)
+[Study registration](camera-protocol.json)
 
-The first TH11 Hard and Lunatic training credits ended after 351 and 142 decisions. Recomputing the native behavior on their captured screens gave a maximum absolute selected-action log-probability difference below 0.000003 across all four heads. The reconstructed value and native initial value agreed exactly. [Pre-optimization replay check](first-original-sft-behavior.json)
+[reviewed-ppo weights](policy/policy.ts) · [Optimizer trace](policy/report.json)
+
+[TH10 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-human-online-th10-exact-optimizer-input.zip)
+
+[TH11 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-human-online-th11-exact-optimizer-input.zip)
+
+[TH12 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-human-online-th12-exact-optimizer-input.zip)
+
+[TH13 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-human-online-th13-exact-optimizer-input.zip)
+
+[TH17 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-human-online-th17-exact-optimizer-input.zip)
+
+Each title supplied eight Hard and eight Lunatic starts to this update. The actor trained on the local NVIDIA RTX 4070. It controls all nine movement directions, focus, shooting and Bomb. The original TH12 collector reserved 24 full games; 22 had complete input evidence and the frozen rank-balanced rule selected 16. [Accepted epochs and learning rates](learner-console.txt) · [Exact training roster](fit-protocol.json) · [Native movement evidence on three games](three-title-original-action-coverage.json) · [Second-generation protocol](../chained-five-game-ppo/camera-protocol.json)

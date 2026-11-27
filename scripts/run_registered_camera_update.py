@@ -39,6 +39,8 @@ def main():
     fingerprint=digest(behavior)
     if fingerprint!=plan['behavior_sha256']:
         raise ValueError('Unexpected parent actor')
+    if 'parent_actor_critic_sha256' in plan and digest(args.parent/'camera-ppo.pt')!=plan['parent_actor_critic_sha256']:
+        raise ValueError('Frozen parent actor-critic weights differ')
     if args.feedback_camera or args.direction_residual:
         if (not args.from_sft or not args.feedback_camera or not args.direction_residual or not plan.get('previous_direction_input')
                 or digest(args.feedback_camera)!=plan['camera_sft_sha256'] or digest(args.direction_residual)!=plan['residual_sha256']):

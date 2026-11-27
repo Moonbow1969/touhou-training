@@ -18,7 +18,9 @@ def read(path):return json.loads(path.read_bytes())
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data',required=True,type=Path)
+    parser.add_argument('--continue-ppo',action='store_true',help='Collect a fresh second generation from the first fitted actor and critic.')
     a=parser.parse_args();d=a.data.resolve();name='reviewed-five-human-online'
+    if a.continue_ppo:name='chained-five-game-ppo'
     root=d/name;root.mkdir(exist_ok=True)
     source=d/'first-five-title-retail-sft/five-reviewed'
     sft=read(source/'report.json');actor=digest(source/'policy.ts')
@@ -26,8 +28,9 @@ def main():
         sum(row['decisions'] for row in sft['train'])!=284222):raise ValueError('Unexpected SFT source')
     prior=read(d/'five-game-generation3/camera-protocol.json')
     games=(10,11,12,13,17)
-    attempts={str(t):[1840000+t*100+i for i in range(1,25 if t==12 else 17)] for t in games}
-    held={str(t):[1840000+t*100+i for i in range(51,67)] for t in games}
+    series=1880000 if a.continue_ppo else 1840000
+    attempts={str(t):[series+t*100+i for i in range(1,25 if t==12 else 17)] for t in games}
+    held={str(t):[series+t*100+i for i in range(51,67)] for t in games}
     plan=dict(name='Full-action five-title PPO from the reviewed 84-stage human SFT',reference_arm='reviewed-sft',candidate='reviewed-ppo',
               behavior_sha256=actor,source_sft_report=digest(source/'report.json'),games=prior['games'],train_seeds=attempts,eval_seeds=held,
               rank_by_seed={k:{str(v):2 if v%2 else 3 for v in values+held[k]} for k,values in attempts.items()},
@@ -35,6 +38,19 @@ def main():
               ppo=prior['ppo'],learning_rates=prior['learning_rates'],controls=prior['controls'],
               training='Freeze the initial 84-stage SFT and initialize a fresh zero critic. Use all 16 ordinary complete original starts per title for TH10/11/13/17. TH12 reserves 24 physical starts. Select the first eight strictly covered controller seeds numerically on each difficulty. If fewer qualify, use the same smaller number on each TH12 rank. Keep every physical endpoint and its coverage status. The other four games retain all original starts. Verify zero initial native behavior values and every received action log probability before optimization.',
               evaluation='Eight matched ordinary full-stock pairs per title and rank. Preserve all physical endpoints including incomplete TH12 control as a separate population. Same build, rank, host and controller seed per pair, counterbalanced actor order. In-game RNG is uncontrolled. Primary outcome Stage 2. Secondary measures include spare lives, Bomb stock or Power, first life loss and per-game progress. Original camera only, no assistance or Continue.')
+    if a.continue_ppo:
+        source=d/'reviewed-five-human-online/policy'
+        report=source/'report.json'
+        while not report.exists():time.sleep(15)
+        fit=read(report)
+        if fit['native_behavior_sha256']!=actor or fit['protocol_sha256']!=digest(source.parent/'fit-protocol.json'):
+            raise ValueError('Previous generation does not descend from the registered human actor')
+        actor=digest(source/'policy.ts')
+        if actor!=fit['policy_sha256']:raise ValueError('Previous fitted actor changed')
+        plan.update(name='Second consecutive full-action five-title PPO update from human SFT',
+                    reference_arm='reviewed-ppo',candidate='reviewed-ppo2',behavior_sha256=actor,
+                    parent_actor_critic_sha256=digest(source/'camera-ppo.pt'),parent_report_sha256=digest(report),
+                    training='Restore the trained actor and critic from generation one. Collect a fresh batch from this exact behavior on the five original games. Preserve the previous reward, action mapping, PPO settings, title/rank weighting and native input verification. TH12 reserves 24 starts and uses the first eight strictly covered seeds per rank, balanced to the smaller count if necessary. All other titles supply 16 starts. Verify sampled action log probabilities and critic predictions before optimization. All held and earlier-generation trajectories are excluded.')
     protocol=root/'camera-protocol.json';freeze(protocol,plan)
     qualification=root/'stage2-qualification.json';src=d/'th11-original-ppo/stage2-qualification.json'
     if not qualification.exists():shutil.copy2(src,qualification)
@@ -67,7 +83,8 @@ def main():
         raise ValueError('Independent TH12 input reviewers selected different seeds')
     effective=dict(plan,train_seeds={**attempts,'12':chosen},registered_protocol_sha256=digest(protocol),th12_grades_sha256=digest(grades_path))
     selected=root/'fit-protocol.json';freeze(selected,effective)
-    subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update','--root',str(root),'--protocol',str(selected),'--parent',str(source),'--from-sft','--fit-only'],check=True)
+    initialization=[] if a.continue_ppo else ['--from-sft']
+    subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update','--root',str(root),'--protocol',str(selected),'--parent',str(source),*initialization,'--fit-only'],check=True)
     print('Completed five-title online fit',digest(root/'policy/policy.ts'),flush=True)
 
 
