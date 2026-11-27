@@ -1,0 +1,6 @@
+{
+  "train_manifest": "3ef405c10dbcfac8c830821a0d63b25f1f5e7768e4bd60bb7aca5d9a10a2454a",
+  "actor": "835fbf3e37ed5c50fd000463c8ecd6493e0ff38eb0c33ce318714de098cbff96",
+  "critic": "4cc6816bd286a10691db4085ac8dfe6532b3d2933940129d50d7b7b61ac3a6cf",
+  "method": "Use 16 independent training games per title and rank. Calculate the initial normalized joint-action PPO gradient over all playable decisions in each cell. Estimate cross-title agreement by measuring cosine between the TH08 gradient and the mean gradient of the other ten cells. Repeat on 32 deterministic shuffled twofold splits of eight whole games per side per cell, always comparing opposite halves. Report the median and 10th and 90th percentiles across correlated partitions as sensitivity, with no claim of independent test games. Six-game and five-game training share original behavior and per-cell budgets. No held games, entropy or value gradient in this diagnostic."
+}
