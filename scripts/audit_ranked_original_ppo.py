@@ -60,7 +60,7 @@ def main():
         if 'last_playable_bombs' in group[0]:end['last_playable_bombs']=mean(r['last_playable_bombs'] for r in group)
         stats[k]=dict(complete_credits=len(group),decisions=sum(r['decisions'] for r in group),native_rank_samples=sum(r['native_rank_samples'] for r in group),
                       stage2=sum(r['stage2'] for r in group),mean_terminal_resources=end)
-    report=dict(note='These are training trajectories of the frozen SFT behavior. Use the separately registered independent, matched, complete-credit test to compare SFT with the resulting PPO.',titles_and_ranks=stats,
+    report=dict(note=f"Training trajectories came from the frozen {plan['reference_arm']} actor. The separately registered matched full-credit evaluation compares that actor with {plan['candidate']}.",titles_and_ranks=stats,
                 trained_model=learner['policy_sha256'],behavior=learner['native_behavior_sha256'],equal_weight_strata=learner['equal_weight_strata'],
                 accepted_epochs=sum(x['accepted'] for x in learner['history']),unique_decisions=learner['steps'],credits=rows)
     a.out.write_text(json.dumps(report,indent=2)+'\n',encoding='utf8')

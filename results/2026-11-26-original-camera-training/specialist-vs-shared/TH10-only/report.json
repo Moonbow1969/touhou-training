@@ -1,0 +1,1334 @@
+{
+  "train": [
+    {
+      "name": "th10-gensokyo-17749-s1.npz",
+      "group": "mikkey",
+      "title": "TH10",
+      "sha256": "43538ecf7179ed877c30b60d07060e60a4883799a95551cc765f85012d9b0a1a",
+      "decisions": 2162
+    },
+    {
+      "name": "th10-gensokyo-27829-s1.npz",
+      "group": "minogame",
+      "title": "TH10",
+      "sha256": "c94f52c5f37f7aa5ccb2f04ae810049b80c2da4be5d6ac6f2fc8950644d79fe8",
+      "decisions": 1904
+    },
+    {
+      "name": "th10-gensokyo-17749-s6.npz",
+      "group": "mikkey",
+      "title": "TH10",
+      "sha256": "a1e3c4327654db1795bbb8d105c22dca1463cddb5e9bca158754b9d7f48c49c2",
+      "decisions": 6138
+    },
+    {
+      "name": "th10-gensokyo-325-s1.npz",
+      "group": "elixir",
+      "title": "TH10",
+      "sha256": "c15d60385b0c6868b78b4f4034df7c22f440094fd45aec664c56acce245c77ab",
+      "decisions": 2092
+    },
+    {
+      "name": "th10-gensokyo-31004-s1.npz",
+      "group": "kii",
+      "title": "TH10",
+      "sha256": "f77021437f102f6aa98d3a4f1baa857b6ce64f96f3db2bb922d9d3bd4ddd880f",
+      "decisions": 2054
+    },
+    {
+      "name": "th10-gensokyo-14081-s1.npz",
+      "group": "ltp",
+      "title": "TH10",
+      "sha256": "2ce629b6b4add80bd439f8b93b3f58ba03ccb46929aabd8543e7488d2f72c232",
+      "decisions": 1816
+    },
+    {
+      "name": "th10-gensokyo-18122-s1.npz",
+      "group": "nyaaa~",
+      "title": "TH10",
+      "sha256": "307a453450329b4f8f74c789f7af8a03439ba8893324cf39fb63770601c1a443",
+      "decisions": 2091
+    }
+  ],
+  "held": [
+    {
+      "name": "th10-gensokyo-2749-s1.npz",
+      "group": "duckator",
+      "title": "TH10",
+      "sha256": "15f06a168be277e939313be7a22fcd9e42aa6a27257095c54152feb936c305c7",
+      "decisions": 2004
+    },
+    {
+      "name": "th10-gensokyo-2749-s2.npz",
+      "group": "duckator",
+      "title": "TH10",
+      "sha256": "3ea1d82c7e283b130d9275f8dac8f6a0c135bf6ce4c616ba180aad3751c885ed",
+      "decisions": 2628
+    },
+    {
+      "name": "th10-gensokyo-7045-s1.npz",
+      "group": "funen1",
+      "title": "TH10",
+      "sha256": "feeb4a8c895552bbde1a75d59d13003a25445111a79845364c6e417ed16f1bbe",
+      "decisions": 1968
+    }
+  ],
+  "encoder": "5638ab0c359099c003629a6cc6bf245ebca76c9102ee4a612e5f05ce5f2be408",
+  "natural_movement_frequency": true,
+  "title_balanced": true,
+  "difficulty_balanced": true,
+  "observed_sampled_windows_by_game_rank": {
+    "TH10 Hard": 23792,
+    "TH10 Lunatic": 24208
+  },
+  "player_location_weight": 0.0,
+  "spatial_attention": false,
+  "cpu_replay": true,
+  "deployed_actor_parameters": 165691,
+  "camera_difference_native_ticks": [
+    4
+  ],
+  "sft": "e4e1b14a4f3482715cbcb591443b5566fb5ce87b941c421386899d7cf7394679",
+  "steps": 750,
+  "label_smoothing": 0.025,
+  "head_label_smoothing": [
+    0.025,
+    0.025,
+    0.025,
+    0.025
+  ],
+  "metrics": {
+    "th10-gensokyo-2749-s1.npz": {
+      "visual_sft": {
+        "all": {
+          "n": 2004,
+          "correct": 1132,
+          "movement_nll": 1.315308690071106
+        },
+        "change": {
+          "n": 495,
+          "correct": 113,
+          "movement_nll": 2.377917766571045
+        },
+        "start": {
+          "n": 144,
+          "correct": 17,
+          "movement_nll": 2.8701155185699463
+        },
+        "turn": {
+          "n": 206,
+          "correct": 46,
+          "movement_nll": 2.322305679321289
+        },
+        "head_accuracy": [
+          0.564870259481038,
+          0.9306387225548902,
+          0.9171656686626747,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            17,
+            32,
+            0,
+            10,
+            15,
+            4,
+            0,
+            1,
+            0
+          ],
+          [
+            10,
+            107,
+            26,
+            4,
+            59,
+            15,
+            2,
+            15,
+            5
+          ],
+          [
+            1,
+            7,
+            11,
+            0,
+            5,
+            2,
+            0,
+            1,
+            0
+          ],
+          [
+            7,
+            11,
+            2,
+            71,
+            45,
+            4,
+            26,
+            16,
+            0
+          ],
+          [
+            0,
+            33,
+            18,
+            47,
+            732,
+            38,
+            4,
+            66,
+            13
+          ],
+          [
+            0,
+            13,
+            22,
+            1,
+            45,
+            81,
+            0,
+            7,
+            17
+          ],
+          [
+            3,
+            4,
+            0,
+            9,
+            2,
+            1,
+            0,
+            11,
+            1
+          ],
+          [
+            1,
+            20,
+            3,
+            8,
+            55,
+            25,
+            7,
+            81,
+            20
+          ],
+          [
+            0,
+            1,
+            2,
+            1,
+            8,
+            30,
+            0,
+            11,
+            32
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.012054627761244774
+        }
+      },
+      "within_replay_screen_shift": {
+        "all": {
+          "n": 2004,
+          "correct": 489,
+          "movement_nll": 3.0824549198150635
+        },
+        "change": {
+          "n": 495,
+          "correct": 96,
+          "movement_nll": 3.5475876331329346
+        },
+        "start": {
+          "n": 144,
+          "correct": 11,
+          "movement_nll": 3.880915641784668
+        },
+        "turn": {
+          "n": 206,
+          "correct": 11,
+          "movement_nll": 4.6899733543396
+        },
+        "head_accuracy": [
+          0.2440119760479042,
+          0.4815369261477046,
+          0.8403193612774451,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            0,
+            4,
+            2,
+            10,
+            42,
+            5,
+            6,
+            8,
+            2
+          ],
+          [
+            3,
+            24,
+            12,
+            28,
+            122,
+            18,
+            8,
+            19,
+            9
+          ],
+          [
+            2,
+            3,
+            0,
+            7,
+            10,
+            1,
+            2,
+            2,
+            0
+          ],
+          [
+            4,
+            32,
+            21,
+            4,
+            84,
+            19,
+            0,
+            9,
+            9
+          ],
+          [
+            22,
+            107,
+            35,
+            66,
+            434,
+            101,
+            10,
+            127,
+            49
+          ],
+          [
+            1,
+            18,
+            2,
+            21,
+            101,
+            12,
+            7,
+            19,
+            5
+          ],
+          [
+            0,
+            2,
+            2,
+            2,
+            19,
+            3,
+            0,
+            2,
+            1
+          ],
+          [
+            5,
+            30,
+            9,
+            8,
+            106,
+            33,
+            3,
+            14,
+            12
+          ],
+          [
+            2,
+            8,
+            1,
+            5,
+            48,
+            8,
+            3,
+            9,
+            1
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.0120546268299222
+        }
+      },
+      "frozen_ppo3": {
+        "all": {
+          "n": 2004,
+          "correct": 1492,
+          "movement_nll": 0.9486145973205566
+        },
+        "change": {
+          "n": 495,
+          "correct": 20,
+          "movement_nll": 2.385180711746216
+        },
+        "start": {
+          "n": 144,
+          "correct": 0,
+          "movement_nll": 3.149704933166504
+        },
+        "turn": {
+          "n": 206,
+          "correct": 4,
+          "movement_nll": 2.3679933547973633
+        },
+        "head_accuracy": [
+          0.7445109780439122,
+          0.9830339321357285,
+          0.9795409181636726,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            46,
+            14,
+            0,
+            11,
+            8,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            20,
+            166,
+            11,
+            1,
+            36,
+            9,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            12,
+            9,
+            0,
+            0,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            4,
+            0,
+            113,
+            45,
+            0,
+            6,
+            7,
+            0
+          ],
+          [
+            5,
+            31,
+            1,
+            32,
+            822,
+            27,
+            1,
+            30,
+            2
+          ],
+          [
+            0,
+            6,
+            6,
+            0,
+            51,
+            108,
+            0,
+            5,
+            10
+          ],
+          [
+            0,
+            0,
+            0,
+            6,
+            0,
+            0,
+            18,
+            7,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            5,
+            36,
+            1,
+            5,
+            163,
+            10
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            9,
+            8,
+            0,
+            21,
+            47
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.0020660292357206345
+        }
+      }
+    },
+    "th10-gensokyo-2749-s2.npz": {
+      "visual_sft": {
+        "all": {
+          "n": 2628,
+          "correct": 1638,
+          "movement_nll": 1.205696702003479
+        },
+        "change": {
+          "n": 598,
+          "correct": 152,
+          "movement_nll": 2.323045015335083
+        },
+        "start": {
+          "n": 183,
+          "correct": 15,
+          "movement_nll": 3.0648016929626465
+        },
+        "turn": {
+          "n": 232,
+          "correct": 43,
+          "movement_nll": 2.5322775840759277
+        },
+        "head_accuracy": [
+          0.6232876712328768,
+          0.9334094368340944,
+          0.9756468797564688,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            8,
+            13,
+            1,
+            20,
+            14,
+            3,
+            1,
+            5,
+            0
+          ],
+          [
+            5,
+            82,
+            14,
+            12,
+            52,
+            17,
+            0,
+            7,
+            3
+          ],
+          [
+            1,
+            21,
+            9,
+            3,
+            22,
+            30,
+            0,
+            4,
+            0
+          ],
+          [
+            14,
+            8,
+            0,
+            46,
+            98,
+            7,
+            18,
+            22,
+            0
+          ],
+          [
+            2,
+            35,
+            3,
+            17,
+            1290,
+            55,
+            3,
+            87,
+            6
+          ],
+          [
+            0,
+            10,
+            7,
+            2,
+            73,
+            69,
+            0,
+            22,
+            7
+          ],
+          [
+            1,
+            3,
+            0,
+            5,
+            8,
+            3,
+            16,
+            15,
+            0
+          ],
+          [
+            0,
+            14,
+            2,
+            5,
+            106,
+            34,
+            2,
+            111,
+            10
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            8,
+            13,
+            0,
+            15,
+            7
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.013209029100835323
+        }
+      },
+      "within_replay_screen_shift": {
+        "all": {
+          "n": 2628,
+          "correct": 953,
+          "movement_nll": 2.4144325256347656
+        },
+        "change": {
+          "n": 598,
+          "correct": 131,
+          "movement_nll": 3.134902238845825
+        },
+        "start": {
+          "n": 183,
+          "correct": 17,
+          "movement_nll": 3.440030813217163
+        },
+        "turn": {
+          "n": 232,
+          "correct": 6,
+          "movement_nll": 4.450113296508789
+        },
+        "head_accuracy": [
+          0.3626331811263318,
+          0.460806697108067,
+          0.9459665144596652,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            1,
+            0,
+            0,
+            0,
+            51,
+            4,
+            0,
+            9,
+            0
+          ],
+          [
+            5,
+            7,
+            0,
+            13,
+            133,
+            15,
+            2,
+            16,
+            1
+          ],
+          [
+            2,
+            2,
+            0,
+            6,
+            61,
+            4,
+            11,
+            4,
+            0
+          ],
+          [
+            2,
+            22,
+            7,
+            8,
+            132,
+            14,
+            2,
+            25,
+            1
+          ],
+          [
+            17,
+            118,
+            22,
+            63,
+            890,
+            158,
+            22,
+            185,
+            23
+          ],
+          [
+            0,
+            5,
+            1,
+            7,
+            127,
+            24,
+            3,
+            19,
+            4
+          ],
+          [
+            0,
+            5,
+            2,
+            2,
+            33,
+            3,
+            0,
+            5,
+            1
+          ],
+          [
+            4,
+            29,
+            4,
+            11,
+            202,
+            8,
+            0,
+            23,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            42,
+            1,
+            0,
+            2,
+            0
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.013209030963480473
+        }
+      },
+      "frozen_ppo3": {
+        "all": {
+          "n": 2628,
+          "correct": 2012,
+          "movement_nll": 0.8669578433036804
+        },
+        "change": {
+          "n": 598,
+          "correct": 29,
+          "movement_nll": 2.3310160636901855
+        },
+        "start": {
+          "n": 183,
+          "correct": 0,
+          "movement_nll": 3.1494767665863037
+        },
+        "turn": {
+          "n": 232,
+          "correct": 0,
+          "movement_nll": 2.314257860183716
+        },
+        "head_accuracy": [
+          0.7656012176560122,
+          0.9817351598173516,
+          0.9923896499238964,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            35,
+            12,
+            0,
+            16,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            17,
+            121,
+            20,
+            4,
+            25,
+            5,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            24,
+            56,
+            0,
+            3,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            7,
+            1,
+            0,
+            101,
+            87,
+            0,
+            9,
+            8,
+            0
+          ],
+          [
+            4,
+            21,
+            2,
+            40,
+            1344,
+            45,
+            1,
+            41,
+            0
+          ],
+          [
+            0,
+            6,
+            12,
+            0,
+            68,
+            95,
+            0,
+            5,
+            4
+          ],
+          [
+            0,
+            0,
+            0,
+            8,
+            2,
+            0,
+            28,
+            13,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            3,
+            43,
+            4,
+            13,
+            212,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            11,
+            5,
+            0,
+            9,
+            20
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.0023464716505259275
+        }
+      }
+    },
+    "th10-gensokyo-7045-s1.npz": {
+      "visual_sft": {
+        "all": {
+          "n": 1968,
+          "correct": 1293,
+          "movement_nll": 1.0651915073394775
+        },
+        "change": {
+          "n": 450,
+          "correct": 117,
+          "movement_nll": 2.1847057342529297
+        },
+        "start": {
+          "n": 143,
+          "correct": 16,
+          "movement_nll": 2.779318332672119
+        },
+        "turn": {
+          "n": 162,
+          "correct": 48,
+          "movement_nll": 1.9533885717391968
+        },
+        "head_accuracy": [
+          0.6570121951219512,
+          0.8790650406504065,
+          0.959349593495935,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            15,
+            28,
+            0,
+            6,
+            15,
+            0,
+            1,
+            2,
+            1
+          ],
+          [
+            6,
+            80,
+            4,
+            0,
+            27,
+            3,
+            1,
+            6,
+            1
+          ],
+          [
+            0,
+            14,
+            31,
+            0,
+            2,
+            12,
+            0,
+            0,
+            3
+          ],
+          [
+            7,
+            13,
+            0,
+            65,
+            47,
+            2,
+            28,
+            13,
+            2
+          ],
+          [
+            4,
+            27,
+            6,
+            12,
+            869,
+            30,
+            6,
+            52,
+            5
+          ],
+          [
+            1,
+            1,
+            20,
+            0,
+            49,
+            93,
+            1,
+            8,
+            11
+          ],
+          [
+            2,
+            3,
+            0,
+            16,
+            16,
+            4,
+            30,
+            22,
+            0
+          ],
+          [
+            0,
+            12,
+            2,
+            1,
+            60,
+            10,
+            5,
+            88,
+            9
+          ],
+          [
+            1,
+            1,
+            4,
+            0,
+            3,
+            22,
+            0,
+            5,
+            22
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.012714148499071598
+        }
+      },
+      "within_replay_screen_shift": {
+        "all": {
+          "n": 1968,
+          "correct": 579,
+          "movement_nll": 2.9158360958099365
+        },
+        "change": {
+          "n": 450,
+          "correct": 107,
+          "movement_nll": 3.341397523880005
+        },
+        "start": {
+          "n": 143,
+          "correct": 24,
+          "movement_nll": 3.6380529403686523
+        },
+        "turn": {
+          "n": 162,
+          "correct": 6,
+          "movement_nll": 4.549217700958252
+        },
+        "head_accuracy": [
+          0.2942073170731707,
+          0.6056910569105691,
+          0.8800813008130082,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            2,
+            7,
+            0,
+            11,
+            31,
+            8,
+            2,
+            4,
+            3
+          ],
+          [
+            4,
+            6,
+            2,
+            3,
+            76,
+            8,
+            9,
+            18,
+            2
+          ],
+          [
+            1,
+            1,
+            0,
+            2,
+            40,
+            10,
+            3,
+            5,
+            0
+          ],
+          [
+            2,
+            12,
+            1,
+            19,
+            121,
+            4,
+            11,
+            6,
+            1
+          ],
+          [
+            23,
+            112,
+            46,
+            54,
+            498,
+            93,
+            41,
+            113,
+            31
+          ],
+          [
+            1,
+            16,
+            10,
+            4,
+            88,
+            29,
+            4,
+            22,
+            10
+          ],
+          [
+            0,
+            12,
+            2,
+            4,
+            69,
+            3,
+            0,
+            2,
+            1
+          ],
+          [
+            3,
+            11,
+            5,
+            3,
+            127,
+            13,
+            2,
+            21,
+            2
+          ],
+          [
+            0,
+            2,
+            1,
+            0,
+            38,
+            8,
+            0,
+            5,
+            4
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.012714148499071598
+        }
+      },
+      "frozen_ppo3": {
+        "all": {
+          "n": 1968,
+          "correct": 1513,
+          "movement_nll": 0.8754350543022156
+        },
+        "change": {
+          "n": 450,
+          "correct": 45,
+          "movement_nll": 2.2066586017608643
+        },
+        "start": {
+          "n": 143,
+          "correct": 0,
+          "movement_nll": 3.0554351806640625
+        },
+        "turn": {
+          "n": 162,
+          "correct": 2,
+          "movement_nll": 2.2145631313323975
+        },
+        "head_accuracy": [
+          0.7688008130081301,
+          0.9715447154471545,
+          0.9989837398373984,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            44,
+            8,
+            0,
+            10,
+            6,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            15,
+            81,
+            8,
+            2,
+            21,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            9,
+            45,
+            0,
+            2,
+            6,
+            0,
+            0,
+            0
+          ],
+          [
+            5,
+            1,
+            0,
+            100,
+            60,
+            0,
+            10,
+            1,
+            0
+          ],
+          [
+            2,
+            23,
+            1,
+            15,
+            909,
+            23,
+            7,
+            28,
+            3
+          ],
+          [
+            0,
+            0,
+            8,
+            2,
+            63,
+            102,
+            0,
+            3,
+            6
+          ],
+          [
+            0,
+            0,
+            0,
+            10,
+            7,
+            0,
+            62,
+            14,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            30,
+            2,
+            9,
+            139,
+            7
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            3,
+            11,
+            1,
+            12,
+            31
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.002305907430127263
+        }
+      }
+    }
+  },
+  "torchscript_sha256": "3b2d930a7deba94036094f861edfbc4801a2d4b537f486eddc8e5baa1ed58e38",
+  "demo_sha256": "27d4a729bd2df9ac3740fb08a1e0337b94ee0083024ce9a5a0b77e267b029ba7"
+}

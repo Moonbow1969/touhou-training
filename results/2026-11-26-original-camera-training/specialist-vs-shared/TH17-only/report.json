@@ -1,0 +1,882 @@
+{
+  "train": [
+    {
+      "name": "th17_ud0311-s1.npz",
+      "group": "nbs",
+      "title": "TH17",
+      "sha256": "d1621cb553ed4de2b7b1167dcc50c78f8b0dc29628adb2d73f464bcc62d3290d",
+      "decisions": 3003
+    },
+    {
+      "name": "th17_ud043c-s1.npz",
+      "group": "makon",
+      "title": "TH17",
+      "sha256": "0c00ee5f10c974f960336df14f61cc4e5973ed184d7ff5d24c525824511d51f0",
+      "decisions": 2187
+    }
+  ],
+  "held": [
+    {
+      "name": "th17_ud01c3-s1.npz",
+      "group": "lnnnn",
+      "title": "TH17",
+      "sha256": "920cb860e6cb7b12f5232161d11d63fb6ca5aa6dde54866c0deaac7e61435720",
+      "decisions": 2438
+    },
+    {
+      "name": "th17_ud03f0-s1.npz",
+      "group": "nirnam",
+      "title": "TH17",
+      "sha256": "de15611325739478c3fd5ddcc619dcaa611d0420a8011f28c9e40fa959fc8228",
+      "decisions": 2586
+    }
+  ],
+  "encoder": "5638ab0c359099c003629a6cc6bf245ebca76c9102ee4a612e5f05ce5f2be408",
+  "natural_movement_frequency": true,
+  "title_balanced": true,
+  "difficulty_balanced": true,
+  "observed_sampled_windows_by_game_rank": {
+    "TH17 Hard": 23792,
+    "TH17 Lunatic": 24208
+  },
+  "player_location_weight": 0.0,
+  "spatial_attention": false,
+  "cpu_replay": true,
+  "deployed_actor_parameters": 165691,
+  "camera_difference_native_ticks": [
+    4
+  ],
+  "sft": "624204d0647997dd2c7a08751060a483ce1d805f5054001e78764fd194dbbd2e",
+  "steps": 750,
+  "label_smoothing": 0.025,
+  "head_label_smoothing": [
+    0.025,
+    0.025,
+    0.025,
+    0.025
+  ],
+  "metrics": {
+    "th17_ud01c3-s1.npz": {
+      "visual_sft": {
+        "all": {
+          "n": 2438,
+          "correct": 1150,
+          "movement_nll": 1.6523747444152832
+        },
+        "change": {
+          "n": 930,
+          "correct": 220,
+          "movement_nll": 2.3912320137023926
+        },
+        "start": {
+          "n": 286,
+          "correct": 25,
+          "movement_nll": 3.0115139484405518
+        },
+        "turn": {
+          "n": 357,
+          "correct": 50,
+          "movement_nll": 2.614487886428833
+        },
+        "head_accuracy": [
+          0.4716981132075472,
+          0.8379819524200164,
+          0.9819524200164069,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            20,
+            9,
+            1,
+            16,
+            15,
+            3,
+            4,
+            4,
+            0
+          ],
+          [
+            8,
+            68,
+            16,
+            12,
+            90,
+            12,
+            2,
+            28,
+            4
+          ],
+          [
+            1,
+            16,
+            13,
+            0,
+            19,
+            10,
+            0,
+            4,
+            4
+          ],
+          [
+            12,
+            13,
+            1,
+            113,
+            128,
+            2,
+            25,
+            28,
+            1
+          ],
+          [
+            14,
+            38,
+            8,
+            27,
+            685,
+            14,
+            15,
+            88,
+            8
+          ],
+          [
+            3,
+            17,
+            8,
+            7,
+            118,
+            84,
+            3,
+            39,
+            12
+          ],
+          [
+            0,
+            1,
+            1,
+            11,
+            17,
+            0,
+            10,
+            5,
+            0
+          ],
+          [
+            4,
+            22,
+            2,
+            10,
+            204,
+            5,
+            12,
+            141,
+            11
+          ],
+          [
+            0,
+            3,
+            1,
+            0,
+            33,
+            18,
+            1,
+            20,
+            16
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.01247679628431797
+        }
+      },
+      "within_replay_screen_shift": {
+        "all": {
+          "n": 2438,
+          "correct": 501,
+          "movement_nll": 3.2408697605133057
+        },
+        "change": {
+          "n": 930,
+          "correct": 190,
+          "movement_nll": 3.361658811569214
+        },
+        "start": {
+          "n": 286,
+          "correct": 22,
+          "movement_nll": 3.925391674041748
+        },
+        "turn": {
+          "n": 357,
+          "correct": 19,
+          "movement_nll": 4.20125150680542
+        },
+        "head_accuracy": [
+          0.2054963084495488,
+          0.49835931091058244,
+          0.9729286300246104,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            0,
+            1,
+            0,
+            12,
+            37,
+            5,
+            4,
+            12,
+            1
+          ],
+          [
+            1,
+            13,
+            3,
+            29,
+            140,
+            9,
+            8,
+            36,
+            1
+          ],
+          [
+            0,
+            3,
+            1,
+            10,
+            43,
+            1,
+            2,
+            7,
+            0
+          ],
+          [
+            9,
+            27,
+            6,
+            19,
+            178,
+            12,
+            10,
+            59,
+            3
+          ],
+          [
+            28,
+            65,
+            23,
+            84,
+            421,
+            77,
+            32,
+            140,
+            27
+          ],
+          [
+            7,
+            23,
+            10,
+            15,
+            165,
+            8,
+            7,
+            45,
+            11
+          ],
+          [
+            0,
+            3,
+            0,
+            5,
+            26,
+            2,
+            0,
+            8,
+            1
+          ],
+          [
+            15,
+            48,
+            8,
+            19,
+            244,
+            27,
+            7,
+            35,
+            8
+          ],
+          [
+            2,
+            4,
+            0,
+            3,
+            55,
+            7,
+            2,
+            15,
+            4
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.01247679628431797
+        }
+      },
+      "frozen_ppo3": {
+        "all": {
+          "n": 2438,
+          "correct": 1500,
+          "movement_nll": 1.206855058670044
+        },
+        "change": {
+          "n": 930,
+          "correct": 92,
+          "movement_nll": 2.2650978565216064
+        },
+        "start": {
+          "n": 286,
+          "correct": 0,
+          "movement_nll": 2.885611057281494
+        },
+        "turn": {
+          "n": 357,
+          "correct": 17,
+          "movement_nll": 2.5186848640441895
+        },
+        "head_accuracy": [
+          0.6152584085315833,
+          0.9466776045939295,
+          0.9995898277276456,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            44,
+            14,
+            0,
+            7,
+            6,
+            1,
+            0,
+            0,
+            0
+          ],
+          [
+            13,
+            128,
+            18,
+            7,
+            60,
+            9,
+            0,
+            5,
+            0
+          ],
+          [
+            0,
+            14,
+            33,
+            1,
+            2,
+            16,
+            0,
+            0,
+            1
+          ],
+          [
+            7,
+            5,
+            1,
+            146,
+            134,
+            4,
+            9,
+            17,
+            0
+          ],
+          [
+            8,
+            36,
+            3,
+            49,
+            685,
+            46,
+            1,
+            65,
+            4
+          ],
+          [
+            0,
+            13,
+            11,
+            0,
+            111,
+            133,
+            0,
+            14,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            7,
+            0,
+            0,
+            14,
+            23,
+            1
+          ],
+          [
+            0,
+            3,
+            0,
+            19,
+            65,
+            3,
+            10,
+            295,
+            16
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            23,
+            18,
+            0,
+            29,
+            22
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.0020078422967344522
+        }
+      }
+    },
+    "th17_ud03f0-s1.npz": {
+      "visual_sft": {
+        "all": {
+          "n": 2586,
+          "correct": 1106,
+          "movement_nll": 1.8198168277740479
+        },
+        "change": {
+          "n": 995,
+          "correct": 235,
+          "movement_nll": 2.4789371490478516
+        },
+        "start": {
+          "n": 356,
+          "correct": 44,
+          "movement_nll": 2.8892829418182373
+        },
+        "turn": {
+          "n": 285,
+          "correct": 51,
+          "movement_nll": 2.7224857807159424
+        },
+        "head_accuracy": [
+          0.4276875483372003,
+          0.7246713070378964,
+          0.9064191802010828,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            11,
+            13,
+            0,
+            21,
+            28,
+            2,
+            9,
+            4,
+            0
+          ],
+          [
+            10,
+            64,
+            17,
+            23,
+            82,
+            14,
+            8,
+            13,
+            3
+          ],
+          [
+            3,
+            13,
+            19,
+            3,
+            26,
+            25,
+            8,
+            7,
+            6
+          ],
+          [
+            12,
+            7,
+            0,
+            35,
+            41,
+            3,
+            19,
+            12,
+            2
+          ],
+          [
+            27,
+            47,
+            19,
+            66,
+            821,
+            71,
+            169,
+            190,
+            31
+          ],
+          [
+            3,
+            4,
+            12,
+            6,
+            41,
+            63,
+            8,
+            12,
+            7
+          ],
+          [
+            2,
+            3,
+            1,
+            17,
+            47,
+            2,
+            19,
+            27,
+            6
+          ],
+          [
+            2,
+            5,
+            3,
+            7,
+            104,
+            9,
+            12,
+            63,
+            7
+          ],
+          [
+            1,
+            3,
+            3,
+            1,
+            31,
+            19,
+            5,
+            16,
+            11
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.012480090372264385
+        }
+      },
+      "within_replay_screen_shift": {
+        "all": {
+          "n": 2586,
+          "correct": 740,
+          "movement_nll": 2.726522445678711
+        },
+        "change": {
+          "n": 995,
+          "correct": 200,
+          "movement_nll": 3.1768133640289307
+        },
+        "start": {
+          "n": 356,
+          "correct": 27,
+          "movement_nll": 3.7600815296173096
+        },
+        "turn": {
+          "n": 285,
+          "correct": 11,
+          "movement_nll": 4.263257026672363
+        },
+        "head_accuracy": [
+          0.2861562258313998,
+          0.7076566125290024,
+          0.9064191802010828,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            3,
+            7,
+            3,
+            7,
+            44,
+            9,
+            8,
+            6,
+            1
+          ],
+          [
+            5,
+            10,
+            5,
+            24,
+            107,
+            17,
+            28,
+            29,
+            9
+          ],
+          [
+            4,
+            7,
+            0,
+            6,
+            55,
+            14,
+            10,
+            12,
+            2
+          ],
+          [
+            0,
+            8,
+            0,
+            9,
+            76,
+            3,
+            12,
+            23,
+            0
+          ],
+          [
+            46,
+            89,
+            44,
+            105,
+            665,
+            112,
+            133,
+            198,
+            49
+          ],
+          [
+            3,
+            4,
+            4,
+            6,
+            83,
+            14,
+            13,
+            26,
+            3
+          ],
+          [
+            3,
+            10,
+            2,
+            11,
+            64,
+            6,
+            12,
+            14,
+            2
+          ],
+          [
+            5,
+            19,
+            14,
+            10,
+            79,
+            25,
+            28,
+            26,
+            6
+          ],
+          [
+            2,
+            5,
+            2,
+            1,
+            48,
+            8,
+            13,
+            10,
+            1
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.012480093166232109
+        }
+      },
+      "frozen_ppo3": {
+        "all": {
+          "n": 2586,
+          "correct": 1621,
+          "movement_nll": 1.2089213132858276
+        },
+        "change": {
+          "n": 995,
+          "correct": 48,
+          "movement_nll": 2.4716079235076904
+        },
+        "start": {
+          "n": 356,
+          "correct": 0,
+          "movement_nll": 3.47442626953125
+        },
+        "turn": {
+          "n": 285,
+          "correct": 1,
+          "movement_nll": 2.2616381645202637
+        },
+        "head_accuracy": [
+          0.6268368136117556,
+          0.988399071925754,
+          1.0,
+          1.0
+        ],
+        "bomb_onsets": 0,
+        "movement_confusion_true_by_predicted": [
+          [
+            34,
+            22,
+            1,
+            7,
+            24,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            18,
+            128,
+            26,
+            1,
+            59,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            21,
+            37,
+            1,
+            31,
+            17,
+            0,
+            0,
+            0
+          ],
+          [
+            13,
+            5,
+            0,
+            55,
+            42,
+            0,
+            12,
+            4,
+            0
+          ],
+          [
+            17,
+            55,
+            22,
+            24,
+            1134,
+            24,
+            39,
+            116,
+            10
+          ],
+          [
+            1,
+            1,
+            15,
+            3,
+            32,
+            91,
+            1,
+            1,
+            11
+          ],
+          [
+            0,
+            0,
+            0,
+            17,
+            36,
+            0,
+            55,
+            16,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            2,
+            116,
+            3,
+            15,
+            71,
+            5
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            47,
+            17,
+            0,
+            10,
+            16
+          ]
+        ],
+        "bomb": {
+          "positives": 0,
+          "predicted_positive_argmax": 0,
+          "mean_p_on_bomb_rows": null,
+          "mean_p_on_other_rows": 0.001470730872824788
+        }
+      }
+    }
+  },
+  "torchscript_sha256": "0258a366167ca6fa3d40acd44873d2bc10ec191d884903eb82ea1eb1873087a9",
+  "demo_sha256": "128d0bcf90c09a9bfaa18240576bfc658885695ee47f3c3e29ef8cf38eb52d90"
+}
