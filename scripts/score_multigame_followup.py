@@ -13,7 +13,7 @@ from scripts.score_original_camera_run import records
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost','full-epochs-original'),required=True)
+    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost','full-epochs-original','reviewed-five-human-online'),required=True)
     a=p.parse_args();d=a.data.resolve();root=d/a.study
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     five=a.study=='five-game-crossfit-advantages'
@@ -22,6 +22,9 @@ def main():
     candidate=(root/plan['candidate'] if horizon else root if five else d/'six-game-online/joint-six')/'policy/policy.ts'
     if a.study=='six-game-bomb-cost':
         reference=d/'six-game-online/joint-six/policy/policy.ts'
+        candidate=root/'policy/policy.ts'
+    if a.study=='reviewed-five-human-online':
+        reference=d/'first-five-title-retail-sft/five-reviewed/policy.ts'
         candidate=root/'policy/policy.ts'
     if a.study=='full-epochs-original':
         reference=d/'four-title-complete-epochs'/plan['reference_arm']/'policy.ts'

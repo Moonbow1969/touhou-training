@@ -28,6 +28,7 @@ def main():
     for key in ('root','parent','protocol'):
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--from-sft',action='store_true',help='Restore the human camera policy with a zero-initialized value head.')
+    p.add_argument('--fit-only',action='store_true',help='Finish after verifying the fit when physical evaluation has a separate registered scorer.')
     p.add_argument('--feedback-camera',type=Path,help='Original frozen visual SFT weights for a registered H1 movement residual.')
     p.add_argument('--direction-residual',type=Path)
     p.add_argument('--th12-coverage',action='store_true',help='Require per-credit playable-control coverage before fitting and publishing held outcomes.')
@@ -96,6 +97,7 @@ def main():
     result=json.loads((policy/'report.json').read_bytes())
     if result['native_behavior_sha256']!=fingerprint or result['policy_sha256']!=digest(policy/'policy.ts') or result['protocol_sha256']!=digest(args.protocol):
         raise ValueError('Trained checkpoint or registration differs')
+    if args.fit_only:return
     out=root/'evaluation'
     if args.th12_coverage:
         seeds=set(plan['eval_seeds']['12'])
