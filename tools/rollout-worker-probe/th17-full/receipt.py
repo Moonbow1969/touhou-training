@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import numpy as np
 from original_ui import comparison
+from timeline import coordinates, progressed_ticks, event_coordinate
 from score_ranking import inspect as inspect_ranking
 
 BUILD = "3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba"
@@ -31,17 +32,18 @@ def state_events(native, decisions):
     parts = np.zeros((len(decisions), 4), dtype="f4")
     history = []
     entries = {}
+    action_end = coordinates(decisions["after_stage"], decisions["after_tick"])
     for prior, current in zip(native, native[1:]):
-        tick = int(current["total_tick"])
-        step = min(len(decisions)-1, int(np.searchsorted(decisions["after_total_tick"], tick)))
+        stage, tick = int(current["stage"]), int(current["tick"])
+        step = min(len(decisions)-1, int(np.searchsorted(action_end, event_coordinate(stage,tick))))
         change = int(current["spares"] - prior["spares"])
         if change:
             parts[step,0] += change
-            history.append(dict(step=step, tick=tick, kind="life", change=change))
+            history.append(dict(step=step, tick=tick, kind="life", change=change, **({"stage":stage} if stage>1 else {})))
         cast = int(prior["bombs"] - current["bombs"])
         if change == 0 and cast > 0:
             parts[step,1] -= .03 * cast
-            history.append(dict(step=step, tick=tick, kind="spent_bombs", count=cast))
+            history.append(dict(step=step, tick=tick, kind="spent_bombs", count=cast, **({"stage":stage} if stage>1 else {})))
         if current["stage"] > prior["stage"]:
             parts[step,2] += 2
             entries[int(current["stage"])] = dict(step=step, tick=tick, spares=int(current["spares"]), bombs=int(current["bombs"]))
@@ -60,7 +62,8 @@ def seal(root, identity):
         raise ValueError("A whole fresh original credit is required")
     if not all(np.all(native[k]==v) for k,v in {"rank":rank,"character":0,"beast":0,"continues":0}.items()):
         raise ValueError("Original rank, character, selected beast or Continue changed")
-    if last["spares"] != -1 or np.any(np.diff(native["total_tick"])<0) or not np.all(np.isin(np.diff(native["stage"]), [0,1])):
+    progress = progressed_ticks(native["stage"],native["tick"])
+    if last["spares"] != -1:
         raise ValueError("Original stage or stock-exhaustion witness is incomplete")
     if decisions[0]["tick"]>=180 or decisions[-1]["spares"]!=-1 or not np.array_equal(decisions["keys"],decisions["observed_keys"]):
         raise ValueError("Original controls or final action are incomplete")
@@ -82,7 +85,7 @@ def seal(root, identity):
     ended[-1] = True
     tmp = root/"behavior.pending.npz"
     np.savez_compressed(tmp, frames=frames, action=action, logp=logp, value=value, reward=parts.sum(1), terminated=ended, reward_parts=parts,
-        observed_keys=decisions["observed_keys"].astype("u1"), native_tick=decisions["total_tick"].astype("i4"),
+        observed_keys=decisions["observed_keys"].astype("u1"), native_tick=decisions["tick"].astype("i4"),
         stock=np.stack((decisions["spares_before"],decisions["bombs_before"]),axis=1).astype("i2"))
     tmp.replace(root/"behavior.npz")
     last_live = native[native["spares"]>=0][-1]
@@ -97,7 +100,7 @@ def seal(root, identity):
         last_live_bombs=int(last_live["bombs"]), remaining_bombs=int(last["bombs"]), remaining_spare_lives=0, remaining_lives=0, terminal_spares=-1,
         first_loss_native_tick=next((e["tick"] for e in events if e["kind"]=="life" and e["change"]<0),None),
         last_stage_native_tick=int(last["tick"]), seconds=float(decisions["observed_ns"][-1]-decisions["onset_ns"][0])/1e9,
-        native_ticks_per_second=1000*float(last["total_tick"]-first["total_tick"])/float(last["ms"]-first["ms"]),
+        native_ticks_per_second=1000*float(progress[-1])/float(last["ms"]-first["ms"]),
         terminal_score=int(last["score"])*10,verified_rate=1.,action_counts=np.bincount(action[:,0],minlength=9).tolist(),
         key_positive_counts=action[:,1:].sum(0).tolist(), reward_parts=parts.sum(0).tolist(), reward_events=events,
         reward_components=["native life changes including final loss","same-life Bomb spending","first entry into new stage","dense time omitted"],
@@ -119,3 +122,4 @@ if __name__=="__main__":
     a=parser.parse_args()
     r=seal(a.episode,json.loads(a.identity.read_bytes()))
     print(json.dumps({k:r[k] for k in ("actions","difficulty","terminal_screen","stage2_reached","last_live_bombs","trajectory_sha256")},indent=2))
+

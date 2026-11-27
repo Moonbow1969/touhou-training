@@ -14,7 +14,7 @@ def credit(folder):
     events=[]
     for i in np.flatnonzero(np.diff(z['spares'])<0)+1:
         previous,after=z[i-1],z[i]
-        tick=int(after['total_tick']);window=(d['total_tick']>=tick-120)&(d['total_tick']<tick)
+        tick=int(after['tick']);window=(d['stage']==after['stage'])&(d['tick']>=tick-120)&(d['tick']<tick)
         events.append(dict(death_tick=tick,ended_credit=after['spares']<0,
                            bombs_on_last_playable_tick=int(previous['bombs']),native_post_death_bombs=int(after['bombs']),
                            requested_bomb_controls_in_prior_120_native_ticks=int((window&held).sum()),
@@ -38,3 +38,4 @@ def report(root):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('output',type=Path);a=p.parse_args()
     out=report(a.root);a.output.write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out['by_rank'],indent=2))
+

@@ -2,13 +2,16 @@
 from pathlib import Path
 import argparse,json
 import numpy as np
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th17-full'))
+from timeline import progressed_ticks
 
 def report(root):
     credits=[]
     for p in sorted(root.glob('*-*-*/receipt.json')):
         r=json.loads(p.read_bytes())
         t=np.genfromtxt(p.with_name('decisions.tsv'),names=True,delimiter='\t')
-        credits.append((r,np.r_[t['onset_ns'][0],t['observed_ns']]/1e9,np.r_[t['total_tick'][0],t['after_total_tick']]))
+        credits.append((r,np.r_[t['onset_ns'][0],t['observed_ns']]/1e9,progressed_ticks(np.r_[t['stage'][0],t['after_stage']],np.r_[t['tick'][0],t['after_tick']])))
     cell={};wall={}
     if not credits:return {}
     # Count only seconds fully covered by every included active credit.
@@ -31,3 +34,4 @@ def report(root):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('root',type=Path);p.add_argument('out',type=Path);a=p.parse_args()
     o=report(a.root);a.out.write_text(json.dumps(o,indent=2)+'\n');print(json.dumps(o,indent=2))
+

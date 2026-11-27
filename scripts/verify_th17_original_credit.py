@@ -1,11 +1,21 @@
 """Independently check stock TH17 0.01a rank, stock, stage entry and physical evidence."""
 import csv
 
-import numpy as np
 from scripts.checkpoint_storage import digest
 
 BUILD='3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba'
 OBSERVER='a561ed8f077b9d75fc380777722a67e59f9dbbad1dcbc1108c1083be8f1dff69'
+
+
+def verify_stage_chronology(native):
+    """The original stage timer can restart at a new stage; music can restart at any time."""
+    for row in native:
+        if row['stage'] not in (1,2,3) or row['tick']<0:
+            raise ValueError('Invalid TH17 native stage or stage tick')
+    for prior,current in zip(native,native[1:]):
+        transition=current['stage']-prior['stage']
+        if transition not in (0,1) or transition==0 and current['tick']<prior['tick'] or current['ms']<prior['ms']:
+            raise ValueError('TH17 stage sequence, per-stage clock or acquisition clock went backwards')
 
 
 def inspect(receipt_file,r,expected):
@@ -27,9 +37,7 @@ def inspect(receipt_file,r,expected):
         raise ValueError('TH17 native difficulty, character, beast or Continue changed')
     if r['terminal_screen'] not in ('game_over','score_ranking') or last['spares']!=-1:
         raise ValueError('TH17 terminal requires independent qualification')
-    changes=np.diff([x['stage'] for x in native])
-    if np.any((changes<0)|(changes>1)) or np.any(np.diff([x['total_tick'] for x in native])<0):
-        raise ValueError('TH17 stage or global clock moved backwards')
+    verify_stage_chronology(native)
     entering=next((x for x in native if x['stage']==2),None)
     entry=(bool(entering),entering['spares'] if entering else None,entering['bombs'] if entering else None)
     live=next(x for x in reversed(native) if x['spares']>=0)

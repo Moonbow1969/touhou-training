@@ -89,6 +89,8 @@ def main():
                     panel.paste(end,(x,y+47))
                     resource = f"{row['terminal_power']:.2f} Power" if key[0] == 10 else f"{row['terminal_bombs']} Bombs"
                     draw.text((x,y+285),f"{row['terminal'].replace('_',' ')}  ·  {row['terminal_spares']} spares  ·  {resource}",font=small,fill='white')
+                    if row.get('last_playable_bombs') is not None:
+                        draw.text((x,y+304),f"Last playable stock: {row['last_playable_bombs']} Bombs",font=small,fill='white')
             output.append_data(np.asarray(panel))
     reader = imageio.get_reader(args.out)
     try:

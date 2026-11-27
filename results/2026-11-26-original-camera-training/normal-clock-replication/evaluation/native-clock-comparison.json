@@ -1,0 +1,279 @@
+{
+  "arms": [
+    "v2-ppo",
+    "large-ppo"
+  ],
+  "measure": "Observed stage-local tick at the last native sample tagged Stage 1.",
+  "interpretation": "The counter measures elapsed original simulation time within Stage 1. Boss duration can vary across credits. The native stage transition independently measures whether Stage 1 was cleared.",
+  "seed_pairs": 24,
+  "metrics": {
+    "latest_observed_stage1_native_tick": {
+      "n": 24,
+      "means": [
+        2817.0416666666665,
+        2818.75
+      ],
+      "paired_mean_change": 1.7083333333333333,
+      "bootstrap95": [
+        -327.3364583333333,
+        368.2208333333322
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            3071.5,
+            2913.5833333333335
+          ],
+          "paired_mean_change": -157.91666666666666,
+          "bootstrap95": [
+            -632.9166666666666,
+            449.33958333333277
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            2562.5833333333335,
+            2723.9166666666665
+          ],
+          "paired_mean_change": 161.33333333333334,
+          "bootstrap95": [
+            -265.5854166666667,
+            564.5
+          ]
+        }
+      }
+    },
+    "first_loss_stage1_tick": {
+      "n": 24,
+      "means": [
+        1102.4583333333333,
+        1155.4583333333333
+      ],
+      "paired_mean_change": 53.0,
+      "bootstrap95": [
+        -86.12604166666667,
+        200.3343749999999
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            1181.1666666666667,
+            1104.0833333333333
+          ],
+          "paired_mean_change": -77.08333333333333,
+          "bootstrap95": [
+            -181.75208333333333,
+            39.502083333333154
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            1023.75,
+            1206.8333333333333
+          ],
+          "paired_mean_change": 183.08333333333334,
+          "bootstrap95": [
+            -70.41666666666667,
+            460.75
+          ]
+        }
+      }
+    },
+    "original_score": {
+      "n": 24,
+      "means": [
+        246492.66666666666,
+        244371.0
+      ],
+      "paired_mean_change": -2121.6666666666665,
+      "bootstrap95": [
+        -67517.12083333333,
+        57915.389583333104
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            272132.3333333333,
+            248630.25
+          ],
+          "paired_mean_change": -23502.083333333332,
+          "bootstrap95": [
+            -110797.58958333333,
+            46048.63333333328
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            220853.0,
+            240111.75
+          ],
+          "paired_mean_change": 19258.75,
+          "bootstrap95": [
+            -82498.6875,
+            112930.79583333324
+          ]
+        }
+      }
+    },
+    "terminal_power": {
+      "n": 24,
+      "means": [
+        0.06041666666666667,
+        0.0625
+      ],
+      "paired_mean_change": 0.002083333333333335,
+      "bootstrap95": [
+        -0.11041666666666668,
+        0.12708333333333333
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            0.0625,
+            0.041666666666666664
+          ],
+          "paired_mean_change": -0.020833333333333332,
+          "bootstrap95": [
+            -0.1875,
+            0.125
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            0.05833333333333333,
+            0.08333333333333333
+          ],
+          "paired_mean_change": 0.024999999999999998,
+          "bootstrap95": [
+            -0.13333333333333333,
+            0.22916666666666666
+          ]
+        }
+      }
+    },
+    "effective_bombs": {
+      "n": 24,
+      "means": [
+        1.5,
+        1.625
+      ],
+      "paired_mean_change": 0.125,
+      "bootstrap95": [
+        -0.7083333333333334,
+        1.0
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            1.75,
+            2.1666666666666665
+          ],
+          "paired_mean_change": 0.4166666666666667,
+          "bootstrap95": [
+            -0.75,
+            1.75
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            1.25,
+            1.0833333333333333
+          ],
+          "paired_mean_change": -0.16666666666666666,
+          "bootstrap95": [
+            -1.25,
+            0.9166666666666666
+          ]
+        }
+      }
+    },
+    "wall_seconds": {
+      "n": 24,
+      "means": [
+        47.503166666666665,
+        47.335499999999996
+      ],
+      "paired_mean_change": -0.1676666666666673,
+      "bootstrap95": [
+        -5.795873958333333,
+        6.118123958333329
+      ],
+      "hosts": {
+        "accelerator": {
+          "n": 12,
+          "means": [
+            52.32091666666667,
+            49.303333333333335
+          ],
+          "paired_mean_change": -3.017583333333334,
+          "bootstrap95": [
+            -11.29215,
+            7.5716791666666285
+          ]
+        },
+        "momentum": {
+          "n": 12,
+          "means": [
+            42.68541666666667,
+            45.36766666666667
+          ],
+          "paired_mean_change": 2.68225,
+          "bootstrap95": [
+            -4.46193125,
+            9.406274999999983
+          ]
+        }
+      }
+    }
+  },
+  "stage_and_resources": {
+    "v2-ppo": {
+      "n": 24,
+      "stage2_reached": 0,
+      "stage2_rate": 0.0,
+      "stage2_wilson_95pct": [
+        0.0,
+        0.13797620467498017
+      ],
+      "stage2_resources": [],
+      "native_game_overs": 24,
+      "final_spare_life_counts": {
+        "-1": 24
+      },
+      "mean_final_power": 0.06041666666666667,
+      "confirmed_bomb_spends": 36
+    },
+    "large-ppo": {
+      "n": 24,
+      "stage2_reached": 0,
+      "stage2_rate": 0.0,
+      "stage2_wilson_95pct": [
+        0.0,
+        0.13797620467498017
+      ],
+      "stage2_resources": [],
+      "native_game_overs": 24,
+      "final_spare_life_counts": {
+        "-1": 24
+      },
+      "mean_final_power": 0.0625,
+      "confirmed_bomb_spends": 39
+    }
+  },
+  "paired_stage2": {
+    "stage2_gained": 0,
+    "stage2_lost": 0,
+    "stage2_delta_rate": 0.0,
+    "stage2_mcnemar_exact_p": 1.0
+  }
+}
