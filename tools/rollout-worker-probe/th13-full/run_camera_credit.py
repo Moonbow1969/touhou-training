@@ -11,7 +11,7 @@ import time
 
 import numpy as np
 
-from cadence_driver import Pool, GAME_HASHES, OBSERVER, digest, dump, utc
+from cadence_driver import Pool, GAME_HASHES, OBSERVER, SFT, digest, dump, utc
 from pack_credit import pack
 
 
@@ -35,26 +35,48 @@ class CameraPool(Pool):
                  "full-trial-actor.c":src/"full-trial-actor.c","collect-credit.sh":src/"collect-credit.sh",
                  "x11_pixels.h":src.parent/"th13-pixels/x11_pixels.h"}
         bridge=o.remote_root+"/bridge"
+        payloads={name:file.read_bytes().replace(b"\r\n",b"\n") for name,file in sources.items()}
+        source_manifest=''.join(hashlib.sha256(data).hexdigest()+'  '+name+'\n' for name,data in sorted(payloads.items()))
+        compile_actor="gcc -O2 -Wall -std=c11 -DTOHO_CAMERA_POLICY full-trial-actor.c -o actor.$$ -l:libX11.so.6 -l:libXtst.so.6 -lm"
+        build_id=hashlib.sha256((compile_actor+'\n'+source_manifest).encode()).hexdigest()
+        marker='.camera-actor-'+build_id+'.sha256'
+        fingerprint=digest(o.checkpoint)
+        self.model=bridge+"/"+fingerprint+".ts"
+        required=source_manifest+f'{OBSERVER}  observe.exe\n{SFT}  sft.bin\n{fingerprint}  {fingerprint}.ts\n'
+        asset_manifest=''.join(f'{h}  {n}\n' for h,n in zip(GAME_HASHES,('th13.exe','th13tr.dat','thbgm_tr.dat')))
+        # Same-host paired evaluation reuses these files on almost every credit.
+        # Check their actual bytes on each hit, including the original game and compiled native helper.
+        probe=f"if (cd {shlex.quote(bridge)} && test -s {marker} && sha256sum --status -c {marker} && sha256sum --status -c -) && "
+        probe+=f"(cd {shlex.quote(o.assets)} && printf %s {shlex.quote(asset_manifest)} | sha256sum --status -c -); then echo ready; fi"
+        if self.remote(probe,data=required.encode()).strip()==b'ready':
+            print('PREPARE verified worker cache',flush=True)
+            return
         self.remote("umask 077; mkdir -p "+shlex.quote(bridge))
-        for name,file in sources.items():
-            self.remote("cat > "+shlex.quote(bridge+"/"+name),data=file.read_bytes().replace(b"\r\n",b"\n"))
+        for name,body in payloads.items():
+            self.remote("set -eu; cd "+shlex.quote(bridge)+"; cat > "+name+'.$$ && mv '+name+'.$$ '+name,data=body)
         # boot() stages these files into a private mount for each process.
         self.remote(f"set -eu; cd {shlex.quote(bridge)}; cp {shlex.quote(o.prior_bridge)}/observe.exe .; "
                     f"cp {shlex.quote(o.prior_bridge)}/sft.bin .; "
-                    "gcc -O2 -Wall -std=c11 -DTOHO_CAMERA_POLICY full-trial-actor.c -o actor -l:libX11.so.6 -l:libXtst.so.6 -lm")
+                    +compile_actor+" && mv actor.$$ actor")
         check=self.remote(f"cd {shlex.quote(o.assets)} && sha256sum th13.exe th13tr.dat thbgm_tr.dat").decode().splitlines()
         if [line.split()[0] for line in check]!=GAME_HASHES:
             raise ValueError("Original trial checksums differ")
         if self.remote("sha256sum "+shlex.quote(bridge+"/observe.exe")).decode().split()[0]!=OBSERVER:
             raise ValueError("Native state observer differs")
-        fingerprint=digest(o.checkpoint)
-        self.model=bridge+"/"+fingerprint+".ts"
-        self.remote("cat > "+shlex.quote(self.model),data=o.checkpoint.read_bytes())
-        if self.remote("sha256sum "+shlex.quote(self.model)).decode().split()[0]!=fingerprint:
-            raise ValueError("Remote model checksum differs")
+        self.remote("cd "+shlex.quote(bridge)+f"; cat > {fingerprint}.ts.$$ && mv {fingerprint}.ts.$$ {fingerprint}.ts",data=o.checkpoint.read_bytes())
+        self.remote(f"set -eu; cd {shlex.quote(bridge)}; sha256sum --status -c -; sha256sum actor > {marker}.$$; mv {marker}.$$ {marker}",
+                    data=required.encode())
+        print('PREPARE uploaded and verified original worker',flush=True)
 
     def run_credit(self, seed):
         o=self.o;tag=f"{o.role}-{o.arm}-{seed}"
+        allocation=self.output.parent/'th13-held-host-allocation.json'
+        if o.role=='held' and allocation.is_file():
+            group=json.loads(allocation.read_bytes())
+            assigned=group['seed_host'].get(str(seed))
+            if assigned and assigned!=(getattr(o,'host_label',None) or o.host):
+                print('ASSIGNED',tag,assigned,flush=True)
+                return
         folder=self.output/tag;folder.mkdir(exist_ok=True)
         if (folder/"receipt.json").exists():return
         for attempt in range(3):
@@ -147,5 +169,7 @@ if __name__=="__main__":
     p.add_argument("--output",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int,required=True)
     p.add_argument("--workers",type=int,default=3)
     p.add_argument("--difficulty",type=int,choices=(1,2,3),default=1)
+    p.add_argument("--prepare-only",action="store_true",help="Verify or populate the worker files without starting an original credit.")
     opts=p.parse_args();controller=CameraPool(opts);controller.prepare()
-    with ThreadPoolExecutor(opts.workers) as pool:list(pool.map(controller.run_credit,opts.seeds))
+    if not opts.prepare_only:
+        with ThreadPoolExecutor(opts.workers) as pool:list(pool.map(controller.run_credit,opts.seeds))

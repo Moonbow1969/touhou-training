@@ -75,6 +75,7 @@ def records(root, camera, round2=False):
         yield from ((10,f) for f in (root/"native10").rglob("report.json"))
         yield from ((12,f) for f in (root/"native12/credits").glob("*.json"))
         yield from ((13,f) for f in (root/"native13").glob("*/receipt.json"))
+        yield from ((17,f) for f in (root/"native17").glob("*/receipt.json"))
         return
     for p in root.glob("*10*"):
         if p.is_dir() and ("camera" in p.name)==camera:
@@ -98,6 +99,12 @@ def verify(title, f, r, trace, arm, out):
         bombs=r["remaining_bombs"];power=None;build=r["game_exe_sha256"]
         casts=sum(e["prior"]-e["current"] for e in r["event_history"] if e["event"]=="bombs" and e.get("cost",0)<0)
         entry=(r.get("stage2_remaining_spare_lives"),r.get("stage2_remaining_bombs"),None)
+    elif title==17:
+        from scripts.verify_th17_original_credit import inspect
+        checked=inspect(f,r,r['difficulty'])
+        photo=f.parent/'terminal.png';steps=r['steps'];seconds=r['seconds'];build=r['source_executable_sha256']
+        lives=r['remaining_lives'];bombs=checked['terminal_bombs'];power=None;casts=checked['effective_bombs']
+        entry=(checked['stage2_spares'],checked['stage2_bombs'],None)
     else:
         photo=f.parent/r["ranking_photo"];steps=r["steps"];seconds=r["wall_seconds"];build=r["game_sha256"]
         lives=r["remaining_lives"];bombs=r["remaining_bombs"];power=None;casts=r["effective_bombs"]
@@ -122,13 +129,19 @@ def verify(title, f, r, trace, arm, out):
         keys=["action","logp","value","reward","terminated","seconds","stage","spares","bombs","stock_hud","onset_ns","native_frame",
               "reward_parts","reward_components","action_utc_ms","native_input_matches","native_keys","keys","observed_keys"]
         target=out/"action-traces"/(name+".npz");np.savez_compressed(target,**{k:z[k] for k in keys if k in z})
-    outcome=r.get("outcome",r.get("native_outcome","")).lower()
+    outcome=r.get("outcome",r.get("native_outcome",r.get("terminal_reason",""))).lower()
     if not any(x in outcome for x in ("final_life","game_over","ranking","clear","ending")):
         raise ValueError("Unrecognized end state")
     stage_evidence=None
     stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r['stage2_reached']))
-    if title==10:stage_flag,stage_evidence,entry=verified_th10_entry(r,f.parent)
+    if title==10:
+        from scripts.th10_native_stage_clock import verify as verify_th10_clock
+        stage_flag,stage_evidence,entry=verified_th10_entry(r,f.parent)
+        stage1_tick=verify_th10_clock(f.parent,r)
     if title==12:stage_flag,stage_evidence=verified_th12_stage(raw)
+    if title==17:
+        stage_flag,stage_evidence=checked['stage2_reached'],checked['stage2_evidence_sha256']
+        stage1_tick=checked['last_playable_stage1_tick']
     if stage_flag is not True:entry=(None,None,None)
     return dict(title=title,arm=arm,seed=r["seed"],host=host,game_sha256=build,policy_sha256=r["policy_sha256"],
                 terminal="game_over" if any(x in outcome for x in ("final_life","game_over","ranking")) else "ending",
@@ -136,6 +149,7 @@ def verify(title, f, r, trace, arm, out):
                 stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
+                **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),
                 native_log_sha256=digest(f),original_endpoint_sha256=digest(photo),
                 endpoint=image.relative_to(out).as_posix(),action_trace=target.relative_to(out).as_posix(),
                 compact_trace_sha256=digest(target))
@@ -146,7 +160,7 @@ def main():
     for k in ("root","protocol","parent","candidate","out"):p.add_argument("--"+k,type=Path,required=True)
     p.add_argument("--camera",action="store_true")
     p.add_argument("--round2",action="store_true")
-    p.add_argument("--titles",nargs="+",type=int,choices=(10,12,13))
+    p.add_argument("--titles",nargs="+",type=int,choices=(10,12,13,17))
     p.add_argument("--arm-names",nargs=2,metavar=("REFERENCE","CANDIDATE"))
     args=p.parse_args()
     arms=args.arm_names or (("camera-sft","camera-ppo") if args.camera else ("ppo3","ppo4"))

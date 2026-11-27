@@ -1,4 +1,4 @@
-"""Render six verified complete original credits from the first held seed of each title."""
+"""Render both verified original credits from the first registered held seed of each title."""
 import argparse
 import json
 from pathlib import Path
@@ -38,10 +38,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--difficulty',choices=('Hard','Lunatic'),help='Select the first paired seed of this registered difficulty per title.')
     args = parser.parse_args()
     evaluation = args.root/'evaluation'
     plan = json.loads((args.root/'camera-protocol.json').read_bytes())
-    seeds = {int(t):min(group) for t, group in plan['eval_seeds'].items()}
+    rank={'Hard':2,'Lunatic':3}.get(args.difficulty)
+    seeds = {int(t):min(s for s in group if rank is None or plan['rank_by_seed'][t][str(s)]==rank)
+             for t, group in plan['eval_seeds'].items()}
     arms = (plan['reference_arm'], plan['candidate'])
     rows = [r for r in json.loads((evaluation/'credits.json').read_bytes()) if r['seed'] == seeds[r['title']] and r['arm'] in arms]
     by_source = {(r['title'],r['seed'],r['policy_sha256']):r for r in rows}
@@ -55,8 +58,10 @@ def main():
                 raise ValueError('Duplicate source')
             runs[key] = (row, *load_source(title,receipt,data,row,evaluation))
     order = [(title,arm) for arm in arms for title in sorted(seeds)]
-    if set(runs) != set(order) or len(order) != 6:
-        raise ValueError('Expected exactly six verified credits')
+    if set(runs) != set(order) or not seeds:
+        raise ValueError('Missing a verified paired original credit')
+    columns=len(seeds)
+    width=6+264*columns
     args.out.parent.mkdir(parents=True, exist_ok=True)
     normal, small, bold = font(17), font(14), font(20,True)
     directions = ('up left','up','up right','left','neutral','right','down left','down','down right')
@@ -65,13 +70,14 @@ def main():
     with imageio.get_writer(args.out, fps=fps, codec='libx264', quality=6, macro_block_size=2,
                             output_params=['-threads','2','-movflags','+faststart']) as output:
         for i in range(frames):
-            panel = Image.new('RGB',(798,718),'#14212b')
+            panel = Image.new('RGB',(width,718),'#14212b')
             draw = ImageDraw.Draw(panel)
-            draw.text((10,6), f'Three original Touhou games   |   {arms[0]} and {arms[1]}',font=bold,fill='white')
+            label=' · '+args.difficulty if args.difficulty else ''
+            draw.text((10,6), f'{columns} original Touhou games{label}   |   {arms[0]} and {arms[1]}',font=bold,fill='white')
             draw.text((10,36),f'Decision {i+1:,}   |   15 policy decisions per playback second   |   independent game clocks',font=small,fill='#c4d6dc')
             for j,key in enumerate(order):
                 row,images,actions,end = runs[key]
-                x,y = 10+(j%3)*264, 63+(j//3)*325
+                x,y = 10+(j%columns)*264, 63+(j//columns)*325
                 draw.text((x,y),f"TH{key[0]}  {key[1]}  ·  {row['seed']}",font=normal,fill='#bedcc4')
                 if i < len(images):
                     frame = Image.fromarray(images[i]).resize((220,256),Image.Resampling.NEAREST)
@@ -86,7 +92,7 @@ def main():
             output.append_data(np.asarray(panel))
     reader = imageio.get_reader(args.out)
     try:
-        if reader.count_frames() != frames or reader.get_data(0).shape != (718,798,3):
+        if reader.count_frames() != frames or reader.get_data(0).shape != (718,width,3):
             raise ValueError('Encoded video verification failed')
     finally:
         reader.close()

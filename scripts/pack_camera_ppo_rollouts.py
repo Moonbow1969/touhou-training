@@ -21,7 +21,7 @@ def main():
         if key not in wanted or r.get('policy_sha256')!=fingerprint:continue
         if key in found:raise ValueError(f'Duplicate training credit {key}')
         if r.get('continues',0) or not r.get('terminal',True):raise ValueError(f'Incomplete credit {key}')
-        state=r.get('outcome',r.get('native_outcome','')).lower()
+        state=r.get('outcome',r.get('native_outcome',r.get('terminal_reason',''))).lower()
         if any(x in state for x in ('game_over','ranking','final_life')):outcome='game_over'
         elif any(x in state for x in ('ending','clear')):outcome='ending'
         else:raise ValueError(f'Unknown end state {state}')

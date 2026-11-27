@@ -11,6 +11,10 @@ def verify(title, receipt_file, receipt, expected):
     if expected not in (2,3) or receipt.get('difficulty')!=expected:
         raise ValueError(f'Unexpected original difficulty for {receipt_file}')
     folder=receipt_file.parent
+    if title==17:
+        from scripts.verify_th17_original_credit import inspect
+        result=inspect(receipt_file,receipt,expected)
+        return {k:result[k] for k in ('difficulty','difficulty_verified_native_samples','difficulty_evidence_sha256')}
     if title==10:
         source=folder/'native.csv.gz'
         with gzip.open(source,'rt') as stream:
