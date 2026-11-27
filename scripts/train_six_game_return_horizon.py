@@ -43,6 +43,11 @@ def register(d):
     freeze(r/'camera-protocol.json',plan)
     five_view=dict(plan,train_seeds={t:ss for t,ss in train.items() if t!='8'},eval_seeds={t:ss for t,ss in held.items() if t!='8'})
     freeze(r/'five-title-packing.json',five_view)
+    slots=plan['train_seeds']['8']
+    hosts={str(s):('Gamer' if (j//2)%2==0 else 'Entropy') for j,s in enumerate(slots)}
+    freeze(r/'th08-host-allocation.json',dict(registration=digest(r/'camera-protocol.json'),by_seed=hosts,
+        host_clock_check=digest(d/'th08-multiteam-online/default-team-host-clock-comparison.json'),
+        allocation='Before any TH08 training input for this study, allocate eight Hard and eight Lunatic games to each of two qualified original-game hosts. Both use Border Team, the same G1 six-title behavior and the same original executable. Hardened title entry on Entropy and visible-window focus on Gamer apply before policy control. Preserve technical attempts and retry the same physical seed on the same host. The GAE and Monte Carlo learners receive identical source bytes, including the host split.'))
     print('Registered',r.name,digest(r/'camera-protocol.json'),flush=True)
     return r,plan,parent
 
@@ -55,8 +60,9 @@ def th08_lane(d,r,plan,parent,assets,rank):
     native=r/'native08';native.mkdir(exist_ok=True)
     selected=r/'selected08';selected.mkdir(exist_ok=True)
     label={2:'Hard',3:'Lunatic'}[rank]
+    allocation=read(r/'th08-host-allocation.json')
     for s in plan['train_seeds']['8']:
-        if plan['rank_by_seed']['8'][str(s)]!=rank or (selected/f'{s}.json').exists():continue
+        if allocation['by_seed'][str(s)]!='Gamer' or plan['rank_by_seed']['8'][str(s)]!=rank or (selected/f'{s}.json').exists():continue
         base=native/f'train-six-ppo-{s}'
         attempts=[]
         for i in range(3):
@@ -66,7 +72,7 @@ def th08_lane(d,r,plan,parent,assets,rank):
             if bad:
                 attempts.append(dict(source=folder.name,reason=bad,zero_action_entries=entries))
                 atomic_json(selected/f'{s}-attempt-{i+1}.json',attempts[-1]);continue
-            item.update(slot=s,technical_games=attempts,entry_failures=entries)
+            item.update(slot=s,physical_host='Gamer',technical_games=attempts,entry_failures=entries)
             atomic_json(selected/f'{s}.json',item)
             break
         else:raise RuntimeError(f'Unfilled TH08 slot {s}')
@@ -97,8 +103,12 @@ def fit(d,r,plan,parent):
     if not (r/'camera-batch/credits.json').exists():run('pack_camera_ppo_rollouts','--root',r,'--round2','--protocol',source,'--behavior',parent/'policy.ts','--out',r/'camera-batch')
     if not (r/'corrected/clock-audit.json').exists():run('normalize_th13_survival_clock','--original',r,'--out',r/'corrected')
     parts=[(row,r/'corrected'/row['file']) for row in read(r/'corrected/credits.json')]
+    assignment=read(r/'th08-host-allocation.json')['by_seed']
     for s in plan['train_seeds']['8']:
-        f=r/'selected08'/f'{s}.json';wait(f);row=read(f)['record'];parts.append((row,r/'th08-training'/row['file']))
+        f=r/'selected08'/f'{s}.json';wait(f);selected=read(f);row=selected['record']
+        if selected['physical_host']!=assignment[str(s)] or selected['slot']!=s or row['seed']!=s or row['difficulty']!=plan['rank_by_seed']['8'][str(s)]:
+            raise ValueError('Unverified TH08 host, seed or rank allocation')
+        parts.append((row,r/'th08-training'/row['file']))
     bundle=r/'optimizer-input';bundle.mkdir(exist_ok=True)
     rows=[]
     for row,path in parts:

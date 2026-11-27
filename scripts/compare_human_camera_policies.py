@@ -20,6 +20,7 @@ def main():
     p.add_argument('--held',nargs='+',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--sft-parent',type=Path,help='Supervised parent directory for a first-generation PPO checkpoint')
+    p.add_argument('--ppo-ancestors',nargs='+',type=Path,help='Intermediate original PPO directories for verifying multi-generation descent from the human policy.')
     p.add_argument('--difference-ticks',choices=(4,8),type=int,default=4)
     a=p.parse_args()
     names=a.model_names or [directory.name for directory in a.models]
@@ -35,6 +36,12 @@ def main():
             row["action"]=row["action"][good];row["prior"]=row["prior"][good]
     groups={row['group'] for row in rows}
     results={}
+    ancestors={}
+    for folder in a.ppo_ancestors or []:
+        lineage=json.loads((folder/'report.json').read_bytes());key=sha(folder/'camera-ppo.pt')
+        if lineage['policy_sha256']!=sha(folder/'policy.ts') or key in ancestors:
+            raise ValueError('Ambiguous or changed PPO ancestor')
+        ancestors[key]=lineage
     with torch.inference_mode():
         for name,directory in zip(names,a.models):
             report=json.loads((directory/'report.json').read_bytes())
@@ -43,9 +50,15 @@ def main():
             else:
                 if a.sft_parent is None:raise ValueError('Missing SFT parent for PPO provenance')
                 source=json.loads((a.sft_parent/'report.json').read_bytes())
-                if (report['parent_sft_sha256']!=source['sft'] or
-                    report['native_behavior_sha256']!=source['torchscript_sha256']):
-                    raise ValueError('PPO does not descend directly from this supervised checkpoint')
+                cursor=report;seen=set()
+                while cursor.get('parent_actor_critic_sha256'):
+                    key=cursor['parent_actor_critic_sha256']
+                    if key not in ancestors or key in seen or ancestors[key]['policy_sha256']!=cursor['native_behavior_sha256']:
+                        raise ValueError('Broken PPO behavior or parameter lineage')
+                    seen.add(key);cursor=ancestors[key]
+                if (cursor['parent_sft_sha256']!=source['sft'] or cursor['native_behavior_sha256']!=source['torchscript_sha256'] or
+                    sha(a.sft_parent/'camera-policy.pt')!=source['sft'] or sha(a.sft_parent/'policy.ts')!=source['torchscript_sha256']):
+                    raise ValueError('PPO does not descend from the supplied human checkpoint')
                 provenance=source['train'];expected=report['policy_sha256']
             if groups.intersection(x['group'] for x in provenance):
                 raise ValueError("Training player in held set")

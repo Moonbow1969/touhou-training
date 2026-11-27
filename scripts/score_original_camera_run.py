@@ -167,6 +167,7 @@ def verify(title, f, r, trace, arm, out):
                 stage2_reached=stage_flag,stage2_evidence_sha256=stage_evidence,
                 stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
+                **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
                 **({'raw_sampled_decisions':raw_steps,'postterminal_excluded_decisions':raw_steps-steps} if raw_steps!=steps else {}),
                 **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),

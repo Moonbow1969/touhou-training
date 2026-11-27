@@ -44,6 +44,7 @@ def main():
     for label,cell in weights['cells'].items():
         x,y=cell[plan['reference_arm']],cell[plan['candidate']]
         def resource(x):
+            if x['last_playable_bombs']:return 'last playable Bomb',x['last_playable_bombs']['mean']
             if x['terminal_bombs']:return 'Bomb',x['terminal_bombs']['mean']
             if x['terminal_power']:return 'Power',x['terminal_power']['mean']
             return 'unavailable',None
