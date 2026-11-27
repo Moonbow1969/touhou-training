@@ -1,8 +1,8 @@
 {
-  "verified_unique_credits": 1252,
-  "verified_unique_decisions": 752342,
+  "verified_unique_credits": 1268,
+  "verified_unique_decisions": 755838,
   "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
-  "unique_updates": 29,
+  "unique_updates": 31,
   "updates": [
     {
       "path": "camera-ppo/report.json",
@@ -344,6 +344,24 @@
       "new_physical_credits": 24,
       "new_physical_decisions": 17383,
       "source_manifest": "f2a0ef3b381ed01dd60db5c9006af5e5b3fd6e39c974d8705a57758e33427706"
+    },
+    {
+      "path": "later-human-online/policy/report.json",
+      "policy_sha256": "96b5596998d99cd1eb8dad48b2d344978bcc0ce52dbe89525065c944844c46f8",
+      "optimizer_source_credits": 16,
+      "optimizer_source_decisions": 3496,
+      "new_physical_credits": 16,
+      "new_physical_decisions": 3496,
+      "source_manifest": "65c6f55de4297458012c105f3ff673e28d3cbdd31804ab004a46c2501808e478"
+    },
+    {
+      "path": "six-game-bomb-cost/policy/report.json",
+      "policy_sha256": "2e66ea08d675155e99f4b0b820bbd0bedebc50ea0d977aed513c68f570c9ee54",
+      "optimizer_source_credits": 192,
+      "optimizer_source_decisions": 96728,
+      "new_physical_credits": 0,
+      "new_physical_decisions": 0,
+      "source_manifest": "3ef405c10dbcfac8c830821a0d63b25f1f5e7768e4bd60bb7aca5d9a10a2454a"
     }
   ],
   "additional_native_curriculum": [
@@ -372,5 +390,6 @@
       "checkpoint": "28285dae4e6eb89a35af5d3732a0ed48db4f16515b009e9acef5e2577aa7e3cc"
     }
   ],
+  "th10_terminal_boundary": "Historical optimizer inputs can include postterminal dispatches. The six-title return-horizon study verified the native life-stock boundary for every TH10 credit and removed these inputs before both fits.",
   "th12_control_coverage": "Physical original credits with true terminals can contain unscheduled HUD-controller input gaps. Per-credit TH12 scientific eligibility is under separate review."
 }

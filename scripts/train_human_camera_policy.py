@@ -117,7 +117,8 @@ def sample_host_images(rows, ends, ids, key):
 def evaluation(r, probs):
     truth=r["action"];prior=r["prior"];guess=np.stack([v.argmax(1) for v in probs],1)
     cond={"all":np.ones(len(truth),bool),"change":truth[:,0]!=prior[:,0],
-          "start":(prior[:,0]==4)&(truth[:,0]!=4),"turn":(prior[:,0]!=4)&(truth[:,0]!=4)&(prior[:,0]!=truth[:,0])}
+          "start":(prior[:,0]==4)&(truth[:,0]!=4),"turn":(prior[:,0]!=4)&(truth[:,0]!=4)&(prior[:,0]!=truth[:,0]),
+          "stop":(prior[:,0]!=4)&(truth[:,0]==4)}
     result={}
     for name,keep in cond.items():
         ids=np.flatnonzero(keep)
@@ -141,6 +142,8 @@ def main():
     parser.add_argument("--steps",type=int,default=800)
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
+    parser.add_argument("--active-change-weight",type=float,choices=(1.,2.),default=1.,
+                        help="Relative movement-loss weight for human starts and turns, normalized inside each training replay.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
     parser.add_argument("--balance-difficulties",action="store_true",help="Sample titles and their registered Hard/Lunatic ranks uniformly before choosing a training stage.")
     parser.add_argument("--bomb-label-smoothing",type=float,default=.025,help="Target smoothing for the binary Bomb head only.")
@@ -154,6 +157,7 @@ def main():
     smoothing=(.025,.025,.025,args.bomb_label_smoothing)
     if args.player_location_weight<0:parser.error('Auxiliary weight must be nonnegative')
     if args.future_movement_weight<0:parser.error('Future movement weight must be nonnegative')
+    if args.active_change_weight!=1 and not args.natural_movement_frequency:parser.error('Active change weighting uses the natural-frequency objective')
     device="cuda" if torch.cuda.is_available() else "cpu"
     train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[load_replay(p) for p in args.held]
     if {r["group"] for r in train}&{r["group"] for r in held}:
@@ -195,6 +199,10 @@ def main():
             # rows and 1/2 uniform changes. Undo this tilt for movement only.
             move_weight[ids]=2.
             move_weight[changes]=2./(1.+len(ids)/len(changes))
+        if args.active_change_weight!=1.:
+            active=(data["action"][ids,0]!=data["prior"][ids,0]) & (data["action"][ids,0]!=4)
+            multiplier=1.+(args.active_change_weight-1.)*active.float()
+            move_weight[ids]*=multiplier/multiplier.mean()
         chunks.append((ids,changes if len(changes) else ids))
     by_title={}
     for i,row in enumerate(train):by_title.setdefault(row["title"],[]).append(i)
@@ -295,6 +303,7 @@ def main():
     manifest=lambda rows:[{**{k:r[k] for k in ("name","group","title","sha256")},"decisions":len(r["action"])} for r in rows]
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
               "natural_movement_frequency":args.natural_movement_frequency,
+              **({"active_change_weight":args.active_change_weight} if args.active_change_weight!=1 else {}),
               "title_balanced":args.balance_titles,"difficulty_balanced":args.balance_difficulties,
               "observed_sampled_windows_by_game_rank":{f'{t} {rank}':n for (t,rank),n in sorted(drawn.items())},
               "player_location_weight":args.player_location_weight,

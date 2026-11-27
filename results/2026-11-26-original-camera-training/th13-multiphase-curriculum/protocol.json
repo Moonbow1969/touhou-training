@@ -1,0 +1,83 @@
+{
+  "title": 13,
+  "official_game_sha256": "09818929cceea76ff4c65630e649bbccdb85d92b2e28bb4dfe6526749e6f4fb6",
+  "physical_host": "accelerator",
+  "difficulty": 0,
+  "character": "Reimu",
+  "opening_stock": [
+    2,
+    2
+  ],
+  "handoff_stock": [
+    0,
+    1
+  ],
+  "policy_sha256": "28285dae4e6eb89a35af5d3732a0ed48db4f16515b009e9acef5e2577aa7e3cc",
+  "training_arm": "boss-curriculum-ppo",
+  "candidate": "multiphase-ppo",
+  "training_attempts": {
+    "previous": [
+      1731301,
+      1731302,
+      1731303,
+      1731304,
+      1731305,
+      1731306,
+      1731307,
+      1731308,
+      1731309,
+      1731310,
+      1731311,
+      1731312,
+      1731313,
+      1731314,
+      1731315,
+      1731316
+    ],
+    "final": [
+      1731321,
+      1731322,
+      1731323,
+      1731324,
+      1731325,
+      1731326,
+      1731327,
+      1731328,
+      1731329,
+      1731330,
+      1731331,
+      1731332,
+      1731333,
+      1731334,
+      1731335,
+      1731336
+    ]
+  },
+  "held_seeds": [
+    1731351,
+    1731352,
+    1731353,
+    1731354,
+    1731355,
+    1731356,
+    1731357,
+    1731358,
+    1731359,
+    1731360,
+    1731361,
+    1731362,
+    1731363,
+    1731364,
+    1731365,
+    1731366
+  ],
+  "source_validation_sha256": "9c18fd8cf2a28053fb067f387621452744fd2f05c5994b8706d06ec2f9d922b1",
+  "independent_examples_sha256": "b25c18512cf02cb3cf3234728a932c77e8d1f135220cec1135833b3337c75b2f",
+  "phase_detector_sha256": "8081241509ac874ad982ac0c74d0f92c91b5634e0331e80ced44f80ca84f6482",
+  "base_detector_sha256": "48627599f479bf12befd751b4f891189249686d9198786b4279cde103c72df41",
+  "acquisition": "16 independent ordinary Easy starts assigned to each visual phase. A valid handoff requires two adjacent photographs with that spell title, boss health ring, legible tens of seconds remaining and moving bullets, as well as exactly 0 spare lives and 1 Bomb. No stage warping or stock changes. Register every ordinary game and technical failure. No success-based retries.",
+  "inclusion": "Keep each complete qualified neural suffix including immediate losses. Record unmet visual or resource gates separately, including a guide crossing into Stage 2 before finding its assigned inventory. Exclude all guide actions. First neural camera difference reset to zero; replay all four action log-probabilities and the nonzero value head.",
+  "optimizer": "One curriculum PPO from the frozen source actor and critic. Four epochs, gamma .999, lambda .985. Calculate GAE and targets from full qualified suffixes before uniformly sampling exactly min(1536, available previous decisions, available final decisions) decisions per stratum without replacement using a fixed seed 17313. Use all submitted full trajectories to compute GAE, no invented terminal and no resampling failed acquisitions.",
+  "evaluation": "16 fresh normal-stock Easy starts per actor on Accelerator, using Reimu, 2 spare lives and 2 Bombs, no guide or assistance at any time. Each pair shares the original build, physical host, logical lane, controller seed; half reference first, half candidate first. Measure Stage 2, both stocks, first death, actual game score and final native Stage 1 tick. Original RNG uncontrolled.",
+  "priority": "Finish any ongoing new curriculum credit then suspend new acquisition while the registered 171 TH13 held evaluation is due on Accelerator."
+}

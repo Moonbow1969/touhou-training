@@ -5,3 +5,9 @@ The four-title camera SFT trained two matched-capacity action heads using the sa
 On previously used development players the two-command model lowered movement negative log likelihood per native tick in each game. The candidate-minus-control differences were −0.0160 in TH10, −0.0250 in TH12, −0.0159 in TH13 and −0.0191 in TH17. Each title weights its development players equally. Four new TH17 players were reserved separately. Effective subcommands and survival during native play require independent original-game checks. [Per-player log losses and direction changes](report.json) · [Registration](protocol.json) · [Policy interface and hashes](export.json) · [Reference actor](four-tick-policy.ts) · [Two-command actor](two-subwindows-policy.ts) · [Observed expert input at native ticks](../ranked-multigame-sft/four-title-expanded-twelve/native-control-resolution/README.md)
 
 ![Direction prediction at native ticks by title](native-tick-imitation.png)
+
+## Independent TH17 player check
+
+Eight retail replay stages from four new players supplied 98,572 labeled native ticks. Movement negative log likelihood per tick, with equal player weight, improved by 0.02179. The one-command and two-command variants correctly predicted 44,378 and 44,764 directions, respectively. A subsequent full-stock TH12 test compares the same two actors under verified timing.
+
+[Held original predictions](fresh-four.json) · [Physical two-command timing](../th12-two-subwindow-warm-engineering/README.md)

@@ -15,7 +15,7 @@ def main():
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
              'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3',
              'six-game-online/first-eight','six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams',
-             'six-game-return-horizon/six-gae985']
+             'later-human-online','six-game-return-horizon/six-gae985']
     counts=Counter();seen=set();steps_by_source={};reports={}
     for study in studies:
         path=data/study/'policy/report.json'
@@ -52,7 +52,7 @@ def main():
         if not keys<=seen or len(keys)!=len(result['credits']) or digest(path.with_name('policy.ts'))!=result['policy_sha256']:
             raise ValueError(f'Invalid source reuse in {study}')
         reused[study]=dict(reused_credits=len(keys),reused_decisions=result['steps'],checkpoint=result['policy_sha256'])
-    out=dict(count_unit='Distinct original full-credit trajectories from main-series PPO reports carrying native Hard or Lunatic labels, identified by title, seed and frozen behavior. Decisions count playable optimizer input rows before epoch repetition. The original high-rank-online cohort predates the strict live-control audit. Physical exposure in that cohort does not by itself certify continuous TH12 control. Additional fits on the same physical credits appear separately. Partly acquired new generations are added once actually fitted.',
+    out=dict(count_unit='Distinct original full-credit trajectories from main-series PPO reports carrying native Hard or Lunatic labels, identified by title, seed and frozen behavior. Decisions count optimizer input rows before epoch repetition. Historic TH10 inputs can include a small number of terminal overshoot rows. The six-title return-horizon study removed these rows before fitting. The original high-rank-online cohort predates the strict TH12 live-control audit. Additional fits on the same physical credits appear separately. New generations enter the ledger after fitting.',
              credits=len(seen),decisions=sum(v for (t,r,key),v in counts.items() if key=='decisions'),
              by_game=table,studies=reports,shared_trajectory_fits=reused)
     path=data/'learning-curves/hard-lunatic-training-coverage.json'
