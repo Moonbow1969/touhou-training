@@ -46,12 +46,17 @@ def load(folder):
 
 def render(args):
     data=[load(p) for p in args.arms]
-    assert data[0]['report']['arm']=='sft' and data[1]['report']['arm'] in ('ppo','ppo1') and data[2]['report']['arm']=='ppo2'
+    actual=[r['report']['arm'] for r in data]
+    expected=getattr(args,'expected_arms',None)
+    if expected:
+        if actual!=list(expected):raise ValueError(f"Actual native policy arms {actual} differ from {expected}")
+    elif actual not in (['sft','ppo','ppo2'],['sft','ppo1','ppo2']):
+        raise ValueError(f"Specify --expected-arms and --labels to render {actual}")
     seed=data[0]['report']['seed']
     assert all(r['report']['seed']==seed and r['report']['host']==data[0]['report']['host'] for r in data)
     size=(960,508);fps=15
     count=int(np.ceil((max(r['native_clocks'][-1] for r in data)+2)*fps))
-    labels=['Replay SFT','PPO update 1','PPO update 2']
+    labels=getattr(args,'labels',None) or ['Replay SFT','PPO update 1','PPO update 2']
     fonts=[font(21,True),font(15,True),font(14),font(12)]
     cache=[{} for _ in data];colors=['#8dc4e9','#ffbd88','#99d3ac']
     args.out.parent.mkdir(parents=True,exist_ok=True)
@@ -93,4 +98,8 @@ def render(args):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--arms',nargs=3,type=Path,required=True)
-    p.add_argument('--out',type=Path,required=True);render(p.parse_args())
+    p.add_argument('--expected-arms',nargs=3);p.add_argument('--labels',nargs=3)
+    p.add_argument('--out',type=Path,required=True)
+    args=p.parse_args()
+    if bool(args.expected_arms)!=bool(args.labels):p.error("Pass the expected arm IDs and human-readable labels together.")
+    render(args)

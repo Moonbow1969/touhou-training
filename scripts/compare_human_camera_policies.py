@@ -18,10 +18,16 @@ def main():
     p.add_argument('--models',nargs='+',type=Path,required=True)
     p.add_argument('--held',nargs='+',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--difference-ticks',choices=(4,8),type=int,default=4)
     a=p.parse_args()
     device='cuda' if torch.cuda.is_available() else 'cpu'
     torch.set_num_threads(2)
-    rows=[load_replay(path) for path in a.held]
+    rows=[load_replay(path,include_eight_tick_camera=a.difference_ticks==8) for path in a.held]
+    if a.difference_ticks==8:
+        for row in rows:
+            good=row["valid8"]
+            row["raw"]=row["raw8"][good]
+            row["action"]=row["action"][good];row["prior"]=row["prior"][good]
     groups={row['group'] for row in rows}
     results={}
     with torch.inference_mode():
@@ -54,7 +60,7 @@ def main():
         ax.set_title(name);ax.set_xticks(range(4),[f'{s}\n(n={n:,})' for s,n in zip(conditions,count)])
         ax.set_ylim(0,100);ax.legend(frameon=False);ax.grid(axis='y',alpha=.18)
     axes[0,0].set_ylabel('Expert movement predicted correctly (%)')
-    fig.suptitle(f'Original replay cameras · {len(groups)} held player(s), {len(rows)} stage(s)')
+    fig.suptitle(f'Original replay cameras · {a.difference_ticks}-tick history · {len(groups)} held player(s), {len(rows)} stage(s)')
     fig.savefig(a.out/'held-camera.png',dpi=160)
     plt.close(fig)
 

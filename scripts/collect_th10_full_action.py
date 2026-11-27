@@ -31,14 +31,18 @@ def save(path, data):
     tmp.replace(path)
 
 
-def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False):
+def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False):
     files = {name:(PROBE/name).read_bytes() for name in
              ("run-th10-trial-probe.sh","th10-trial-state.h","th10-trial-observe.c","th10-full-stock.c","th10-full-actor.c")}
     if paired:
         for n in ("th10-paired-targets.c","th10-trial-step.c"):files[n]=(PROBE/n).read_bytes()
     if warm_reset:
         files["th10-warm-reset.sh"]=(PROBE/"th10-warm-reset.sh").read_bytes()
-    files["full_actor.h"] = (actor_header or PROBE.parent/"full_action/full_actor.h").read_bytes()
+    files["full_actor.h"] = (actor_header or PROBE.parent/"full_action"/("camera_actor.h" if camera else "full_actor.h")).read_bytes()
+    if camera:
+        files["camera_service.py"]=(PROBE.parent/"full_action/camera_service.py").read_bytes()
+    if camera_history:
+        files["full_actor.h"]=b"#define FA_CAMERA_EXPLICIT_PREVIOUS_MOVE 1\n"+files["full_actor.h"]
     if locator_params:
         files["native_locator.h"] = (PROBE.parent/"full_action/native_locator.h").read_bytes()
         files["locator_params.h"] = locator_params.read_bytes()
@@ -65,7 +69,7 @@ sha256sum "$src/full-actor" | cut -d' ' -f1
 """.replace("BUNDLE",bundle).replace("ACTOR_FLAGS","-O3 -DFA_LEARNED_LOCATOR=1" if locator_params else "-O2")
     reply=subprocess.run([*client["command"][:-1],script],input=payload.getvalue(),capture_output=True,timeout=30)
     if reply.returncode:raise RuntimeError(reply.stderr.decode(errors="replace")[-700:])
-    return dict(bundle=bundle,sources=sources,executable=digest(files["th10-full-actor.c"]),linux_binary=reply.stdout.decode().strip())
+    return dict(bundle=bundle,sources=sources,executable=digest(files["th10-full-actor.c"]),linux_binary=reply.stdout.decode().strip(),camera=camera,camera_history=camera_history)
 
 
 def install_weights(client,path,expected_sha=None):
@@ -88,10 +92,48 @@ def native_mask(action):
     return ((action&64>0)*1+(action&128>0)*2+(action&16>0)*4+(action&32>0)*8+
             (action&4>0)*16+(action&1>0)*32+(action&2>0)*64)
 
+def start_camera_service(client,pinned,sha):
+    script=r"""
+set -eu
+umask 077
+base="$HOME/.local/share/toho-ml/th10-official-trial-002a"
+dir="$base/camera-services/SHA-BUNDLE"
+mkdir -p "$dir"; cd "$dir"
+exec 9>start.lock; flock -x 9
+probe(){ python3 -c 'import socket;s=socket.socket(socket.AF_UNIX);s.settimeout(3);s.connect("actor.sock");assert s.recv(64,socket.MSG_WAITALL)==b"SHA"'; }
+if test -S actor.sock && probe 2>/dev/null; then exit 0; fi
+if ! test -s pid || ! kill -0 "$(cat pid)" 2>/dev/null; then
+  if test -S actor.sock; then rm -- actor.sock; fi
+  py=python3
+  if ! python3 -c 'import torch' 2>/dev/null; then
+    py="$HOME/.local/share/toho-ml/distributed-ppo/venv/bin/python3"
+    "$py" -c 'import torch'
+  fi
+  nohup "$py" "$base/full-code-BUNDLE/camera_service.py" --model "$base/full-models/SHA.bin" --sha SHA --directory "$dir" HIST 9>&- </dev/null >service.log 2>&1 &
+  echo $! >pid
+fi
+for i in $(seq 1 75); do
+  if test -S actor.sock && probe 2>/dev/null; then exit 0; fi
+  if ! kill -0 "$(cat pid)" 2>/dev/null;then tail -8 service.log >&2;exit 1;fi
+  sleep .2
+done
+exit 1
+""".replace("BUNDLE",pinned["bundle"]).replace("SHA",sha).replace("HIST","--history-byte" if pinned.get("camera_history") else "")
+    proc=subprocess.run([*client['command'][:-1],script],stdin=subprocess.DEVNULL,capture_output=True,timeout=35)
+    if proc.returncode:raise RuntimeError(proc.stderr.decode(errors="replace")[-900:])
 
-def unpack(raw,folder,host,seed,arm,sha,pinned):
+
+def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
     with tarfile.open(fileobj=io.BytesIO(raw),mode="r:gz") as z:
         def read(k):return z.extractfile(k).read()
+        if 'actor-identity.json' in z.getnames():
+            identity=json.loads(read('actor-identity.json'))
+            if identity['seed']!=seed or identity['policy_sha256']!=sha or identity['hold_ms']!=hold:
+                raise ValueError('The immutable native worker ran a different policy, seed or cadence.')
+            for flag in ('camera','camera_history'):
+                if bool(identity['source'].get(flag))!=bool(pinned.get(flag)):
+                    raise ValueError('The original worker used a different observation contract.')
+            pinned=identity['source']
         stop=read("native-stop").decode().strip()
         if stop!="native_final_life_lost":
             native=list(csv.DictReader(io.StringIO(read("native.csv").decode())))
@@ -115,6 +157,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned):
         mono=np.loadtxt(io.BytesIO(read("frame.ns")),dtype=np.int64)
         screen=read("endpoint.png")
         settled=list(map(int,read("settled-inventory.csv").decode().strip().split(","))) if "settled-inventory.csv" in z.getnames() else None
+        camera_logits=np.frombuffer(read("camera-logits.f32"),dtype='<f4').reshape(-1,15).copy() if pinned.get("camera") else None
+        previous_move=np.frombuffer(read('previous-move.u8'),dtype=np.uint8).copy() if pinned.get('camera_history') else None
     if not logs or len(feat)!=len(logs) or len(obs)!=len(logs)+1 or len(mono)!=len(obs) or not np.isfinite(feat).all():
         raise ValueError("Unaligned or nonfinite native actor trace.")
     act=np.array([[int(r[k]) for k in FULL_KEYS] for r in logs],dtype=np.int16)
@@ -154,7 +198,18 @@ def unpack(raw,folder,host,seed,arm,sha,pinned):
     survival=elapsed.astype(np.float32)*.001
     done=np.zeros(n,np.bool_);done[-1]=True
     event_stocks=[s for s in states if int(s['stage'])>=2]
-    np.savez_compressed(folder/'behavior.npz',features=feat,action=act,logp=lp,value=val,
+    extra={}
+    if camera_logits is not None:
+        if camera_logits.shape!=(n,15) or not np.isfinite(camera_logits).all():raise ValueError("Invalid camera model logits")
+        for head,(left,right) in enumerate(((0,9),(9,11),(11,13),(13,15))):
+            logits=camera_logits[:,left:right].astype(np.float64);logits-=logits.max(1,keepdims=True)
+            exact=logits[np.arange(n),act[:,head]]-np.log(np.exp(logits).sum(1))
+            if not np.allclose(exact,lp[:,head],atol=2e-5,rtol=1e-6):raise ValueError("Acted camera logits differ from the logged behavior.")
+        extra['camera_logits']=camera_logits
+        if previous_move is not None:
+            if not np.array_equal(previous_move,np.r_[4,act[:-1,0]]):raise ValueError("Transmitted camera history differs from the previous sampled movement.")
+            extra['previous_move']=previous_move
+    np.savez_compressed(folder/'behavior.npz',features=feat,action=act,logp=lp,value=val,**extra,
                         reward=survival+costs+life+stage,terminated=done,
                         reward_survival=survival,reward_bomb=costs,reward_life=life,reward_stage=stage,
                         action_utc_ms=utc,clock_ns=mono[:-1],native_input_matches=correct,native_samples=reads)
@@ -162,7 +217,7 @@ def unpack(raw,folder,host,seed,arm,sha,pinned):
     with gzip.open(folder/'native.csv.gz','wb') as f:f.write(data)
     (folder/'endpoint.png').write_bytes(screen)
     last=states[-1]
-    result=dict(title=10,host=host,seed=seed,arm=arm,policy_sha256=sha,source=pinned,
+    result=dict(title=10,host=host,seed=seed,arm=arm,requested_hold_ms=hold,policy_sha256=sha,source=pinned,
         steps=n,behavior_sha256=digest((folder/'behavior.npz').read_bytes()),sha256=digest((folder/'behavior.npz').read_bytes()),
         behavior="behavior.npz",game_sha256=GAME_SHA,
         native_outcome=stop,game_over=True,terminal=True,stage2_reached=bool(event_stocks),stage_entries=entries,
@@ -178,6 +233,10 @@ def unpack(raw,folder,host,seed,arm,sha,pinned):
         moves=np.bincount(act[:,0],minlength=9).tolist(),focus_on=int(act[:,1].sum()),
         shoot_on=int(act[:,2].sum()),bomb_on=int(act[:,3].sum()),continues=0,
         terminal_screenshot_sha256=digest(screen),game_rng_controlled=False)
+    if camera_logits is not None:
+        result.update(camera_policy=True,camera_model_inputs="original-pixels.npz obs[:-1]; [gray,abs(gray-previous)] / 255; first difference zero",features_role="Portable diagnostic features; raw camera is the model input.")
+        if pinned.get('camera_history'):result['additional_policy_input']='Previous sampled movement; 4 (neutral) at the start of each credit.'
+    if result['median_control_ms']<hold-3:raise ValueError('Observed camera cadence is faster than the registered native hold.')
     save(folder/'report.json',result)
     return result
 
@@ -188,6 +247,7 @@ def one(task):
     if (folder/'report.json').is_file():
         cached=json.loads((folder/'report.json').read_bytes())
         if cached['policy_sha256']!=sha:raise ValueError("Cannot resume with different weights.")
+        if cached.get('requested_hold_ms',120)!=hold:raise ValueError("Cannot resume a different control cadence.")
         if not paired or ((folder/'privileged-targets.json').is_file() and (folder/'privileged-targets.npz').is_file()):
             return cached
     folder.mkdir(exist_ok=True)
@@ -198,16 +258,22 @@ base="$HOME/.local/share/toho-ml/th10-official-trial-002a"
 test "$(df -Pk "$base"|awk 'NR==2{print $4}')" -gt 8388608
 test "$(sha256sum "$base/installed-utf8/game/th10tr.exe"|cut -d' ' -f1)" = GAME
 cd "$dir"
+printf '%s\n' IDENTITY > actor-identity.json
 docker run --rm --network=none --init --cpus=3 --memory=1536m --log-driver=local --log-opt=max-size=2m --log-opt=max-file=1 --log-opt=compress=false --name="toho-th10-fa-JOB" --mount "type=bind,source=$base/installed-utf8/game,target=/input/game,readonly" --mount "type=bind,source=$base/full-code-BUNDLE,target=/tools,readonly" --mount "type=bind,source=$base/full-models/SHA.bin,target=/input/actor.bin,readonly" --mount "type=bind,source=$dir,target=/capture" --entrypoint /bin/sh IMAGE /tools/run-th10-trial-probe.sh MODE SEED HOLD > "$dir/worker.log" 2>&1
 cd "$dir"; test ! -f actor-failed
-tar -czf behavior.tar.gz.tmp action.csv features.f32 frame.ns pixels.u8 native.csv native-stop opening.csv endpoint.png settled-inventory.csv RICH
+tar -czf behavior.tar.gz.tmp actor-identity.json action.csv features.f32 frame.ns pixels.u8 native.csv native-stop opening.csv endpoint.png settled-inventory.csv RICH
 mv behavior.tar.gz.tmp behavior.tar.gz
 tar -tzf behavior.tar.gz >/dev/null
 rm -f -- pixels.u8 features.f32 rich.bin
 """.replace('BUNDLE',pinned['bundle']).replace('GAME',GAME_SHA).replace('SHA',sha).replace('IMAGE',shlex.quote(client['runtime'])).replace('SEED',str(seed)).replace('HOLD',str(hold))
-    script=script.replace("MODE","full-paired" if paired else "full-credit").replace(" RICH"," rich.bin" if paired else "")
+    script=script.replace("MODE","full-paired" if paired else "full-credit").replace(" RICH",(" rich.bin" if paired else "")+(" camera-logits.f32" if pinned.get("camera") else "")+(" previous-move.u8" if pinned.get("camera_history") else ""))
+    script=script.replace('IDENTITY',shlex.quote(json.dumps(dict(source=pinned,seed=seed,hold_ms=hold,policy_sha256=sha),separators=(',',':'))))
+    if pinned.get("camera"):
+        mount='--env TOHO_CAMERA_SHA='+sha+' --mount "type=bind,source=$base/camera-services/'+sha+'-'+pinned['bundle']+',target=/camera,readonly" '
+        script=script.replace("--entrypoint /bin/sh",mount+"--entrypoint /bin/sh")
     for attempt in range(1,4):
-        label=f"{seed}-{sha[:12]}-{attempt}"
+        cadence_suffix="" if hold==120 else f"-h{hold}"
+        label=f"{seed}-{sha[:12]}{cadence_suffix}-{attempt}"
         directory=f'"$HOME/.local/share/toho-ml/th10-official-trial-002a/full-story/{label}"'
         endpoint=client["command"][:-1]
         body='dir='+directory+'\n'+script.replace("JOB",label)
@@ -217,7 +283,9 @@ rm -f -- pixels.u8 features.f32 rich.bin
                 ' </dev/null >"$dir/job.log" 2>&1 & fi')
         for connection_attempt in range(4):
             try:
-                subprocess.run([*endpoint,launch],capture_output=True,check=True,timeout=20)
+                claimed=subprocess.run([*endpoint,'test -d '+directory+'/claimed'],stdin=subprocess.DEVNULL,capture_output=True,timeout=20)
+                if claimed.returncode==0:break
+                subprocess.run([*endpoint,launch],stdin=subprocess.DEVNULL,capture_output=True,check=True,timeout=25)
                 break
             except (subprocess.SubprocessError,OSError):
                 if connection_attempt==3:raise
@@ -228,7 +296,7 @@ rm -f -- pixels.u8 features.f32 rich.bin
             while time.monotonic()<deadline:
                 try:
                     qry=subprocess.run([*endpoint,'dir='+directory+'; test ! -s "$dir/status" || cat "$dir/status"'],
-                                       capture_output=True,timeout=20)
+                                       stdin=subprocess.DEVNULL,capture_output=True,timeout=20)
                 except (subprocess.TimeoutExpired,OSError):
                     time.sleep(4)
                     continue
@@ -236,16 +304,16 @@ rm -f -- pixels.u8 features.f32 rich.bin
                 time.sleep(4)
             else:raise RuntimeError("Original-game credit reached infrastructure watchdog.")
             if qry.stdout.strip()!=b'0':
-                err=subprocess.run([*endpoint,'dir='+directory+'; tail -20 "$dir/worker.log" "$dir/job.log"'],capture_output=True,timeout=12)
-                (folder/f"worker-{attempt}.log").write_bytes(err.stdout)
+                err=subprocess.run([*endpoint,'dir='+directory+'; tail -n 20 -- "$dir/worker.log" "$dir/job.log"'],stdin=subprocess.DEVNULL,capture_output=True,timeout=12)
+                (folder/f"worker-{attempt}.log").write_bytes(err.stdout+err.stderr)
                 raise RuntimeError("Native worker exit "+qry.stdout.strip().decode())
             for transport_attempt in range(3):
                 try:
-                    archive=subprocess.run([*endpoint,'cat '+directory+'/behavior.tar.gz'],capture_output=True,check=True,timeout=90).stdout
+                    archive=subprocess.run([*endpoint,'cat '+directory+'/behavior.tar.gz'],stdin=subprocess.DEVNULL,capture_output=True,check=True,timeout=90).stdout
                     break
                 except (subprocess.SubprocessError,OSError):
                     if transport_attempt==2:raise
-            row=unpack(archive,folder,host,seed,arm,sha,pinned)
+            row=unpack(archive,folder,host,seed,arm,sha,pinned,hold)
             if paired:
                 from scripts.pair_th10_full_state import export
                 export(archive,folder)
@@ -262,20 +330,27 @@ def main():
     p.add_argument("--actor-header",type=Path)
     p.add_argument("--locator-params",type=Path,help="Compile the image-only learned player locator using these frozen parameters.")
     p.add_argument("--expected-sha")
+    p.add_argument("--camera",action="store_true",help="Deploy a hash-pinned TorchScript camera policy through the host's private Unix socket.")
+    p.add_argument("--camera-history",action="store_true",help="Include the preceding sampled movement byte with each camera request.")
+    p.add_argument("--only-host",choices=FLEET)
     p.add_argument("--prepare-only",action="store_true");p.add_argument("--arm",default="sft")
     p.add_argument("--out",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int)
     p.add_argument("--concurrency",type=int,default=4);p.add_argument("--hold",type=int,default=120)
     args=p.parse_args()
     workers=json.loads(args.workers.read_bytes())
+    fleet=(args.only_host,) if args.only_host else FLEET
     args.out.mkdir(parents=True,exist_ok=True)
     with ThreadPoolExecutor(2) as pool:
-        if (args.actor_header or args.locator_params) and not args.expected_sha:p.error("Custom actors require --expected-sha")
-        pins=dict(zip(FLEET,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params),FLEET)))
+        if (args.actor_header or args.locator_params or args.camera) and not args.expected_sha:p.error("Custom actors require --expected-sha")
+        if args.camera and (args.actor_header or args.locator_params):p.error("The camera actor manages its own header.")
+        if args.camera_history and not args.camera:p.error('--camera-history requires --camera')
+        pins=dict(zip(fleet,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params,camera=args.camera,camera_history=args.camera_history),fleet)))
         if args.prepare_only:save(args.out/'builds.json',pins);return
-        shas=list(pool.map(lambda h:install_weights(workers[h],args.model,args.expected_sha),FLEET))
-    if shas[0]!=shas[1] or len(args.seeds)!=len(set(args.seeds)):raise ValueError("Invalid seed assignment or model distribution.")
+        shas=list(pool.map(lambda h:install_weights(workers[h],args.model,args.expected_sha),fleet))
+        if args.camera:list(pool.map(lambda h:start_camera_service(workers[h],pins[h],shas[0]),fleet))
+    if len(set(shas))!=1 or len(args.seeds)!=len(set(args.seeds)):raise ValueError("Invalid seed assignment or model distribution.")
     plan=dict(arm=args.arm,policy_sha256=shas[0],holds_ms=args.hold,seeds=args.seeds,
-              assignment={str(s):FLEET[(s-1)%2] for s in args.seeds},
+              assignment={str(s):fleet[(s-1)%len(fleet)] for s in args.seeds},
               complete_credits=0,technical_failures=[],receipts=[])
     save(args.out/'collection.json',plan)
     tasks=[(workers[h],pins[h],shas[0],h,int(s),args.arm,args.out,args.hold,args.paired) for s,h in plan['assignment'].items()]

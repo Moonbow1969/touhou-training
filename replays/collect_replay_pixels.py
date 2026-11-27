@@ -13,6 +13,7 @@ from pathlib import Path
 from struct import unpack
 from time import monotonic, sleep
 
+import keyboard
 import numpy as np
 from PIL import Image, ImageGrab
 import psutil
@@ -39,6 +40,7 @@ class Sample:
     xy: tuple
     controllable: bool
     difficulty: int
+    fixed_xy: tuple | None = None
 
 
 def original_window(pid):
@@ -80,16 +82,41 @@ def read_state(game, reader):
     )
 
 
-def capture(game, stage, words):
+def capture(game, stage, words, *, fast_forward=False):
     hwnd = original_window(game.pid)
     reader = StateReader(game, game.offsets, 96)
     game.start_selected_replay()
+    held = False
+
+    def observe():
+        nonlocal held
+        state = read_state(game, reader)
+        if fast_forward and not held and state is not None and state[0] == stage:
+            if win32gui.GetForegroundWindow() != hwnd:
+                raise RuntimeError(
+                    "The original game lost focus before replay fast-forward."
+                )
+            keyboard.press("left ctrl")
+            held = True
+        return state
+
+    try:
+        return capture_frames(hwnd, stage, words, observe)
+    finally:
+        if held:
+            keyboard.release("left ctrl")
+
+
+def capture_frames(hwnd, stage, words, read_observation):
     samples, images = [], []
     next_tick = 0
     deadline = monotonic() + 12
     racing = 0
     while monotonic() < deadline:
-        previous = read_state(game, reader)
+        if win32gui.GetForegroundWindow() != hwnd:
+            sleep(0.004)
+            continue
+        previous = read_observation()
         if previous is None:
             sleep(0.004)
             continue
@@ -105,7 +132,10 @@ def capture(game, stage, words):
             sleep(0.001)
             continue
         screen = ImageGrab.grab(window=hwnd)
-        check = read_state(game, reader)
+        if win32gui.GetForegroundWindow() != hwnd:
+            racing += 1
+            continue
+        check = read_observation()
         if (
             check is None
             or check[0] != stage
@@ -145,7 +175,7 @@ def movement(words):
     return 4 + right - left + 3 * (down - up)
 
 
-def pair(samples, images, words):
+def pair(samples, images, words, *, control_bits=CONTROL_BITS, focus_bit=8):
     ticks = np.asarray([sample.tick for sample in samples])
     native = np.asarray([sample.word for sample in samples], dtype=np.uint16)
     playable = np.asarray([sample.controllable for sample in samples], dtype=bool)
@@ -153,8 +183,8 @@ def pair(samples, images, words):
     for offset in range(-60, 61):
         index = ticks + offset
         available = playable & (index >= 8) & (index + 4 < len(words))
-        replay = words[index[available]] & CONTROL_BITS
-        current = native[available] & CONTROL_BITS
+        replay = words[index[available]] & control_bits
+        current = native[available] & control_bits
         moving = ((replay | current) & 0xF0) != 0
         if moving.sum() > 20:
             scores.append(
@@ -172,7 +202,7 @@ def pair(samples, images, words):
     agreement, _, offset = scores[0]
     index = ticks + offset
     keep = playable & (index >= 8) & (index + 4 < len(words))
-    keep[keep] &= (native[keep] & CONTROL_BITS) == (words[index[keep]] & CONTROL_BITS)
+    keep[keep] &= (native[keep] & control_bits) == (words[index[keep]] & control_bits)
     index = index[keep]
     future = words[index[:, None] + np.arange(1, 5)]
     history = words[index[:, None] + np.arange(-7, 1)]
@@ -180,7 +210,7 @@ def pair(samples, images, words):
     action = np.column_stack(
         (
             movement(first),
-            (first & 8) != 0,
+            (first & focus_bit) != 0,
             (first & 1) != 0,
             np.any((future & 2) != 0, axis=1),
         )
@@ -205,6 +235,10 @@ def pair(samples, images, words):
         xy=np.asarray([s.xy for s in samples], dtype=np.float32)[keep],
         stable=np.ones(keep.sum(), dtype=bool),
     )
+    if all(sample.fixed_xy is not None for sample in samples):
+        data["xy_fixed_reference"] = np.asarray(
+            [sample.fixed_xy for sample in samples], dtype=np.float32
+        )[keep]
     metrics = dict(
         frames=len(index),
         coverage=coverage,
@@ -229,6 +263,11 @@ def main():
     parser.add_argument("--replay", type=Path, required=True)
     parser.add_argument("--stage", type=int, default=1)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument(
+        "--replay-fast-forward",
+        action="store_true",
+        help="Use the stock replay fast-forward key during verified native replay playback.",
+    )
     args = parser.parse_args()
     row = next(
         r
@@ -266,10 +305,14 @@ def main():
         if stage == args.stage
     )
     game = ReplayProcess(13, args.pid)
+    began = monotonic()
     try:
-        samples, images, racing = capture(game, args.stage, words)
+        samples, images, racing = capture(
+            game, args.stage, words, fast_forward=args.replay_fast_forward
+        )
     finally:
         game.close()
+    elapsed = monotonic() - began
     data, metrics = pair(samples, images, words)
     with archive.with_suffix(".npz.tmp").open("wb") as stream:
         np.savez_compressed(stream, **data)
@@ -286,6 +329,10 @@ def main():
         "game_version": "1.00c retail Steam",
         "original_software_exe_sha256": TH13_RETAIL_SHA,
         "discarded_racing_reads": racing,
+        "playback_mode": "stock replay fast-forward"
+        if args.replay_fast_forward
+        else "stock normal replay",
+        "capture_wall_seconds": elapsed,
         "action_convention": "first future tick move/focus/shoot; Bomb any of next four native ticks",
     }
     receipt.with_suffix(".json.tmp").write_text(

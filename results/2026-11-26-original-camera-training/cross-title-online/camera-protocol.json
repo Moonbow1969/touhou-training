@@ -1,0 +1,87 @@
+{
+  "name": "True three-title retail human replay camera SFT into three-title original online PPO",
+  "train_seeds": {
+    "10": [
+      861101,
+      861102,
+      861103,
+      861104,
+      861105,
+      861106,
+      861107,
+      861108
+    ],
+    "12": [
+      862101,
+      862102,
+      862103,
+      862104,
+      862105,
+      862106,
+      862107,
+      862108
+    ],
+    "13": [
+      863101,
+      863102,
+      863103,
+      863104,
+      863105,
+      863106,
+      863107,
+      863108
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      861201,
+      861202,
+      861203,
+      861204,
+      861205,
+      861206,
+      861207,
+      861208
+    ],
+    "12": [
+      862201,
+      862202,
+      862203,
+      862204,
+      862205,
+      862206,
+      862207,
+      862208
+    ],
+    "13": [
+      863201,
+      863202,
+      863203,
+      863204,
+      863205,
+      863206,
+      863207,
+      863208
+    ]
+  },
+  "reference_arm": "cross-sft",
+  "candidate": "cross-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "initialization": "Training cameras and controls from distinct actual TH10, TH12, TH13 retail source players; original trial PPO has 8 complete credits per title."
+}

@@ -1,0 +1,30 @@
+{
+  "upstream_th13_groups": {
+    "train": [
+      "mps16",
+      "k@g",
+      "edamame",
+      "sikieimu",
+      "aiz",
+      "star4res"
+    ],
+    "held": [
+      "mon",
+      "shaoflan"
+    ]
+  },
+  "cross_title_stage1_paths": {
+    "train": {
+      "TH10": "train/th10-gensokyo-4343-s1.npz",
+      "TH12": "train/th12-gensokyo-33473-s1.npz"
+    },
+    "held": {
+      "TH10": "held/th10-gensokyo-2749-s1.npz",
+      "TH12": "held/th12-gensokyo-39322-s1.npz"
+    }
+  },
+  "steps": 3000,
+  "batch_size": 64,
+  "selection": "One authentic train/held pilot each in TH10 and TH12, six/two distinct TH13 train/held pilots. Freeze all before the update. No evaluation on these source pilots changes the training budget.",
+  "policy": "Same pretrained 96x112 encoder, full four control heads, allocation uniform across titles then source replays, same importance-corrected movement loss. Original focus bit validated separately for TH10."
+}

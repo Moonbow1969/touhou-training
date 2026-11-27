@@ -16,6 +16,17 @@ from pack_credit import pack
 
 
 class CameraPool(Pool):
+    def boot(self,ident,ticks):
+        name='th13-cadence-'+ident+'-a'
+        try:
+            return super().boot(ident,ticks)
+        except Exception:
+            # The launcher can create a private container before its original
+            # opening stock is qualified. Release that exact failed attempt.
+            if self.remote("docker inspect --format '{{.Name}}' "+shlex.quote(name)+" 2>/dev/null || true").decode().strip()=='/'+name:
+                self.release(name)
+            raise
+
     def prepare(self):
         o=self.o
         shared=Path(__file__).resolve().parents[2]/"full_action"
@@ -61,7 +72,7 @@ class CameraPool(Pool):
         weights=digest(o.checkpoint)
         # The socket has a short absolute host path even when the native archive path is long.
         # AF_UNIX clients inside the private mount see /capture/lib/camera.sock.
-        server=shlex.join(["python3",bridge+"/camera_service.py","--model",self.model,"--sha",weights,
+        server=shlex.join([getattr(o,'python_executable','python3'),bridge+"/camera_service.py","--model",self.model,"--sha",weights,
                            "--directory",lib,"--socket-name","camera.sock"])
         pid=None
         try:
@@ -104,7 +115,7 @@ class CameraPool(Pool):
             if len(frames)!=record["steps"]:raise ValueError("Unpaired camera/action sequence")
             with np.load(rollout) as z:arrays={k:z[k] for k in z.files}
             np.savez_compressed(rollout,frames=frames,**arrays)
-            record.update(sha256=digest(rollout),host=o.host,arm=o.arm,build="official TH13 Trial 0.01a",
+            record.update(sha256=digest(rollout),host=getattr(o,'host_label',None) or o.host,arm=o.arm,build="official TH13 Trial 0.01a",
                           game_sha256=GAME_HASHES[0],outcome="game_over",stage2_reached=record["stage2"],
                           ranking_photo="ranking.png",native_terminal_pause_state=end[2],native_ranking_tick=end[11],
                           start=started,finish=utc())
@@ -123,6 +134,8 @@ if __name__=="__main__":
         p.add_argument("--"+key,required=True)
     p.add_argument("--role",choices=("train","held"),required=True)
     p.add_argument("--known-hosts",type=Path);p.add_argument("--checkpoint",type=Path,required=True)
+    p.add_argument("--host-label",help="Public hardware label to record in native receipts")
+    p.add_argument("--python-executable",default="python3",help="Worker-local Python containing CPU PyTorch")
     p.add_argument("--output",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int,required=True)
     p.add_argument("--workers",type=int,default=3)
     opts=p.parse_args();controller=CameraPool(opts);controller.prepare()

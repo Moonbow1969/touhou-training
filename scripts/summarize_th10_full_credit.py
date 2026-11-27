@@ -4,6 +4,7 @@ from collections import Counter
 import csv
 import gzip
 import json
+import math
 from pathlib import Path
 
 import matplotlib
@@ -50,14 +51,22 @@ def summarize(arms,design=None,baseline='SFT'):
         rows=[items[s] for s in sorted(items)]
         if len(set(r['policy_sha256'] for r in rows))!=1:raise ValueError("Changed policy within evaluation")
         event=[s for r in rows for s in r["loss_events"]]
-        groups[name]=dict(n=len(rows),stage2_reached=sum(r['stage2_reached'] for r in rows),
+        hits=sum(r['stage2_reached'] for r in rows)
+        n=len(rows);proportion=hits/n;z=1.959963984540054
+        center=(proportion+z*z/(2*n))/(1+z*z/n)
+        radius=z*math.sqrt(proportion*(1-proportion)/n+z*z/(4*n*n))/(1+z*z/n)
+        groups[name]=dict(n=n,stage2_reached=hits,stage2_rate=proportion,
+            stage2_wilson_95pct=[max(0.,center-radius) if hits else 0.,min(1.,center+radius) if hits<n else 1.],
             native_game_overs=sum(r['native_outcome']=='native_final_life_lost' for r in rows),
             stage2_resources=[dict(seed=r['seed'],lives=r['stage2_lives'],power=r['stage2_power']) for r in rows if r['stage2_reached']],
+            final_spare_life_counts=dict(Counter(r['final_lives'] for r in rows)),
             mean_final_power=float(np.mean([r['final_power'] for r in rows])),
             mean_wall_survival_s=float(np.mean([r['duration_s'] for r in rows])),
             mean_raw_score=float(np.mean([r['raw_score'] for r in rows])),
             confirmed_bomb_spends=sum(len(r['native_bomb_spends']) for r in rows),
             bomb_held_decisions=sum(r['bomb_on'] for r in rows),losses=len(event),
+            movement_decisions=sum(r['steps']-r['moves'][4] for r in rows),
+            moves_by_direction=np.array([r['moves'] for r in rows]).sum(0).tolist(),
             losses_with_at_least_one_power=sum(s['before_power']>=1 for s in event),
             losses_with_power_and_no_recent_bomb=sum(s['before_power']>=1 and not s['bomb_in_preceding_half_second'] for s in event),
             decisions=sum(r['steps'] for r in rows),decisions_matching_native_input=sum(r['native_inputs_matching'] for r in rows))
@@ -67,11 +76,17 @@ def summarize(arms,design=None,baseline='SFT'):
                 parent=base[r['seed']]
                 if parent['host']!=r['host']:raise ValueError("Frozen pair ran on different physical machines")
                 blocks.append(dict(seed=r['seed'],host=r['host'],
+                    stage2_baseline=bool(parent['stage2_reached']),stage2_candidate=bool(r['stage2_reached']),
                     delta_wall_survival_s=r['duration_s']-parent['duration_s'],
                     delta_raw_score=r['raw_score']-parent['raw_score'],
                     delta_settled_power=r['final_power']-parent['final_power']))
             v=np.array([r['delta_wall_survival_s'] for r in blocks]);rng=np.random.default_rng(10860)
+            gained=sum(b['stage2_candidate'] and not b['stage2_baseline'] for b in blocks)
+            lost=sum(b['stage2_baseline'] and not b['stage2_candidate'] for b in blocks)
+            discordant=gained+lost
+            exact=min(1.,2*sum(math.comb(discordant,i) for i in range(min(gained,lost)+1))/(2**discordant))
             paired[name]=dict(pairs=blocks,mean_survival_delta_s=float(v.mean()),positive=int((v>0).sum()),
+                 stage2_gained=gained,stage2_lost=lost,stage2_delta_rate=(gained-lost)/len(rows),stage2_mcnemar_exact_p=exact,
                  paired_resampled_95pct_interval_for_mean_s=np.quantile(rng.choice(v,(10000,len(v))).mean(1),[.025,.975]).tolist())
     return dict(design=design or '12 unique controller seeds per frozen arm. Same native TH10 Normal trial and host within each pair; native RNG uncontrolled. All lives and no Continue. First six controller seeds played SFT before PPO1, final six PPO1 before SFT. TH10 has Power-paid spirit strikes; spare count -1 means last life was lost. Real-time survival is sensitive to game speed and is a secondary measure.',n_per_arm=len(base),
         group=groups,**{f"paired_versus_{baseline.lower()}":paired},credits={name:[group[s] for s in sorted(group)] for name,group in arms.items()})

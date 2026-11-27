@@ -1,6 +1,5 @@
 """Advance a synchronous multi-title PPO campaign when complete frozen-actor credits arrive."""
 import argparse
-from collections import Counter
 import json
 from pathlib import Path
 import shutil

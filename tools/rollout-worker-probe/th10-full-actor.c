@@ -21,13 +21,19 @@ static unsigned key_mask(const int a[4]) {
 int main(int argc,char **argv) {
     if(argc!=4)return 2;
     uint64_t seed=strtoull(argv[2],NULL,10);long tick=strtol(argv[3],NULL,10);
-    if(tick<70 || tick>350 || actor_init(argv[1],seed)!=0)return 3;
+    if(tick<60 || tick>350 || actor_init(argv[1],seed)!=0)return 3;
     display=XOpenDisplay(NULL);if(!display)return 4;
     const unsigned long syms[7]={0xff51,0xff53,0xff52,0xff54,0xffe1,0x7a,0x78};
     for(unsigned i=0;i<7;i++)keys[i]=XKeysymToKeycode(display,syms[i]);
     atexit(release_keys);
     FILE *pixel=fopen("pixels.u8","wb"),*clock=fopen("frame.ns","w"),*tab=fopen("action.csv","w"),*feat=fopen("features.f32","wb");
     if(!pixel||!clock||!tab||!feat)return 5;
+#ifdef FA_CAMERA_ACTOR
+    FILE *camera_logits=fopen("camera-logits.f32","wb");if(!camera_logits)return 5;
+#endif
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+    FILE *previous_move=fopen("previous-move.u8","wb");if(!previous_move)return 5;
+#endif
     fprintf(tab,"utc_ms,mono_ns,move,focus,shoot,bomb,mask,lp_move,lp_focus,lp_shoot,lp_bomb,value\n");
     unsigned char frame[112][96];
     capture(display,pixel,clock,frame);
@@ -41,9 +47,21 @@ int main(int argc,char **argv) {
                 (double)actor_logp[0],(double)actor_logp[1],(double)actor_logp[2],(double)actor_logp[3],(double)actor_value);
         const size_t feature_dim=sizeof(actor_features)/sizeof(actor_features[0]);
         if(fwrite(actor_features,sizeof(float),feature_dim,feat)!=feature_dim)return 7;
+#ifdef FA_CAMERA_ACTOR
+        if(fwrite(actor_camera_logits,sizeof(float),15,camera_logits)!=15)return 7;
+#endif
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+        if(fwrite(&actor_camera_previous_move,1,1,previous_move)!=1)return 7;
+#endif
         hold_ms(tick);capture(display,pixel,clock,frame);
     }
     release_keys();
     fclose(feat);fclose(tab);fclose(pixel);fclose(clock);
+#ifdef FA_CAMERA_ACTOR
+    fclose(camera_logits);
+#endif
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+    fclose(previous_move);
+#endif
     return 0;
 }

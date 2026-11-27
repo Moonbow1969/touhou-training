@@ -1,6 +1,10 @@
 #include "hud.h"
 #ifdef HUMAN_ACTOR
+#ifdef CAMERA_ACTOR
+#include "camera_actor.h"
+#else
 #include "full_actor.h"
+#endif
 #endif
 #define KEYS 7
 static unsigned codes[KEYS];
@@ -61,9 +65,14 @@ int main(int argc,char **argv){
     }
     if(argc!=5) fail("Expected model seed hold_ms qualify|train|held");
     const int qual=!strcmp(argv[4],"qualify");
-    const int save_frames=qual||!strcmp(argv[4],"train");
+    const int training=!strcmp(argv[4],"train"),held=!strcmp(argv[4],"held");
+#ifdef CAMERA_ACTOR
+    const int save_frames=1;
+#else
+    const int save_frames=qual||training;
+#endif
     unsigned ms=(unsigned)atoi(argv[3]); uint64_t seed=strtoull(argv[2],NULL,10);
-    if(!seed || ms<60 || ms>300 || (!qual&&!save_frames&&strcmp(argv[4],"held"))) fail("Invalid collector parameters.");
+    if(!seed || ms<60 || ms>300 || (!qual&&!training&&!held)) fail("Invalid collector parameters.");
 #ifdef HUMAN_ACTOR
     if(!qual && actor_init(argv[1],seed)!=0)fail("Cannot load signed human actor.");
     if(!qual) actor_reset(seed);
@@ -81,6 +90,10 @@ int main(int argc,char **argv){
     FILE *f=qual?NULL:fopen("features.f32","wbx");
     FILE *pixels=save_frames?fopen("observations.u8","wbx"):NULL;
     if(!rows||(!qual&&!f)||(save_frames&&!pixels))fail("Cannot create fresh trajectory.");
+#ifdef CAMERA_ACTOR
+    FILE *camera_logits=qual?NULL:fopen("camera-logits.f32","wbx");
+    if(!qual && !camera_logits)fail("Cannot create camera policy trace.");
+#endif
     fprintf(rows,"index\tonset_ns\tobserved_ns\tmove\tfocus\tshoot\tbomb\tkeys\tverified\tspares_before\tbombs_before\tspares\tbombs\tstatus\tlogp_move\tlogp_focus\tlogp_shoot\tlogp_bomb\tvalue\n");
     const int test[][4]={{1,0,1,0},{7,0,0,0},{3,1,1,0},{5,1,0,0},{0,0,1,1},{2,1,0,0},{6,0,1,0},{8,1,1,0},{4,0,0,0}};
     unsigned current=0; int index=0; uint64_t started=now_ns(),last_live=started;
@@ -104,8 +117,16 @@ int main(int argc,char **argv){
         }
 #ifdef HUMAN_ACTOR
         else {
-            actor_step(frame,a);memcpy(lp,actor_logp,sizeof lp);value=actor_value;
+            actor_step(frame,a);
+            if(a[0]<0 || a[0]>8 || (unsigned)a[1]>1 || (unsigned)a[2]>1 || (unsigned)a[3]>1){
+                set_keys(d,current,0);
+                fail("Policy service did not return a valid full action.");
+            }
+            memcpy(lp,actor_logp,sizeof lp);value=actor_value;
             if(fwrite(actor_features,sizeof(float),110,f)!=110)fail("Feature write failed.");
+#ifdef CAMERA_ACTOR
+            if(fwrite(actor_camera_logits,sizeof(float),15,camera_logits)!=15)fail("Camera logits write failed.");
+#endif
         }
 #endif
         if(save_frames&&fwrite(frame,1,sizeof frame,pixels)!=sizeof frame)fail("Pixel write failed.");
@@ -125,6 +146,9 @@ int main(int argc,char **argv){
     if(!strcmp(outcome,"game_over"))save_terminal(im);
     XDestroyImage(im);XCloseDisplay(d);
     if(fclose(rows)||(f&&fclose(f))||(pixels&&fclose(pixels)))fail("Trajectory close failed.");
+#ifdef CAMERA_ACTOR
+    if(camera_logits && fclose(camera_logits))fail("Camera logits close failed.");
+#endif
     printf("%s %d %.6f\n",outcome,index,(now_ns()-started)/1e9);
     return !strcmp(outcome,"technical_censor")?3:0;
 }

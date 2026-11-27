@@ -40,6 +40,10 @@ trap 'touch stopped; wait "$camera" || true' EXIT
 printf '%s %s %s %s\n' "$mode" "$seed" "$hash" "$label" > identity.txt
 actor=/input/th12-full-qual
 if test "$mode" != qualify; then actor=/input/th12-full-actor; fi
+if test "${TH12_ACTOR_KIND:-portable}" = camera; then
+    test "$mode" != qualify
+    actor=/input/th12-camera-actor
+fi
 rc=0
 "$actor" "/input/$weight" "$seed" 120 "$mode" > outcome.txt 2> worker.log || rc=$?
 touch stopped

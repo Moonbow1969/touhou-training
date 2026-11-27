@@ -12,6 +12,9 @@
 /* These 110 coarse features are diagnostics. The TorchScript model receives the raw camera. */
 #define FA_CAMERA_ACTOR 1
 static float actor_features[110],actor_camera_logits[15],actor_probs[15],actor_logp[4],actor_value;
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+static uint8_t actor_camera_previous_move;
+#endif
 static int camera_fd=-1;
 static uint64_t camera_rng;
 static uint8_t camera_previous[112*96];
@@ -34,6 +37,10 @@ static int camera_connect(void){
     if(connect(camera_fd,(struct sockaddr *)&address,sizeof address)<0)return 2;
     const char *expected=getenv("TOHO_CAMERA_SHA");char actual[64];
     if(!expected || strlen(expected)!=64 || recv(camera_fd,actual,64,MSG_WAITALL)!=64 || memcmp(actual,expected,64))return 3;
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+    char mode[2];
+    if(recv(camera_fd,mode,sizeof mode,MSG_WAITALL)!=(ssize_t)sizeof mode || memcmp(mode,"H1",2))return 4;
+#endif
     return 0;
 }
 static void actor_reset(uint64_t seed){
@@ -64,6 +71,10 @@ static void camera_diagnostics(const uint8_t *frame){
 }
 static void actor_step(const uint8_t *frame,int out[4]){
     camera_diagnostics(frame);
+#ifdef FA_CAMERA_EXPLICIT_PREVIOUS_MOVE
+    actor_camera_previous_move=camera_age?(uint8_t)camera_actions[0][0]:4;
+    if(send(camera_fd,&actor_camera_previous_move,1,MSG_NOSIGNAL)!=1){out[0]=-1;return;}
+#endif
     size_t sent=0,n=112u*96u;
     while(sent<n){
         ssize_t wrote=send(camera_fd,frame+sent,n-sent,MSG_NOSIGNAL);

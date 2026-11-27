@@ -9,6 +9,9 @@ from .inspect_rpy import action_streams
 
 def fit(path, replay_dir, audit):
     meta = json.loads(path.with_suffix(".json").read_bytes())
+    title = int(str(meta["title"]).upper().removeprefix("TH"))
+    focus_bit = 4 if title == 10 else 8
+    control_bits = 0xF3 | focus_bit
     with np.load(path) as z:
         f, raw, x, obs = z["native_frame"], z["native_input"], z["xy"], z["obs"]
         actions = z["action"]
@@ -16,7 +19,7 @@ def fit(path, replay_dir, audit):
         rpy = replay_dir / meta["name"]
         words = next(
             np.frombuffer(d, "<u2").reshape(-1, 3)[:, 0]
-            for i, d in action_streams(rpy, 13)
+            for i, d in action_streams(rpy, title)
             if i == meta["stage"]
         )
         assert np.array_equal(
@@ -24,7 +27,7 @@ def fit(path, replay_dir, audit):
         ) and np.array_equal(
             z["past_input_chunk"], words[ix[:, None] + np.arange(-7, 1)]
         )
-        assert np.all((raw & 251) == (words[ix] & 251))
+        assert np.all((raw & control_bits) == (words[ix] & control_bits))
         # Full pixel camera using physical centers, including the sprite and bottom of the hitbox.
         pos = x / 4 + np.array([48, 0])
         d = np.diff(x, axis=0)

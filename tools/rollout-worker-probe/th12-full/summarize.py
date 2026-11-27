@@ -72,9 +72,27 @@ def summarize(raw, output, stage2_step=None):
     if inventory[0]!=0:raise ValueError("Native spare stock before Game Over requires review.")
     output.mkdir(parents=True,exist_ok=True)
     record=output/(episode+".npz")
+    camera = {}
+    camera_logp_error = None
+    if (raw / "camera-logits.f32").exists():
+        camera["frames"] = np.fromfile(raw / "observations.u8", np.uint8).reshape(n, 112, 96)
+        logits = np.fromfile(raw / "camera-logits.f32", "<f4").reshape(n, 15)
+        camera["camera_logits"] = logits
+        errors = []
+        for column, head in enumerate(np.split(logits.astype(np.float64), (9, 11, 13), axis=1)):
+            selected = action[:, column]
+            if np.any((selected < 0) | (selected >= head.shape[1])):
+                raise ValueError("Camera action is outside its categorical support.")
+            head -= head.max(axis=1, keepdims=True)
+            normalizer = np.log(np.exp(head).sum(axis=1))
+            sampled_logp = head[np.arange(n), selected] - normalizer
+            errors.append(np.max(np.abs(sampled_logp - logp[:, column])))
+        camera_logp_error = float(np.max(errors))
+        if not np.isfinite(camera_logp_error) or camera_logp_error > 1e-5:
+            raise ValueError("Camera logits do not reproduce native sampled log probabilities.")
     np.savez_compressed(record,features=features,action=action,logp=logp,value=value,reward=rewards.sum(axis=1),
                         terminated=terminated,reward_parts=rewards,keys=keys,observed_keys=sensed,
-                        stock_hud=observed,onset_ns=onset,observed_ns=now)
+                        stock_hud=observed,onset_ns=onset,observed_ns=now,**camera)
     frames=sorted((raw/'evidence').glob('*.jpg'))
     if (raw/'terminal-limit.json').exists():
         cut=json.loads((raw/'terminal-limit.json').read_bytes())["original_terminal_ns"]/1e9
@@ -105,5 +123,7 @@ def summarize(raw, output, stage2_step=None):
                 trajectory=record.name,trajectory_sha256=hashlib.sha256(record.read_bytes()).hexdigest(),
                 native_masks_verified=n,actor_seed_only=True,game_rng_controlled=False,
                 screenshot_count=len(frames),median_control_ms=float(np.median(np.diff(onset))/1e6) if n>1 else None)
+    if camera:
+        report.update(camera_frames=n, camera_shape=[112, 96], max_camera_logp_error=camera_logp_error)
     (output/(episode+".json")).write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     return report

@@ -19,7 +19,7 @@ def camera_labels(words, focus_bit=8):
                             (first & 1) != 0, ((words & 2) != 0).any(1))).astype(np.int64)
 
 
-def load_replay(path):
+def load_replay(path, include_eight_tick_camera=False):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
     title=str(metadata["title"]).upper()
     focus_bit={"TH10":4,"TH12":8,"TH13":8}.get(title)
@@ -62,8 +62,15 @@ def load_replay(path):
     player=metadata.get("player_group",metadata.get("player"))
     if not player:
         raise ValueError("A replay needs an identified player group")
-    return {"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
+    result={"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
             "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep]}
+    if include_eight_tick_camera:
+        # The two native four-tick intervals must both exist and be playable.
+        eight=(idx>=2)&(frame-np.roll(frame,2)==8)&np.roll(valid,1)&np.roll(valid,2)
+        use_previous=np.where(eight,idx-2,np.maximum(idx-1,0))
+        result["raw8"]=channels(obs[keep],obs[use_previous[keep]])
+        result["valid8"]=eight[keep]
+    return result
 
 
 def pool(rows, device):
@@ -99,9 +106,10 @@ def main():
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
+    parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
     device="cuda" if torch.cuda.is_available() else "cpu"
-    train=[load_replay(p) for p in args.train];held=[load_replay(p) for p in args.held]
+    train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags) for p in args.train];held=[load_replay(p) for p in args.held]
     if {r["group"] for r in train}&{r["group"] for r in held}:
         raise ValueError("Player leakage across replay partitions")
     if {r["sha256"] for r in train}&{r["sha256"] for r in held}:
@@ -113,6 +121,9 @@ def main():
     opt=torch.optim.AdamW([{"params":model.spatial.parameters(),"lr":.00015},
                            {"params":model.policy.parameters(),"lr":.0005}],weight_decay=.001)
     data=pool(train,device)
+    if args.mixed_difference_lags:
+        alternate=torch.from_numpy(np.concatenate([r["raw8"] for r in train])).to(device)
+        lag_rng=torch.Generator(device=device).manual_seed(182116)
     # Give each replay equal sampling weight; half of its draws are movement transitions when available.
     chunks=[];offset=0
     move_weight=torch.ones(len(data["action"]),device=device)
@@ -140,6 +151,9 @@ def main():
             chosen.append(bank[torch.randint(len(bank),(8,),device=device)])
         ids=torch.cat(chosen)
         px=data["raw"][ids].float()/255
+        if args.mixed_difference_lags:
+            longer=torch.rand(len(ids),device=device,generator=lag_rng)<.5
+            px[longer]=alternate[ids[longer]].float()/255
         y=data["action"][ids].clone()
         flip=torch.rand(len(ids),device=device)<.5
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
@@ -179,6 +193,7 @@ def main():
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
               "natural_movement_frequency":args.natural_movement_frequency,
               "title_balanced":args.balance_titles,
+              "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})
 

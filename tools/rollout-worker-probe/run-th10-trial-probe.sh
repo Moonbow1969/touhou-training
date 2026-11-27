@@ -37,7 +37,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-timeout 45 wineboot --init
+timeout 120 wineboot --init
 wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /t REG_SZ /d pulse /f >/capture/audio.log
 wine explorer /desktop=MoonbowTH10,640x480 'Z:\tmp\th10-game\th10tr.exe' >/capture/game.log 2>&1 &
 dialog=
