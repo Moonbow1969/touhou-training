@@ -1,0 +1,133 @@
+{
+  "physical_host": "Gamer WSL",
+  "eval_seeds": [
+    1511751,
+    1511752,
+    1511753,
+    1511754,
+    1511755,
+    1511756,
+    1511757,
+    1511758,
+    1511759,
+    1511760,
+    1511761,
+    1511762,
+    1511763,
+    1511764,
+    1511765,
+    1511766
+  ],
+  "rank_by_seed": {
+    "1511751": 2,
+    "1511752": 3,
+    "1511753": 2,
+    "1511754": 3,
+    "1511755": 2,
+    "1511756": 3,
+    "1511757": 2,
+    "1511758": 3,
+    "1511759": 2,
+    "1511760": 3,
+    "1511761": 2,
+    "1511762": 3,
+    "1511763": 2,
+    "1511764": 3,
+    "1511765": 2,
+    "1511766": 3
+  },
+  "lane_by_seed": {
+    "1511751": "alpha",
+    "1511752": "alpha",
+    "1511753": "beta",
+    "1511754": "beta",
+    "1511755": "gamma",
+    "1511756": "gamma",
+    "1511757": "delta",
+    "1511758": "delta",
+    "1511759": "alpha",
+    "1511760": "alpha",
+    "1511761": "beta",
+    "1511762": "beta",
+    "1511763": "gamma",
+    "1511764": "gamma",
+    "1511765": "delta",
+    "1511766": "delta"
+  },
+  "arm_order": {
+    "1511751": [
+      "feedback",
+      "image"
+    ],
+    "1511759": [
+      "image",
+      "feedback"
+    ],
+    "1511752": [
+      "image",
+      "feedback"
+    ],
+    "1511760": [
+      "feedback",
+      "image"
+    ],
+    "1511753": [
+      "feedback",
+      "image"
+    ],
+    "1511761": [
+      "image",
+      "feedback"
+    ],
+    "1511754": [
+      "image",
+      "feedback"
+    ],
+    "1511762": [
+      "feedback",
+      "image"
+    ],
+    "1511755": [
+      "image",
+      "feedback"
+    ],
+    "1511763": [
+      "feedback",
+      "image"
+    ],
+    "1511756": [
+      "image",
+      "feedback"
+    ],
+    "1511764": [
+      "feedback",
+      "image"
+    ],
+    "1511757": [
+      "image",
+      "feedback"
+    ],
+    "1511765": [
+      "feedback",
+      "image"
+    ],
+    "1511758": [
+      "image",
+      "feedback"
+    ],
+    "1511766": [
+      "feedback",
+      "image"
+    ]
+  },
+  "policy_sha256": {
+    "image": "f49d7e297419a1f6a095817530f239cb62cd9ce0edcf889dbcdf1a32f710ee5d",
+    "feedback": "ad978c306f5b49a76c6f540824f29f6023bc4fbe0158a9e7c016d42174f2bc32"
+  },
+  "original_exe_sha256": "3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba",
+  "worker_sha256": "242679f0a903cd8c03982cdf4b8887eff26a6d337275a401108b76948f684475",
+  "wire_qualification_sha256": "94fb04b960670e0a77649265d3b93537d1ff4d0085086440a12196b322119868",
+  "shared_registration_sha256": "d3b51bd5568949d3a38d84c3da4f3569563992a923cf796ef4a80007ad007ceb",
+  "order_allocation": "Each physical private X instance and rank has two controller seeds, image first in one and feedback first in the other. Python Random(1511700) shuffles each cell in alpha,beta,gamma,delta and Hard,Lunatic order.",
+  "mode": "Original full stock to true endpoint without Continue. New H1 worker for both arms always sends the previous actual original direction, neutral=4 on first decision. Both original input and wire byte are recorded each step. Ordinary cold boot, two CPU cores per game; no geometry or automatic shoot or Bomb."
+}

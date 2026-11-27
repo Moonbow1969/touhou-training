@@ -28,6 +28,8 @@ def main():
     for key in ('root','parent','protocol'):
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--from-sft',action='store_true',help='Restore the human camera policy with a zero-initialized value head.')
+    p.add_argument('--feedback-camera',type=Path,help='Original frozen visual SFT weights for a registered H1 movement residual.')
+    p.add_argument('--direction-residual',type=Path)
     p.add_argument('--th12-coverage',action='store_true',help='Require per-credit playable-control coverage before fitting and publishing held outcomes.')
     args=p.parse_args()
     root=args.root.resolve()
@@ -36,7 +38,11 @@ def main():
     fingerprint=digest(behavior)
     if fingerprint!=plan['behavior_sha256']:
         raise ValueError('Unexpected parent actor')
-    if args.from_sft:
+    if args.feedback_camera or args.direction_residual:
+        if (not args.from_sft or not args.feedback_camera or not args.direction_residual or not plan.get('previous_direction_input')
+                or digest(args.feedback_camera)!=plan['camera_sft_sha256'] or digest(args.direction_residual)!=plan['residual_sha256']):
+            raise ValueError('Unverified direction-conditioned SFT source')
+    elif args.from_sft:
         supervised=json.loads((args.parent/'report.json').read_bytes())
         if supervised['sft']!=digest(args.parent/'camera-policy.pt') or supervised['torchscript_sha256']!=fingerprint:
             raise ValueError('Supervised training and deployed behavior disagree')
@@ -74,6 +80,8 @@ def main():
     policy=root/'policy'
     if not (policy/'report.json').is_file():
         restore=('--sft',args.parent/'camera-policy.pt') if args.from_sft else ('--parent-actor-critic',args.parent/'camera-ppo.pt')
+        if args.feedback_camera:
+            restore=('--sft',args.feedback_camera,'--direction-residual',args.direction_residual)
         run('train_full_resolution_camera_ppo','--manifest',root/'corrected/credits.json','--protocol',args.protocol,
             *restore,'--behavior',behavior,'--out',policy)
     result=json.loads((policy/'report.json').read_bytes())
@@ -100,7 +108,8 @@ def main():
         if proc.returncode==0:break
         if 'Waiting for verified whole credits' not in proc.stderr:raise RuntimeError(proc.stderr)
         time.sleep(25)
-    run('score_native_stage_clock','--credits',out/'credits.json','--title',13,'--arms',reference,candidate,'--out',out/'native13-stage-clock.json')
+    if '13' in plan['eval_seeds']:
+        run('score_native_stage_clock','--credits',out/'credits.json','--title',13,'--arms',reference,candidate,'--out',out/'native13-stage-clock.json')
     run('plot_full_action_results','--folder',out,'--candidates',candidate)
 
 

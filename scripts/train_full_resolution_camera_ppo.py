@@ -30,17 +30,33 @@ class CameraActorCritic(nn.Module):
         return (*logits, self.value(latent))
 
 
+class FeedbackActorCritic(CameraActorCritic):
+    def __init__(self, camera):
+        super().__init__(camera)
+        from scripts.train_camera_direction_feedback import DirectionResidual
+        self.direction_residual=DirectionResidual()
+
+    def forward(self,images,previous_direction):
+        latent=self.camera.policy[:-1](self.camera.spatial(images))
+        movement,focus,shot,bomb=self.camera.policy[-1](latent).split(WIDTHS,dim=1)
+        return self.direction_residual(latent,movement,previous_direction),focus,shot,bomb,self.value(latent)
+
+
 def chosen(heads, actions):
     return torch.stack([h.log_softmax(1).gather(1, actions[:,k:k+1])[:,0] for k,h in enumerate(heads)],1)
 
 
-def logits_on(model, images, device):
+def logits_on(model, images, device, previous_moves=None):
     with torch.inference_mode():
-        output=[model(b.to(device).float()/255) for b in images.split(48)]
+        output=[]
+        for start in range(0,len(images),48):
+            block=images[start:start+48].to(device).float()/255
+            args=() if previous_moves is None else (previous_moves[start:start+48].to(device),)
+            output.append(model(block,*args))
         return tuple(torch.cat(part).cpu() for part in zip(*output))
 
 
-def credit(record, manifest, model, parent, device):
+def credit(record, manifest, model, parent, device, *, direction_history=False):
     if record['role']!='train' or record['policy_sha256']!=parent or record['outcome'] not in ('game_over','ending'):
         raise ValueError('Unverified policy or endpoint')
     path=manifest.parent/record['file']
@@ -49,6 +65,7 @@ def credit(record, manifest, model, parent, device):
         frames=z['frames']; action=z['action'].astype(np.int64); native_lp=z['logp']; native_v=z['value'].reshape(-1)
         reward=z['reward'].reshape(-1);done=z['terminated'].reshape(-1).astype(bool)
         eligibility=z['native_action_eligible'] if 'native_action_eligible' in z else None
+        prior=z['previous_move'] if direction_history else None
     n=len(action)
     if not n or reward.shape!=(n,) or done.shape!=(n,) or frames.shape!=(n,112,96) or frames.dtype!=np.uint8 or not done[-1] or done[:-1].any():
         raise ValueError(f'Incomplete original camera sequence: {path.name}')
@@ -58,7 +75,10 @@ def credit(record, manifest, model, parent, device):
         raise ValueError('Invalid native behavior evidence')
     images=torch.from_numpy(channels(frames,np.concatenate([frames[:1], frames[:-1]])))
     actions=torch.from_numpy(action)
-    *heads,values=logits_on(model,images,device)
+    if direction_history and not np.array_equal(prior,np.r_[4,action[:-1,0]]):
+        raise ValueError('History-aware PPO requires the exact native prior for each action')
+    prior=torch.from_numpy(prior.astype(np.int64)) if direction_history else None
+    *heads,values=logits_on(model,images,device,prior)
     logp=chosen(heads,actions)
     err=float((logp-torch.from_numpy(native_lp)).abs().max())
     verr=float((values[:,0]-torch.from_numpy(native_v)).abs().max())
@@ -75,6 +95,8 @@ def credit(record, manifest, model, parent, device):
     adv=calculate_gae(reward,native_v,.999,.985)
     arrays=(images,actions,torch.from_numpy(native_lp.sum(1)),torch.from_numpy(adv),
             torch.from_numpy(native_v+adv),torch.cat(heads,dim=1))
+    if direction_history:
+        arrays+= (prior[:length],)
     return arrays,dict(title=record['title'],seed=record['seed'],steps=length,reward=float(reward.sum()),**eligibility_audit,
                        max_native_logp_error=err,max_native_value_error=verr)
 
@@ -115,12 +137,13 @@ def fit(model,data,lr,device,anchor=None,anchor_weight=0.):
         losses=[];anchor_terms=[]
         for k in range(chunks):
             opt.zero_grad(set_to_none=True)
-            for t,(images,a,old,adv,returns,_) in data.items():
+            for t,(images,a,old,adv,returns,_,*history_input) in data.items():
                 ids=order[t][k]
                 # Accumulate equal title weights with bounded image minibatch memory.
                 for small in ids.split(48):
                     px=images[small].to(device).float()/255
-                    *heads,value=model(px);lp=chosen(heads,a[small].to(device)).sum(1)
+                    *heads,value=model(px,*(prior[small].to(device) for prior in history_input))
+                    lp=chosen(heads,a[small].to(device)).sum(1)
                     ratio=(lp-old[small].to(device)).exp()
                     advantage=adv[small].to(device)
                     clip=torch.minimum(ratio*advantage,ratio.clamp(.88,1.12)*advantage)
@@ -134,8 +157,8 @@ def fit(model,data,lr,device,anchor=None,anchor_weight=0.):
                 anchor_terms.append(term.detach().item())
             torch.nn.utils.clip_grad_norm_(model.parameters(),.5);opt.step()
         kl={}
-        for t,(images,_,_,_,_,ref) in data.items():
-            *current,_=logits_on(model,images,device)
+        for t,(images,_,_,_,_,ref,*history_input) in data.items():
+            *current,_=logits_on(model,images,device,*history_input)
             kl[t]=max(0.,sum((h.softmax(1)*(h.log_softmax(1)-g.log_softmax(1))).sum(1).mean().item()
                              for h,g in zip(ref.split(WIDTHS,1),current)))
         accepted=max(kl.values())<=.025
@@ -154,6 +177,7 @@ def main():
     initial=p.add_mutually_exclusive_group(required=True)
     initial.add_argument('--sft',type=Path)
     initial.add_argument('--parent-actor-critic',type=Path)
+    p.add_argument('--direction-residual',type=Path,help='Qualified previous-direction movement head fitted on top of the specified SFT camera.')
     p.add_argument('--replay-anchor',nargs='+',type=Path,help='Exact human image training shards for KL to the initial SFT actor')
     p.add_argument('--anchor-weight',type=float,default=0.)
     a=p.parse_args();torch.set_num_threads(2);torch.manual_seed(261127)
@@ -169,16 +193,29 @@ def main():
     if any('policy.spatial_context.' in name for name in state):
         camera.add_spatial_context()
     if a.sft:camera.load_state_dict(state)
-    model=CameraActorCritic(camera)
+    plan=json.loads(a.protocol.read_bytes())
+    feedback=bool(plan.get('previous_direction_input'))
+    if a.direction_residual and (not a.sft or not feedback):
+        raise ValueError('The registered H1 SFT initialization must match the supplied residual')
+    if feedback and a.sft and (not a.direction_residual or sha(a.direction_residual)!=plan['residual_sha256']
+                               or sha(a.sft)!=plan['camera_sft_sha256']):
+        raise ValueError('Changed supervised direction checkpoint')
+    if feedback and a.replay_anchor:
+        raise ValueError('The image-only replay anchor has no native previous-direction inputs')
+    model=FeedbackActorCritic(camera) if feedback else CameraActorCritic(camera)
+    if a.direction_residual:
+        model.direction_residual.load_state_dict(torch.jit.load(str(a.direction_residual),map_location='cpu').state_dict())
     if a.parent_actor_critic:model.load_state_dict(state)
     model=model.to(device)
-    parent=sha(a.behavior);rows=json.loads(a.manifest.read_bytes());plan=json.loads(a.protocol.read_bytes())
+    parent=sha(a.behavior);rows=json.loads(a.manifest.read_bytes())
+    if feedback and parent!=plan['behavior_sha256']:
+        raise ValueError('Changed history-conditioned behavior')
     expected={(int(t),s) for t,seeds in plan['train_seeds'].items() for s in seeds}
     if {(r['title'],r['seed']) for r in rows}!=expected or len(rows)!=len(expected):
         raise ValueError('Missing or duplicate training credit')
     by_title={};quality=[]
     for r in rows:
-        arrays,details=credit(r,a.manifest,model,parent,device)
+        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback)
         group=r['title']
         if plan.get('balanced_title_rank'):
             rank=plan['rank_by_seed'][str(group)][str(r['seed'])]
@@ -190,7 +227,7 @@ def main():
     data={}
     sampling={}
     for t,records in by_title.items():
-        x,actions,lp,adv,ret,ref=[torch.cat(v) for v in zip(*records)]
+        x,actions,lp,adv,ret,ref,*history_input=[torch.cat(v) for v in zip(*records)]
         if 'matched_decisions_per_stratum' in plan:
             n=plan['matched_decisions_per_stratum']
             if not isinstance(n,int) or not 1<n<=len(x):
@@ -201,7 +238,8 @@ def main():
             sampling[str(t)]=dict(available=len(x),selected=n,
                                   sorted_indices_sha256=hashlib.sha256(order.numpy().astype('<i8').tobytes()).hexdigest())
             x,actions,lp,adv,ret,ref=(v[order] for v in (x,actions,lp,adv,ret,ref))
-        data[t]=(x,actions,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret,ref)
+            history_input=[v[order] for v in history_input]
+        data[t]=(x,actions,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret,ref,*history_input)
     anchor=replay_anchor(a.replay_anchor,a.sft.parent,model,device) if a.replay_anchor else None
     history=[]
     for lr in plan['learning_rates']:
@@ -214,8 +252,9 @@ def main():
     torch.save(model.state_dict(),a.out/'camera-ppo.pt')
     with torch.no_grad():
         fixture=data[sorted(data)[0]][0][:4].float()/255
-        script=torch.jit.trace(model,fixture[:1])
-        for expected_tensor,actual in zip(model(fixture),script(fixture)):
+        inputs=(fixture,data[sorted(data)[0]][6][:4]) if feedback else (fixture,)
+        script=torch.jit.trace(model,tuple(v[:1] for v in inputs))
+        for expected_tensor,actual in zip(model(*inputs),script(*inputs)):
             torch.testing.assert_close(expected_tensor,actual)
         script.save(str(a.out/'policy.ts'))
     save_json(a.out/'report.json',dict(parent_sft_sha256=sha(a.sft) if a.sft else None,
@@ -223,6 +262,7 @@ def main():
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
               equal_weight_strata=sorted(data),
+              **({'previous_direction_input':True,'direction_residual_sha256':sha(a.direction_residual) if a.direction_residual else None} if feedback else {}),
               **({'optimizer_decision_sampling':sampling} if sampling else {}),
               replay_anchor_weight=a.anchor_weight,replay_anchor_training_sha256=[sha(p) for p in (a.replay_anchor or [])],
               native_procedure="All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."))

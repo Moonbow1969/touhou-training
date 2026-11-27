@@ -37,6 +37,11 @@ def main():
         if digest(trace)!=trace_sha:raise ValueError(f'Changed original behavior {trace}')
         with np.load(trace,allow_pickle=False) as z:
             arrays={k:z[k] for k in ('action','logp','value','reward','terminated')}
+            if plan.get('previous_direction_input'):
+                prior=z['previous_move']
+                if not np.array_equal(prior,np.r_[4,arrays['action'][:-1,0]]):
+                    raise ValueError(f'Changed original history byte in {trace}')
+                arrays['previous_move']=prior
             if 'native_action_eligible' in z:arrays['native_action_eligible']=z['native_action_eligible']
             frames=z['frames'] if 'frames' in z else None
         n=len(arrays['action'])
