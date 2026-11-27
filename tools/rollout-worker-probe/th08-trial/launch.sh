@@ -12,12 +12,12 @@ timeout 40 wineboot --init > /capture/wine-init.log 2>&1
 export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
 WINEDEBUG=err+all wine explorer /desktop=study,800x600 th08tr.exe > /capture/game.log 2>&1 &
 for n in $(seq 1 200); do
- game=$(xdotool search --class '^th08tr.exe$' 2>/dev/null | while read -r w; do sz=$(xdotool getwindowgeometry "$w" 2>/dev/null); case "$sz" in *640x480*) echo "$w";; esac; done | tail -1)
- [ -z "$game" ] || break
+ game=$(xdotool search --onlyvisible --class '^th08tr.exe$' 2>/dev/null | while read -r w; do sz=$(xdotool getwindowgeometry "$w" 2>/dev/null); case "$sz" in *640x480*) echo "$w";; esac; done | tail -1)
+ if [ -n "$game" ] && xdotool windowfocus "$game" 2>/dev/null; then break; fi
+ game=
  sleep .3
 done
 test -n "$game"
-xdotool windowfocus "$game"
 sleep 10
 tap(){ xdotool keydown "$1"; sleep .13; xdotool keyup "$1"; sleep .45; }
 snap(){ scrot -o "/capture/$1.png"; }

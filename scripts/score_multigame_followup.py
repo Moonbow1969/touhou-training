@@ -14,12 +14,13 @@ from scripts.score_original_camera_run import records
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention'),required=True)
+    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon'),required=True)
     a=p.parse_args();d=a.data.resolve();root=d/a.study
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     five=a.study=='five-game-crossfit-advantages'
-    reference=d/'five-game-generation3/policy/policy.ts'
-    candidate=(root if five else d/'six-game-online/joint-six')/'policy/policy.ts'
+    horizon=a.study=='six-game-return-horizon'
+    reference=(root/plan['reference_arm'] if horizon else d/'five-game-generation3')/'policy/policy.ts'
+    candidate=(root/plan['candidate'] if horizon else root if five else d/'six-game-online/joint-six')/'policy/policy.ts'
     while not candidate.with_name('report.json').is_file():time.sleep(15)
     refs={digest(reference),digest(candidate)}
     titles=sorted(int(t) for t in plan['eval_seeds'] if t!='8')

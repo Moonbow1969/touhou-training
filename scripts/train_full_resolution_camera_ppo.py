@@ -56,7 +56,7 @@ def logits_on(model, images, device, previous_moves=None):
         return tuple(torch.cat(part).cpu() for part in zip(*output))
 
 
-def credit(record, manifest, model, parent, device, *, direction_history=False, actor_baseline=None):
+def credit(record, manifest, model, parent, device, *, direction_history=False, actor_baseline=None, actor_lambda=.985):
     if record['role']!='train' or record['policy_sha256']!=parent or record['outcome'] not in ('game_over','ending'):
         raise ValueError('Unverified policy or endpoint')
     path=manifest.parent/record['file']
@@ -98,7 +98,7 @@ def credit(record, manifest, model, parent, device, *, direction_history=False, 
         if actor_baseline.shape!=(length,) or actor_baseline.dtype!=np.float32 or not np.isfinite(actor_baseline).all():
             raise ValueError('Invalid out-of-fold actor baseline')
         original=adv
-        adv=calculate_gae(reward,actor_baseline,.999,.985)
+        adv=calculate_gae(reward,actor_baseline,.999,actor_lambda)
         eligibility_audit.update(native_advantage_sd=float(original.std()),crossfit_advantage_sd=float(adv.std()),
                                  advantage_mean_absolute_change=float(np.mean(abs(adv-original))))
     arrays=(images,actions,torch.from_numpy(native_lp.sum(1)),torch.from_numpy(adv),
@@ -231,9 +231,12 @@ def main():
             if set(archive.files)!={f'th{t}-{s}' for t,s in expected} or len(archive.files)!=len(expected):
                 raise ValueError('Expected one out-of-fold baseline per training credit')
             baselines=dict(archive)
+    actor_lambda=plan.get('actor_gae_lambda',.985)
+    if actor_lambda not in (.985,1.) or (actor_lambda!=.985 and not baselines):
+        raise ValueError('Unexpected registered actor return estimator')
     for r in rows:
         key=f"th{r['title']}-{r['seed']}"
-        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback,actor_baseline=baselines.get(key))
+        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback,actor_baseline=baselines.get(key),actor_lambda=actor_lambda)
         group=r['title']
         if plan.get('balanced_title_rank'):
             rank=plan['rank_by_seed'][str(group)][str(r['seed'])]

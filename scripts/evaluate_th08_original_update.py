@@ -41,21 +41,25 @@ def main():
     for k in ('data','assets'):
         p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--postcredit-assets',type=Path)
-    p.add_argument('--joint-six',action='store_true',help='Evaluate the registered five-title versus six-title comparison on TH08.')
+    comparisons=p.add_mutually_exclusive_group()
+    comparisons.add_argument('--joint-six',action='store_true',help='Evaluate the five-title versus six-title comparison on TH08.')
+    comparisons.add_argument('--return-horizon',action='store_true',help='Evaluate the two six-title actor advantage horizons.')
+    p.add_argument('--only-rank',choices=('Hard','Lunatic'),help='Resume one previously interrupted physical lane.')
     a=p.parse_args();data=a.data.resolve();assets=a.assets.resolve()
     collection=data/'six-game-online'
-    root=data/'six-game-retention' if a.joint_six else collection
-    sub=root/'th08' if a.joint_six else root/'first-eight';out=sub/'evaluation'
+    joint=a.joint_six or a.return_horizon
+    root=data/'six-game-return-horizon' if a.return_horizon else data/'six-game-retention' if a.joint_six else collection
+    sub=root/'th08' if joint else root/'first-eight';out=sub/'evaluation'
     out.mkdir(exist_ok=True,parents=True)
-    registry=root/('camera-protocol.json' if a.joint_six else 'protocol.json')
-    if a.joint_six:wait(registry)
+    registry=root/('camera-protocol.json' if joint else 'protocol.json')
+    if joint:wait(registry)
     study=json.loads(registry.read_bytes())
     original=json.loads((collection/'protocol.json').read_bytes())
-    seeds=study['eval_seeds']['8'] if a.joint_six else original['first_th08_fit']['comparisons']
+    seeds=study['eval_seeds']['8'] if joint else original['first_th08_fit']['comparisons']
     qualifiers=Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th08-trial'
-    arms=[study['reference_arm'],study['candidate']] if a.joint_six else ['five-ppo2','th08-ppo']
+    arms=[study['reference_arm'],study['candidate']] if joint else ['five-ppo2','th08-ppo']
     orders={str(seed):arms if (index//2)%2==0 else arms[::-1] for index,seed in enumerate(seeds)}
-    ranks={str(s):({2:'Hard',3:'Lunatic'}[study['rank_by_seed']['8'][str(s)]] if a.joint_six else original['rank_by_seed'][str(s)]) for s in seeds}
+    ranks={str(s):({2:'Hard',3:'Lunatic'}[study['rank_by_seed']['8'][str(s)]] if joint else original['rank_by_seed'][str(s)]) for s in seeds}
     plan=dict(parent_registration_sha256=digest(registry),ranks=ranks,
               order_by_seed=orders,lane='Gamer WSL2 private Wine Xvfb; one lane per rank. Wait for the rank training allocation to complete to avoid adding CPU contention.',
               endpoint='First original continue prompt. Wriggle Nightbug visible on the terminal screen certifies Stage 1 and hence no Stage 2. Other endpoints need independent native stage evidence; report unknown count and bounds.',
@@ -71,10 +75,13 @@ def main():
               acceptance='Require the original score-table header and a unique dated row with a margin greater than .30 over the other nine baseline entries. The native Stage 1 glyph must correlate above .88 in at least two independent captured ranking frames. Other stage digits require separate original-image adjudication.'))
     parent=data/('five-game-generation3' if a.joint_six else 'five-game-generation2')/'policy'
     candidate=collection/('joint-six' if a.joint_six else 'first-eight')/'policy'
+    if a.return_horizon:
+        parent=root/arms[0]/'policy';candidate=root/arms[1]/'policy'
     wait(candidate/'report.json')
     files={arms[0]:parent/'policy.ts',arms[1]:candidate/'policy.ts'}
     digests={k:digest(v) for k,v in files.items()}
-    if digests[arms[0]]!=study['parent_actor'] or digests[arms[1]]!=json.loads((candidate/'report.json').read_bytes())['policy_sha256']:
+    expected_parent=json.loads((parent/'report.json').read_bytes())['policy_sha256'] if a.return_horizon else study['parent_actor']
+    if digests[arms[0]]!=expected_parent or digests[arms[1]]!=json.loads((candidate/'report.json').read_bytes())['policy_sha256']:
         raise ValueError('Held checkpoint changed')
     freeze(out/'checkpoint-binding.json',digests)
     torch.set_num_threads(1)
@@ -83,7 +90,7 @@ def main():
             for s in original['first_th08_fit']['comparisons']:
                 if original['rank_by_seed'][str(s)]==rank:
                     wait(collection/'first-eight/evaluation'/f'pair-{s}.json')
-        else:
+        elif not a.return_horizon:
             for s in original['th08_train_seeds']:
                 if original['rank_by_seed'][str(s)]==rank:
                     wait(collection/'selected-training'/f'{s}.json')
@@ -126,8 +133,9 @@ def main():
                 break
             else:raise ValueError(f'Unfilled registered pair {s}')
     with ThreadPoolExecutor(2) as pool:
-        jobs=[pool.submit(lane,r) for r in ('Hard','Lunatic')]
+        jobs=[pool.submit(lane,r) for r in ((a.only_rank,) if a.only_rank else ('Hard','Lunatic'))]
         for job in jobs:job.result()
+    for s in seeds:wait(out/f'pair-{s}.json')
     pairs=[json.loads((out/f'pair-{s}.json').read_bytes()) for s in seeds];summary={}
     for rank in ('Hard','Lunatic'):
         these=[p for p in pairs if p['rank']==rank]

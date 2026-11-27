@@ -17,7 +17,7 @@ def read(path):
     return json.loads(path.read_bytes())
 
 
-def build_baselines(rows, manifest, directory):
+def build_baselines(rows, manifest, directory, titles=(10,11,12,13,17)):
     groups = {}
     for row in rows:
         path = manifest.parent / row['file']
@@ -43,8 +43,8 @@ def build_baselines(rows, manifest, directory):
             for row, pred in zip(held, ridge(train,'clock',held),strict=True):
                 baselines[f"th{title}-{row['seed']}"] = pred.astype(np.float32)
             audit.append(dict(title=title,rank=rank,training=[r['seed'] for r in train],predicted=[r['seed'] for r in held]))
-    if len(audit)!=40 or len(baselines)!=160:
-        raise ValueError('Missing five-game data')
+    if set(groups)!={(t,r) for t in titles for r in (2,3)} or len(audit)!=8*len(titles) or len(baselines)!=32*len(titles):
+        raise ValueError('Missing registered title, difficulty or credit')
     archive = directory/'actor-baselines.npz'
     if not archive.exists():
         np.savez_compressed(archive, **baselines)
