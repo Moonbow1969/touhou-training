@@ -77,6 +77,15 @@ def main():
         run('pack_camera_ppo_rollouts','--root',root,'--round2','--protocol',args.protocol,'--behavior',behavior,'--out',root/'camera-batch')
     if not (root/'corrected/clock-audit.json').is_file():
         run('normalize_th13_survival_clock','--original',root,'--out',root/'corrected')
+    if plan.get('gradient_diagnostic'):
+        audit_file=root/'gradient-by-credit-count.json'
+        manifest=root/'corrected/credits.json'
+        if not audit_file.is_file():
+            run('measure_gradient_sample_size','--manifest',manifest,'--protocol',args.protocol,
+                '--parent',args.parent,'--out',audit_file)
+        audit=json.loads(audit_file.read_bytes())
+        if audit['training_manifest_sha256']!=digest(manifest) or audit['protocol_sha256']!=digest(args.protocol):
+            raise ValueError('Gradient diagnostic belongs to a different training batch')
     policy=root/'policy'
     if not (policy/'report.json').is_file():
         restore=('--sft',args.parent/'camera-policy.pt') if args.from_sft else ('--parent-actor-critic',args.parent/'camera-ppo.pt')

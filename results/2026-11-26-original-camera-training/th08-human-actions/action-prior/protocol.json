@@ -1,0 +1,12 @@
+{
+  "source_manifest_sha256": "95044b2cf88d0a86d9011dcc16f8b78e76cae6e6a16651d15c4cfef660168b51",
+  "pretrained_weights_sha256": "22981e8b48e829b57730e1723ad0d93d4051e9154f7a846f6e67f8446348dfee",
+  "pretrained_vocabulary_sha256": "5c36e51c1dc49020d54cc41401a588db1cfc9f48cd3ad8ae4fa9ddfe55774716",
+  "seed": 261128,
+  "epochs": 4,
+  "batch_sequences": 128,
+  "sequence_decisions": 64,
+  "optimizer": "AdamW lr=0.0002",
+  "training": "All complete nonoverlapping 64-decision tiles, restarts at stage boundaries with a preceding human command. Single shuffled pass per epoch. Original four-title vocabulary uses its reserved unknown ID for TH08 and each of its four new teams. No validation-based selection.",
+  "scoring": "Score frozen, one-pass and four-pass models once on the same separately assigned TH08 players. Report per-person direction, actual changes, joint four-head token accuracy and joint NLL. Primary comparison is four passes minus frozen, macro-averaged across authors. Only earlier genuine human keys and metadata are available. Original images are absent."
+}

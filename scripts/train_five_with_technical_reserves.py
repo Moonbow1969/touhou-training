@@ -13,12 +13,16 @@ from scripts.train_five_original_games import freeze
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data',type=Path,required=True)
-    d=parser.parse_args().data.resolve();root=d/'five-game-generation2'
+    parser.add_argument('--generation',type=int,choices=(2,3),default=2)
+    args=parser.parse_args()
+    d=args.data.resolve();root=d/f'five-game-generation{args.generation}'
     original=root/'camera-protocol.json';rule_file=root/'th12-train-technical-amendment.json'
     amendment=json.loads(rule_file.read_bytes());plan=json.loads(original.read_bytes())
     if digest(original)!=amendment['original_protocol_sha256'] or digest(root/'th12-terminal-consumption-registration.json')!=amendment['terminal_consumption_registration_sha256']:
         raise ValueError('Amendment does not match registered original protocol')
-    allocation={j['seed']:j for j in json.loads((root/'native12/protocol.json').read_bytes())['plan'] if j['mode']=='train'}
+    worker_plan=root/'native12/protocol.json'
+    while not worker_plan.is_file():time.sleep(10)
+    allocation={j['seed']:j for j in json.loads(worker_plan.read_bytes())['plan'] if j['mode']=='train'}
     expected=plan['train_seeds']['12']
     if set(expected)!=set(allocation) or expected!=amendment['original_seeds']:
         raise ValueError('Changed original seed slots')
@@ -58,8 +62,9 @@ def main():
             attempted_th12_credits=len(accepted)+rejected_count,rejected_attempts=rejected_count)
     effective=root/'effective-train-protocol.json';freeze(effective,plan)
     print('Selected original whole credits',plan['technical_selection'],flush=True)
+    parent=d/('five-game-generation2/policy' if args.generation==3 else 'five-game-online/policy')
     subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update','--root',root,
-                    '--parent',d/'five-game-online/policy','--protocol',effective,'--th12-coverage'],check=True)
+                    '--parent',parent,'--protocol',effective,'--th12-coverage'],check=True)
 
 
 if __name__=='__main__':
