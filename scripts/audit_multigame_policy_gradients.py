@@ -20,8 +20,10 @@ def cosine(a,b):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    d=p.parse_args().data.resolve()
-    root=d/'five-game-online';manifest=root/'training/credits.json'
+    p.add_argument('--study',choices=('five-game-online','five-game-generation2'),default='five-game-online')
+    args=p.parse_args();d=args.data.resolve()
+    first=args.study=='five-game-online'
+    root=d/args.study;manifest=root/('training/credits.json' if first else 'corrected/credits.json')
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     report=json.loads((root/'policy/report.json').read_bytes())
     if digest(manifest)!=report['manifest_sha256']:raise ValueError('Changed training population')
@@ -29,13 +31,15 @@ def main():
     torch.backends.cuda.matmul.allow_tf32=False
     torch.backends.cudnn.allow_tf32=False
     device='cuda' if torch.cuda.is_available() else 'cpu'
-    parent=d/'specialist-vs-shared/merged-equal'
+    parent=d/('specialist-vs-shared/merged-equal' if first else 'five-game-online/policy')
     if digest(parent/'policy.ts')!=plan['behavior_sha256']:raise ValueError('Incorrect parent')
     camera=CameraPolicy()
-    state=torch.load(parent/'camera-policy.pt',weights_only=True,map_location='cpu')
+    state=torch.load(parent/('camera-policy.pt' if first else 'camera-ppo.pt'),weights_only=True,map_location='cpu')
     if any('policy.spatial_context.' in n for n in state):camera.add_spatial_context()
-    camera.load_state_dict(state)
-    model=CameraActorCritic(camera).eval().to(device)
+    model=CameraActorCritic(camera)
+    if first:camera.load_state_dict(state)
+    else:model.load_state_dict(state)
+    model.eval().to(device)
     parameters=list(camera.named_parameters())
     active_parameters=None
     rows=json.loads(manifest.read_bytes())
@@ -91,7 +95,7 @@ def main():
                         four_game_dot=float(torch.dot(value,g4)),five_game_dot=float(torch.dot(value,g5)))
     out=root/'gradient-audit';out.mkdir(exist_ok=True)
     data=dict(registration=report['protocol_sha256'],behavior=plan['behavior_sha256'],manifest_sha256=digest(manifest),
-              interpretation='Post-hoc training diagnosis at the exact shared initialization. Mean policy-loss gradients only, all camera and action-head parameters. Same four-head joint log probability, per-stratum GAE normalization and decision weighting as PPO before clipping becomes active. Excludes value and entropy losses, Adam moments and later epochs. Dots and cosines do not measure game performance. Cross-half estimates divide whole credits within stratum by alternating sorted controller seeds; full-stratum advantage normalization is shared across halves.',
+              interpretation='Post-hoc training diagnosis at the exact deployed behavior checkpoint. Mean policy-loss gradients only, active camera and action-head parameters. Same four-head joint log probability, per-stratum GAE normalization and decision weighting as PPO before clipping becomes active. Excludes value and entropy losses, Adam moments and later epochs. Dots and cosines do not measure game performance. Cross-half estimates divide whole credits within stratum by alternating sorted controller seeds; full-stratum advantage normalization is shared across halves. The separate exhaustive within-stratum result enumerates every balanced partition of whole credits.',
               strata=names,active_parameter_names=active_parameters,fold_seeds=seeds,measurements=norms,pairwise_cosines=pairwise,cross_half_cosines=cross,
               cosine_of_four_and_five_title_mean=cosine(g4,g5))
     (out/'train-gradients.json').write_text(json.dumps(data,indent=2)+'\n',encoding='utf8')

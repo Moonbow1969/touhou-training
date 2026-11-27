@@ -12,7 +12,8 @@ def main():
     parser.add_argument('--data',required=True,type=Path)
     args=parser.parse_args()
     data=args.data.resolve()
-    studies=['four-game-online','four-game-ppo-generation2','four-game-merged-online','th11-original-ppo','five-game-generation2']
+    studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
+             'th11-original-ppo','human78-online-covered','five-game-generation2']
     counts=Counter();seen=set();reports={}
     for study in studies:
         path=data/study/'policy/report.json'
@@ -38,7 +39,7 @@ def main():
         if not keys<=seen or len(keys)!=len(result['credits']) or digest(path.with_name('policy.ts'))!=result['policy_sha256']:
             raise ValueError(f'Invalid source reuse in {study}')
         reused[study]=dict(reused_credits=len(keys),reused_decisions=result['steps'],checkpoint=result['policy_sha256'])
-    out=dict(count_unit='Distinct original full-credit trajectories from the listed fitted PPO studies, identified by title, seed and frozen behavior. Multiple fits on the same physical credits appear separately.',
+    out=dict(count_unit='Distinct original full-credit trajectories from main-series PPO reports carrying native Hard or Lunatic labels, identified by title, seed and frozen behavior. Decisions count playable optimizer input rows before epoch repetition. The original high-rank-online cohort predates the strict live-control audit. Physical exposure in that cohort does not by itself certify continuous TH12 control. Additional fits on the same physical credits appear separately. Partly acquired new generations are added once actually fitted.',
              credits=len(seen),decisions=sum(v for (t,r,key),v in counts.items() if key=='decisions'),
              by_game=table,studies=reports,shared_trajectory_fits=reused)
     path=data/'learning-curves/hard-lunatic-training-coverage.json'
