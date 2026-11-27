@@ -10,6 +10,7 @@ from PIL import Image
 import torch
 
 from scripts.checkpoint_storage import digest
+from scripts.original_camera_heads import policy_heads
 from scripts.train_five_original_games import freeze
 
 
@@ -152,7 +153,7 @@ def run(args):
                         prev=camera
                     inputs=np.stack([camera,np.abs(camera.astype(np.int16)-prev).astype(np.uint8)])[None]
                     with torch.inference_mode():
-                        *heads,critic=actor(torch.from_numpy(inputs).float()/255.)
+                        heads,critic=policy_heads(actor(torch.from_numpy(inputs).float()/255.),1)
                         act=[int(torch.multinomial(logits.softmax(1),1)) for logits in heads]
                         lp=[float(logits.log_softmax(1)[0,a]) for logits,a in zip(heads,act)]
                     key=mask_for(act)

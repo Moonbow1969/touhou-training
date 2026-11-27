@@ -8,6 +8,7 @@ import numpy as np
 import torch
 
 from scripts.checkpoint_storage import digest
+from scripts.original_camera_heads import policy_heads
 from scripts.run_th08_trial_camera import mask_for
 from scripts.train_five_original_games import freeze
 
@@ -102,7 +103,8 @@ def qualify(folder,actor,arm_digest,expected_seed,rank,role,out):
     error=v_error=0.
     with torch.inference_mode():
         for j in range(0,n,48):
-            *heads,value=actor(images[j:j+48])
+            batch=images[j:j+48]
+            heads,value=policy_heads(actor(batch),len(batch))
             actual=torch.as_tensor(actions[j:j+48],dtype=torch.long)
             predicted=torch.stack([h.log_softmax(1).gather(1,actual[:,k:k+1])[:,0] for k,h in enumerate(heads)],1)
             error=max(error,float((predicted-torch.from_numpy(lp[j:j+48])).abs().max()))

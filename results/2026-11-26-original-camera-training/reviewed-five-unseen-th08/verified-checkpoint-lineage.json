@@ -1,0 +1,50 @@
+{
+  "held_title": 8,
+  "training_lineage": [
+    {
+      "phase": "privileged visual encoder",
+      "rows_by_title": {
+        "10": 1624,
+        "12": 51,
+        "13": 8936
+      },
+      "report_sha256": "7db63801274b21a06187cfc2f52b6de7f36ce347342a740a6aff33baab89d0ce"
+    },
+    {
+      "phase": "38-pilot camera initialization",
+      "stage_counts": {
+        "TH10": 14,
+        "TH12": 15,
+        "TH13": 19
+      },
+      "report_sha256": "cbb6106e793a041e955e465c246b0482813d20e9e2a8efc528acb97d54528987"
+    },
+    {
+      "phase": "reviewed five-title human SFT",
+      "stage_counts": {
+        "TH10": 15,
+        "TH12": 17,
+        "TH13": 18,
+        "TH17": 24,
+        "TH11": 10
+      },
+      "decisions": 284222,
+      "report_sha256": "98182d6f3a5dd51c5e260da6178b2c4bb60b5d9b44f5e1fd9847ec1e9d887e10"
+    },
+    {
+      "phase": "five-title original online PPO",
+      "credit_counts": {
+        "10": 16,
+        "11": 16,
+        "12": 16,
+        "13": 16,
+        "17": 16
+      },
+      "decisions": 35897,
+      "report_sha256": "f4066e466213b13bf94f2c7abba850c5aed18b43fb9caae8f49fbe5f5646fea1"
+    }
+  ],
+  "reference_policy_sha256": "e68c5a0d5346bbf81f23e7aa1546b1e24ae7af83137fbc0955bbe91f8c0e7b58",
+  "candidate_policy_sha256": "fb91fb7b8f46240da00ed6ff4270b462ca0939be949d62c4724d3cc4e6d59c6b",
+  "scope": "Content hashes link actual checkpoint exports, the privileged training visual encoder, inherited human camera initialization, 84 human replay stages, and 80 true on-policy original credits. TH08 did not appear in any listed training stage. TH08-specific observations and qualification witnesses are used only for evaluation."
+}
