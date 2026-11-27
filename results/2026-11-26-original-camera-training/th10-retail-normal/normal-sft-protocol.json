@@ -1,0 +1,90 @@
+{
+  "parent_sha256": "0d62189b112dedbc5b636ead07db16e3680116d60c59d4894d0d8f5de1be559c",
+  "held": [
+    "15f06a168be277e939313be7a22fcd9e42aa6a27257095c54152feb936c305c7",
+    "3ea1d82c7e283b130d9275f8dac8f6a0c135bf6ce4c616ba180aad3751c885ed"
+  ],
+  "updates": 1500,
+  "train": [
+    {
+      "file": "human-cross-title-v2/train/th10-gensokyo-20167-s1.npz",
+      "sha256": "77015562d78b1d3d158a102714a363f15ebe46297543e65628b9e224da4111e3",
+      "player": "chirpy13",
+      "shot": "MarisaB"
+    },
+    {
+      "file": "human-cross-title-v2/train/th10-gensokyo-4343-s1.npz",
+      "sha256": "1be2663f1bd29884a16143c2fe384e522fa0c79a3a617e6b468873bd65575d92",
+      "player": "geomil",
+      "shot": "ReimuC"
+    },
+    {
+      "file": "human-cross-title-v2/train/th10-gensokyo-4343-s2.npz",
+      "sha256": "53b86842dc9a143079a03b9a240c25a63ca740691eae7daed9eaa3d7baa17279",
+      "player": "geomil",
+      "shot": "ReimuC"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-13913-s1.npz",
+      "sha256": "4b4416b49b8ae9125e5ec61a40dfcc15caa5897e8a85c2baa0907e98cbf2b577",
+      "player": "railgun",
+      "shot": "ReimuB"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-17086-s1.npz",
+      "sha256": "ba1e441e9e5093148badf2ca98aa488e674a603f98beea4c66b561e522c3c652",
+      "player": "zodiac",
+      "shot": "ReimuA"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-19972-s1.npz",
+      "sha256": "c41ef4dd65388f6a5fdccc30fe08cc78bb12085ce4d3ca5d2894bb65928d4288",
+      "player": "mmx",
+      "shot": "MarisaC"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-30825-s1.npz",
+      "sha256": "379b406019097c08a55951fc92bc4ff3cd96c962ba21ee922789a9feee2583dd",
+      "player": "a22",
+      "shot": "ReimuA"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-34269-s1.npz",
+      "sha256": "93d850f6e7d25566d28d9c305fa54cdb4ace7fead49ca32445772dbb867538c0",
+      "player": "virusx",
+      "shot": "ReimuC"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-37045-s1.npz",
+      "sha256": "e11816c0147745993a144879c6e97622e3d87d2092e5f2a7b57ddbddd62d8976",
+      "player": "kapejek",
+      "shot": "ReimuB"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-38898-s1.npz",
+      "sha256": "8db1a6cf3ea8064259833f17b3601df1ace9e51de69c1ae6401712677afa39e4",
+      "player": "marisaac",
+      "shot": "MarisaC"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-676-s1.npz",
+      "sha256": "6837235ebe6a60c0f8e92e28e3d7ecd5ff469504d19476cdfc324af15eb204a7",
+      "player": "otter",
+      "shot": "ReimuA"
+    },
+    {
+      "file": "human-train-incremental/train/th10-gensokyo-9481-s1.npz",
+      "sha256": "68e9f72a6b59fdb2560607c3f1b1b64ac2fc31995c4bcef6dcabd548d57b5b97",
+      "player": "slice",
+      "shot": "ReimuB"
+    },
+    {
+      "file": "human-train-incremental-technical-retries/train/th10-gensokyo-9432-s1.npz",
+      "sha256": "32e8a4fa0fe91f847b6ef96fc729724917afb3c5566521418e815fffd65906d9",
+      "player": "yleffl",
+      "shot": "ReimuA"
+    }
+  ],
+  "diagnosis": "The general-purpose actor changed directions on more than 60% of adjacent decision pairs versus roughly 27% for one frozen human. Train on the actual Normal title and correct the enrichment sampler to match natural human movement frequencies. Hold this one diagnostic player out of the fit.",
+  "endpoint": "New, same-version Stage 1 Normal Reimu A games from stock. Preserve preset two seeds and no Continue. One human replay is insufficient for generalization or campaign claims."
+}
