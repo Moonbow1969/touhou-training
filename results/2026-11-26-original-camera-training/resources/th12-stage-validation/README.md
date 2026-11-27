@@ -1,0 +1,27 @@
+# TH12 original stage observation
+
+All controls use the official *Undefined Fantastic Object* trial 0.02a executable, SHA-256 `c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a`. The original game renders a 640 × 480 client. Human-replay controls and isolated engineering runs have separate identities from every policy credit.
+
+## What the stage labels certify
+
+A highlighted native score-ranking row certifies the stage printed beside that credit's score. The scorer requires the white Score Ranking title, the highlighted yellow “Stage” word and one of the three digit glyphs. Each binary-glyph Dice similarity must reach 0.98. Menu glyphs came from genuine native Stage 1/2/3 selections. The Stage 1 menu and Stage 1 ranking masks match pixel for pixel. The Normal Stage 2 live ranking matches all three native templates with Dice 1.000. The original row shows 1,443,190 and Stage 2. [Live Stage 2 ranking](native-stage2-ranking.png)
+
+The independent in-play detector searches for the vertical Japanese Stage 2 title and the horizontal purple subtitle stripe. A Normal Reimu A replay provided the reference. An Easy Reimu B replay played continuously from Stage 1, showed the same title in four consecutive photos with correlation 0.997, and ended on Stage 2's Kogasa encounter with the original displayed score of 6,864,970. The trial's native replay menu also showed that this recording ended in Stage 2. [Independent natural transition](easy-natural-stage2-banner.jpg) · [Original replay ending](easy-stage2-replay-end.png) · [Replay provenance](replay-engineering-controls.json)
+
+An independent live-game check on Steam Deck started a new Normal Reimu A story credit. The isolated engineering fixture replenished a Stage 1 spare 16 times while holding fire and the original dialogue-skip key. The game itself changed the stage and computed the score. Once it reached Stage 2, the fixture released the keys and granted zero spares. The original game rendered its Stage 2 banner, exhausted the stock and displayed the highlighted Stage 2 result. This fixture measures the observer. Its progress contributes zero training or test credits. [Live banner](live-stage2-banner.jpg) · [Machine-readable evidence](verification.json)
+
+## Historical policy outcomes
+
+The lossless terminal and available post-Game-Over ranking each get a separate score. Missing rank or a failed digit match leaves final stage unknown unless the play sequence provides positive Stage 2 evidence. A Game Over overlay proves that stock ran out. Absence of a Stage 2 banner on the archived cameras, by itself, supplies no negative final-stage label. A trial clear or ending screen lies outside the old collector's accepted Game Over/ranking terminal set and can be technically censored.
+
+Across eleven historical normalized comparisons, the index verified 208 unique original trajectories by matching the signed action trajectory, source receipt and terminal image hashes. It found 148 authenticated Stage 1 outcomes and 60 unknown final stages. It found zero authenticated Stage 2 policy outcomes. Records recur across comparisons, so these 208 originals cannot be treated as 208 independent pairwise experiments. Four principal comparisons retain each endpoint's evidence path, pixel hash and glyph scores. [96 primary readings](primary-stage-endpoints.json)
+
+## Prospective native readout
+
+Fresh large-batch credits also archive a read-only external observer. In this exact trial build the stage field is `0x4aea38`. The recorder pointer at `0x4b21d4` exposes mode at offset `0x10`, native tick at `0x100`, and its current stage at `0x108`. The native spare/Bomb counters are `0x4aea20` and `0x4aea28`. These are telemetry only. The camera policy receives the same full-action image inputs as its frozen comparator.
+
+The verifier checks the executable and observer fingerprints, a full actor-time span, stable live recording mode, an initial Stage 1 with two spares, monotonic stage transitions and genuine stock exhaustion. An unreadable terminal can be resolved when the authenticated observer ran through the native loss. Disagreement with an original readable rank or positive Stage 2 banner triggers review. First-entry reserves are reported when the observer catches consistent stock by native Stage 2 tick four. Release and trial builds have different data layouts.
+
+## Human source split
+
+Thirteen community archive files have the exact 0.02a header and independently decodable native input streams. All uploads from the two engineering-control pilots, POP and /=/, are excluded. One anonymous upload is quarantined. The remaining five named human pilots have 179,797 native input ticks across Easy, Normal, Hard and Lunatic. We froze KEN., RB26 and SASASASA for training and 8/1_5 and yen for held evaluation, with every stage from each pilot kept together. The selection was frozen before inspecting the other pilots' outcomes. The first KEN. Stage 1 stream has 2,476 paired camera/4-head rows, 98.46% stage span and 100% native movement/input agreement over 1,614 moving samples. It contains zero human Bomb examples. [Frozen split](human-frozen-split.json) · [Trial replay manifest](human-trial-manifest.json) · [Independent KEN. registration](independent-ken-s1.json)
