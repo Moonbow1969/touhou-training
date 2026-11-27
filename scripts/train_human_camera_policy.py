@@ -24,8 +24,8 @@ def camera_labels(words, focus_bit=8):
 def load_replay(path, include_eight_tick_camera=False, include_player_position=False):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
     title=str(metadata["title"]).upper()
-    focus_bit={"TH10":4,"TH11":8,"TH12":8,"TH13":8,"TH17":8}.get(title)
-    if title in {"TH11","TH17"} and metadata.get("focus_bit")!=focus_bit:
+    focus_bit={"TH10":4,"TH11":8,"TH12":8,"TH13":8,"TH16":8,"TH17":8}.get(title)
+    if title in {"TH11","TH16","TH17"} and metadata.get("focus_bit")!=focus_bit:
         raise ValueError(f'{title} replay requires an explicitly qualified native focus bit')
     if focus_bit is None or metadata.get("focus_bit",focus_bit)!=focus_bit:
         raise ValueError(f"Unverified original input schema for {title}")
@@ -66,11 +66,13 @@ def load_replay(path, include_eight_tick_camera=False, include_player_position=F
     if not np.any(keep):
         raise ValueError(f"No usable causal observations in {path}")
     player=metadata.get("player_group",metadata.get("player"))
+    if title=="TH16":
+        player=metadata.get("credited_group") or player
     if not player:
         raise ValueError("A replay needs an identified player group")
     result={"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
             "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep],"native_frame":frame[keep]}
-    rank_name=metadata.get("difficulty") or metadata.get("mode")
+    rank_name=metadata.get("difficulty") or metadata.get("mode") or metadata.get("declared_rank")
     result["difficulty"]=str(rank_name).split()[-1].title() if rank_name else None
     if include_player_position:
         if native_xy.shape!=(len(frame),2):raise ValueError('Missing native player coordinates')

@@ -54,13 +54,17 @@ def main():
             raise ValueError('Unbound TH12 training receipt')
         fitted_receipts[seed]=file
     for seed,v in sorted(by_seed.items()):
-        if v['coverage'] not in ('qualified','indeterminate') or not v['evidence_sha256']:raise ValueError('Unknown TH12 grade')
+        if (v['coverage'] not in ('qualified','indeterminate') or v['rank']!=plan['rank_by_seed']['12'][str(seed)]
+            or digest(d/v['evidence_path'])!=v['evidence_sha256'] or digest(d/v['receipt_path'])!=v['receipt_sha256']):
+            raise ValueError('Unverified original TH12 grade')
         if v['coverage']=='qualified':
-            if seed not in fitted_receipts or digest(d/v['evidence_path'])!=v['evidence_sha256']:raise ValueError('Missing qualified TH12 provenance')
+            if seed not in fitted_receipts:raise ValueError('Missing qualified TH12 provenance')
             qualified[plan['rank_by_seed']['12'][str(seed)]].append(seed)
     n=min(8,len(qualified[2]),len(qualified[3]))
     if not n:raise ValueError('TH12 supplied no matched qualifying rank pair')
     chosen=sorted(qualified[2][:n]+qualified[3][:n])
+    if chosen!=sorted(seed for seed,v in by_seed.items() if v['selected_for_ppo']):
+        raise ValueError('Independent TH12 input reviewers selected different seeds')
     effective=dict(plan,train_seeds={**attempts,'12':chosen},registered_protocol_sha256=digest(protocol),th12_grades_sha256=digest(grades_path))
     selected=root/'fit-protocol.json';freeze(selected,effective)
     subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update','--root',str(root),'--protocol',str(selected),'--parent',str(source),'--from-sft','--fit-only'],check=True)
