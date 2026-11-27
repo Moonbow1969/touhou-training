@@ -9,6 +9,8 @@ Both policies start from the same visual encoder and train all four action heads
 
 The TH11 development population is a single other player, Dagoth2hu, on Lunatic Marisa C. These values describe imitation on that player’s original screens. A larger distinct player roster provides the next check.
 
+The prospective TH11 check qualified three of four additional players. Across their 8,425 original windows, movement accuracy rose from 4,131/8,425 (49.0%) with four-title training to 4,450/8,425 (52.8%) with all ten added TH11 stages. The largest gain came from one Lunatic player. On the same three players, correct movement starts fell from 48/717 to 34/717. [Full independent comparison and excluded capture](reviewed-independent-th11/README.md)
+
 Two further five-title policies used the same initialization, 192,000 total sampled windows and the same 37,928 sampled TH11 windows as the first five-title actor. The larger source sets include real Bomb onsets. All four other games retain their original training stages.
 
 | TH11 training stages | TH11 players | TH11 distinct windows | TH11 Bomb onsets | All five-title training windows | Held directions | Held starts | Held turns |
