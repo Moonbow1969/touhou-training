@@ -1,0 +1,59 @@
+{
+  "credits": 32,
+  "original_cpu_quota_per_lane": 2,
+  "host": "Gamer-WSL",
+  "common_allocated_lanes": [
+    "th17-alpha-private-66",
+    "th17-beta-private-66",
+    "th17-delta-private-66",
+    "th17-gamma-private-66"
+  ],
+  "common_allocation_monotonic_seconds": [
+    551195.281311508,
+    552046.918554595
+  ],
+  "scope": "Active native ticks and applied four-head decisions per real second. All instrumented lanes are allocated to this same study throughout the common window. Excludes initial rollout before the last lane joins, the tail after any lane completes, and partial one-second bins for the active-count comparison.",
+  "groups": {
+    "4": {
+      "overlap_seconds": 300,
+      "mean_aggregate_native_ticks_per_second": 127.70963962233077,
+      "median_aggregate_native_ticks_per_second": 127.85135839230318,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        113.47201680193503,
+        142.47170498766886
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 29.79
+    },
+    "3": {
+      "overlap_seconds": 338,
+      "mean_aggregate_native_ticks_per_second": 95.74778427762942,
+      "median_aggregate_native_ticks_per_second": 96.18269876391673,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        82.53617654621755,
+        109.30578063903685
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 22.310650887573964
+    },
+    "2": {
+      "overlap_seconds": 167,
+      "mean_aggregate_native_ticks_per_second": 64.80123710748427,
+      "median_aggregate_native_ticks_per_second": 64.65332637359302,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        55.90183398127196,
+        75.73829624664708
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 14.874251497005988
+    }
+  },
+  "end_to_end": {
+    "physical_wall_seconds": 851.6372430869378,
+    "decisions": 20071,
+    "native_credit_terminals": 24,
+    "amortized_decisions_per_second": 23.56754611534889,
+    "native_terminals_per_hour": 101.45164587544936,
+    "fraction_available_game_slots_acting": 0.7907135536630562,
+    "intercredit_gap_seconds_median": 31.521619177423418,
+    "intercredit_gap_seconds_p90": 33.18351049810881,
+    "gap_definition": "Previous last action to next first action on same instance: includes title reset, UI evidence, packing, model readiness and dispatch."
+  }
+}

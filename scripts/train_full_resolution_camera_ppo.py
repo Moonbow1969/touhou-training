@@ -56,7 +56,7 @@ def logits_on(model, images, device, previous_moves=None):
         return tuple(torch.cat(part).cpu() for part in zip(*output))
 
 
-def credit(record, manifest, model, parent, device, *, direction_history=False, actor_baseline=None, actor_lambda=.985):
+def credit(record, manifest, model, parent, device, *, direction_history=False, actor_baseline=None, actor_lambda=.985, removed_cast_cost=None):
     if record['role']!='train' or record['policy_sha256']!=parent or record['outcome'] not in ('game_over','ending'):
         raise ValueError('Unverified policy or endpoint')
     path=manifest.parent/record['file']
@@ -92,6 +92,11 @@ def credit(record, manifest, model, parent, device, *, direction_history=False, 
                                postterminal_excluded_decisions=n-length,finite_terminal_index=length-1,bootstrap_value=0.)
         images=images[:length];actions=actions[:length];native_lp=native_lp[:length]
         native_v=native_v[:length];reward=reward[:length];heads=[h[:length] for h in heads]
+    if removed_cast_cost is not None:
+        if removed_cast_cost.shape!=(n,) or not np.isfinite(removed_cast_cost).all() or (removed_cast_cost>0).any() or np.any(removed_cast_cost[length:]):
+            raise ValueError('Invalid native cast-cost component')
+        eligibility_audit.update(native_reward_sum=float(reward.sum()),removed_cast_cost=float(removed_cast_cost.sum()))
+        reward=reward-removed_cast_cost[:length]
     adv=calculate_gae(reward,native_v,.999,.985)
     returns=native_v+adv
     if actor_baseline is not None:
@@ -189,6 +194,7 @@ def main():
     p.add_argument('--replay-anchor',nargs='+',type=Path,help='Exact human image training shards for KL to the initial SFT actor')
     p.add_argument('--anchor-weight',type=float,default=0.)
     p.add_argument('--actor-advantage-baselines',type=Path)
+    p.add_argument('--remove-cast-cost',type=Path,help='Registered native same-life cast penalties keyed by physical training credit')
     a=p.parse_args();torch.set_num_threads(2);torch.manual_seed(261127)
     if (a.replay_anchor and (not a.sft or a.anchor_weight<=0)) or (not a.replay_anchor and a.anchor_weight!=0.):
         p.error('A replay anchor needs an SFT parent, its training shards, and a positive weight')
@@ -232,11 +238,19 @@ def main():
                 raise ValueError('Expected one out-of-fold baseline per training credit')
             baselines=dict(archive)
     actor_lambda=plan.get('actor_gae_lambda',.985)
+    cast_cost={}
+    if a.remove_cast_cost or plan.get('cast_cost_sha256'):
+        if not a.remove_cast_cost or sha(a.remove_cast_cost)!=plan.get('cast_cost_sha256'):
+            raise ValueError('Original cast-cost archive changed')
+        with np.load(a.remove_cast_cost,allow_pickle=False) as archive:cast_cost=dict(archive)
+        expected_cost={f"th{r['title']}-{r['seed']}" for r in rows if r['title'] in plan['cast_cost_titles']}
+        if set(cast_cost)!=expected_cost:raise ValueError('Incomplete original cast-cost population')
     if actor_lambda not in (.985,1.) or (actor_lambda!=.985 and not baselines):
         raise ValueError('Unexpected registered actor return estimator')
     for r in rows:
         key=f"th{r['title']}-{r['seed']}"
-        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback,actor_baseline=baselines.get(key),actor_lambda=actor_lambda)
+        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback,actor_baseline=baselines.get(key),
+                              actor_lambda=actor_lambda,removed_cast_cost=cast_cost.get(key))
         group=r['title']
         if plan.get('balanced_title_rank'):
             rank=plan['rank_by_seed'][str(group)][str(r['seed'])]
@@ -283,6 +297,7 @@ def main():
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
               equal_weight_strata=sorted(data),
+              **({'removed_cast_cost_sha256':sha(a.remove_cast_cost)} if cast_cost else {}),
               **({'actor_advantage_baselines_sha256':sha(a.actor_advantage_baselines)} if baselines else {}),
               **({'previous_direction_input':True,'direction_residual_sha256':sha(a.direction_residual) if a.direction_residual else None} if feedback else {}),
               **({'optimizer_decision_sampling':sampling} if sampling else {}),

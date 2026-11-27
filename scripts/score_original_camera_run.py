@@ -70,11 +70,13 @@ def verified_th10_entry(receipt, folder):
     return True,checksum,(int(row['lives']),None,int(row['power_units'])/20)
 
 
-def records(root, camera, round2=False):
+def records(root, camera, round2=False, *, include_held_endpoints=False):
     if round2:
         yield from ((10,f) for f in (root/"native10").rglob("report.json"))
         yield from ((11,f) for f in (root/"native11").glob("*/receipt.json"))
         yield from ((12,f) for f in (root/"native12/credits").glob("*.json"))
+        if include_held_endpoints:
+            yield from ((12,f) for f in (root/'native12/endpoint-only').glob('*.json'))
         yield from ((13,f) for f in (root/"native13").glob("*/receipt.json"))
         yield from ((17,f) for f in (root/"native17").glob("*/receipt.json"))
         return
@@ -88,6 +90,16 @@ def records(root, camera, round2=False):
 
 
 def verify(title, f, r, trace, arm, out):
+    endpoint_only=f.parent.name=='endpoint-only'
+    if endpoint_only:
+        if title!=12 or r['mode']!='held' or r['admitted_to_optimizer'] is not False or r['control_coverage']!='indeterminate' or r.get('covered_native_events'):
+            raise ValueError('Expected an evaluation-only original game with explicitly uncertain input coverage')
+        root=f.parent.parent.parent
+        evidence=(root.parent/r['evidence_path']).resolve();evidence.relative_to(root.resolve())
+        if digest(evidence)!=r['evidence_sha256']:raise ValueError('Changed input-gap evidence')
+        native_folder=f.parent.parent/'raw'/r['episode']
+        for filename,expected in r['original_sources_sha256'].items():
+            if Path(filename).name!=filename or digest(native_folder/filename)!=expected:raise ValueError('Original endpoint evidence changed')
     if title==10:
         photo=f.parent/"endpoint.png";steps=r["steps"];seconds=r["duration_s"];casts=len(r["successful_bombs"])
         lives=r["final_lives"];bombs=None;power=r["final_power"];build=r["game_sha256"]
@@ -167,7 +179,8 @@ def verify(title, f, r, trace, arm, out):
                 stage2_reached=stage_flag,stage2_evidence_sha256=stage_evidence,
                 stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
-                **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),
+                **({'input_control_coverage':'indeterminate','input_coverage_evidence_sha256':r['evidence_sha256'],
+                    'input_coverage_reason':r['control_coverage_reason']} if endpoint_only else {}),
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
                 **({'raw_sampled_decisions':raw_steps,'postterminal_excluded_decisions':raw_steps-steps} if raw_steps!=steps else {}),
                 **({'last_playable_bombs':checked['last_playable_bombs']} if title==17 else {}),
@@ -183,6 +196,7 @@ def main():
     p.add_argument("--round2",action="store_true")
     p.add_argument("--titles",nargs="+",type=int,choices=(10,11,12,13,17))
     p.add_argument("--arm-names",nargs=2,metavar=("REFERENCE","CANDIDATE"))
+    p.add_argument('--include-held-endpoints',action='store_true',help='Include independently verified physical outcomes with explicit input coverage annotations.')
     args=p.parse_args()
     arms=args.arm_names or (("camera-sft","camera-ppo") if args.camera else ("ppo3","ppo4"))
     hashes={digest(k):n for k,n in zip((args.parent,args.candidate),arms)}
@@ -190,7 +204,7 @@ def main():
     if args.titles:protocol["eval_seeds"]={k:v for k,v in protocol["eval_seeds"].items() if int(k) in args.titles}
     wanted={(int(t),s,a) for t,seeds in protocol["eval_seeds"].items() for s in seeds for a in arms}
     found={}
-    for t,f in records(args.root,args.camera,args.round2):
+    for t,f in records(args.root,args.camera,args.round2,include_held_endpoints=args.include_held_endpoints):
         r=json.loads(f.read_bytes()); arm=hashes.get(r.get("policy_sha256"))
         key=(t,r.get("seed"),arm)
         if key not in wanted:continue

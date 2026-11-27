@@ -153,6 +153,11 @@ class CameraPool(Pool):
             print("COMPLETE",tag,record["steps"],record["stage2"],flush=True)
         finally:
             if pid is not None:
+                measure=getattr(self,'observe_inference_cost',None)
+                if measure is not None:
+                    try:measure(pid,lib)
+                    except Exception as exc:
+                        print("Inference cost unavailable",repr(exc),flush=True)
                 # Verify exact socket directory in the process arguments before stopping this sidecar.
                 self.remote(f"if tr '\\0' '\\n' </proc/{pid}/cmdline 2>/dev/null | grep -Fqx {shlex.quote(lib)}; then kill {pid}; fi")
             self.release(name)

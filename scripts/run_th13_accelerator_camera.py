@@ -8,11 +8,39 @@ import shlex
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from types import SimpleNamespace
 
 NATIVE = Path(__file__).resolve().parents[1] / 'tools/rollout-worker-probe/th13-full'
 sys.path.insert(0, str(NATIVE))
 from run_camera_credit import CameraPool
+
+_manifest_lock = threading.Lock()
+
+
+def record_rank_manifest(folder, manifest):
+    target = folder / 'rank-launcher.json'
+    data = (json.dumps(manifest, indent=2) + '\n').encode('utf-8')
+    with _manifest_lock:
+        if target.is_file() and json.loads(target.read_bytes()) == manifest:
+            return
+        with tempfile.NamedTemporaryFile(dir=folder, delete=False) as stream:
+            stream.write(data)
+            scratch = Path(stream.name)
+        try:
+            for attempt in range(20):
+                try:
+                    scratch.replace(target)
+                    return
+                except PermissionError:
+                    if target.is_file() and json.loads(target.read_bytes()) == manifest:
+                        return
+                    if attempt == 19:
+                        raise
+                    time.sleep(.05)
+        finally:
+            scratch.unlink(missing_ok=True)
 
 
 def run(args):
@@ -38,10 +66,15 @@ def run(args):
     target=conn[-1];known=next(x.split('=',1)[1] for x in conn if x.startswith('UserKnownHostsFile='))
     python=remote('v="$HOME/.local/share/toho-ml/distributed-ppo/venv/bin/python"; "$v" -c "import torch" && printf "%s" "$v"')
     rank=getattr(args,'difficulty',1)
-    if rank not in (1,2,3):raise ValueError('Supported native story ranks are Normal, Hard and Lunatic')
+    if rank not in (0,1,2,3):raise ValueError('Unknown native story difficulty')
     launcher=base+'/toho-th13-lm-261125/src/launch.sh';runtime=base+'/run'
-    if rank>1:
+    if rank!=1:
         source=(NATIVE.parent/'th13-pixels/launch.sh').read_bytes().replace(b'\r\n',b'\n')
+        if rank==0:
+            token=b'            if [ "$screen" = difficulty ] && [ "$TH13_RANK" -gt 1 ]; then'
+            assert source.count(token)==1 and b'case "$rank" in 1|2|3)' in source
+            source=source.replace(b'case "$rank" in 1|2|3)',b'case "$rank" in 0|1|2|3)').replace(token,
+                b'            if [ "$screen" = difficulty ] && [ "$TH13_RANK" = 0 ]; then xdotool keydown Up; sleep .15; xdotool keyup Up; sleep .4; fi\n'+token)
         fingerprint=hashlib.sha256(source).hexdigest()
         runtime=base+'/ranked-story-'+fingerprint[:16]+'-'+str(rank)
         launcher=runtime+'/launch.sh'
@@ -60,19 +93,16 @@ def run(args):
                 raise ValueError('Isolated rank companion does not match qualified runtime')
         remote('gcc -std=c99 -Wall -Wextra -Werror -fsyntax-only '+shlex.quote(runtime+'/pixel-capture.c'))
         args.output.mkdir(exist_ok=True,parents=True)
-        staging=tempfile.NamedTemporaryFile(dir=args.output,mode='w',encoding='utf-8',delete=False)
-        with staging:
-            json.dump(dict(game_sha256=evidence['game_sha256'],launch_sha256=fingerprint,
+        record_rank_manifest(args.output,dict(game_sha256=evidence['game_sha256'],launch_sha256=fingerprint,
                 companion_sha256={f[len(prefix):]:files[f] for f in files if f.startswith(prefix) and not f.endswith('/launch.sh')},
-                upstream='tools/rollout-worker-probe/th13-pixels/launch.sh',supported_ranks=[2,3],
+                upstream='tools/rollout-worker-probe/th13-pixels/launch.sh',supported_ranks=[0] if rank==0 else [2,3],
                 qualification='Isolated original launch with TH13_RANK; stages/characters from native official observer.',
-                native_rank_column=141),staging,indent=2);staging.write('\n')
-        Path(staging.name).replace(args.output/'rank-launcher.json')
+                native_rank_column=141))
     options=SimpleNamespace(host=target,host_label='accelerator',known_hosts=Path(known),
         remote_root=runtime,prior_bridge=base+'/toho-th13-cadence-261125/bridge',
         assets=base+'/toho-th13-261125/assets/app',launcher=launcher,difficulty=rank,
         image=image,python_executable=python,checkpoint=args.checkpoint.resolve(),output=args.output.resolve(),
-        role=args.role,arm=args.arm)
+        role=args.role,arm=args.arm,verified_easy_launcher=rank==0)
     pool=CameraPool(options)
     pool.prepare()
     with ThreadPoolExecutor(args.workers) as workers:list(workers.map(pool.run_credit,args.seeds))
@@ -84,5 +114,5 @@ if __name__=='__main__':
         p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--arm',required=True);p.add_argument('--role',choices=('train','held'),required=True)
     p.add_argument('--seeds',type=int,nargs='+',required=True);p.add_argument('--workers',type=int,default=1)
-    p.add_argument('--difficulty',type=int,choices=(1,2,3),default=1)
+    p.add_argument('--difficulty',type=int,choices=(0,1,2,3),default=1)
     run(p.parse_args())

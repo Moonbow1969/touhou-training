@@ -14,7 +14,8 @@ def main():
     data=args.data.resolve()
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
              'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3',
-             'six-game-online/first-eight','six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams']
+             'six-game-online/first-eight','six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams',
+             'six-game-return-horizon/six-gae985']
     counts=Counter();seen=set();steps_by_source={};reports={}
     for study in studies:
         path=data/study/'policy/report.json'
@@ -42,7 +43,8 @@ def main():
     table={f'TH{t:02}':{name:{k:counts[t,r,k] for k in ('credits','decisions')} for r,name in ((2,'Hard'),(3,'Lunatic'))}
            for t in sorted({k[0] for k in counts})}
     reused={}
-    for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score','five-game-crossfit-advantages'):
+    for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score','five-game-crossfit-advantages',
+                  'six-game-return-horizon/six-return'):
         path=data/study/'policy/report.json'
         if not path.exists():continue
         result=json.loads(path.read_bytes())
