@@ -31,7 +31,13 @@ def main():
     for (title,seed),(receipt,r,outcome) in sorted(found.items()):
         if title==11:
             from scripts.train_th11_original_ppo import audit
-            audit(receipt.parent,'train',seed,fingerprint,plan)
+            th11_plan=plan
+            if 'native_executable_sha256' not in plan:
+                qualification=json.loads((a.root/'stage2-qualification.json').read_bytes())
+                if qualification['title']!=11 or not qualification['qualified'] or qualification['native_executable_sha256']!='360f542349a08707de5c788ef5a950d5d3ad0fd727a23e74b6813db40dfe77a9':
+                    raise ValueError('Missing independent original TH11 build qualification')
+                th11_plan=dict(plan,native_executable_sha256=qualification['native_executable_sha256'])
+            audit(receipt.parent,'train',seed,fingerprint,th11_plan)
         trace=receipt.parent/('trajectory.npz' if title==11 else r.get('behavior',r.get('trajectory',r.get('file','missing'))))
         trace_sha=r.get('behavior_sha256',r.get('trajectory_sha256',r.get('sha256')))
         if digest(trace)!=trace_sha:raise ValueError(f'Changed original behavior {trace}')
@@ -53,6 +59,15 @@ def main():
         if frames is None or frames.dtype!=np.uint8 or frames.shape!=(n,112,96):raise ValueError(f'Frame/action mismatch {trace}')
         done=arrays['terminated'].reshape(-1)
         if not n or not done[-1] or done[:-1].any():raise ValueError(f'Unverified terminal in {trace}')
+        if title==10 and plan.get('verify_th10_playable_end'):
+            from scripts.th10_playable_actions import crop_packed,verify_source
+            physical_end=verify_source(receipt)
+            if physical_end['report_sha256']!=digest(receipt) or physical_end['trace_sha256']!=trace_sha:
+                raise ValueError('Native terminal provenance differs')
+            if physical_end['dropped_steps']:
+                arrays=crop_packed(arrays,physical_end)
+                frames=frames[:physical_end['playable_steps']]
+            (a.out/f'th10-{seed}-terminal.json').write_text(json.dumps(physical_end,indent=2)+'\n',encoding='utf8')
         target=a.out/f'th{title}-{seed}.npz'
         np.savez_compressed(target,frames=frames,**arrays)
         rank={}

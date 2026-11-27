@@ -25,3 +25,5 @@ The ledger counts each distinct original training credit once across fitted mode
 | TH13 | 56 | 43,424 | 56 | 32,513 |
 | TH17 | 48 | 38,602 | 48 | 28,882 |
 
+
+Two TH10 actions in this optimizer population had no live readback and were logged after the original observer reported final life loss. The links retain the exact historical optimizer rows for reproducibility. [Physical endpoint and input timing audit](../engineering/th10-terminal-tail-audit/native-observer-vs-action.json). Of 78,740 optimizer rows, 78,738 remain after this additional TH10 exclusion.

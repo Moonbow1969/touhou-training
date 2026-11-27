@@ -19,6 +19,7 @@ from scripts.train_crossfit_five_game_ppo import build_baselines
 from scripts.train_five_original_games import freeze
 from scripts.train_shared_full_ppo import calculate_gae
 from scripts.train_six_original_games import hardlink, read, wait
+from scripts.th10_playable_actions import crop_packed, verify_source as th10_end
 
 TITLES=(8,10,11,12,13,17)
 
@@ -102,7 +103,28 @@ def fit(d,r,plan,parent):
     wait_th12_coverage(r/'th12-train-qualified-coverage.json',[f for (t,_),f in seen.items() if t==12])
     if not (r/'camera-batch/credits.json').exists():run('pack_camera_ppo_rollouts','--root',r,'--round2','--protocol',source,'--behavior',parent/'policy.ts','--out',r/'camera-batch')
     if not (r/'corrected/clock-audit.json').exists():run('normalize_th13_survival_clock','--original',r,'--out',r/'corrected')
-    parts=[(row,r/'corrected'/row['file']) for row in read(r/'corrected/credits.json')]
+    parts=[]
+    boundaries=[]
+    for row in read(r/'corrected/credits.json'):
+        path=r/'corrected'/row['file']
+        if row['title']==10:
+            audit=th10_end(seen[(10,row['seed'])])
+            if audit['report_sha256']!=row['source_log_sha256'] or audit['trace_sha256']!=row['source_actions_sha256'] or digest(path)!=row['sha256']:
+                raise ValueError('TH10 terminal audit and collected rollout differ')
+            if audit['dropped_steps']:
+                target=r/'th10-playable'/row['file'];target.parent.mkdir(exist_ok=True)
+                with np.load(path,allow_pickle=False) as z:
+                    arrays=crop_packed(dict(z),audit)
+                if not target.exists():np.savez_compressed(target,**arrays)
+                with np.load(target,allow_pickle=False) as z:
+                    if set(z.files)!=set(arrays) or any(not np.array_equal(z[k],v) for k,v in arrays.items()):
+                        raise ValueError('Retained TH10 training prefix differs from the original')
+                row=dict(row,sha256=digest(target),before_terminal_audit_sha256=row['sha256'])
+                path=target
+            boundaries.append(dict(seed=row['seed'],optimizer_input=row['sha256'],evidence=audit))
+        parts.append((row,path))
+    if len(boundaries)!=32:raise ValueError('TH10 training boundary check missed a credit')
+    freeze(r/'th10-optimizer-terminal-boundaries.json',boundaries)
     assignment=read(r/'th08-host-allocation.json')['by_seed']
     for s in plan['train_seeds']['8']:
         f=r/'selected08'/f'{s}.json';wait(f);selected=read(f);row=selected['record']

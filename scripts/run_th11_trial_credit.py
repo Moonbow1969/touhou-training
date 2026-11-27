@@ -65,6 +65,13 @@ nohup env OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 python3 camera_service.py --m
         if lane.remote("test ! -f "+lane.dir+"/done || echo done").strip():break
         time.sleep(2)
     else:raise TimeoutError(lane.name)
+    return finish(lane,sha,seed,rank,sources,role,arm)
+
+
+def finish(lane,sha,seed,rank,sources,role,arm):
+    """Recover a finished original from its private lane without opening another credit."""
+    if lane.remote("cd "+shlex.quote(lane.dir)+" && test -s done && sha256sum policy.ts").split()[0].decode()!=sha:
+        raise ValueError('Completed native actor differs from the requested policy')
     names=["title.png","selected-rank.png","character.png","weapon.png","opening.png","endpoint.png","native.bin","pixels.u8.gz",
            "camera.ns","behavior.csv","inference.log","actor.log","actual-executable.sha256"]
     data=lane.remote("tar -czf - -C "+lane.dir+" "+" ".join(names),timeout=180)
@@ -114,7 +121,7 @@ def score(lane,sha,seed,rank,sources,names,role="engineering",arm="merged-sft"):
         real_wall_seconds=float(np.ptp(clocks)/1e9),unique_directions=np.unique(acts[:,0]).tolist(),
         directions=np.bincount(acts[:,0],minlength=9).tolist(),focus_shoot_bomb_held=acts[:,1:].sum(0).tolist(),
         native_input_matches=int(ok.sum()),native_input_total=len(ok),stage_values=np.unique(original[:,7]).tolist(),
-        stage2_semantics="Stage-1 caption and original Game Over independent controls; Stage2 transition sensor unqualified pending a positive witness.",
+        stage2_semantics="The study's stage2-qualification.json identifies the exact-build original Stage 1 to Stage 2 positive witness. qualified_th11_stage2.read_credit verifies this credit against its native stage stream.",
         source_sha256={f.name:digest(f) for f in sources},assets=json.loads((lane.out/"build.json").read_bytes()),
         evidence_sha256={name:digest(lane.out/name) for name in names},native_format="int32 little-endian [T,12]: ms score_div10 power_raw character shot spares rank stage_candidate continues raw_units_per_level graze consumed_input",
         camera="96x112 grayscale, original field crop 384x448 at X11 (35,38); absolute change from prior image. Ordinary XTest; four model heads [9,2,2,2]. Native telemetry used for evaluation and endpoint only.",
@@ -138,8 +145,15 @@ def score(lane,sha,seed,rank,sources,names,role="engineering",arm="merged-sft"):
 
 
 def close(lane):
-    # Only terminate this invocation's dedicated service process and its named game.
-    lane.remote("cd "+lane.dir+" && p=$(cat inference.pid) && grep -aq camera_service.py /proc/$p/cmdline && kill $p")
+    # Each service starts in its own seed directory, including simultaneous rank lanes.
+    lane.remote("cd "+shlex.quote(lane.dir)+""" && {
+        p=$(cat inference.pid)
+        case "$p" in ''|*[!0-9]*) exit 1;; esac
+        if test -e "/proc/$p"; then
+            test "$(readlink "/proc/$p/cwd")" = "$(pwd -P)" &&
+            grep -aqF camera_service.py "/proc/$p/cmdline" && kill "$p"
+        fi
+    }""")
     lane.remote("docker stop "+lane.name)
 
 if __name__=="__main__":
