@@ -1,0 +1,118 @@
+{
+  "name": "Mixed original Easy/Normal continuation of the fourteen-player full-action PPO",
+  "train_seeds": {
+    "10": [
+      1101001,
+      1101002,
+      1101003,
+      1101004,
+      1101005,
+      1101006,
+      1101007,
+      1101008,
+      1101009,
+      1101010,
+      1101011,
+      1101012
+    ],
+    "12": [
+      1101201,
+      1101202,
+      1101203,
+      1101204,
+      1101205,
+      1101206,
+      1101207,
+      1101208,
+      1101209,
+      1101210,
+      1101211,
+      1101212
+    ],
+    "13": [
+      1101301,
+      1101302,
+      1101303,
+      1101304,
+      1101305,
+      1101306,
+      1101307,
+      1101308,
+      1101309,
+      1101310,
+      1101311,
+      1101312
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      1101051,
+      1101052,
+      1101053,
+      1101054,
+      1101055,
+      1101056,
+      1101057,
+      1101058,
+      1101059,
+      1101060,
+      1101061,
+      1101062
+    ],
+    "12": [
+      1101251,
+      1101252,
+      1101253,
+      1101254,
+      1101255,
+      1101256,
+      1101257,
+      1101258,
+      1101259,
+      1101260,
+      1101261,
+      1101262
+    ],
+    "13": [
+      1101351,
+      1101352,
+      1101353,
+      1101354,
+      1101355,
+      1101356,
+      1101357,
+      1101358,
+      1101359,
+      1101360,
+      1101361,
+      1101362
+    ]
+  },
+  "reference_arm": "v2-ppo",
+  "candidate": "curriculum-ppo",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Both arms share the same controller seed, host, executable, difficulty and original controls within each pair. All four heads execute independently of hand-coded game logic.",
+  "initialization": "Frozen fourteen-player PPO actor and critic a66d0b55f330a554df8ba70051089aaead5799cba0f37272b781a278ff6368c2",
+  "reward": "TH13 native script survival clock, same event terms; TH10/12 unchanged. These two titles lack verified per-action native script time in the shared camera batch.",
+  "test": "Independent original full-credit pairs on the training difficulty for each title. Twelve pairs per game. This comparison measures the total update, without isolating a curriculum-specific effect from extra training.",
+  "original_difficulty": {
+    "10": "Easy",
+    "12": "Normal",
+    "13": "Normal"
+  }
+}
