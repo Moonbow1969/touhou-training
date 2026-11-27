@@ -24,3 +24,5 @@ Two six-game PPO policies started from the same six-game actor and critic. One u
 [TH13 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/six-game-return-horizon-th13-exact-optimizer-input.zip)
 
 [TH17 source optimizer inputs](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/six-game-return-horizon-th17-exact-optimizer-input.zip)
+
+[All 192 independent original-game evaluation results](all-six-original-results.md)
