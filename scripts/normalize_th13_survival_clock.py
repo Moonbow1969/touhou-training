@@ -12,14 +12,30 @@ from scripts.checkpoint_storage import digest
 def native_progress(raw):
     # Only count previously unseen script ticks traversed by this action in one stage.
     peaks={}
+    awaiting_reset={}
     increments=np.zeros(len(raw),dtype=np.int32)
     for i,(before,after,left,right) in enumerate(raw[:,[125,126,134,135]].astype(np.int64)):
         if before == after and before > 0 and left >= 0 and right >= 0:
+            if after in awaiting_reset:
+                # The original can publish Stage 2 one tick before its Stage 1
+                # timer resets. Ignore the outgoing clock until the reset.
+                outgoing=awaiting_reset[after]
+                if left>=outgoing and right>=left:
+                    awaiting_reset[after]=right
+                    continue
+                del awaiting_reset[after]
+                if right<left:
+                    peaks[after]=right
+                    continue
+                peaks[after]=left
             start=max(left,peaks.get(after,left))
             increments[i]=max(0,right-start)
             peaks[after]=max(start,right)
         elif after > 0 and right >= 0:
-            peaks[after]=max(peaks.get(after,0),right)
+            if before>0 and after>before and left>=0 and right>=left:
+                awaiting_reset[after]=right
+            else:
+                peaks[after]=max(peaks.get(after,0),right)
     return increments
 
 
