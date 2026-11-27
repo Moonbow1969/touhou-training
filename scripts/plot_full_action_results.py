@@ -35,7 +35,8 @@ def main():
             avg = np.mean(values, axis=0)
             ax.plot([0, 1], avg, color="#006964", lw=3, marker="o", ms=6, zorder=3)
             stage = [(stats[key]["stage2"], stats[key]["n"]) for key in (baseline, "candidate")]
-            ax.set_title(f"TH{title}    Stage 2   {stage[0][0]}/{stage[0][1]} → {stage[1][0]}/{stage[1][1]}", fontsize=11)
+            stage_label='rate unverified' if any(k is None for k,n in stage) else f'{stage[0][0]}/{stage[0][1]} → {stage[1][0]}/{stage[1][1]}'
+            ax.set_title(f"TH{title}    Stage 2   {stage_label}", fontsize=11)
             ax.set_xlim(-.17, 1.17)
             ax.set_ylim(bottom=0)
             ax.set_xticks([0, 1], [baseline.upper(), candidate.upper()])

@@ -15,7 +15,9 @@ def wilson(k, n):
 
 
 def one(rows):
-    reached = [row for row in rows if row["stage2_reached"]]
+    stages = [qualified_stage2(row) for row in rows]
+    complete = None not in stages
+    reached = [row for row,stage in zip(rows,stages) if stage is True]
 
     def average(field, group=rows):
         values = [row[field] for row in group if row.get(field) is not None]
@@ -25,8 +27,10 @@ def one(rows):
     decisions = sum(row["decisions"] for row in rows)
     if int(movement.sum()) != decisions:
         raise ValueError("Action histogram and credited decision count differ")
-    return dict(n=len(rows), stage2=len(reached), stage2_rate=len(reached)/len(rows),
-                stage2_wilson95=wilson(len(reached), len(rows)),
+    return dict(n=len(rows), stage2=len(reached) if complete else None,
+                stage2_verified_n=sum(value is not None for value in stages),
+                stage2_rate=len(reached)/len(rows) if complete else None,
+                stage2_wilson95=wilson(len(reached), len(rows)) if complete else None,
                 total_confirmed_bombs=sum(row["effective_bombs"] for row in rows),
                 terminal_game_overs=sum(row["terminal"]=="game_over" for row in rows),
                 mean_decisions=average("decisions"), mean_seconds=average("wall_seconds"),
@@ -36,6 +40,14 @@ def one(rows):
                 total_decisions=decisions, nine_way_counts=movement.tolist(),
                 vertical_fraction=float((movement[:3].sum()+movement[6:].sum())/decisions),
                 diagonal_fraction=float(movement[[0, 2, 6, 8]].sum()/decisions))
+
+
+def qualified_stage2(row):
+    # TH10 0.02a's historical stage channel stayed at 1 during a filmed Stage 2.
+    if row['title']==10 and row.get('game_sha256')=='5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8':
+        if not row.get('stage2_evidence_sha256'):
+            return None
+    return row['stage2_reached']
 
 
 def summarize(rows, protocol, candidate):
@@ -66,7 +78,7 @@ def summarize(rows, protocol, candidate):
                 raise ValueError("Host/build mismatch within a pair")
             pairs.append(dict(seed=seed, host=left["host"], decision_difference=right["decisions"]-left["decisions"],
                               seconds_difference=right["wall_seconds"]-left["wall_seconds"],
-                              reference_stage2=left["stage2_reached"], candidate_stage2=right["stage2_reached"]))
+                              reference_stage2=qualified_stage2(left), candidate_stage2=qualified_stage2(right)))
         rng = np.random.default_rng(216720 + title)
         differences = np.asarray([p["seconds_difference"] for p in pairs])
         draws = differences[rng.integers(len(pairs), size=(20000, len(pairs)))].mean(axis=1)
@@ -79,7 +91,8 @@ def summarize(rows, protocol, candidate):
             baseline: one(list(by_arm[baseline].values())), "candidate": one(list(by_arm[candidate].values())),
             "pairs": pairs, "stage2_discordances": {
                 "reference_only": sum(p["reference_stage2"] and not p["candidate_stage2"] for p in pairs),
-                "candidate_only": sum(p["candidate_stage2"] and not p["reference_stage2"] for p in pairs)},
+                "candidate_only": sum(p["candidate_stage2"] and not p["reference_stage2"] for p in pairs)}
+                if all(p['reference_stage2'] is not None and p['candidate_stage2'] is not None for p in pairs) else None,
             "mean_paired_wall_difference": float(differences.mean()),
             "mean_paired_wall_difference_bootstrap95": np.quantile(draws, [.025, .975]).tolist(),
             "mean_paired_wall_difference_fixed_host_bootstrap95": np.quantile(stratified, [.025, .975]).tolist()}

@@ -8,7 +8,7 @@ import numpy as np
 from PIL import Image
 
 from scripts.checkpoint_storage import digest
-from scripts.score_native_full_actions import summarize
+from scripts.score_native_full_actions import qualified_stage2, summarize
 
 
 def records(root, camera, round2=False):
@@ -66,9 +66,11 @@ def verify(title, f, r, trace, arm, out):
     outcome=r.get("outcome",r.get("native_outcome","")).lower()
     if not any(x in outcome for x in ("final_life","game_over","ranking","clear","ending")):
         raise ValueError("Unrecognized end state")
+    stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r['stage2_reached']))
+    if stage_flag is None:entry=(None,None,None)
     return dict(title=title,arm=arm,seed=r["seed"],host=host,game_sha256=build,policy_sha256=r["policy_sha256"],
                 terminal="game_over" if any(x in outcome for x in ("final_life","game_over","ranking")) else "ending",
-                stage2_reached=r["stage2_reached"],stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
+                stage2_reached=stage_flag,stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
                 decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
                 native_log_sha256=digest(f),original_endpoint_sha256=digest(photo),
@@ -105,7 +107,8 @@ def main():
     result=summarize(rows,protocol,arms[1])
     (args.out/"credits.json").write_text(json.dumps(rows,indent=2)+"\n")
     (args.out/(arms[1]+".json")).write_text(json.dumps(result,indent=2)+"\n")
-    print(len(rows),"verified credits",sum(r["stage2_reached"] for r in rows),"Stage 2",flush=True)
+    print(len(rows),"verified credits;",sum(r['stage2_reached'] is True for r in rows),"observed Stage 2;",
+          sum(r['stage2_reached'] is None for r in rows),"unverified stage outcomes",flush=True)
 
 
 if __name__=="__main__":main()
