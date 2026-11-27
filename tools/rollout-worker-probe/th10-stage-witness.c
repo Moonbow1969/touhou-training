@@ -45,10 +45,11 @@ int main(void) {
     int last_dx=0,last_dy=0,ever_stage1=0;
     while(GetTickCount64()-beginning<8*60*1000){
         uint64_t now=GetTickCount64(),t=now-beginning;
-        struct Th10State s;uint32_t power=0,input=0,candidate_stage=0;
+        struct Th10State s;uint32_t power=0,input=0,candidate_stage=0,legacy_stage=0;
         if(!th10_read_state(game,&s)||!th10_read(game,TH10_SCORE+4,&power,sizeof(power))||
             !th10_read(game,CURRENT_NATIVE_INPUT,&input,sizeof(input))||
-            !th10_read(game,0x472b40,&candidate_stage,sizeof(candidate_stage))){Sleep(12);continue;}
+            !th10_read(game,0x472b40,&candidate_stage,sizeof(candidate_stage))||
+            !th10_read(game,0x472b44,&legacy_stage,sizeof(legacy_stage))){Sleep(12);continue;}
         if(s.difficulty!=0||s.lives<0)break;
         if(candidate_stage==1)ever_stage1=1;
         if(ever_stage1&&candidate_stage==2&&!transition){
@@ -75,7 +76,7 @@ int main(void) {
         ft_ticks.LowPart=ft.dwLowDateTime;ft_ticks.HighPart=ft.dwHighDateTime;
         uint64_t utc_ms=ft_ticks.QuadPart/10000-UINT64_C(11644473600000);
         fprintf(log,"%llu,%llu,%u,%u,%u,%d,%u,%.2f,%.2f,%d,%d,%u,%.2f\n",
-                (unsigned long long)t,(unsigned long long)utc_ms,s.stage,candidate_stage,s.difficulty,s.lives,power,s.xy[0],s.xy[1],count,mask,input,chosen_clear);
+                (unsigned long long)t,(unsigned long long)utc_ms,legacy_stage,candidate_stage,s.difficulty,s.lives,power,s.xy[0],s.xy[1],count,mask,input,chosen_clear);
         fflush(log);printf("%d\n",mask);fflush(stdout);
         last_dx=move_x;last_dy=move_y;Sleep(21);
     }

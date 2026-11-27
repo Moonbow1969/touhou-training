@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 import csv
 import gzip
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -22,6 +23,13 @@ def read_arm(directories, expected_seeds=range(711001,711013)):
                 raise ValueError("Duplicate or incomplete frozen credit")
             with gzip.open(p.parent/"native.csv.gz","rt") as f:
                 states=list(csv.DictReader(f))
+            qualified=row.get('stage_sensor_validated') is True
+            if qualified:
+                proof=row['stage2_evidence']
+                assert proof['stage_register']=='0x472b40' and proof['legacy_register']=='0x472b44'
+                assert hashlib.sha256((p.parent/'native.csv.gz').read_bytes()).hexdigest()==proof['native_trace_sha256']
+                assert proof['native_rows']==len(states) and all('legacy_start_field' in s for s in states)
+                assert (proof['first_stage2'] is not None)==any(int(s['stage'])==2 for s in states)==row['stage2_reached']
             with np.load(p.parent/"behavior.npz") as behaviors:
                 utc=behaviors["action_utc_ms"];actions=behaviors["action"]
             losses=[]
@@ -37,7 +45,11 @@ def read_arm(directories, expected_seeds=range(711001,711013)):
                 "final_stage","final_lives","final_power","power_at_final_life_loss","final_power_source",
                 "raw_score","duration_s","native_inputs_matching","native_inputs_with_sample","median_control_ms",
                 "shoot_on","focus_on","bomb_on","moves")}
-            d.update(native_bomb_spends=row["successful_bombs"],loss_events=losses)
+            d.update(native_bomb_spends=row["successful_bombs"],loss_events=losses,stage_sensor_validated=qualified)
+            # Native first-life coordinates exclude the recentering animation on respawn.
+            first_loss=next((i for i,s in enumerate(states) if int(s['lives'])<int(states[0]['lives'])),len(states))
+            xy=np.array([(float(s['x']),float(s['y'])) for s in states[:first_loss]])
+            d['first_life_coordinate_span']=(xy.max(axis=0)-xy.min(axis=0)).tolist()
             out[row['seed']]=d
     if sorted(out)!=list(expected_seeds):raise ValueError("Incomplete frozen arm or unexpected controller seeds")
     return out
@@ -70,6 +82,11 @@ def summarize(arms,design=None,baseline='SFT'):
             losses_with_at_least_one_power=sum(s['before_power']>=1 for s in event),
             losses_with_power_and_no_recent_bomb=sum(s['before_power']>=1 and not s['bomb_in_preceding_half_second'] for s in event),
             decisions=sum(r['steps'] for r in rows),decisions_matching_native_input=sum(r['native_inputs_matching'] for r in rows))
+        spans=np.array([r['first_life_coordinate_span'] for r in rows])
+        groups[name]['native_first_life_movement']=dict(
+            credits_moving_on_both_axes=int(np.all(spans>0,axis=1).sum()),
+            median_xy_span_game_units=np.median(spans,axis=0).tolist(),
+            min_xy_span_game_units=spans.min(axis=0).tolist())
         if name!=baseline:
             blocks=[]
             for r in rows:
@@ -88,8 +105,22 @@ def summarize(arms,design=None,baseline='SFT'):
             paired[name]=dict(pairs=blocks,mean_survival_delta_s=float(v.mean()),positive=int((v>0).sum()),
                  stage2_gained=gained,stage2_lost=lost,stage2_delta_rate=(gained-lost)/len(rows),stage2_mcnemar_exact_p=exact,
                  paired_resampled_95pct_interval_for_mean_s=np.quantile(rng.choice(v,(10000,len(v))).mean(1),[.025,.975]).tolist())
+    credits={name:[dict(group[s]) for s in sorted(group)] for name,group in arms.items()}
+    for name,rows in credits.items():
+        qualified=all(r.get('stage_sensor_validated') is True for r in rows)
+        groups[name]['stage2_sensor_validated']=qualified
+        if not qualified:
+            for k in ('stage2_reached','stage2_rate','stage2_wilson_95pct','stage2_resources'):groups[name][k]=None
+            for r in rows:
+                if r.get('stage_sensor_validated'):continue
+                r['legacy_stage2_flag']=r['stage2_reached']
+                for k in ('stage2_reached','stage2_lives','stage2_power','stage_entries','final_stage'):r[k]=None
+    for name,diff in paired.items():
+        if groups[name]['stage2_sensor_validated'] and groups[baseline]['stage2_sensor_validated']:continue
+        for k in ('stage2_gained','stage2_lost','stage2_delta_rate','stage2_mcnemar_exact_p'):diff[k]=None
+        for pair in diff['pairs']:pair['stage2_candidate']=pair['stage2_baseline']=None
     return dict(design=design or '12 unique controller seeds per frozen arm. Same native TH10 Normal trial and host within each pair; native RNG uncontrolled. All lives and no Continue. First six controller seeds played SFT before PPO1, final six PPO1 before SFT. TH10 has Power-paid spirit strikes; spare count -1 means last life was lost. Real-time survival is sensitive to game speed and is a secondary measure.',n_per_arm=len(base),
-        group=groups,**{f"paired_versus_{baseline.lower()}":paired},credits={name:[group[s] for s in sorted(group)] for name,group in arms.items()})
+        group=groups,**{f"paired_versus_{baseline.lower()}":paired},credits=credits)
 
 
 def draw(arms,out,difficulty_name="Normal"):

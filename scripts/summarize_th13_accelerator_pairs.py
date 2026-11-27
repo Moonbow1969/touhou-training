@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from scripts.collect_th10_full_action import save
+from scripts.score_native_stage_clock import summarize as score_clock
 
 
 def summarize(root,experiment_name='v2-online'):
@@ -21,6 +22,9 @@ def summarize(root,experiment_name='v2-online'):
             assert log['host']=='accelerator' and log['seed']==seed and log['role']=='held'
             assert log['terminal'] and not log['continues'] and log['remaining_lives']==-1
             assert hashlib.sha256((folder/'rollout.npz').read_bytes()).hexdigest()==log['sha256']
+            with np.load(folder/'rollout.npz') as behavior:
+                stage1=behavior['native_frame'][behavior['stage']==1]
+                latest_observed_stage1_native_tick=int(stage1.max())
             raw=np.fromfile(folder/'steps.bin','<f4').reshape(-1,143)
             assert raw.shape[0]==log['steps'] and raw[0,[125,127,129,141]].tolist()==[1,2,2,1]
             assert raw[-1,120] and not raw[:-1,120].any()
@@ -28,7 +32,8 @@ def summarize(root,experiment_name='v2-online'):
             ticks[raw[:,125]!=raw[:,126]]=0
             life=np.flatnonzero(raw[:,136]>0)
             movement=raw[:,110];switches=int(np.count_nonzero(np.diff(movement)))
-            arm.append(dict(seed=seed,host=log['host'],policy_sha256=log['policy_sha256'],game_sha256=log['game_sha256'],
+            arm.append(dict(seed=seed,title=13,arm=name,host=log['host'],policy_sha256=log['policy_sha256'],game_sha256=log['game_sha256'],
+                latest_observed_stage1_native_tick=latest_observed_stage1_native_tick,
                 stage2=log['stage2'],stage2_spares=log['stage2_entry_spares'],stage2_bombs=log['stage2_entry_bombs'],
                 spares=log['remaining_lives'],bombs=log['remaining_bombs'],casts=log['effective_bombs'],
                 losses=log['confirmed_losses'],earned_life=log['life_earned'],whole_credit_wall_s=log['wall_seconds'],
@@ -55,12 +60,14 @@ def summarize(root,experiment_name='v2-online'):
         difference=np.array([float(b[key])-float(a[key]) for a,b in zip(baseline,candidate)])
         comparisons[key]=dict(mean_delta=float(difference.mean()),per_seed=difference.tolist(),positive=int((difference>0).sum()),
             paired_percentile_95pct=np.quantile(difference[draws].mean(1),[.025,.975]).tolist())
-    save(out/'paired.json',dict(design='Twelve controller seeds matched on physical Accelerator, Normal official TH13 0.01a trial, all original stocks and sampled movement/focus/shoot/Bomb actions, no Continue; original RNG uncontrolled.',
+    save(out/'stage1-native-clock.json',score_clock([r for group in rows.values() for r in group],13,list(rows)))
+    save(out/'paired.json',dict(design=f'{len(seeds)} controller seeds matched on physical Accelerator, Normal official TH13 0.01a trial, all original stocks and sampled movement/focus/shoot/Bomb actions, no Continue; original RNG uncontrolled.',
+        primary_native_progress='Final observed Stage 1 native timer on the policy trajectory, see stage1-native-clock.json.',
         native_clock='Nonnegative advances of the stage-local native clock. Stage-entry reset intervals have zero contribution.',
         uncertainty='Exploratory paired seed bootstrap, 20,000 draws, unadjusted percentile intervals.',seeds=seeds,groups=groups,comparisons=comparisons,credits=rows))
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,required=True)
-    p.add_argument('--experiment',choices=('v2-online','attention-online'),default='v2-online')
+    p.add_argument('--experiment',default='v2-online')
     args=p.parse_args();summarize(args.root,args.experiment)

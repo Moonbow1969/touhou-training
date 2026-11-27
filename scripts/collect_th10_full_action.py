@@ -113,6 +113,24 @@ def native_mask(action):
     return ((action&64>0)*1+(action&128>0)*2+(action&16>0)*4+(action&32>0)*8+
             (action&4>0)*16+(action&1>0)*32+(action&2>0)*64)
 
+
+def native_stage_rewards(states, action_times):
+    rewards=np.zeros(len(action_times),dtype=np.float32)
+    first=states[0]
+    previous=int(first['stage'])
+    if previous!=1:raise ValueError('Original story stage rewards require a Stage 1 opening.')
+    entries=[dict(stage=previous,step=0,lives=int(first['lives']),power=int(first['power_units'])/20)]
+    for row in states[1:]:
+        stage=int(row['stage'])
+        if stage==previous:continue
+        if stage!=previous+1:raise ValueError('The original stage did not progress monotonically.')
+        step=int(np.clip(np.searchsorted(action_times,int(row['utc_ms']),side='right')-1,0,len(action_times)-1))
+        rewards[step]+=2
+        entries.append(dict(stage=stage,step=step,lives=int(row['lives']),power=int(row['power_units'])/20))
+        previous=stage
+    return rewards,entries
+
+
 def start_camera_service(client,pinned,sha):
     script=r"""
 set -eu
@@ -202,8 +220,9 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
     if not np.isfinite(lp).all() or not np.isfinite(val).all():raise ValueError("Nonfinite replay of native actions.")
     utc=np.array([int(r['utc_ms']) for r in logs],dtype=np.int64)
     n=len(logs); at=lambda t: int(np.clip(np.searchsorted(utc,t,side="right")-1,0,n-1))
-    costs=np.zeros(n,np.float32);life=np.zeros(n,np.float32);stage=np.zeros(n,np.float32)
-    misses=[];casts=[];entries=[dict(stage=1,step=0,lives=2,power=0.)];epochs=[]
+    costs=np.zeros(n,np.float32);life=np.zeros(n,np.float32)
+    stage,entries=native_stage_rewards(states,utc)
+    misses=[];casts=[];epochs=[]
     last_miss=-10**15;last_x_on=-10**15;prev=states[0]
     correct=np.zeros(n,np.int32);reads=np.zeros(n,np.int32)
     request=np.array([int(r['mask']) for r in logs])
@@ -222,10 +241,6 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
         if consumed&2 and not int(prev['native_input'])&2:last_x_on=tick
         if prior_power-power==20 and lv==lpv and (consumed&2) and tick-last_x_on<=320 and tick-last_miss>=500:
             casts.append(dict(step=i,power_before=prior_power/20,power_after=power/20,lives=lv));costs[i]-=.03
-        if s['stage']!=prev['stage']:
-            delta=int(s['stage'])-int(prev['stage'])
-            if delta!=1:raise ValueError("The original stage did not progress monotonically.")
-            stage[i]+=2;entries.append(dict(stage=int(s['stage']),step=i,lives=lv,power=power/20))
         if power!=prior_power:epochs.append(dict(step=i,before=prior_power/20,after=power/20))
         prev=s
     last_ms=int(states[-1]['utc_ms'])
@@ -253,6 +268,7 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
     (folder/'endpoint.png').write_bytes(screen)
     last=states[-1]
     result=dict(title=10,host=host,seed=seed,arm=arm,requested_hold_ms=hold,policy_sha256=sha,source=pinned,
+        compressed_ssh_payload_bytes=len(raw),compressed_ssh_payload_sha256=digest(raw),
         steps=n,behavior_sha256=digest((folder/'behavior.npz').read_bytes()),sha256=digest((folder/'behavior.npz').read_bytes()),
         behavior="behavior.npz",game_sha256=GAME_SHA,
         native_outcome=stop,game_over=True,terminal=True,stage2_reached=bool(event_stocks),stage_entries=entries,

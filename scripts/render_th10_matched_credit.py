@@ -1,4 +1,4 @@
-"""Render three complete, time-aligned TH10 policy-camera recordings and native Game Over captures."""
+"""Render matched, complete TH10 policy-camera recordings and native Game Over captures."""
 import argparse
 import csv
 import gzip
@@ -46,6 +46,8 @@ def load(folder):
 
 def render(args):
     data=[load(p) for p in args.arms]
+    if len(data) not in (2,3):
+        raise ValueError('A recording requires two or three matched arms.')
     actual=[r['report']['arm'] for r in data]
     expected=getattr(args,'expected_arms',None)
     if expected:
@@ -54,9 +56,13 @@ def render(args):
         raise ValueError(f"Specify --expected-arms and --labels to render {actual}")
     seed=data[0]['report']['seed']
     assert all(r['report']['seed']==seed and r['report']['host']==data[0]['report']['host'] for r in data)
-    size=(960,508);fps=15
+    difficulties={a['states'][0]['difficulty'] for a in data}
+    if len(difficulties)!=1:raise ValueError('Difficulty differs across arms.')
+    difficulty={'0':'Easy','1':'Normal','2':'Hard','3':'Lunatic'}[difficulties.pop()]
+    size=(320*len(data),508);fps=15
     count=int(np.ceil((max(r['native_clocks'][-1] for r in data)+2)*fps))
     labels=getattr(args,'labels',None) or ['Replay SFT','PPO update 1','PPO update 2']
+    if len(labels)!=len(data):raise ValueError('Each arm requires one label.')
     fonts=[font(21,True),font(15,True),font(14),font(12)]
     cache=[{} for _ in data];colors=['#8dc4e9','#ffbd88','#99d3ac']
     args.out.parent.mkdir(parents=True,exist_ok=True)
@@ -65,7 +71,7 @@ def render(args):
         for tick in range(count):
             t=tick/fps
             panel=Image.new('RGB',size,'#111922');draw=ImageDraw.Draw(panel)
-            draw.text((18,8),f'TH10  |  Normal story  |  Reimu A  |  seed {seed}',font=fonts[0],fill='white')
+            draw.text((18,8),f'TH10  |  {difficulty} story  |  Reimu A  |  seed {seed}',font=fonts[0],fill='white')
             draw.text((18,39),'1x recorded wall time   /   original game under Wine   /   complete credits   /   no Continue',font=fonts[2],fill='#b9c8d6')
             for i,arm in enumerate(data):
                 x=16+320*i;r=arm['report'];times=arm['times'];end=arm['native_clocks'][-1]
@@ -78,7 +84,8 @@ def render(args):
                         cache[i][idx]=Image.fromarray(arm['frames'][idx]).convert('RGB').resize((288,336),Image.Resampling.NEAREST)
                     panel.paste(cache[i][idx],(x,91))
                     s=arm['states'][max(0,int(np.searchsorted(arm['native_clocks'],t,side='right')-1))]
-                    left=f"Stage {s['stage']}    Spares {s['lives']}    Power {int(s['power_units'])/20:.2f}"
+                    stage=s['stage'] if r.get('stage_sensor_validated') is True else '?'
+                    left=f"Stage {stage}    Spares {s['lives']}    Power {int(s['power_units'])/20:.2f}"
                     right=f'{t:5.1f} s'
                 else:
                     panel.paste(arm['endpoint'],(x,143))
@@ -87,7 +94,7 @@ def render(args):
                     right=f'{end:5.1f} s'
                 draw.text((x,436),left,font=fonts[2],fill='white')
                 draw.text((x+239,436),right,font=fonts[2],fill=colors[i])
-            draw.text((18,477),'Camera: captured 96 x 112 grayscale playfield, held between observations (~8 Hz). Game Over: original color screenshot.',
+            draw.text((18,477),'Original 96 x 112 policy camera at ~8 Hz. Color images show the original Game Over screens.',
                       font=fonts[3],fill='#b9c8d6')
             video.append_data(np.asarray(panel))
     meta=dict(video=args.out.name,sha256=sha(args.out),rendered_frames=count,encoded_fps=fps,
@@ -97,8 +104,8 @@ def render(args):
     print(json.dumps(meta,indent=2))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--arms',nargs=3,type=Path,required=True)
-    p.add_argument('--expected-arms',nargs=3);p.add_argument('--labels',nargs=3)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--arms',nargs='+',type=Path,required=True)
+    p.add_argument('--expected-arms',nargs='+');p.add_argument('--labels',nargs='+')
     p.add_argument('--out',type=Path,required=True)
     args=p.parse_args()
     if bool(args.expected_arms)!=bool(args.labels):p.error("Pass the expected arm IDs and human-readable labels together.")
