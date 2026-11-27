@@ -1,0 +1,40 @@
+{
+  "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+  "title": 13,
+  "arms": [
+    "cross-sft",
+    "cross-ppo"
+  ],
+  "n": 8,
+  "per_seed": {
+    "cross-sft": {
+      "863201": 4371,
+      "863202": 3168,
+      "863203": 3888,
+      "863204": 3928,
+      "863205": 3970,
+      "863206": 3584,
+      "863207": 4704,
+      "863208": 3561
+    },
+    "cross-ppo": {
+      "863201": 3672,
+      "863202": 2861,
+      "863203": 4793,
+      "863204": 4231,
+      "863205": 3655,
+      "863206": 3834,
+      "863207": 4306,
+      "863208": 4945
+    }
+  },
+  "mean_ticks_by_arm": {
+    "cross-sft": 3896.75,
+    "cross-ppo": 4037.125
+  },
+  "mean_paired_change": 140.375,
+  "paired_fixed_host_bootstrap95": [
+    -289.5,
+    633.2718749999981
+  ]
+}

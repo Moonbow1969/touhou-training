@@ -122,3 +122,19 @@ On TH10, removing the original −0.03 confirmed spirit-strike penalty changed 3
 ### More distinct players and a larger SFT budget
 
 Four separate training pilots each for TH10 and TH12 joined six TH13 pilots, producing 33,170 distinct usable training observations. Two additional players per title were held out. Each title received equal sampling weight. At the original 3,000 updates the broader corpus increased held top-1 movement accuracy from 5,971/14,590 to 6,823/14,590. Extending the same model recipe to 9,000 updates (576,000 draws, about 17.4 times the unique dataset size) raised that count to 7,163. Mean per-player movement NLL was 2.127 → 1.581 → 1.637. On actual human changes it was 2.791 → 2.315 → 2.569. The longer fit improved top-1 accuracy while assigning less probability on average to the actual human transition than the shorter fit. [Six-player outcomes](v2-supervised/comparison/player-summary.json) · [Held figure](v2-supervised/comparison/held-camera.png) · [Exact source splits and release receipts](v2-supervised/sources) · [Full SFT optimizer logs and policies](v2-supervised)
+
+Eight counterbalanced full TH10 credits per SFT checkpoint compared the three supervised policies in the same order. Mean first loss at 17.66 / 18.19 / 17.87 seconds barely moved. Mean native scores were 61,155 / 239,823 / 248,430. The 9,000-step model beat the old score on every paired seed, by an average 187,275 [111,186, 272,464]. Confirmed casts were 1 / 12 / 13 across each eight-credit arm. Stage 2 was 0/8 throughout. [All pairs and raw input checks](v2-supervised/native10/paired.json) · [Full three-policy recording on seed 895101](v2-supervised/native10/video-895101/th10-seed-895101-full-credit.mp4)
+
+### Full-credit results for the joint human SFT and its first PPO
+
+| Title | Stage 2, SFT → PPO | Mean final spares | Mean final resource, SFT → PPO | Confirmed casts across eight credits, SFT → PPO |
+|---|---|---|---|---|
+| TH10 | 0/8 → 0/8 | 0 → 0 | 0.044 → 0 Power | 6 → 4 |
+| TH12 | 0/8 → 0/8 | 0 → 0 | 0.75 → 0 Bombs | 30 → 33 |
+| TH13 | 0/8 → 0/8 | 0 → 0 | 0.75 → 0.625 Bombs | 37 → 38 |
+
+On TH13 the policies reached mean native Stage 1 ticks of 3,897 and 4,037, paired difference +140 [−290, +633]. The experiment used all original lives in 48 new held credits, without Continues. The resulting Stage 2 entry stocks are unavailable. [Frozen action traces and original endpoints](cross-title-online/evaluation/credits.json) · [Native clocks](cross-title-online/evaluation/native13-stage-clock.json) · [Three-title full-credit video](cross-title-online/evaluation/three-human-SFT-PPO-full-credits.mp4) · [Paired native-clock comparisons](learning-curves/native-stage-progress.png)
+
+Replay KL regularization gave a TH13 difference of +238 native ticks [−338, +856] on eight pairs and a TH14 difference of +75 [−761, +1,033] on twelve pairs. Every arm ended in Stage 1. One TH14 plain-PPO attempt timed out and was replayed to a verified endpoint. [TH13 outcome](replay-anchor/evaluation/native13-stage-clock.json) · [TH14 outcome and retries](zero-shot-th14/replay-anchor/paired.json)
+
+The fourth PPO generation used 72 additional complete original credits and 54,379 decisions. An audit of its 24 TH13 training credits identified a systematic host effect. Per 1,000 native script ticks actually traversed by a policy action, the old wall-time term awarded 0.04843 on Endeavour and 0.01759 on Momentum. Replacing the term with 0.001 per 60 new native ticks gave 0.01667 on both hosts. A sibling policy was trained from the same PPO3 parent on the same traces, with identical death, stage and Bomb rewards. The existing campaign retains its registered objective to preserve comparability. [Original PPO4](camera-ppo4/report.json) · [Training camera archive](campaign/g04/release-archive.json) · [Per-credit clock audit](clock-reward/clock-audit.json) · [Clock-corrected weights](clock-reward/policy)

@@ -76,6 +76,15 @@ def play(arm,seed):
     command=['wsl','-d',opts.wsl_distro,'--','sh',launcher,name,linux(dest),opts.linux_game_dir,clock,opts.image]
     frames=[];actions=[];likelihood=[];state_rows=[];start=time.monotonic();prev=None;stage2=None
     with TrialWorker(command,shutdown_timeout=15) as worker,torch.inference_mode():
+        def advance(keys, previous):
+            try:
+                return worker.request(f'S {keys}')
+            except (TimeoutError, RuntimeError, OSError):
+                observed={k:previous.get(k) for k in ('ticks','frame','stage','mode','lives','bombs')}
+                failure=dict(arm=arm,seed=seed,decisions=len(actions),last_native_state=observed,
+                             requested_key_mask=keys,stage2_already_observed=stage2,epoch_seconds=time.time())
+                with (dest/'technical-state.jsonl').open('a') as f:f.write(json.dumps(failure)+'\n')
+                raise
         s=worker.read(timeout=120)
         if (s['stage'],s['mode'],s['lives'])!=(1,2,2):raise ValueError(f'Unexpected initial stock: {str(s)[:100]}')
         start_stock=s['bombs']; first_tick=s['ticks']
@@ -87,7 +96,7 @@ def play(arm,seed):
                 break
             if s['ticks']-first_tick>160000 or time.monotonic()-start>3600:raise TimeoutError('Unverified long credit')
             if s['lives']<0:
-                s=worker.request('S 0');flags+=1
+                s=advance(0,s);flags+=1
                 if flags>1000:raise ValueError('Unsettled hit animation')
                 continue
             flags=0
@@ -101,7 +110,7 @@ def play(arm,seed):
             frames.append(frame);actions.append(a);likelihood.append([np.log(q[k]) for q,k in zip(probabilities,a)])
             state_rows.append([s[k] for k in ('ticks','frame','stage','lives','bombs','mode')]+s['player'])
             if len(actions)==1:print('ACTIVE',arm,seed,s['lives'],s['bombs'],flush=True)
-            s=worker.request(f'S {action_mask(a)}')
+            s=advance(action_mask(a),s)
         subprocess.run(['wsl','-d',opts.wsl_distro,'--','docker','exec','-e','DISPLAY=:66',name,'scrot','-o','/capture/terminal.png'],check=True)
         trace=dest/'native.npz'
         np.savez_compressed(trace,frames=np.stack(frames),action=np.asarray(actions,np.int8),logp=np.asarray(likelihood,np.float32),

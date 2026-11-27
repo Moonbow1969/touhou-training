@@ -1,0 +1,40 @@
+{
+  "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+  "title": 13,
+  "arms": [
+    "plain-cross-ppo",
+    "anchored-cross-ppo"
+  ],
+  "n": 8,
+  "per_seed": {
+    "plain-cross-ppo": {
+      "891001": 3834,
+      "891002": 3128,
+      "891003": 5084,
+      "891004": 4608,
+      "891005": 2987,
+      "891006": 3955,
+      "891007": 2898,
+      "891008": 2444
+    },
+    "anchored-cross-ppo": {
+      "891001": 4728,
+      "891002": 3758,
+      "891003": 4234,
+      "891004": 3754,
+      "891005": 2907,
+      "891006": 3978,
+      "891007": 3156,
+      "891008": 4329
+    }
+  },
+  "mean_ticks_by_arm": {
+    "plain-cross-ppo": 3617.25,
+    "anchored-cross-ppo": 3855.5
+  },
+  "mean_paired_change": 238.25,
+  "paired_fixed_host_bootstrap95": [
+    -337.6375,
+    855.875
+  ]
+}

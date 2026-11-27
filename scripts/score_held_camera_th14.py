@@ -35,7 +35,10 @@ def main():
             if not photo.is_file():photo=folder/'terminal.png'
             image=a.out/(folder.name+'.jpg')
             with Image.open(photo) as im:im.crop((0,0,650,514)).convert('RGB').save(image,quality=85)
-            group.append({**j,'max_observed_stage1_tick':peak,'actual_move_change_rate':changes,
+            retry_log=folder/'technical-attempts.jsonl'
+            retries=[json.loads(v) for v in retry_log.read_text().splitlines() if v.strip()] if retry_log.exists() else []
+            group.append({**j,'technical_retries':len(retries),'retry_reasons':[v.get('error',v.get('reason')) for v in retries],
+                          'max_observed_stage1_tick':peak,'actual_move_change_rate':changes,
                           'native_end_image':image.name,'end_capture_phase':photo.stem,
                           'state_columns':['absolute_tick','stage_tick','stage','spares','bombs','game_mode','x','y'],
                           'compact_trace_sha256':digest(small)})
@@ -48,6 +51,8 @@ def main():
     for label,group in rows.items():
         successes=[x for x in group if x['stage2'] is not None]
         result['arms'][label]={'n':len(group),'stage2':len(successes),'stage2_wilson95':wilson(len(successes),len(group)),
+              'technical_retries_before_verified_outcomes':sum(x['technical_retries'] for x in group),
+              'seeds_with_retries':[x['seed'] for x in group if x['technical_retries']],
               'mean_stage2_bombs':float(np.mean([x['stage2']['bombs'] for x in successes])) if successes else None,
               'mean_stage2_spares':float(np.mean([x['stage2']['spares'] for x in successes])) if successes else None,
               'mean_terminal_spares':0,'mean_terminal_bombs':float(np.mean([x['terminal_bombs'] for x in group])),
