@@ -1,0 +1,785 @@
+{
+  "credits": 32,
+  "original_cpu_quota_per_lane": 2,
+  "host": "Gamer-WSL",
+  "common_allocated_lanes": [
+    "th17-alpha-private-66",
+    "th17-beta-private-66",
+    "th17-delta-private-66",
+    "th17-gamma-private-66"
+  ],
+  "common_allocation_monotonic_seconds": [
+    564097.224867502,
+    564901.58363422
+  ],
+  "scope": "The common window intersects each enrolled lane\u2019s first-to-last action envelope. It may be empty. Groups summarize complete one-second windows in that intersection, counting only this study. End-to-end rates for the full cohort and its observed active union are available separately.",
+  "groups": {
+    "4": {
+      "overlap_seconds": 275,
+      "mean_aggregate_native_ticks_per_second": 148.63552779686813,
+      "median_aggregate_native_ticks_per_second": 149.48941805367394,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        131.44946491363197,
+        162.74430698178452
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 29.96727272727273
+    },
+    "3": {
+      "overlap_seconds": 259,
+      "mean_aggregate_native_ticks_per_second": 110.45354125147742,
+      "median_aggregate_native_ticks_per_second": 111.05515799264981,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        96.05161145655498,
+        125.2837164973385
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 22.44015444015444
+    },
+    "2": {
+      "overlap_seconds": 197,
+      "mean_aggregate_native_ticks_per_second": 71.38385330056634,
+      "median_aggregate_native_ticks_per_second": 71.96102374819054,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        59.19857445852965,
+        81.37901282844896
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 14.959390862944163
+    },
+    "1": {
+      "overlap_seconds": 24,
+      "mean_aggregate_native_ticks_per_second": 37.44590209767947,
+      "median_aggregate_native_ticks_per_second": 36.95334720672656,
+      "p10_p90_aggregate_native_ticks_per_second": [
+        34.37890749170881,
+        40.80366621574206
+      ],
+      "mean_aggregate_four_head_decisions_per_second": 7.458333333333333
+    }
+  },
+  "end_to_end": {
+    "physical_wall_seconds": 804.3587667179527,
+    "decisions": 18251,
+    "native_credit_terminals": 27,
+    "amortized_decisions_per_second": 22.690123804418842,
+    "native_terminals_per_hour": 120.84159957205148,
+    "fraction_available_game_slots_acting": 0.7567731778612593,
+    "intercredit_gap_seconds_median": 30.21176183852367,
+    "intercredit_gap_seconds_p90": 31.63651313802693,
+    "gap_definition": "Previous last action to next first action on same instance: includes title reset, UI evidence, packing, model readiness and dispatch."
+  },
+  "observed_cohort_activity": {
+    "credits": 32,
+    "decisions": 21934,
+    "observed_native_ticks": 107457,
+    "entire_cohort_span": {
+      "seconds": 1025.5750307700364,
+      "decisions_per_second": 21.387026148180706,
+      "native_ticks_per_second": 104.77731689637339,
+      "full_credits_per_hour": 112.32722769537783
+    },
+    "at_least_one_enrolled_game_active": {
+      "seconds": 1025.5750307700364,
+      "decisions_per_second": 21.387026148180706,
+      "native_ticks_per_second": 104.77731689637339,
+      "full_credits_per_hour": 112.32722769537783
+    },
+    "by_active_enrolled_lane_count": {
+      "1": {
+        "seconds": 55.09723977907561,
+        "decisions": 411,
+        "interpolated_native_ticks": 1931.2062821313837
+      },
+      "2": {
+        "seconds": 325.6522737488849,
+        "decisions": 4880,
+        "interpolated_native_ticks": 23296.393066309334
+      },
+      "3": {
+        "seconds": 359.6341767840786,
+        "decisions": 8090,
+        "interpolated_native_ticks": 39761.89784366044
+      },
+      "4": {
+        "seconds": 285.1913404579973,
+        "decisions": 8553,
+        "interpolated_native_ticks": 42467.502807898854
+      }
+    },
+    "segments": [
+      {
+        "begin_monotonic_seconds": 564090.934046022,
+        "end_monotonic_seconds": 564095.02230272,
+        "active_lanes": [
+          "th17-gamma-private-66"
+        ],
+        "decisions": 30,
+        "interpolated_native_ticks": 163.31518106315278
+      },
+      {
+        "begin_monotonic_seconds": 564095.02230272,
+        "end_monotonic_seconds": 564096.601444884,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 24,
+        "interpolated_native_ticks": 139.25830487927138
+      },
+      {
+        "begin_monotonic_seconds": 564096.601444884,
+        "end_monotonic_seconds": 564097.224867502,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 13,
+        "interpolated_native_ticks": 82.09515158676663
+      },
+      {
+        "begin_monotonic_seconds": 564097.224867502,
+        "end_monotonic_seconds": 564152.135021367,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 1647,
+        "interpolated_native_ticks": 8539.716750866866
+      },
+      {
+        "begin_monotonic_seconds": 564152.135021367,
+        "end_monotonic_seconds": 564180.405049019,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 637,
+        "interpolated_native_ticks": 3141.5330313573854
+      },
+      {
+        "begin_monotonic_seconds": 564180.405049019,
+        "end_monotonic_seconds": 564202.593830623,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 665,
+        "interpolated_native_ticks": 3122.855338948089
+      },
+      {
+        "begin_monotonic_seconds": 564202.593830623,
+        "end_monotonic_seconds": 564203.504943613,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 22,
+        "interpolated_native_ticks": 93.90711246150158
+      },
+      {
+        "begin_monotonic_seconds": 564203.504943613,
+        "end_monotonic_seconds": 564206.630624624,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 47,
+        "interpolated_native_ticks": 234.06069943084321
+      },
+      {
+        "begin_monotonic_seconds": 564206.630624624,
+        "end_monotonic_seconds": 564231.393170385,
+        "active_lanes": [
+          "th17-gamma-private-66"
+        ],
+        "decisions": 185,
+        "interpolated_native_ticks": 926.8809107956536
+      },
+      {
+        "begin_monotonic_seconds": 564231.393170385,
+        "end_monotonic_seconds": 564235.180777085,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 55,
+        "interpolated_native_ticks": 288.4016390132434
+      },
+      {
+        "begin_monotonic_seconds": 564235.180777085,
+        "end_monotonic_seconds": 564235.647992865,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 12,
+        "interpolated_native_ticks": 56.523736637430474
+      },
+      {
+        "begin_monotonic_seconds": 564235.647992865,
+        "end_monotonic_seconds": 564237.036055943,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 21,
+        "interpolated_native_ticks": 122.20066462704123
+      },
+      {
+        "begin_monotonic_seconds": 564237.036055943,
+        "end_monotonic_seconds": 564265.505086243,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 639,
+        "interpolated_native_ticks": 3157.949802086342
+      },
+      {
+        "begin_monotonic_seconds": 564265.505086243,
+        "end_monotonic_seconds": 564316.703930131,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 1534,
+        "interpolated_native_ticks": 7760.903735767833
+      },
+      {
+        "begin_monotonic_seconds": 564316.703930131,
+        "end_monotonic_seconds": 564329.473494208,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 291,
+        "interpolated_native_ticks": 1473.7238968544104
+      },
+      {
+        "begin_monotonic_seconds": 564329.473494208,
+        "end_monotonic_seconds": 564346.659820824,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 257,
+        "interpolated_native_ticks": 1097.9352152423917
+      },
+      {
+        "begin_monotonic_seconds": 564346.659820824,
+        "end_monotonic_seconds": 564360.960659557,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 320,
+        "interpolated_native_ticks": 1453.9254755634297
+      },
+      {
+        "begin_monotonic_seconds": 564360.960659557,
+        "end_monotonic_seconds": 564386.909782907,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 779,
+        "interpolated_native_ticks": 3629.2633587352475
+      },
+      {
+        "begin_monotonic_seconds": 564386.909782907,
+        "end_monotonic_seconds": 564408.48261596,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 485,
+        "interpolated_native_ticks": 2305.5166153222012
+      },
+      {
+        "begin_monotonic_seconds": 564408.48261596,
+        "end_monotonic_seconds": 564419.013518997,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 158,
+        "interpolated_native_ticks": 727.4114036204514
+      },
+      {
+        "begin_monotonic_seconds": 564419.013518997,
+        "end_monotonic_seconds": 564425.393887195,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 144,
+        "interpolated_native_ticks": 773.9565654913381
+      },
+      {
+        "begin_monotonic_seconds": 564425.393887195,
+        "end_monotonic_seconds": 564438.688963557,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 200,
+        "interpolated_native_ticks": 972.8708091065228
+      },
+      {
+        "begin_monotonic_seconds": 564438.688963557,
+        "end_monotonic_seconds": 564456.142016911,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 392,
+        "interpolated_native_ticks": 1894.2565326561808
+      },
+      {
+        "begin_monotonic_seconds": 564456.142016911,
+        "end_monotonic_seconds": 564476.813410308,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 621,
+        "interpolated_native_ticks": 2984.5679049955174
+      },
+      {
+        "begin_monotonic_seconds": 564476.813410308,
+        "end_monotonic_seconds": 564485.909346447,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 205,
+        "interpolated_native_ticks": 1050.7246911461052
+      },
+      {
+        "begin_monotonic_seconds": 564485.909346447,
+        "end_monotonic_seconds": 564508.557830701,
+        "active_lanes": [
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 338,
+        "interpolated_native_ticks": 1529.6663916830203
+      },
+      {
+        "begin_monotonic_seconds": 564508.557830701,
+        "end_monotonic_seconds": 564516.126522527,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 169,
+        "interpolated_native_ticks": 902.8873265757202
+      },
+      {
+        "begin_monotonic_seconds": 564516.126522527,
+        "end_monotonic_seconds": 564523.014851973,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 208,
+        "interpolated_native_ticks": 1057.389656105368
+      },
+      {
+        "begin_monotonic_seconds": 564523.014851973,
+        "end_monotonic_seconds": 564550.255037356,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 613,
+        "interpolated_native_ticks": 2776.332557229687
+      },
+      {
+        "begin_monotonic_seconds": 564550.255037356,
+        "end_monotonic_seconds": 564553.451955336,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 48,
+        "interpolated_native_ticks": 236.77895062060725
+      },
+      {
+        "begin_monotonic_seconds": 564553.451955336,
+        "end_monotonic_seconds": 564580.827591484,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 610,
+        "interpolated_native_ticks": 3094.8825534612897
+      },
+      {
+        "begin_monotonic_seconds": 564580.827591484,
+        "end_monotonic_seconds": 564620.082901964,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 1175,
+        "interpolated_native_ticks": 5628.525878933275
+      },
+      {
+        "begin_monotonic_seconds": 564620.082901964,
+        "end_monotonic_seconds": 564624.03999415,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 91,
+        "interpolated_native_ticks": 418.72295547104727
+      },
+      {
+        "begin_monotonic_seconds": 564624.03999415,
+        "end_monotonic_seconds": 564649.990969641,
+        "active_lanes": [
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 389,
+        "interpolated_native_ticks": 1952.31925458936
+      },
+      {
+        "begin_monotonic_seconds": 564649.990969641,
+        "end_monotonic_seconds": 564652.032833321,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 46,
+        "interpolated_native_ticks": 230.11233054960374
+      },
+      {
+        "begin_monotonic_seconds": 564652.032833321,
+        "end_monotonic_seconds": 564652.262237233,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 7,
+        "interpolated_native_ticks": 33.59009087462496
+      },
+      {
+        "begin_monotonic_seconds": 564652.262237233,
+        "end_monotonic_seconds": 564660.316832459,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 181,
+        "interpolated_native_ticks": 906.7970143471235
+      },
+      {
+        "begin_monotonic_seconds": 564660.316832459,
+        "end_monotonic_seconds": 564682.311058596,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 330,
+        "interpolated_native_ticks": 1542.6089145363376
+      },
+      {
+        "begin_monotonic_seconds": 564682.311058596,
+        "end_monotonic_seconds": 564689.8258597,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 168,
+        "interpolated_native_ticks": 825.4401201880099
+      },
+      {
+        "begin_monotonic_seconds": 564689.8258597,
+        "end_monotonic_seconds": 564713.007327227,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 695,
+        "interpolated_native_ticks": 3544.1524685204913
+      },
+      {
+        "begin_monotonic_seconds": 564713.007327227,
+        "end_monotonic_seconds": 564715.409987463,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 55,
+        "interpolated_native_ticks": 259.67936867342905
+      },
+      {
+        "begin_monotonic_seconds": 564715.409987463,
+        "end_monotonic_seconds": 564741.723224549,
+        "active_lanes": [
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 393,
+        "interpolated_native_ticks": 1985.3809765728922
+      },
+      {
+        "begin_monotonic_seconds": 564741.723224549,
+        "end_monotonic_seconds": 564745.008814446,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 74,
+        "interpolated_native_ticks": 399.73401660711136
+      },
+      {
+        "begin_monotonic_seconds": 564745.008814446,
+        "end_monotonic_seconds": 564768.275324152,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 698,
+        "interpolated_native_ticks": 3515.2118798086194
+      },
+      {
+        "begin_monotonic_seconds": 564768.275324152,
+        "end_monotonic_seconds": 564790.29829773,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 494,
+        "interpolated_native_ticks": 2440.8092196078233
+      },
+      {
+        "begin_monotonic_seconds": 564790.29829773,
+        "end_monotonic_seconds": 564799.571187191,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 139,
+        "interpolated_native_ticks": 687.7084198251578
+      },
+      {
+        "begin_monotonic_seconds": 564799.571187191,
+        "end_monotonic_seconds": 564815.174617363,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 352,
+        "interpolated_native_ticks": 1928.198860795622
+      },
+      {
+        "begin_monotonic_seconds": 564815.174617363,
+        "end_monotonic_seconds": 564821.609923548,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 96,
+        "interpolated_native_ticks": 483.8374946881828
+      },
+      {
+        "begin_monotonic_seconds": 564821.609923548,
+        "end_monotonic_seconds": 564825.35034186,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 85,
+        "interpolated_native_ticks": 436.61876840355444
+      },
+      {
+        "begin_monotonic_seconds": 564825.35034186,
+        "end_monotonic_seconds": 564846.719383055,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 319,
+        "interpolated_native_ticks": 1472.1244274950686
+      },
+      {
+        "begin_monotonic_seconds": 564846.719383055,
+        "end_monotonic_seconds": 564854.457358169,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 174,
+        "interpolated_native_ticks": 816.2774048254062
+      },
+      {
+        "begin_monotonic_seconds": 564854.457358169,
+        "end_monotonic_seconds": 564871.909381452,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 524,
+        "interpolated_native_ticks": 2651.325744342917
+      },
+      {
+        "begin_monotonic_seconds": 564871.909381452,
+        "end_monotonic_seconds": 564874.204379842,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 52,
+        "interpolated_native_ticks": 248.96552753803348
+      },
+      {
+        "begin_monotonic_seconds": 564874.204379842,
+        "end_monotonic_seconds": 564901.58363422,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-delta-private-66"
+        ],
+        "decisions": 412,
+        "interpolated_native_ticks": 1947.3178136066358
+      },
+      {
+        "begin_monotonic_seconds": 564901.58363422,
+        "end_monotonic_seconds": 564904.755317114,
+        "active_lanes": [
+          "th17-alpha-private-66"
+        ],
+        "decisions": 23,
+        "interpolated_native_ticks": 88.18034303679133
+      },
+      {
+        "begin_monotonic_seconds": 564904.755317114,
+        "end_monotonic_seconds": 564904.804579519,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 1,
+        "interpolated_native_ticks": 3.7347150386664403
+      },
+      {
+        "begin_monotonic_seconds": 564904.804579519,
+        "end_monotonic_seconds": 564974.204324204,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 1562,
+        "interpolated_native_ticks": 7565.337121272901
+      },
+      {
+        "begin_monotonic_seconds": 564974.204324204,
+        "end_monotonic_seconds": 564984.20922159,
+        "active_lanes": [
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 150,
+        "interpolated_native_ticks": 751.4369864145665
+      },
+      {
+        "begin_monotonic_seconds": 564984.20922159,
+        "end_monotonic_seconds": 565005.168630595,
+        "active_lanes": [
+          "th17-gamma-private-66"
+        ],
+        "decisions": 157,
+        "interpolated_native_ticks": 691.2285250173659
+      },
+      {
+        "begin_monotonic_seconds": 565005.168630595,
+        "end_monotonic_seconds": 565014.768881296,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 143,
+        "interpolated_native_ticks": 566.9363723581793
+      },
+      {
+        "begin_monotonic_seconds": 565014.768881296,
+        "end_monotonic_seconds": 565023.848999249,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66",
+          "th17-gamma-private-66"
+        ],
+        "decisions": 204,
+        "interpolated_native_ticks": 1026.9900869509777
+      },
+      {
+        "begin_monotonic_seconds": 565023.848999249,
+        "end_monotonic_seconds": 565114.393731371,
+        "active_lanes": [
+          "th17-alpha-private-66",
+          "th17-beta-private-66"
+        ],
+        "decisions": 1360,
+        "interpolated_native_ticks": 6554.403612960896
+      },
+      {
+        "begin_monotonic_seconds": 565114.393731371,
+        "end_monotonic_seconds": 565116.509076792,
+        "active_lanes": [
+          "th17-beta-private-66"
+        ],
+        "decisions": 16,
+        "interpolated_native_ticks": 61.60132221842014
+      }
+    ],
+    "scope": "One physical host clock, first policy onset through last observed action. The full span includes cold reset, packing, idle gaps and other studies occupying released lanes. The union excludes periods with zero enrolled games active. Counts describe only this cohort. Other workloads and fleet saturation are unmeasured. Per-segment ticks are linearly interpolated across observed native action boundaries; whole-cohort totals are exact."
+  }
+}

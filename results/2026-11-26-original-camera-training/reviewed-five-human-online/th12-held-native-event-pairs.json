@@ -1,0 +1,963 @@
+{
+  "roles": "Fixed original endpoint comparison, with independent same-instance complete-pair strict coverage sensitivity. Game RNG uncontrolled.",
+  "registered": 32,
+  "original_endpoints": 32,
+  "fully_qualified_controls": 31,
+  "additional_technical_attempts": [
+    {
+      "file": "technical-attempts/held-reviewed-ppo-1841263-alpha-preinput-39ec829c9996/technical.json",
+      "sha256": "787261a3d95b21d3610e4717fcdded86f0a901f5963f733c6e3633127f60e2a4",
+      "record": {
+        "mode": "held",
+        "seed": 1841263,
+        "policy": "reviewed-ppo",
+        "host": "entropy",
+        "lane": "alpha",
+        "difficulty": 2,
+        "tag": "held-reviewed-ppo-1841263-alpha",
+        "execution_clock": "tick4",
+        "covered_clock": true,
+        "root": "reviewed-five-human-online/native12",
+        "return_code": 2,
+        "game_input_actions": 0,
+        "original_raw_sha256": "39ec829c99965863d05684ca401496cf0cd58ad0db86a84b77dbaf59a81ce687",
+        "classification": "Original setup failed before any physical sampled input. Archive immutable setup, restart identical registered host, lane, rank, model and seed.",
+        "worker_log": ""
+      }
+    },
+    {
+      "file": "technical-attempts/held-reviewed-ppo-1841263-alpha-preinput-e913af055ee1/technical.json",
+      "sha256": "d9cabde1050bc07ec9eb9b612f73768660b253969fa837d5ca2f5ec0403a48cc",
+      "record": {
+        "mode": "held",
+        "seed": 1841263,
+        "policy": "reviewed-ppo",
+        "host": "entropy",
+        "lane": "alpha",
+        "difficulty": 2,
+        "tag": "held-reviewed-ppo-1841263-alpha",
+        "execution_clock": "tick4",
+        "covered_clock": true,
+        "root": "reviewed-five-human-online/native12",
+        "return_code": 2,
+        "game_input_actions": 0,
+        "original_raw_sha256": "e913af055ee121f00b9715629de5d3d03a200f2c09b8c56ee5367e424b52205b",
+        "classification": "Original setup failed before any physical sampled input. Archive immutable setup, restart identical registered host, lane, rank, model and seed.",
+        "worker_log": "Initial stock mismatch.\n"
+      }
+    },
+    {
+      "file": "technical-attempts/held-reviewed-ppo-1841263-alpha-preinput-gameover-ad312654b677/technical.json",
+      "sha256": "d62b36d2248d7817d88b40ec2caaff7b279b64a686e464fbf34e7d2e19a1290a",
+      "record": {
+        "mode": "held",
+        "seed": 1841263,
+        "policy": "reviewed-ppo",
+        "host": "entropy",
+        "lane": "alpha",
+        "difficulty": 2,
+        "tag": "held-reviewed-ppo-1841263-alpha",
+        "execution_clock": "tick4",
+        "covered_clock": true,
+        "root": "reviewed-five-human-online/native12",
+        "return_code": 2,
+        "game_input_actions": 0,
+        "original_raw_sha256": "ad312654b677f69203d64e5a50d7f00ace77d496b2bde09bbcd48b525c6dc8d9",
+        "original_screen_sha256": "ea46d0ad1e3cb6eb960d608baf4289b8acf96d324480e8cbc00c82344df52e4d",
+        "original_status": "gameover",
+        "classification": "Third setup log was loading, never reached physical actor. Native first Game Over was visible on the isolated original after the failed setup; independently read gameover again before restarting. No policy behavior or normal enrolled endpoint is claimed."
+      }
+    }
+  ],
+  "physical_starts_including_technical": 35,
+  "complete_outcomes": {
+    "2": {
+      "pairs": 8,
+      "seeds": [
+        1841251,
+        1841253,
+        1841255,
+        1841257,
+        1841259,
+        1841261,
+        1841263,
+        1841265
+      ],
+      "metrics": {
+        "stage2": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_spares": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_bombs": {
+          "means": {
+            "reviewed-sft": 0.875,
+            "reviewed-ppo": 0.5
+          },
+          "candidate_minus_reference": -0.375,
+          "wins": 1,
+          "ties": 3,
+          "losses": 4,
+          "within_lane_paired_bootstrap95": [
+            -0.875,
+            0.125
+          ]
+        },
+        "first_loss_tick": {
+          "means": {
+            "reviewed-sft": 1256.25,
+            "reviewed-ppo": 1288.75
+          },
+          "candidate_minus_reference": 32.5,
+          "wins": 3,
+          "ties": 0,
+          "losses": 5,
+          "within_lane_paired_bootstrap95": [
+            -560.875,
+            625.875
+          ]
+        },
+        "native_death_tick": {
+          "means": {
+            "reviewed-sft": 3272.25,
+            "reviewed-ppo": 3444.625
+          },
+          "candidate_minus_reference": 172.375,
+          "wins": 5,
+          "ties": 0,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -423.75,
+            768.5
+          ]
+        }
+      }
+    },
+    "3": {
+      "pairs": 8,
+      "seeds": [
+        1841252,
+        1841254,
+        1841256,
+        1841258,
+        1841260,
+        1841262,
+        1841264,
+        1841266
+      ],
+      "metrics": {
+        "stage2": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_spares": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_bombs": {
+          "means": {
+            "reviewed-sft": 1.375,
+            "reviewed-ppo": 1.0
+          },
+          "candidate_minus_reference": -0.375,
+          "wins": 1,
+          "ties": 4,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -0.875,
+            0.125
+          ]
+        },
+        "first_loss_tick": {
+          "means": {
+            "reviewed-sft": 904.0,
+            "reviewed-ppo": 655.75
+          },
+          "candidate_minus_reference": -248.25,
+          "wins": 5,
+          "ties": 0,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -599.75,
+            103.25
+          ]
+        },
+        "native_death_tick": {
+          "means": {
+            "reviewed-sft": 2360.375,
+            "reviewed-ppo": 2404.0
+          },
+          "candidate_minus_reference": 43.625,
+          "wins": 5,
+          "ties": 0,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -65.625,
+            152.875
+          ]
+        }
+      }
+    }
+  },
+  "strict_paired_sensitivity": {
+    "2": {
+      "pairs": 8,
+      "seeds": [
+        1841251,
+        1841253,
+        1841255,
+        1841257,
+        1841259,
+        1841261,
+        1841263,
+        1841265
+      ],
+      "metrics": {
+        "stage2": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_spares": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 8,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_bombs": {
+          "means": {
+            "reviewed-sft": 0.875,
+            "reviewed-ppo": 0.5
+          },
+          "candidate_minus_reference": -0.375,
+          "wins": 1,
+          "ties": 3,
+          "losses": 4,
+          "within_lane_paired_bootstrap95": [
+            -0.875,
+            0.125
+          ]
+        },
+        "first_loss_tick": {
+          "means": {
+            "reviewed-sft": 1256.25,
+            "reviewed-ppo": 1288.75
+          },
+          "candidate_minus_reference": 32.5,
+          "wins": 3,
+          "ties": 0,
+          "losses": 5,
+          "within_lane_paired_bootstrap95": [
+            -560.875,
+            625.875
+          ]
+        },
+        "native_death_tick": {
+          "means": {
+            "reviewed-sft": 3272.25,
+            "reviewed-ppo": 3444.625
+          },
+          "candidate_minus_reference": 172.375,
+          "wins": 5,
+          "ties": 0,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -423.75,
+            768.5
+          ]
+        }
+      }
+    },
+    "3": {
+      "pairs": 7,
+      "seeds": [
+        1841252,
+        1841254,
+        1841256,
+        1841260,
+        1841262,
+        1841264,
+        1841266
+      ],
+      "metrics": {
+        "stage2": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 7,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_spares": {
+          "means": {
+            "reviewed-sft": 0.0,
+            "reviewed-ppo": 0.0
+          },
+          "candidate_minus_reference": 0.0,
+          "wins": 0,
+          "ties": 7,
+          "losses": 0,
+          "within_lane_paired_bootstrap95": [
+            0.0,
+            0.0
+          ]
+        },
+        "last_live_bombs": {
+          "means": {
+            "reviewed-sft": 1.5714285714285714,
+            "reviewed-ppo": 1.0
+          },
+          "candidate_minus_reference": -0.5714285714285714,
+          "wins": 0,
+          "ties": 4,
+          "losses": 3,
+          "within_lane_paired_bootstrap95": [
+            -1.0,
+            -0.14285714285714285
+          ]
+        },
+        "first_loss_tick": {
+          "means": {
+            "reviewed-sft": 823.0,
+            "reviewed-ppo": 716.0
+          },
+          "candidate_minus_reference": -107.0,
+          "wins": 5,
+          "ties": 0,
+          "losses": 2,
+          "within_lane_paired_bootstrap95": [
+            -318.42857142857144,
+            104.42857142857143
+          ]
+        },
+        "native_death_tick": {
+          "means": {
+            "reviewed-sft": 2280.8571428571427,
+            "reviewed-ppo": 2392.285714285714
+          },
+          "candidate_minus_reference": 111.42857142857143,
+          "wins": 5,
+          "ties": 0,
+          "losses": 2,
+          "within_lane_paired_bootstrap95": [
+            10.142857142857142,
+            212.71428571428572
+          ]
+        }
+      }
+    }
+  },
+  "originals": [
+    {
+      "seed": 1841251,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 693,
+      "strict_control": true,
+      "receipt_sha256": "5ffe0ff2101ceb85c52b36170ec1db40e00104df4f1524dc27c356a71bf2b670",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 610,
+      "native_death_tick": 2968,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841251,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 945,
+      "strict_control": true,
+      "receipt_sha256": "7ece9b3999fe03d1c2fdf0363b8ef042c23cf884386a0affdfc90dfb077358f2",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1621,
+      "native_death_tick": 3981,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841252,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 585,
+      "strict_control": true,
+      "receipt_sha256": "93ab3f13d7b27d2213c9f4b9d6a1dfa61d2043f36d359d33929eb7842d2d83b3",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1183,
+      "native_death_tick": 2539,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841252,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 488,
+      "strict_control": true,
+      "receipt_sha256": "71e26e2da7637ff5159a170436dc4ca8909052cf630e3cd10d0ad04693cde128",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1200,
+      "native_death_tick": 2150,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841253,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 829,
+      "strict_control": true,
+      "receipt_sha256": "b2798eb109540649d082f80e393581e432435437ea3b89ca222ec3141d9b27cb",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1226,
+      "native_death_tick": 3514,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841253,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 749,
+      "strict_control": true,
+      "receipt_sha256": "8f07f941c432e183a52fb095d7df682e8e4ecaae1fb1a2888f5136b08c76bc37",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1624,
+      "native_death_tick": 3195,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841254,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 613,
+      "strict_control": true,
+      "receipt_sha256": "8876398c42b600742ee4ad413526532890136b5404ffc8f4a019ae237bce2780",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1133,
+      "native_death_tick": 2658,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841254,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 609,
+      "strict_control": true,
+      "receipt_sha256": "249a09c4e6a3a3a0bddca4d584d9f9bdee4ac02e407170ae3d2a0b6df680c542",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1196,
+      "native_death_tick": 2639,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841255,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 743,
+      "strict_control": true,
+      "receipt_sha256": "dbef4b32d3935eef4e41a8b5467b901fe0ca4753f3ddacc0639fcd7a68bc9450",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1114,
+      "native_death_tick": 3190,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841255,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 608,
+      "strict_control": true,
+      "receipt_sha256": "45868fcb540010f21ce2753b413ceefc59c252ece2f23a5830aa57db19e62346",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1173,
+      "native_death_tick": 2643,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841256,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 572,
+      "strict_control": true,
+      "receipt_sha256": "5b2a97f4a28e6bb687a39ac7faad7e8af00c40f3927bbb54e7806f2790c18cbb",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1131,
+      "native_death_tick": 2511,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841256,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 588,
+      "strict_control": true,
+      "receipt_sha256": "b3f24488d0ed7a145b03c91d8dff54fb7d1e0edc9a0a45739c07f64111a788b7",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1178,
+      "native_death_tick": 2582,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841257,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 1094,
+      "strict_control": true,
+      "receipt_sha256": "b135a42c36015377e4c5a68a87be49d4c5e2134e17905ba55c3c4a2df01d810a",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1957,
+      "native_death_tick": 4591,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841257,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 513,
+      "strict_control": true,
+      "receipt_sha256": "e8404950a3051498629db9b8ed8129fe061417d1a2ab1c5346beb7e81044dc0c",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 267,
+      "native_death_tick": 2255,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841258,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 565,
+      "strict_control": true,
+      "receipt_sha256": "95ec79bd3c33c3fec14c604723d938503012963d9e12f6aa1cb25bf524ecbd3a",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 234,
+      "native_death_tick": 2486,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841258,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 674,
+      "strict_control": false,
+      "receipt_sha256": "3470bc358d14f3e1a0c0b5021094b6686b048fe7aab60461c1bdb6b10a43f47e",
+      "first_loss_stage": 1,
+      "first_loss_tick": 1471,
+      "native_death_tick": 2917,
+      "native_terminal_stage": 1,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841259,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 627,
+      "strict_control": true,
+      "receipt_sha256": "f84584b00a4173af1a98a79ee572322229d64d4b4ad62624f87cf8e0c70a5b4e",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 610,
+      "native_death_tick": 2704,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841259,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 731,
+      "strict_control": true,
+      "receipt_sha256": "dfe7d86b8012f91c7042c2ccc7b2c3a3c75947bf9dbc96937f2ea7feb5c2cb91",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1502,
+      "native_death_tick": 3118,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841260,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 488,
+      "strict_control": true,
+      "receipt_sha256": "1938614be7dbbe10adb71d054aec46afece52f4a7ec7ca152153c42a05d6ded3",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 312,
+      "native_death_tick": 2152,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841260,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 486,
+      "strict_control": true,
+      "receipt_sha256": "dec288d3516f2a01bd9b46bbaa9a41924090c81ee4b05798c087f65df7a050c5",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 325,
+      "native_death_tick": 2144,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841261,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 588,
+      "strict_control": true,
+      "receipt_sha256": "b3d86cbbc5d634eccc15ad3046bd409122b1bec8b4c99165a09e9c76a9bcf2cd",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1236,
+      "native_death_tick": 2553,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841261,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 753,
+      "strict_control": true,
+      "receipt_sha256": "bb821465136c69370bc4e4d0ecb868f54b6ed90cf838c9daac4277a0d016826e",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1641,
+      "native_death_tick": 3215,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841262,
+      "arm": "reviewed-ppo",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 492,
+      "strict_control": true,
+      "receipt_sha256": "07ce330be189c3650d12db0f5b3c31d43e98284908427d70b5d0a8566844ed63",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 432,
+      "native_death_tick": 2168,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841262,
+      "arm": "reviewed-sft",
+      "host": "deck",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 419,
+      "strict_control": true,
+      "receipt_sha256": "8635888f48d46d37d6f24c01be9373b4884ef04602127d109cac28a805286ed6",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 229,
+      "native_death_tick": 1875,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841263,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 1358,
+      "strict_control": true,
+      "receipt_sha256": "d4f6bce8f2a28a29d7afba562011245b19db16e6aac721d8a6f25888c5a26f7d",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1792,
+      "native_death_tick": 5679,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841263,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 1013,
+      "strict_control": true,
+      "receipt_sha256": "9a1586ac4fa5da0cd9b6cd80b874a1cba701b255cabcd3cebb832686f29384c7",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1687,
+      "native_death_tick": 4286,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841264,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 579,
+      "strict_control": true,
+      "receipt_sha256": "5c94b88a472bdcc438b88361b6ec01b7dbee23890b48fa1b2c86d0ff4310e2a7",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 229,
+      "native_death_tick": 2543,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841264,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "alpha",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 575,
+      "strict_control": true,
+      "receipt_sha256": "3a725f5f9cf2e92b644f06f8b3c4324d6d57f37fa396eddadaf8a5afbd302a4a",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1522,
+      "native_death_tick": 2535,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841265,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 720,
+      "strict_control": true,
+      "receipt_sha256": "2992f9251a3acbfeb032cd1a47569b036170459425ab9d36d66c26f0add2696d",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 1727,
+      "native_death_tick": 3168,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841265,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 2,
+      "stage2": 0,
+      "actions": 619,
+      "strict_control": true,
+      "receipt_sha256": "8c75cdc95d7fead514e7c00db82b23ad721bb752a82cc4a0b8473cce4f3dd6d3",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 573,
+      "native_death_tick": 2675,
+      "last_live_bombs": 0,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841266,
+      "arm": "reviewed-sft",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 471,
+      "strict_control": true,
+      "receipt_sha256": "c851c11b772aa39f765550bffb9830bdbce0b23bb3cc81dd5d0e2d5d86e4264a",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 234,
+      "native_death_tick": 2085,
+      "last_live_bombs": 2,
+      "last_live_spares": 0
+    },
+    {
+      "seed": 1841266,
+      "arm": "reviewed-ppo",
+      "host": "entropy",
+      "lane": "beta",
+      "rank": 3,
+      "stage2": 0,
+      "actions": 476,
+      "strict_control": true,
+      "receipt_sha256": "6f28ffc8e9ce61fcb45e8a72441a11db0557873fef8c297db940348adf5bb278",
+      "first_loss_stage": 1,
+      "native_terminal_stage": 1,
+      "first_loss_tick": 469,
+      "native_death_tick": 2131,
+      "last_live_bombs": 1,
+      "last_live_spares": 0
+    }
+  ],
+  "gate_sha256": "f5379c3776013244625faf53bffe9ca43616687b750c9762cd7629a7acb91706"
+}
