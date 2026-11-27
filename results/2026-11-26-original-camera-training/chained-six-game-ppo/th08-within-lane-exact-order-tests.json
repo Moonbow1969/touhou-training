@@ -1,0 +1,85 @@
+{
+  "registration_sha256": "0cd5851a689b44c069470088790aa6110727bf83118066a5b4f6bc0b525304db",
+  "physical_result_sha256": "d798958ffa0345ada94c598d05853aa774a41f0e00ae30ef14262831e32f7d32",
+  "checkpoint_bindings": {
+    "reviewed-ppo": {
+      "record_sha256": "f11827ee859354b95c0fe1cd013e90390e1beb92dd6f0d760fff04a7da854b43",
+      "policy_sha256": "fb91fb7b8f46240da00ed6ff4270b462ca0939be949d62c4724d3cc4e6d59c6b"
+    },
+    "five-ppo2": {
+      "record_sha256": "ff3d611fea777f9506d13633c1be463e5e8716f51bdd442e93ebbdafa088d6c1",
+      "policy_sha256": "71a1fce6fd24cf112daadb981b236161a054a5d0ab71e9ee44c1490fba6decae"
+    },
+    "six-ppo2": {
+      "record_sha256": "3e5d331e6bfc96c9aba34d3a7203df7786c15e3fda0fdcac2a95be710799ad3c",
+      "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e"
+    }
+  },
+  "by_rank": {
+    "Hard": {
+      "stage2": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 0.0,
+        "exact_two_sided_p": 1.0
+      },
+      "duration_seconds": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 9.073141545624997,
+        "exact_two_sided_p": 0.15591836734693879
+      },
+      "first_observed_loss_seconds": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": -0.14604201906250058,
+        "exact_two_sided_p": 0.9604081632653061
+      },
+      "terminal_spares": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 0.0,
+        "exact_two_sided_p": 1.0
+      },
+      "last_playable_bombs": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": -0.875,
+        "exact_two_sided_p": 0.0763265306122449
+      }
+    },
+    "Lunatic": {
+      "stage2": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 0.0,
+        "exact_two_sided_p": 1.0
+      },
+      "duration_seconds": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": -5.064319913187498,
+        "exact_two_sided_p": 0.32612244897959186
+      },
+      "first_observed_loss_seconds": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 1.1359741129374998,
+        "exact_two_sided_p": 0.6946938775510204
+      },
+      "terminal_spares": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 0.0,
+        "exact_two_sided_p": 1.0
+      },
+      "last_playable_bombs": {
+        "complete_pairs": 16,
+        "permitted_orders": 4900,
+        "observed_candidate_minus_reference": 0.3125,
+        "exact_two_sided_p": 0.583265306122449
+      }
+    }
+  },
+  "inference": "The allocation shuffled four candidate-first and four reference-first pairs independently in each lane and rank. Conditional on the fixed unordered pair of outcomes, enumerate all 70\u00d770 permitted orders under a sharp no-policy-effect null. Each estimand is candidate minus reference. Stage 2 is primary. Time and terminal stock are descriptive secondary endpoints with unadjusted p values. Missing pairs suppress the exact test; primary partial-identification bounds remain in the full result."
+}
