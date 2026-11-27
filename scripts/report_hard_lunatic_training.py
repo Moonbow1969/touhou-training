@@ -14,7 +14,7 @@ def main():
     data=args.data.resolve()
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
              'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3',
-             'six-game-online/first-eight','six-game-online/joint-six']
+             'six-game-online/first-eight','six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams']
     counts=Counter();seen=set();steps_by_source={};reports={}
     for study in studies:
         path=data/study/'policy/report.json'
@@ -30,7 +30,7 @@ def main():
             if key in local:raise ValueError(f'Duplicate credit within one update {key}')
             local.add(key)
             if key in seen:
-                if study!='six-game-online/joint-six' or steps_by_source[key]!=c['steps']:
+                if study not in ('six-game-online/joint-six','th08-multiteam-online/joint-six-four-teams') or steps_by_source[key]!=c['steps']:
                     raise ValueError(f'Unexpected repeated original credit {key}')
                 reused_sources+=1
                 continue

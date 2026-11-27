@@ -1,11 +1,37 @@
 """Independently check stock TH17 0.01a rank, stock, stage entry and physical evidence."""
 import csv
+import json
 
 from scripts.checkpoint_storage import digest
 
 BUILD='3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba'
 OBSERVER='a561ed8f077b9d75fc380777722a67e59f9dbbad1dcbc1108c1083be8f1dff69'
 OBSERVER_V2='803154279225a61f80ed1b6a8b7a1b8a094b94bfdabd2f08052c549f7898b2ee'
+
+
+def next_tick_held_endpoint(folder,role):
+    """Authenticate the first native death directly adjacent to a final live action observation."""
+    if role!='held' or (folder/'worker.rc').read_text().strip()!='9' or (folder/'sensor.rc').read_text().strip()!='0':
+        raise ValueError('Expected a scored held credit and the original worker/sensor records')
+    pins=json.loads((folder/'deployed-source.json').read_bytes())
+    if (pins['exe_sha256'],pins['observer_sha256'],pins['actor_sha256'])!=(BUILD,OBSERVER_V2,'95b44b132f7b2d91eb38c566c46dc89a5fb876295fd8db60a346aa436baa7fc8'):
+        raise ValueError('Unqualified build for adjacent native death adjudication')
+    with (folder/'decisions.tsv').open() as file: steps=list(csv.DictReader(file,delimiter='\t'))
+    with (folder/'native.tsv').open() as file: trace=[{k:int(v) for k,v in r.items()} for r in csv.DictReader(file,delimiter='\t') if int(r['stage'])>=1]
+    final={k:int(steps[-1][k]) for k in ('action_t','onset_ns','observed_ns','move','focus','shoot','bomb','keys','observed_keys','stage','after_stage','tick','after_tick','spares','bombs')}
+    if (len(steps)<2 or int(steps[-1]['action_t'])!=len(steps)-1 or any(int(x['action_t'])!=i or x['keys']!=x['observed_keys'] for i,x in enumerate(steps))
+            or final['onset_ns']>=final['observed_ns'] or final['stage']!=final['after_stage'] or final['spares']!=0):
+        raise ValueError('Final measured policy action not a qualified, live original command')
+    die=next((i for i,x in enumerate(trace) if x['spares']==-1),None)
+    if die is None or die<1 or any(x['spares']!=-1 for x in trace[die:]):
+        raise ValueError('Original native final life was not exhausted irreversibly')
+    live,dead=trace[die-1:die+1]
+    if (live['stage'],live['tick'],live['spares'],live['bombs'])!=(final['after_stage'],final['after_tick'],0,final['bombs']) or (dead['stage'],dead['tick'])!=(live['stage'],live['tick']+1) or dead['ms']<live['ms']:
+        raise ValueError('Missing or non-adjacent measured action and original death')
+    return dict(rule='native-next-tick-death-held-v1',role=role,optimizer_eligible=False,
+                controllable_original_ticks_between_observations=0,final_action=final,last_live_native=live,
+                first_dead_native=dead,postdeath_rows=len(trace)-die,
+                raw_hashes={k:digest(folder/k) for k in ('decisions.tsv','native.tsv','deployed-source.json','terminal.png','worker.rc','sensor.rc')})
 
 
 def verify_stage_chronology(native):
@@ -48,6 +74,10 @@ def inspect(receipt_file,r,expected):
         raise ValueError('TH17 native difficulty, character, beast or Continue changed')
     if r['terminal_screen'] not in ('game_over','score_ranking') or last['spares']!=-1:
         raise ValueError('TH17 terminal requires independent qualification')
+    if r.get('adjacent_terminal_evidence_sha256'):
+        f=folder/'held-terminal-boundary.json'
+        if digest(f)!=r['adjacent_terminal_evidence_sha256'] or json.loads(f.read_bytes())!=next_tick_held_endpoint(folder,r['split']):
+            raise ValueError('Adjacent held terminal evidence failed native replay')
     verify_stage_chronology(native)
     entering=next((x for x in native if x['stage']==2),None)
     entry=(bool(entering),entering['spares'] if entering else None,entering['bombs'] if entering else None)
