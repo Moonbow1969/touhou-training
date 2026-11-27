@@ -1,0 +1,197 @@
+{
+  "name": "Bounded original score reward on TH11 inside the five-title PPO update",
+  "reference_arm": "five-ppo",
+  "candidate": "five-score-ppo",
+  "train_seeds": {
+    "10": [
+      1211001,
+      1211002,
+      1211003,
+      1211004,
+      1211005,
+      1211006,
+      1211007,
+      1211008
+    ],
+    "12": [
+      1211201,
+      1211202,
+      1211203,
+      1211204,
+      1211205,
+      1211206,
+      1211207,
+      1211208
+    ],
+    "13": [
+      1211301,
+      1211302,
+      1211303,
+      1211304,
+      1211305,
+      1211306,
+      1211307,
+      1211308
+    ],
+    "17": [
+      1211701,
+      1211702,
+      1211703,
+      1211704,
+      1211705,
+      1211706,
+      1211707,
+      1211708
+    ],
+    "11": [
+      1401101,
+      1401102,
+      1401103,
+      1401104,
+      1401105,
+      1401106,
+      1401107,
+      1401108,
+      1401109,
+      1401110,
+      1401111,
+      1401112,
+      1401113,
+      1401114,
+      1401115,
+      1401116
+    ]
+  },
+  "eval_seeds": {
+    "11": [
+      1471151,
+      1471152,
+      1471153,
+      1471154,
+      1471155,
+      1471156,
+      1471157,
+      1471158,
+      1471159,
+      1471160,
+      1471161,
+      1471162,
+      1471163,
+      1471164,
+      1471165,
+      1471166
+    ]
+  },
+  "rank_by_seed": {
+    "10": {
+      "1211001": 2,
+      "1211002": 3,
+      "1211003": 2,
+      "1211004": 3,
+      "1211005": 2,
+      "1211006": 3,
+      "1211007": 2,
+      "1211008": 3
+    },
+    "12": {
+      "1211201": 2,
+      "1211202": 3,
+      "1211203": 2,
+      "1211204": 3,
+      "1211205": 2,
+      "1211206": 3,
+      "1211207": 2,
+      "1211208": 3
+    },
+    "13": {
+      "1211301": 2,
+      "1211302": 3,
+      "1211303": 2,
+      "1211304": 3,
+      "1211305": 2,
+      "1211306": 3,
+      "1211307": 2,
+      "1211308": 3
+    },
+    "17": {
+      "1211701": 2,
+      "1211702": 3,
+      "1211703": 2,
+      "1211704": 3,
+      "1211705": 2,
+      "1211706": 3,
+      "1211707": 2,
+      "1211708": 3
+    },
+    "11": {
+      "1401101": 2,
+      "1401102": 3,
+      "1401103": 2,
+      "1401104": 3,
+      "1401105": 2,
+      "1401106": 3,
+      "1401107": 2,
+      "1401108": 3,
+      "1401109": 2,
+      "1401110": 3,
+      "1401111": 2,
+      "1401112": 3,
+      "1401113": 2,
+      "1401114": 3,
+      "1401115": 2,
+      "1401116": 3,
+      "1471151": 2,
+      "1471152": 3,
+      "1471153": 2,
+      "1471154": 3,
+      "1471155": 2,
+      "1471156": 3,
+      "1471157": 2,
+      "1471158": 3,
+      "1471159": 2,
+      "1471160": 3,
+      "1471161": 2,
+      "1471162": 3,
+      "1471163": 2,
+      "1471164": 3,
+      "1471165": 2,
+      "1471166": 3
+    }
+  },
+  "behavior_sha256": "1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a",
+  "games": {
+    "TH10": "original 0.02a",
+    "TH12": "original 0.02a",
+    "TH13": "original 0.01a",
+    "TH17": "original standalone trial, SHA256 3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba",
+    "TH11": "Original standalone trial 0.02a, first three stages"
+  },
+  "balanced_title_rank": true,
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "controls": "No geometry, aim, automatic shoot, automatic bomb, programmed movement route or Continue. Raw original 112x96 grayscale camera and preceding absolute-difference image. One categorical movement head and three independent focus, shot and bomb heads.",
+  "starting_actor": "Uniform average of four same-parent human SFT specialists. Zero initial value head.",
+  "source_manifests": {
+    "four-game-merged-online/corrected/credits.json": "a9fd685bade40ecb65cae148c5b904d642fe050b3628b2b97bd6ec5d0b75653f",
+    "th11-original-ppo/training-credits.json": "e772128509c2286ee5e264ad17dddc0f10c3421773bdfdedf658c41e807f9d26"
+  },
+  "design": "Same original human SFT, 48 physical full credits, observations, log probabilities, action labels, initial critic, ten equally weighted strata, four epochs and optimization seed as the five-game reference. Change only the reward supplied on the 16 TH11 training credits.",
+  "evaluation": "Fresh physical two-arm whole-credit TH11 evaluation only, eight pairs per rank. Alternate order within rank on the same physical lane. Primary endpoint Stage 2, with spare lives and Power at entry and terminal. Report native score at final loss, settled score, effective casts, and score at first life loss. This exploratory follow-up was motivated by prior development results. No held seed or image enters the fit.",
+  "reference_evaluation_sha256": "cbffd87a61aa6d364cd3b685a30662bce78f308988ad2b45632f2b36c3d77fae",
+  "native_executable_sha256": "360f542349a08707de5c788ef5a950d5d3ad0fd727a23e74b6813db40dfe77a9",
+  "reward": "Use the original native points P completed during each action, with F(P)=P/(P+233975). Add 0.30 times the increment in F to the original stock-change reward. The scale 233975 is the median fatal-frame score of the 16 TRAIN credits. The entire score bonus is bounded by 0.30 per credit, below one spare life. No score observation enters the policy. This changes the learning objective."
+}

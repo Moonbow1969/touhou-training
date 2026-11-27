@@ -11,13 +11,15 @@ from scripts.checkpoint_storage import digest
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data',required=True,type=Path)
+    parser.add_argument('--merged-as-deployed',type=Path,help='Optional complete merged-cohort results, including legacy coverage failures.')
     args=parser.parse_args()
     root=args.data.resolve()
     audit=root/'th12-control-coverage/strict-native-policy-coverage.json'
     verdicts=json.loads(audit.read_bytes())['credits']
     summaries={}
-    for branch in ('four-game-online','four-game-ppo-generation2'):
-        file=root/branch/'evaluation/credits.json'
+    files={b:root/b/'evaluation/credits.json' for b in ('four-game-online','four-game-ppo-generation2')}
+    if args.merged_as_deployed:files['four-game-merged-online']=args.merged_as_deployed
+    for branch,file in files.items():
         rows=[r for r in json.loads(file.read_bytes()) if r['title']==12]
         ver={v['sha256']:v for v in verdicts if v['branch']==branch and v['split']=='held'}
         if set(ver)!={r['native_log_sha256'] for r in rows}:
@@ -34,6 +36,7 @@ def main():
             item=dict(physical_pairs=len(groups[arms[0]]),coverage_qualified_pairs=len(kept),qualified_paired_seeds=kept)
             for arm,by_seed in groups.items():
                 def counts(selected):
+                    if not selected:return dict(n=0,stage2=0,unknown_stage=0,mean_terminal_bombs=None,mean_terminal_spares=None)
                     return dict(n=len(selected),stage2=sum(x['stage2_reached'] is True for x in selected),
                                 unknown_stage=sum(x['stage2_reached'] is None for x in selected),
                                 mean_terminal_bombs=mean(x['terminal_bombs'] for x in selected),

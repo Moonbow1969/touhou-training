@@ -1,0 +1,166 @@
+{
+  "hard": {
+    "stage1_tick": {
+      "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+      "title": 13,
+      "arms": [
+        "merged-sft",
+        "three-ppo"
+      ],
+      "n": 8,
+      "per_seed": {
+        "merged-sft": {
+          "1381351": 4499,
+          "1381353": 2043,
+          "1381355": 2686,
+          "1381357": 3682,
+          "1381359": 3109,
+          "1381361": 2226,
+          "1381363": 2338,
+          "1381365": 2441
+        },
+        "three-ppo": {
+          "1381351": 2135,
+          "1381353": 2079,
+          "1381355": 2248,
+          "1381357": 3597,
+          "1381359": 3038,
+          "1381361": 3774,
+          "1381363": 5020,
+          "1381365": 3709
+        }
+      },
+      "mean_ticks_by_arm": {
+        "merged-sft": 2878.0,
+        "three-ppo": 3200.0
+      },
+      "mean_paired_change": 322.0,
+      "paired_fixed_host_bootstrap95": [
+        -680.25,
+        1298.625
+      ]
+    },
+    "groups": {
+      "merged-sft": {
+        "n": 8,
+        "stage2": 0,
+        "stage2_resources": [],
+        "mean_terminal_bombs": 0.75,
+        "total_casts": 22,
+        "mean_native_score": 1404003.75,
+        "terminal_spares": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ranking_matches": 8
+      },
+      "three-ppo": {
+        "n": 8,
+        "stage2": 0,
+        "stage2_resources": [],
+        "mean_terminal_bombs": 1.125,
+        "total_casts": 22,
+        "mean_native_score": 1956906.25,
+        "terminal_spares": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ranking_matches": 8
+      }
+    }
+  },
+  "lunatic": {
+    "stage1_tick": {
+      "measure": "Last observed Stage 1 native script tick before credit end or stage transition.",
+      "title": 13,
+      "arms": [
+        "merged-sft",
+        "three-ppo"
+      ],
+      "n": 8,
+      "per_seed": {
+        "merged-sft": {
+          "1381352": 2248,
+          "1381354": 2859,
+          "1381356": 1197,
+          "1381358": 2259,
+          "1381360": 2272,
+          "1381362": 2134,
+          "1381364": 2609,
+          "1381366": 2173
+        },
+        "three-ppo": {
+          "1381352": 2938,
+          "1381354": 2199,
+          "1381356": 1858,
+          "1381358": 2225,
+          "1381360": 2908,
+          "1381362": 2431,
+          "1381364": 2922,
+          "1381366": 2182
+        }
+      },
+      "mean_ticks_by_arm": {
+        "merged-sft": 2218.875,
+        "three-ppo": 2457.875
+      },
+      "mean_paired_change": 239.0,
+      "paired_fixed_host_bootstrap95": [
+        -82.003125,
+        523.875
+      ]
+    },
+    "groups": {
+      "merged-sft": {
+        "n": 8,
+        "stage2": 0,
+        "stage2_resources": [],
+        "mean_terminal_bombs": 0.375,
+        "total_casts": 19,
+        "mean_native_score": 1673511.25,
+        "terminal_spares": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ranking_matches": 8
+      },
+      "three-ppo": {
+        "n": 8,
+        "stage2": 0,
+        "stage2_resources": [],
+        "mean_terminal_bombs": 0.0,
+        "total_casts": 22,
+        "mean_native_score": 1723942.5,
+        "terminal_spares": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ranking_matches": 8
+      }
+    }
+  }
+}

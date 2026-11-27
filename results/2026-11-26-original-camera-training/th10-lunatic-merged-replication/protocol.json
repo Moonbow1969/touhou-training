@@ -1,0 +1,209 @@
+{
+  "name": "Independent TH10 Lunatic replication",
+  "policy_sha256": {
+    "merged-sft": "1f7f1a6b73fee215c0142a9a27be8d1523d38baa9ad99fba3d37d4839a792b3a",
+    "merged-ppo": "e69e667987fed0fceb721cbabefbb1e03f956af0a99f763de341d64298e59c18"
+  },
+  "seeds": [
+    1411051,
+    1411052,
+    1411053,
+    1411054,
+    1411055,
+    1411056,
+    1411057,
+    1411058,
+    1411059,
+    1411060,
+    1411061,
+    1411062,
+    1411063,
+    1411064,
+    1411065,
+    1411066,
+    1411067,
+    1411068,
+    1411069,
+    1411070,
+    1411071,
+    1411072,
+    1411073,
+    1411074
+  ],
+  "allocation": [
+    {
+      "seed": 1411051,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411053,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411055,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411057,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411059,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411061,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411063,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411065,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411067,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411069,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411071,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411073,
+      "host": "momentum",
+      "queue": 0,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411052,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411054,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411056,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411058,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411060,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411062,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411064,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411066,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411068,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411070,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-ppo",
+      "second": "merged-sft"
+    },
+    {
+      "seed": 1411072,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    },
+    {
+      "seed": 1411074,
+      "host": "momentum",
+      "queue": 1,
+      "first": "merged-sft",
+      "second": "merged-ppo"
+    }
+  ],
+  "rng_seed": 2026112701,
+  "control": "Official TH10 0.02a trial, Lunatic menu and original per-row difficulty3, full ReimuA start, both maximum native lives, all four policy actions, 120ms control, no assistance or Continue.",
+  "pairing": "Two bounded, sequential Momentum queues. Each pair uses the same logical queue, physical machine, build and controller seed and runs consecutive credits. OS CPU affinity and the original hidden game RNG are uncontrolled. Within each queue exactly six first runs for each arm.",
+  "primary": "Paired mean candidate minus reference last observed native Stage1 tick with 95% percentile paired bootstrap, fixed 50,000 draws sampled on complete pairs. No pooling with discovery sample.",
+  "stage2": "Same independently qualified stage sensor; Stage2 reach count and paired binary change. First Stage2 reserves and Power if reached, settled zero spares and Power plus confirmed Power-backed X activations.",
+  "first_video_seed": 1411051
+}

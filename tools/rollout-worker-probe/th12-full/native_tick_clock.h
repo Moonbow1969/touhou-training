@@ -40,6 +40,11 @@ static XImage *tick_camera(Display *d,Window root,TickState prior,TickState *obs
         if(now-last_menu>=UINT64_C(125000000)){
             XImage *image=image_now(d,root);const char *status=screen(image,0);
             (*terminal_checks)++;last_menu=now;
+#ifdef TH12_NATIVE_LIVE_SCREEN
+            if(!strncmp(status,"pause",5) || !strcmp(status,"confirm") || !strcmp(status,"title")){
+                *observed=native_tick();return image;
+            }
+#endif
             if(!strcmp(status,"gameover") || !strcmp(status,"gameover_retry") || !strcmp(status,"score_ranking")){
                 *observed=native_tick();return image;
             }
@@ -58,3 +63,4 @@ static XImage *wall_camera(Display *display,Window root,TickState *state,int *ed
     *checks=0;
     return image;
 }
+

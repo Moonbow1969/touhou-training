@@ -107,6 +107,10 @@ def main():
     alt=digest(policy/'policy.ts')
     report=json.loads((policy/'report.json').read_bytes())
     if alt!=report['policy_sha256'] or report['native_behavior_sha256']!=h:raise ValueError('Model lineage differs')
+    score_held(root,plan,h,alt)
+
+
+def score_held(root,plan,reference_sha,candidate_sha):
     held=[];arms=(plan['reference_arm'],plan['candidate'])
     gate=root/'stage2-qualification.json'
     wait_file(gate)
@@ -116,10 +120,11 @@ def main():
         raise ValueError('Unverified original positive Stage 2 transition')
     for seed in plan['eval_seeds']['11']:
         pair=[]
-        for arm,sha in zip(arms,(h,alt)):
+        for arm,sha in zip(arms,(reference_sha,candidate_sha)):
             folder=root/'native11'/f'held-{arm}-{seed}'
             _,s=audit(folder,'held',seed,sha,plan)
             stage=verify_stage(folder)
+            s['first_loss_native_score']=json.loads((folder/'receipt.json').read_bytes())['native_life_losses'][0]['native_score']
             pair.append(dict(arm=arm,stage2_reached=stage['stage2_reached'],first_stage2=stage['first_stage2'],**s))
         if pair[0]['host']!=pair[1]['host'] or pair[0]['lane']!=pair[1]['lane']:
             raise ValueError('Pair must share its physical lane')
@@ -135,7 +140,7 @@ def main():
         result=dict(pairs=pairs,stage2_reached={arm:sum(r['stage2_reached'] for r in values[arm]) for arm in arms},
                     stage2_rate={arm:sum(r['stage2_reached'] for r in values[arm])/pairs for arm in arms},
                     stage_qualification_sha256=digest(gate))
-        for field in ('score','first_loss_wall_seconds','wall_seconds','terminal_spares','last_loss_power','terminal_power','effective_casts','decisions'):
+        for field in ('score','score_at_final_loss','first_loss_native_score','first_loss_wall_seconds','wall_seconds','terminal_spares','last_loss_power','terminal_power','effective_casts','decisions'):
             x,y=(np.array([r[field] for r in values[arm]],dtype=float) for arm in arms)
             delta=y-x
             result[field]=dict(means=[float(x.mean()),float(y.mean())],paired_difference=float(delta.mean()),

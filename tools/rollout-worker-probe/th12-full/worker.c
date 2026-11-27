@@ -35,11 +35,11 @@ static void playfield(XImage *im,unsigned char *out){
         out[y*SMALL_W+x]=(unsigned char)((total+2048)/4096);
     }
 }
-static void save_terminal(XImage *im){
+static void save_client_frame(XImage *im,const char *name){
     /* Keep the exact XImage that triggered termination. Menu inputs can change the
        window before a later independent screenshot. The crop begins at (32,16)
        within the native 640x480 window; excluded borders are stored as black. */
-    FILE *fp=fopen("terminal-at-control.ppm","wbx");
+    FILE *fp=fopen(name,"wbx");
     if(!fp)fail("Cannot create original terminal observation.");
     fprintf(fp,"P6\n640 480\n255\n");
     unsigned char row[640*3];
@@ -122,8 +122,64 @@ int main(int argc,char **argv){
     int retries=0,menu_checks=0;
     XDestroyImage(im);im=wall_clock ? wall_camera(d,root,&sample,&retries,&menu_checks) : tick_camera(d,root,initial,&sample,&retries,&menu_checks);status=screen(im,0);
 #endif
+#ifdef TH12_NATIVE_LIVE_SCREEN
+    int paused_qa=0,dark_controls=0;
+#ifdef TH12_PAUSE_QA
+    FILE *prefix=NULL;
+    if(!strcmp(argv[4],"engineering") && getenv("TH12_QA_PAUSE")){
+        prefix=fopen("engineering-prefix.tsv","wx");
+        if(!prefix)fail("Engineering setup evidence unavailable.");
+    }
+    if(prefix)fprintf(prefix,"step\tnative_tick\tbefore_spell\tsampled_fire\tsampled_bomb\tapplied_fire\tapplied_bomb\n");
+#endif
+    FILE *coverage=fopen("coverage-decisions.tsv","wx");
+    if(!coverage)fail("Missing controller coverage trace.");
+    fprintf(coverage,"step\tvisual\tused\tstage\tobserved_tick\tspares\n");
+#endif
     const char *outcome="technical_censor";
     while(now_ns()-started<UINT64_C(1200000000000)){
+#ifdef TH12_NATIVE_LIVE_SCREEN
+        const char *visual=status;
+        if(!strcmp(visual,"loading") && sample.mode==0 && sample.stage>=1 && sample.stage<=3 && sample.stage==sample.manager_stage && sample.spares>=0)
+            status="play";
+        if(sample.spares<0 && !strcmp(status,"play"))status="loading";
+        if(!strcmp(visual,"loading") && !strcmp(status,"play"))dark_controls++;
+#ifdef TH12_PAUSE_QA
+        if(prefix && !paused_qa && dark_controls>=8){
+            FILE *qa=fopen("pause-negative.tsv","wx");
+            if(!qa)fail("Cannot record independent menu negative.");
+            set_keys(d,current,0);current=0;
+            unsigned esc=XKeysymToKeycode(d,XStringToKeysym("Escape"));
+            key(d,esc,1);XSync(d,0);wait_until(now_ns()+UINT64_C(85000000));key(d,esc,0);XSync(d,0);
+            for(int attempt=0;attempt<24;attempt++){
+                wait_until(now_ns()+UINT64_C(90000000));
+                XImage *menu=image_now(d,root);const char *label=screen(menu,0);TickState at=native_tick();
+                fprintf(qa,"%u\t%s\t%d\t%d\t%d\n",read_keys(d),label,at.stage,at.tick,at.spares);
+                if(!strncmp(label,"pause",5)){
+                    if(!paused_qa)save_client_frame(menu,"actual-paused-hud.ppm");
+                    paused_qa++;
+                }
+                XDestroyImage(menu);
+                if(paused_qa>=5)break;
+            }
+            fclose(qa);
+            if(paused_qa<5)fail("Original pause menu was not independently observed.");
+            key(d,esc,1);XSync(d,0);wait_until(now_ns()+UINT64_C(85000000));key(d,esc,0);XSync(d,0);
+            XDestroyImage(im);
+            for(int n=0;n<40;n++){
+                wait_until(now_ns()+UINT64_C(50000000));
+                im=image_now(d,root);status=screen(im,0);
+                if(strncmp(status,"pause",5))break;
+                XDestroyImage(im);im=NULL;
+            }
+            if(!im)fail("Genuine pause did not resume.");
+            TickState prior=sample;XDestroyImage(im);
+            im=tick_camera(d,root,prior,&sample,&retries,&menu_checks);status=screen(im,0);
+            continue;
+        }
+#endif
+        fprintf(coverage,"%d\t%s\t%s\t%d\t%d\t%d\n",index,visual,status,sample.stage,sample.tick,sample.spares);
+#endif
         if(!strcmp(status,"gameover")||!strcmp(status,"gameover_retry")||!strcmp(status,"score_ranking")){outcome="game_over";break;}
         if(strcmp(status,"play")){
             set_keys(d,current,0);current=0;
@@ -159,6 +215,18 @@ int main(int argc,char **argv){
 #endif
         }
 #endif
+#ifdef TH12_PAUSE_QA
+        int sampled_fire=a[2],sampled_bomb=a[3];
+        if(prefix && !dark_controls && sample.stage==1){
+            /* Engineering witness only. Use original stock during approach to qualify
+               dark combat controls, then hand every head back to the frozen camera. */
+            a[2]=1;
+            if(sample.tick>=900 && sample.tick<3600 && sample.bombs>0 && sample.tick%372<4)a[3]=1;
+            lp[2]=logf(fmaxf(actor_probs[11+a[2]],1e-20f));
+            lp[3]=logf(fmaxf(actor_probs[13+a[3]],1e-20f));
+        }
+        if(prefix)fprintf(prefix,"%d\t%d\t%d\t%d\t%d\t%d\t%d\n",index,sample.tick,!dark_controls,sampled_fire,sampled_bomb,a[2],a[3]);
+#endif
         if(save_frames&&fwrite(frame,1,sizeof frame,pixels)!=sizeof frame)fail("Pixel write failed.");
         int before_l=resource_hud(im,0),before_b=resource_hud(im,24);
         XDestroyImage(im);
@@ -176,17 +244,29 @@ int main(int argc,char **argv){
         wait_until(onset+(uint64_t)ms*1000000);im=image_now(d,root);
 #endif
         status=screen(im,0);
+        const char *recorded_status=status;
+#ifdef TH12_NATIVE_LIVE_SCREEN
+        if(!strcmp(status,"loading") && sample.mode==0 && sample.stage>=1 && sample.stage<=3 && sample.stage==sample.manager_stage && sample.spares>=0)
+            recorded_status="play";
+#endif
         unsigned long long stamp=now_ns();
-        fprintf(rows,"%d\t%llu\t%llu\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\t%d\t%s\t%.9g\t%.9g\t%.9g\t%.9g\t%.9g\n",index,(unsigned long long)onset,stamp,a[0],a[1],a[2],a[3],next,verified,before_l,before_b,resource_hud(im,0),resource_hud(im,24),status,lp[0],lp[1],lp[2],lp[3],value);
+        fprintf(rows,"%d\t%llu\t%llu\t%d\t%d\t%d\t%d\t%u\t%u\t%d\t%d\t%d\t%d\t%s\t%.9g\t%.9g\t%.9g\t%.9g\t%.9g\n",index,(unsigned long long)onset,stamp,a[0],a[1],a[2],a[3],next,verified,before_l,before_b,resource_hud(im,0),resource_hud(im,24),recorded_status,lp[0],lp[1],lp[2],lp[3],value);
         ++index;
         if(index%32==0)fflush(rows);
     }
     set_keys(d,current,0);
 #ifdef TH12_FOUR_TICK_INPUT
+#ifdef TH12_NATIVE_LIVE_SCREEN
+    fprintf(coverage,"#terminal\t%s\tphysical_keys=%u\tnative_tick=%d\tstock=%d\n",status,read_keys(d),sample.tick,sample.spares);
+    fclose(coverage);
+#ifdef TH12_PAUSE_QA
+    if(prefix)fclose(prefix);
+#endif
+#endif
     if(fclose(native_rows))fail("Cannot seal native tick evidence.");
 #endif
     if(!strcmp(outcome,"game_over")){
-        save_terminal(im);
+        save_client_frame(im,"terminal-at-control.ppm");
         FILE *state=fopen("terminal-state.txt","wx");
         if(!state || fprintf(state,"%s\n",status)<0 || fclose(state))fail("Cannot write terminal menu state.");
     }
@@ -198,4 +278,8 @@ int main(int argc,char **argv){
     printf("%s %d %.6f\n",outcome,index,(now_ns()-started)/1e9);
     return !strcmp(outcome,"technical_censor")?3:0;
 }
+
+
+
+
 

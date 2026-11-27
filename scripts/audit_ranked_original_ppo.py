@@ -33,6 +33,10 @@ def main():
         if title==10:
             stage=verified_th10_entry(r,f.parent)[0]
             spares,bombs,power=r['final_lives'],None,r['final_power']
+        elif title==11:
+            from scripts.qualified_th11_stage2 import read_credit
+            stage=read_credit(f.parent)['stage2_reached']
+            spares,bombs,power=r['terminal_spares'],None,r['terminal_power_units']/r['power_units_per_level']
         elif title==12:
             stage=verified_th12_stage(f.parent.parent/'raw'/r['episode'])[0]
             spares,bombs,power=r['remaining_spare_lives'],r['remaining_bombs'],None
