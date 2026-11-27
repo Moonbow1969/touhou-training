@@ -24,19 +24,16 @@ def main():
     def run(module,*argv):
         subprocess.run([sys.executable,'-m','scripts.'+module,*map(str,argv)],check=True)
     run('report_whole_game_controls','--root',root)
-    if root.name=='five-game-generation3':
-        for rank in ('Hard','Lunatic'):
-            target=out/f'first-{rank.lower()}-native-credits.mp4'
-            if not target.with_suffix('.json').is_file():
-                run('render_cross_title_credits','--root',root,'--out',target,'--difficulty',rank,'--titles',*titles)
+    film_kind='full' if root.name=='five-game-generation3' else 'native'
     for rank in ('Hard','Lunatic'):
-        stem='first-'+rank.lower()+'-native-credits'
+        stem='first-'+rank.lower()+'-'+film_kind+'-credits'
         wait(out/(stem+'.json'))
         v=json.loads((out/(stem+'.json')).read_bytes())
         if v['sha256']!=digest(out/(stem+'.mp4')) or len(v['sources'])!=2*len(titles):raise ValueError('Video failed source validation')
     dest=pub/'evaluation';dest.mkdir(exist_ok=True,parents=True)
     for file in out.iterdir():
-        if file.is_file() and file.suffix in ('.png','.json','.mp4'):shutil.copy2(file,dest/file.name)
+        duplicate_film=film_kind=='full' and file.name.startswith('first-') and '-native-credits' in file.name
+        if file.is_file() and file.suffix in ('.png','.json','.mp4') and not duplicate_film:shutil.copy2(file,dest/file.name)
     for name in ('action-traces','endpoints'):
         shutil.copytree(out/name,dest/name,dirs_exist_ok=True)
     weights=json.loads((out/'whole-game-controls.json').read_bytes())
@@ -56,7 +53,9 @@ def main():
         rates=f"{x['stage2']}/{x['n']} → {y['stage2']}/{y['n']}"
         if x['stage_unknown'] or y['stage_unknown']:rates+=f" (unknown {x['stage_unknown']} / {y['stage_unknown']})"
         summary.append(f"| {label} | {rates} | {x['terminal_spares']['mean']:.2f} → {y['terminal_spares']['mean']:.2f} | {metric} | {x['effective_casts']} → {y['effective_casts']} |")
-    summary+=['','[Full-stock records](credits.json) · [Input and resource counts](whole-game-controls.json) · [Paired results by difficulty](paired-by-difficulty.json) · [Full Hard recording](first-hard-native-credits.mp4) · [Full Lunatic recording](first-lunatic-native-credits.mp4)','','![Observed original outcomes and physical inputs](whole-game-controls.png)']
+    summary+=['',f'[Full-stock records](credits.json) · [Input and resource counts](whole-game-controls.json) · [Paired results by difficulty](paired-by-difficulty.json) · [Full Hard recording](first-hard-{film_kind}-credits.mp4) · [Full Lunatic recording](first-lunatic-{film_kind}-credits.mp4)','','![Observed original outcomes and physical inputs](whole-game-controls.png)']
+    if (out/'README.md').is_file():
+        summary=[(out/'README.md').read_text(encoding='utf8').rstrip(),'','[Native four-head input counts](whole-game-controls.json) · [Whole-game controls figure](whole-game-controls.png)']
     (dest/'README.md').write_text('\n'.join(summary)+'\n',encoding='utf8')
     freeze(out/'publication-summary.json',dict(verified_count=expected,raw_manifest=digest(scored),controls=digest(out/'whole-game-controls.json')))
     print('Mirrored verified ordinary games',root.name,expected,flush=True)

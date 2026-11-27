@@ -1,5 +1,7 @@
 # Third five-game PPO generation
 
+Both the second and third five-title policies reached Stage 2 in 0/80 ordinary starts, with all 160 native endpoints verified. Hard and Lunatic each contributed eight paired seeds per title. Each arm ended with zero spare lives on all 80 games. [Full original resource table, paired source data and complete recordings](evaluation/README.md)
+
 One full-action camera policy trained on 160 new full-stock original-game credits and 78,740 playable decisions. Each of the five games contributed 16 Hard and 16 Lunatic credits. The frozen second-generation actor supplied every rollout. All four optimization epochs passed the KL limit. The largest measured title-by-rank joint KL was 0.00759. The deployed actor SHA-256 is `b7d33148162c8a547a7cd9f49bca30d8e5f83053fb8a8c5f899d116ab5f57fd2`. [Per-game data and training stocks](verified-training-by-rank.json) · [Learner log](policy/report.json) · [TorchScript actor](policy/policy.ts) · [Raw training archive](release-archive.json) · [Native reward corrections](optimizer-reward-corrections.zip)
 
 The registered ordinary-stock evaluation compares the second and third generation on eight new seed pairs in each game and difficulty. Both arms use the same host and build within a pair. Seeds control policy sampling. Original game randomness is uncontrolled. Primary outcome is reaching Stage 2 before using a continue. Secondary outcomes include native progress, spare lives, and Bombs or Power. [Evaluation registration](camera-protocol.json)
@@ -22,3 +24,4 @@ The ledger counts each distinct original training credit once across fitted mode
 | TH12 | 56 | 26,820 | 56 | 22,881 |
 | TH13 | 56 | 43,424 | 56 | 32,513 |
 | TH17 | 48 | 38,602 | 48 | 28,882 |
+
