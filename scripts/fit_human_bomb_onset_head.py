@@ -21,6 +21,8 @@ def main():
     model=CameraPolicy();weights=a.parent/'camera-policy.pt'
     if sha(weights)!=source['sft']:raise ValueError('Changed starting model')
     model.load_state_dict(torch.load(weights,weights_only=True,map_location='cpu'));model.eval()
+    torch.backends.cudnn.allow_tf32=False
+    torch.backends.cuda.matmul.allow_tf32=False
     torch.set_num_threads(3);device='cuda' if torch.cuda.is_available() else 'cpu';model.to(device)
     features=[];labels=[];keys=[];examples=[];pilots=defaultdict(set);pilot_counts=Counter()
     with torch.no_grad():

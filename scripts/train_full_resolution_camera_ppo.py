@@ -1,6 +1,7 @@
 """Full-resolution, title-balanced PPO initialized from a human camera SFT checkpoint."""
 import argparse
 import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -178,8 +179,19 @@ def main():
             group=f'TH{group}-'+{2:'Hard',3:'Lunatic'}[rank]
         by_title.setdefault(group,[]).append(arrays);quality.append(details)
     data={}
+    sampling={}
     for t,records in by_title.items():
         x,actions,lp,adv,ret,ref=[torch.cat(v) for v in zip(*records)]
+        if 'matched_decisions_per_stratum' in plan:
+            n=plan['matched_decisions_per_stratum']
+            if not isinstance(n,int) or not 1<n<=len(x):
+                raise ValueError('Invalid prospective matched decision budget')
+            # Each full terminal sequence already supplied its actual GAE and returns.
+            # Only the optimizer rows are sampled. No artificial terminal is introduced.
+            order=torch.randperm(len(x),generator=torch.Generator().manual_seed(2851300))[:n].sort().values
+            sampling[str(t)]=dict(available=len(x),selected=n,
+                                  sorted_indices_sha256=hashlib.sha256(order.numpy().astype('<i8').tobytes()).hexdigest())
+            x,actions,lp,adv,ret,ref=(v[order] for v in (x,actions,lp,adv,ret,ref))
         data[t]=(x,actions,lp,(adv-adv.mean())/(adv.std(unbiased=False)+1e-7),ret,ref)
     anchor=replay_anchor(a.replay_anchor,a.sft.parent,model,device) if a.replay_anchor else None
     history=[]
@@ -202,6 +214,7 @@ def main():
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
               equal_weight_strata=sorted(data),
+              **({'optimizer_decision_sampling':sampling} if sampling else {}),
               replay_anchor_weight=a.anchor_weight,replay_anchor_training_sha256=[sha(p) for p in (a.replay_anchor or [])],
               native_procedure="All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."))
 

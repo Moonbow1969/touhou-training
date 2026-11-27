@@ -1,0 +1,40 @@
+{
+  "name": "TH13 Hard human-prefix vs opening-only online PPO, normal fresh game evaluation",
+  "reference_arm": "opening-ppo",
+  "candidate": "prefix-ppo",
+  "eval_seeds": {
+    "13": [
+      1281351,
+      1281352,
+      1281353,
+      1281354,
+      1281355,
+      1281356,
+      1281357,
+      1281358,
+      1281359,
+      1281360,
+      1281361,
+      1281362
+    ]
+  },
+  "rank_by_seed": {
+    "13": {
+      "1281351": 2,
+      "1281352": 2,
+      "1281353": 2,
+      "1281354": 2,
+      "1281355": 2,
+      "1281356": 2,
+      "1281357": 2,
+      "1281358": 2,
+      "1281359": 2,
+      "1281360": 2,
+      "1281361": 2,
+      "1281362": 2
+    }
+  },
+  "controls": "Twelve fresh paired ordinary Stage1 openings, Hard Reimu, identical host and original. No human input, continue or helper during evaluation.",
+  "source": "1c018feb852889e8e69012adc88b9e22279e1e73e049905071f1b234715bcc11",
+  "training_rule": "Choose the first four eligible registered suffix attempts in ordinal order and their same-ordinal opening controls. Within each group score all observed complete policy-only sequences, normalize TH13 native clock reward and compute GAE. Then sample min(1536, totals of both arms) decisions per model without replacement using a fixed seed. Same parent, actor/critic and clipping schedule. Keep all 12 attempt outcomes for acquisition-rate reporting."
+}

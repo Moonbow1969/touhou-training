@@ -191,6 +191,8 @@ def main():
         for rank,name in ((2,'Hard'),(3,'Lunatic')):
             selected=[r for r in rows if r['difficulty']==rank]
             seeds={t:[s for s in ss if protocol['rank_by_seed'][t][str(s)]==rank] for t,ss in protocol['eval_seeds'].items()}
+            seeds={t:ss for t,ss in seeds.items() if ss}
+            if not seeds:continue
             stats=summarize(selected,dict(protocol,eval_seeds=seeds),arms[1])
             strata[name]=dict(by_title=stats)
             if '13' in seeds:strata[name]['th13_native_ticks']=clock_summary(selected,13,arms)

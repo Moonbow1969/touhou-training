@@ -1,0 +1,156 @@
+{
+  "scope": "Engineering-only original human-prefix handoff; excluded from gradient updates and ordinary-opening evaluation.",
+  "attempts": [
+    {
+      "seed": 1271301,
+      "exit_status": 19,
+      "observed_prefix_rows": 0,
+      "outcome": "No human or policy action was scored. The original generic fixed 3.9-second post-restart delay preceded a strict early-prefix gate. The revised engineering launcher waits for an actual native Stage1 opening after Restart instead.",
+      "intervention": "Fresh separate engineering seed and explicit native timing gate; original frozen baselines unaffected."
+    },
+    {
+      "seed": 1271302,
+      "target": 5000,
+      "technical_failure": false,
+      "handed_off": false,
+      "original_final_state": {
+        "stage": 1,
+        "rank": 2,
+        "spares": -1,
+        "bombs": 2,
+        "first_observed_gameover_stage1_tick": 3571
+      },
+      "recorded_prefix_rows": 3520,
+      "first_tick": 6,
+      "last_live_prefix_tick": 3540,
+      "native_human_key_match": 3517,
+      "x11_acknowledgements": 3520,
+      "original_spare_at_start": 2,
+      "logs_sha256": "efde91d5e8390e8dfd8ff5bdfd1d40c84e5491f3b90888a31af03b19b48fff14",
+      "outcome": "All three lives were lost by the native clock before the proposed human-input handoff. No visual policy action contributed. Live rank/character and input timing were verified, but the source replay RNG was not restored."
+    },
+    {
+      "engineering_seed": 1271303,
+      "validated_handoff": true,
+      "actual_human_source_sha256": "d8e38081c8fd646dff3bc95f99478a3b90a27ee27947d6c4d2883a73d27486b9",
+      "prefix_opening": {
+        "stage_tick": "6",
+        "stage": "1",
+        "rank": "2",
+        "character": "0",
+        "spares": "2",
+        "bombs": "2",
+        "power": "100",
+        "life_fragments": "0",
+        "bomb_fragments": "0",
+        "score": "0",
+        "native_key": "0",
+        "human_key_after_tick": "1",
+        "requested_next_key": "1",
+        "x11_key_after_request": "1",
+        "monotonic_ns": "7148239151125727"
+      },
+      "handoff": {
+        "stage_tick": "3000",
+        "stage": "1",
+        "rank": "2",
+        "character": "0",
+        "spares": "1",
+        "bombs": "2",
+        "power": "124",
+        "life_fragments": "0",
+        "bomb_fragments": "0",
+        "score": "55331",
+        "native_key": "9",
+        "human_key_after_tick": "9",
+        "requested_next_key": "0",
+        "x11_key_after_request": "0",
+        "monotonic_ns": "7148293739375469"
+      },
+      "distinct_observed_prefix_ticks": 2992,
+      "observed_tick_coverage": 0.9989983305509182,
+      "native_human_input_agreement": 0.9996657754010695,
+      "requested_key_x11_agreement": 1.0,
+      "first_policy_state": {
+        "tick": 3000,
+        "stage": 1,
+        "spares": 1,
+        "bombs": 2
+      },
+      "last_policy_state": {
+        "tick": 5025,
+        "stage": 1,
+        "spares": -1,
+        "bombs": 0
+      },
+      "stage2": false,
+      "continues": 0,
+      "post_handoff_decisions": 497,
+      "native_action_matches": 497,
+      "post_handoff_directions": [
+        25,
+        61,
+        25,
+        42,
+        208,
+        41,
+        12,
+        52,
+        31
+      ],
+      "terminal_reason": "game_over",
+      "native_trace_sha256": "01afe4b3445365f89153c65927b4bc90f32509c6b154035da697f51eceb9da74",
+      "human_prefix_trace_sha256": "0ffeaaa19fced72d7f80e7d39dbbd82352bfdca2bfc776ced133a32e5e87a034",
+      "scope": "One live original, using its own RNG. Exact human replay trajectory is not assumed. Neural actor begins with zero previous-image difference at handoff; four heads are sampled without assistance."
+    }
+  ],
+  "neural_suffix_validation": {
+    "seed": 1271303,
+    "steps": 497,
+    "policy_sha256": "3b26d1b7f8a8a27c5e271bc1e1eccf8e9c58d9f4c3186cc168efaacb3f07b82c",
+    "rollout_sha256": "c71b00191e59473fa870dc109db5fa8fce9a33b6b4b23901804f5e899834d3cf",
+    "role": "engineering",
+    "file": "rollout.npz",
+    "first_native_before_tick": 3000,
+    "last_native_after_tick": 5025,
+    "max_logp_abs_error": 2.384185791015625e-06,
+    "max_value_abs_error": 1.1920928955078125e-07,
+    "rank_verified_steps": 497,
+    "true_native_key_matches": 497,
+    "original_ranking": {
+      "readout": 1,
+      "ranking_row": 1,
+      "word_f1": 1.0,
+      "digit_1_f1": 1.0,
+      "digit_2_f1": 0.625,
+      "rank_row_margin": 1.0
+    },
+    "original_ranking_sha256": "bf32121e3e0f760a955ac6fe1a81a784c2761d0c3830eef9caf7095aa7236524",
+    "only_policy_actions": true,
+    "prefix_decisions_in_train": 0,
+    "prefix_rows": 2992,
+    "prefix_raw_native_input_matches": 2991,
+    "handoff_spares": 1,
+    "handoff_bombs": 2,
+    "same_native_tick_coordinates": {
+      "exact_pairs": 731,
+      "max_tick_mismatch": 0,
+      "recorded_human_at_3000": [
+        -0.1640625,
+        281.1484375
+      ],
+      "live_at_3000": [
+        -0.1640625,
+        304.515625
+      ],
+      "handoff_distance_pixels": 23.3671875,
+      "median_distance_pixels": 23.3671875,
+      "max_distance_pixels": 447.9020732391335,
+      "live_source_sha256": "893e371814f62ba3866b4d324a2561226fe77f8db308101cdd7db116a07e98d7",
+      "original_source_sha256": "3f900974f55cfc0778a28bb3ace659a8c4c1e3eac82dd77e893a0e0fbc32f01f"
+    }
+  },
+  "raw_archive": "original-handoff-evidence.zip",
+  "raw_sha256": "1b27c9a5765aeb580c25c39b243d433345417ddbc5c018df6e25623f8039d6a0",
+  "raw_bytes": 6287253
+}
