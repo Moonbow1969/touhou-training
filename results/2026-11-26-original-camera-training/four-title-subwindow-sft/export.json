@@ -1,0 +1,26 @@
+{
+  "registration": "4762889675de4ed91dcdf5bfc061041dac182c7c278d833a60552436b392513d",
+  "models": {
+    "four-tick": {
+      "sha256": "732c2b8b3bdccf47e60f7630296e9fa943c64a1e5cf8ab333731cbd72fa9e451",
+      "source_residual": "0f39994a3c469b476bdb775a1ebb9e22de2617d2772eae7a3cdb467dcf976a76",
+      "max_head_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "two-subwindows": {
+      "sha256": "c06a9cf45adc9b07dae919d38a1242fd89075dceba7930508ada042bc2f70011",
+      "source_residual": "006254ab328f856b90662dbdf4ce71b4d0391d53258ce6ce10bbd3da71d6e595",
+      "max_head_errors": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "interface": "One current plus previous-difference observation, shape [batch,2,112,96], yields four logit tensors [batch,2,num_actions]. The four-tick control samples slot zero once and holds the same joint command for all four game ticks. The two-subwindow candidate samples both slots from their respective logits and executes two ticks each. No second image or mid-hold inference. These models expose policy logits only."
+}

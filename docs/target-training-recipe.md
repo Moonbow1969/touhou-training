@@ -1,5 +1,7 @@
 # 261123 Moonbow Toho ML | Target Training Recipe
 
+六作共享策略已经完成一次全动作 PPO。TH08、TH10、TH11、TH12、TH13、TH17 分别收集 Hard 和 Lunatic 各 16 个正常库存训练整局，共 192 局、96,728 次有效决策。TH08 有 17,988 次。冻结五作 G3 对照六作模型，在新增 TH08 检验习得，在 TH10 和 TH17 检验遗忘，每作每档各 8 对。另一个五作对照复用完全相同的 160 局，仅改变 actor 的优势估计。上线策略的观测仍是当前原作画面和上一帧的差分。[六作权重和实际优化数据](../results/2026-11-26-original-camera-training/six-game-online/README.md) · [五作优势估计对照](../results/2026-11-26-original-camera-training/five-game-crossfit-advantages/README.md)
+
 第三代从同一份五作 PPO 的 actor 和 critic 继续，按作品和难度各收集 16 个新训练整局，并安排每格 8 对独立种子评估。TH08 单独完成 48 份 Hard 和 Lunatic 人类通关录像的动作预训练。实际转向预测在 16 名留出玩家上为 10.61%，冻结旧四作模型并取已学元数据嵌入均值时为 10.83%。[五作采样协议](../results/2026-11-26-original-camera-training/five-game-generation3/README.md) · [TH08 逐玩家对照](../results/2026-11-26-original-camera-training/th08-human-actions/README.md)
 
 2026 年 11 月 27 日。五作主线已经把 TH10、TH11、TH12、TH13、TH17 的 Hard 和 Lunatic 放进同一个全动作 PPO。第二代沿用第一代的 actor 和 critic，每作每个难度新增 8 局，共 80 局、38,623 次有效决策。首代和纯 SFT 的 80 对整局测试中，两者均为 0/80 到达二面。训练和整局评估分开记账。五机这轮用了 73 分 50 秒，采集及核验占 70 分 22 秒，learner 重算、优化和导出共 2 分 23 秒。[权重、轨迹与逐机计时](../results/2026-11-26-original-camera-training/five-game-generation2/README.md) · [分作品、分难度的剩余资源](../results/2026-11-26-original-camera-training/five-game-online/evaluation/README.md) · [带上一步移动输入的四作 SFT](../results/2026-11-26-original-camera-training/four-title-direction-feedback/README.md)
