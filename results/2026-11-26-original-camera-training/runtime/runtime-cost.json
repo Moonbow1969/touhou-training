@@ -1,0 +1,84 @@
+{
+  "credits": 8,
+  "policy_sha256": "900d74706c293ccaaa859cfcd90ead319f6e19a20e503355f252b8581efdce2e",
+  "host": "momentum",
+  "decisions": 3342,
+  "nominal_hold_ms": 120,
+  "observed_camera_interval_ms": {
+    "median": 124.8426365,
+    "p95": 129.6873756
+  },
+  "service_wall_ms_weighted_mean": 3.4599828002679,
+  "service_coverage": {
+    "uniquely_matched_credits": 8,
+    "decisions": 3342,
+    "note": "Per-process service logs are joined by exact unique decision count; ambiguous counts are excluded."
+  },
+  "service_scope": "CPU server time after receiving the frame through sending the response; private Unix socket. No LAN request per decision.",
+  "service_samples": [
+    {
+      "seed": 752101,
+      "decisions": 356,
+      "mean_service_ms": 3.8291973694949673,
+      "maximum_service_ms": 86.00675966590643
+    },
+    {
+      "seed": 752102,
+      "decisions": 545,
+      "mean_service_ms": 3.6471887072975484,
+      "maximum_service_ms": 75.81012230366468
+    },
+    {
+      "seed": 752103,
+      "decisions": 393,
+      "mean_service_ms": 3.6868365675817616,
+      "maximum_service_ms": 76.4275211840868
+    },
+    {
+      "seed": 752104,
+      "decisions": 344,
+      "mean_service_ms": 3.386848292118588,
+      "maximum_service_ms": 54.94096502661705
+    },
+    {
+      "seed": 752105,
+      "decisions": 550,
+      "mean_service_ms": 3.3500092273408715,
+      "maximum_service_ms": 13.715473935008049
+    },
+    {
+      "seed": 752106,
+      "decisions": 476,
+      "mean_service_ms": 3.35036260036736,
+      "maximum_service_ms": 14.319292269647121
+    },
+    {
+      "seed": 752107,
+      "decisions": 278,
+      "mean_service_ms": 3.285968136846376,
+      "maximum_service_ms": 6.614495068788528
+    },
+    {
+      "seed": 752108,
+      "decisions": 400,
+      "mean_service_ms": 3.1189275276847184,
+      "maximum_service_ms": 6.576579064130783
+    }
+  ],
+  "per_decision_camera_payload_bytes": 10752,
+  "per_decision_reply_bytes": 64,
+  "total_local_socket_payload_bytes": 36147584,
+  "trajectory_download_bytes": 34991047,
+  "download_bytes_per_decision": 10470.091861160981,
+  "transferred_archives_by_seed": {
+    "752101": 3746841,
+    "752102": 5685808,
+    "752103": 4124133,
+    "752104": 3614885,
+    "752105": 5734727,
+    "752106": 4978871,
+    "752107": 2921247,
+    "752108": 4184535
+  },
+  "transfer_scope": "One gzip output archive per credit, downloaded after native termination. SSH control traffic, TCP framing, retries and initial host setup excluded."
+}

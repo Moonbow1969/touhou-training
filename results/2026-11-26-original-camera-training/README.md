@@ -23,3 +23,22 @@ For TH12, 30 of the 32 spare-life losses in the PPO3 training batch had at least
 The visual SFT ran 900 updates on 4,492 usable decisions from two TH13 Stage 1 players, AIZ and MPS16. On 2,243 observations from held player MON it predicted the next movement on 1,192 decisions (53.1%). A half-replay circular shift of the screens reduced that to 451 decisions (20.1%). At the 543 direction changes it predicted 162 correctly (29.8%), versus 96 (17.7%) after shifting the screens. PPO3 received the actual preceding expert actions at evaluation. Its 1,688 correct movements included only 23 correct changes, and zero correct starts or turns. MON had two distinct Bomb onsets. These measurements cover one player, one title and one stage. [Independent figure and counts](held-player-first/held-camera.png) · [All metrics and source hashes](camera-sft/report.json) · [900-update training trace](camera-sft/loss.jsonl) · [Camera policy for the original games](camera-sft/policy.ts)
 
 The portable demonstration-regularized PPO4 checkpoint passed the KL guard in all four epochs on the same 36,488 original decisions as the plain PPO4 control. The original-game comparisons evaluate this checkpoint separately from the full-resolution camera policy. [PPO4 optimizer record](ppo4/report.json) · [Demonstration protocol](protocol.json) · [Portable checkpoint](ppo4/policy.bin)
+
+The first completed portable comparisons covered 12 matched seeds each in TH10 and TH12. PPO3 and PPO4 reached Stage 2 on zero credits in either title. In TH10 mean time to Game Over changed from 38.31 s to 43.61 s, with a host-stratified paired 95% bootstrap interval for the difference of [−0.84, +12.50] s. In TH12 it changed from 55.28 s to 46.86 s, interval [−18.68, +0.87] s. Mean remaining TH12 Bombs at Game Over changed from 1.83 to 2.00, with zero spare lives throughout. TH10 uses Power for spirit strikes. On the same TH10 seeds PPO4 differed from the plain PPO4 control by +1.10 s, interval [−5.30, +7.81] s. [Matched original endpoints and action counts](portable-interim/credits.json) · [Per-seed comparison](portable-interim/ppo4.json) · [Demonstration ablation](portable-interim/th10-regularized-vs-plain.json)
+
+### Rollout throughput and storage
+
+Each original game sends a 96 × 112 grayscale observation to its own host over a Unix socket. The host verifies the frozen TorchScript hash and returns the four action-logit vectors and scalar critic. The actor samples the controls and records the selected log probabilities locally. The learner receives compressed trajectories after each full credit and re-scores them before PPO. For TH10 the first 8 camera-SFT training credits contained 3,342 decisions. Momentum averaged 3.46 ms for local inference; the observed median decision interval was 124.84 ms with a 120 ms game hold. The credits transferred 34,991,047 bytes. [Measured timing and transport](runtime/runtime-cost.json)
+
+Eight complete TH10 screen sequences, including final successor images, contained 3,350 frames. In an offline lossless comparison, gzip used 32.60 MB for the pixels, horizontal byte differences plus Zstandard used 27.08 MB, and lossless H.264 used 24.48 MB. All decoded frame bytes were checked against the originals. The native runs used their original archive format. [Byte counts and single-core timings](runtime/lossless-camera-codecs.json)
+
+### Reproducing a learner update
+
+Run the following commands from the repository root with the experiment directory in `RUN`. The first command rebuilds the compact learner input from native credit receipts, original pre-action images and actor log probabilities. The second validates the original behavior before training any parameters. Use an empty output directory.
+
+```sh
+python -m scripts.pack_camera_ppo_rollouts --root "$RUN" --behavior "$RUN/camera-sft/policy.ts" --protocol "$RUN/camera-protocol.json" --out "$RUN/repacked"
+python -m scripts.train_full_resolution_camera_ppo --manifest "$RUN/repacked/credits.json" --protocol "$RUN/camera-protocol.json" --sft "$RUN/camera-sft/camera-policy.pt" --behavior "$RUN/camera-sft/policy.ts" --out "$RUN/retrained"
+```
+
+A subsequent PPO generation uses `--parent-actor-critic` to restore the previous critic together with the camera and action heads. Its 48 training seeds and 36 independent matched evaluation seeds are registered separately. [Second camera PPO protocol](camera-ppo2-protocol.json)

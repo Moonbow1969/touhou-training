@@ -11,7 +11,12 @@ from scripts.checkpoint_storage import digest
 from scripts.score_native_full_actions import summarize
 
 
-def records(root, camera):
+def records(root, camera, round2=False):
+    if round2:
+        yield from ((10,f) for f in (root/"native10").rglob("report.json"))
+        yield from ((12,f) for f in (root/"native12/credits").glob("*.json"))
+        yield from ((13,f) for f in (root/"native13").glob("*/receipt.json"))
+        return
     for p in root.glob("*10*"):
         if p.is_dir() and ("camera" in p.name)==camera:
             yield from ((10,f) for f in p.rglob("report.json"))
@@ -47,10 +52,14 @@ def verify(title, f, r, trace, arm, out):
     name=f"th{title}-{host}-{r['seed']}-{arm}";image=out/"endpoints"/(name+".jpg")
     with Image.open(photo) as im:
         im=im.convert("RGB");im.thumbnail((640,480));im.save(image,quality=82)
+    stage1_tick=None
     with np.load(trace,allow_pickle=False) as z:
         y=z["action"];done=z["terminated"].astype(bool)
         if len(y)!=steps or not done[-1] or done[:-1].any():raise ValueError("Invalid full-credit action trace")
         counts=[np.bincount(y[:,k].astype(int),minlength=n).tolist() for k,n in enumerate((9,2,2,2))]
+        if "stage" in z and "native_frame" in z:
+            s1=z["native_frame"][z["stage"]==1]
+            if len(s1):stage1_tick=int(s1.max())
         keys=["action","logp","value","reward","terminated","seconds","stage","spares","bombs","stock_hud","onset_ns","native_frame",
               "reward_parts","reward_components","action_utc_ms","native_input_matches","native_keys","keys","observed_keys"]
         target=out/"action-traces"/(name+".npz");np.savez_compressed(target,**{k:z[k] for k in keys if k in z})
@@ -61,7 +70,7 @@ def verify(title, f, r, trace, arm, out):
                 terminal="game_over" if any(x in outcome for x in ("final_life","game_over","ranking")) else "ending",
                 stage2_reached=r["stage2_reached"],stage2_spares=entry[0],stage2_bombs=entry[1],stage2_power=entry[2],
                 terminal_spares=max(0,int(lives)),terminal_bombs=bombs,terminal_power=power,effective_bombs=casts,
-                decisions=steps,wall_seconds=seconds,action_counts=counts,original_trace_sha256=source_sha,
+                decisions=steps,wall_seconds=seconds,action_counts=counts,latest_observed_stage1_native_tick=stage1_tick,original_trace_sha256=source_sha,
                 native_log_sha256=digest(f),original_endpoint_sha256=digest(photo),
                 endpoint=image.relative_to(out).as_posix(),action_trace=target.relative_to(out).as_posix(),
                 compact_trace_sha256=digest(target))
@@ -71,14 +80,17 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for k in ("root","protocol","parent","candidate","out"):p.add_argument("--"+k,type=Path,required=True)
     p.add_argument("--camera",action="store_true")
+    p.add_argument("--round2",action="store_true")
+    p.add_argument("--titles",nargs="+",type=int,choices=(10,12,13))
     p.add_argument("--arm-names",nargs=2,metavar=("REFERENCE","CANDIDATE"))
     args=p.parse_args()
     arms=args.arm_names or (("camera-sft","camera-ppo") if args.camera else ("ppo3","ppo4"))
     hashes={digest(k):n for k,n in zip((args.parent,args.candidate),arms)}
     protocol=json.loads(args.protocol.read_bytes());protocol["reference_arm"]=arms[0]
+    if args.titles:protocol["eval_seeds"]={k:v for k,v in protocol["eval_seeds"].items() if int(k) in args.titles}
     wanted={(int(t),s,a) for t,seeds in protocol["eval_seeds"].items() for s in seeds for a in arms}
     found={}
-    for t,f in records(args.root,args.camera):
+    for t,f in records(args.root,args.camera,args.round2):
         r=json.loads(f.read_bytes()); arm=hashes.get(r.get("policy_sha256"))
         key=(t,r.get("seed"),arm)
         if key not in wanted:continue

@@ -1,0 +1,139 @@
+{
+  "dataset": "Eight fresh native TH10 training credits sampled by direct camera SFT, full life stock. No held credits used.",
+  "n": 3342,
+  "seeds": [
+    {
+      "seed": 752101,
+      "n": 356,
+      "one_third_to_two_thirds_circular_shift": 210
+    },
+    {
+      "seed": 752102,
+      "n": 545,
+      "one_third_to_two_thirds_circular_shift": 355
+    },
+    {
+      "seed": 752103,
+      "n": 393,
+      "one_third_to_two_thirds_circular_shift": 222
+    },
+    {
+      "seed": 752104,
+      "n": 344,
+      "one_third_to_two_thirds_circular_shift": 201
+    },
+    {
+      "seed": 752105,
+      "n": 550,
+      "one_third_to_two_thirds_circular_shift": 202
+    },
+    {
+      "seed": 752106,
+      "n": 476,
+      "one_third_to_two_thirds_circular_shift": 231
+    },
+    {
+      "seed": 752107,
+      "n": 278,
+      "one_third_to_two_thirds_circular_shift": 107
+    },
+    {
+      "seed": 752108,
+      "n": 400,
+      "one_third_to_two_thirds_circular_shift": 148
+    }
+  ],
+  "portable_sha256": "6f6197f0bc649e535facc5dbd7f321abbbe0a840995092074b924c99b16298fc",
+  "camera_sha256": "900d74706c293ccaaa859cfcd90ead319f6e19a20e503355f252b8581efdce2e",
+  "interventions": "Within each credit shift complete camera observations by seeded 1/3\u20132/3 credit; the portable input keeps actual previous actions/time. Separately, zero only the image-difference channel for both models.",
+  "metrics": {
+    "camera_sft_shift": {
+      "move": {
+        "modal_action_switch_rate": 0.6879114508628845,
+        "mean_JS_nats": 0.25319984555244446,
+        "mean_total_variation": 0.570172905921936
+      },
+      "focus": {
+        "modal_action_switch_rate": 0.4572112560272217,
+        "mean_JS_nats": 0.13150228559970856,
+        "mean_total_variation": 0.3639322817325592
+      },
+      "shoot": {
+        "modal_action_switch_rate": 0.2609215974807739,
+        "mean_JS_nats": 0.07397238165140152,
+        "mean_total_variation": 0.25107550621032715
+      },
+      "bomb": {
+        "modal_action_switch_rate": 0.0,
+        "mean_JS_nats": 0.0024442579597234726,
+        "mean_total_variation": 0.015978995710611343
+      }
+    },
+    "camera_sft_zero_difference": {
+      "move": {
+        "modal_action_switch_rate": 0.5260323286056519,
+        "mean_JS_nats": 0.18752601742744446,
+        "mean_total_variation": 0.47297337651252747
+      },
+      "focus": {
+        "modal_action_switch_rate": 0.36594852805137634,
+        "mean_JS_nats": 0.08778008073568344,
+        "mean_total_variation": 0.2926156520843506
+      },
+      "shoot": {
+        "modal_action_switch_rate": 0.1588868945837021,
+        "mean_JS_nats": 0.04571114480495453,
+        "mean_total_variation": 0.17956718802452087
+      },
+      "bomb": {
+        "modal_action_switch_rate": 0.0,
+        "mean_JS_nats": 0.0016380378510802984,
+        "mean_total_variation": 0.012095799669623375
+      }
+    },
+    "portable_ppo3_shift": {
+      "move": {
+        "modal_action_switch_rate": 0.0032914422918111086,
+        "mean_JS_nats": 4.728478234028444e-05,
+        "mean_total_variation": 0.006141947582364082
+      },
+      "focus": {
+        "modal_action_switch_rate": 0.0017953321803361177,
+        "mean_JS_nats": 8.364987297682092e-05,
+        "mean_total_variation": 0.004807568620890379
+      },
+      "shoot": {
+        "modal_action_switch_rate": 0.002692998154088855,
+        "mean_JS_nats": 0.00012478760618250817,
+        "mean_total_variation": 0.006333566270768642
+      },
+      "bomb": {
+        "modal_action_switch_rate": 0.0014961101114749908,
+        "mean_JS_nats": 2.460306313878391e-05,
+        "mean_total_variation": 0.0007801491301506758
+      }
+    },
+    "portable_ppo3_zero_difference": {
+      "move": {
+        "modal_action_switch_rate": 0.004189108498394489,
+        "mean_JS_nats": 5.170187068870291e-05,
+        "mean_total_variation": 0.0070944358594715595
+      },
+      "focus": {
+        "modal_action_switch_rate": 0.000598444021306932,
+        "mean_JS_nats": 4.088259174750419e-06,
+        "mean_total_variation": 0.0014770914567634463
+      },
+      "shoot": {
+        "modal_action_switch_rate": 0.0029922202229499817,
+        "mean_JS_nats": 0.00024438879336230457,
+        "mean_total_variation": 0.010639786720275879
+      },
+      "bomb": {
+        "modal_action_switch_rate": 0.001196888042613864,
+        "mean_JS_nats": 1.741059350024443e-05,
+        "mean_total_variation": 0.0008858802611939609
+      }
+    }
+  }
+}
