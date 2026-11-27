@@ -1,0 +1,26 @@
+{
+  "affected_seeds": [
+    1711318,
+    1711320,
+    1711322,
+    1711324,
+    1711326,
+    1711328,
+    1711330,
+    1711332
+  ],
+  "physical_host": "accelerator",
+  "difficulty": 3,
+  "original_role": "train",
+  "policy_sha256": "eec8dd93dd142441c278ded3ba0e74c8c24f7730a250b4dc669e305fb1ddb388",
+  "evidence": {
+    "existing_manifest_sha256": "f6c94ec88c6b70a57b80d2481fb5ff5a270eff54a96f81ddd81e2d885cfa418e",
+    "preexisting_staging_file_sha256": "f6c94ec88c6b70a57b80d2481fb5ff5a270eff54a96f81ddd81e2d885cfa418e",
+    "runtime_root_after_qualification": "Original isolated ranked launcher per difficulty."
+  },
+  "observation": "The concurrent Hard and Lunatic deploy left two byte-identical signed-build manifests, only the Hard game containers and no local or remote active original Lunatic episode. No trajectory was discarded.",
+  "recovery": "Publish an existing identical manifest without rewriting it. Serialize same-process writers and retry transient sharing errors. A 12-thread 120-write local test left one verified file. Redispatch the entire assigned Lunatic subset once using the same fresh original seeds, rank, host, checkpoint and inputs.",
+  "concurrent_smoke_writes": 120,
+  "confirmed_cause": "The original coordinator exited on PermissionError [WinError 5] while replacing native13/tmp7gri2qz9 -> native13/rank-launcher.json. This happened before launching any Lunatic game; the simultaneously active Hard originals completed normally.",
+  "resume": "After independently completing the same eight Lunatic credits the corrected coordinator revalidates all 32 unique source receipts before packaging and running the registered held pairs."
+}

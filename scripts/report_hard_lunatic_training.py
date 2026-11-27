@@ -44,7 +44,7 @@ def main():
            for t in sorted({k[0] for k in counts})}
     reused={}
     for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score','five-game-crossfit-advantages',
-                  'six-game-return-horizon/six-return'):
+                  'six-game-return-horizon/six-return','six-game-bomb-cost'):
         path=data/study/'policy/report.json'
         if not path.exists():continue
         result=json.loads(path.read_bytes())

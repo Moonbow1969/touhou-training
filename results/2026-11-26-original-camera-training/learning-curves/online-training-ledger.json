@@ -1,8 +1,8 @@
 {
-  "verified_unique_credits": 1228,
-  "verified_unique_decisions": 734959,
+  "verified_unique_credits": 1252,
+  "verified_unique_decisions": 752342,
   "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
-  "unique_updates": 27,
+  "unique_updates": 29,
   "updates": [
     {
       "path": "camera-ppo/report.json",
@@ -325,11 +325,25 @@
       "optimizer_source_decisions": 96728,
       "new_physical_credits": 24,
       "new_physical_decisions": 13632,
-      "original_collections": [
-        "five-game-generation3",
-        "six-game-online/first-eight",
-        "TH08 additional original rollouts"
-      ]
+      "source_manifest": "3ef405c10dbcfac8c830821a0d63b25f1f5e7768e4bd60bb7aca5d9a10a2454a"
+    },
+    {
+      "path": "five-game-crossfit-advantages/policy/report.json",
+      "policy_sha256": "66e98a3e104481a2cf56cc1c7cb6a9710662eb1cb9f2d6f5796c3d04d2b0fe5a",
+      "optimizer_source_credits": 160,
+      "optimizer_source_decisions": 78740,
+      "new_physical_credits": 0,
+      "new_physical_decisions": 0,
+      "source_manifest": "19f28948f7e4039f5be9fed29138d2b7eb0eb1789b29562e4907b798342c51d7"
+    },
+    {
+      "path": "th08-multiteam-online/joint-six-four-teams/policy/report.json",
+      "policy_sha256": "5009c0b827435657f0f7f1c075750db76c5bdd9de3ba584d6c960470b3f532e3",
+      "optimizer_source_credits": 192,
+      "optimizer_source_decisions": 100479,
+      "new_physical_credits": 24,
+      "new_physical_decisions": 17383,
+      "source_manifest": "f2a0ef3b381ed01dd60db5c9006af5e5b3fd6e39c974d8705a57758e33427706"
     }
   ],
   "additional_native_curriculum": [
