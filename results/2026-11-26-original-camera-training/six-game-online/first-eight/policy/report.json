@@ -1,0 +1,132 @@
+{
+  "parent_sft_sha256": null,
+  "parent_actor_critic_sha256": "4cc6816bd286a10691db4085ac8dfe6532b3d2933940129d50d7b7b61ac3a6cf",
+  "native_behavior_sha256": "835fbf3e37ed5c50fd000463c8ecd6493e0ff38eb0c33ce318714de098cbff96",
+  "policy_sha256": "e47c7ea2610b745609d654474c0e83ef0dd0bc774318641e3a4335e74abeba34",
+  "manifest_sha256": "94a1ecbd5886142009a34cef7984c54c9d35dd9cb9864ad38222240a7a90f9c4",
+  "steps": 4356,
+  "protocol_sha256": "608289a79d15e00ab1657eedb9b4ad0f7f121a08112d1ccc5e0b05e6081ddce8",
+  "credits": [
+    {
+      "title": 8,
+      "seed": 1630801,
+      "steps": 595,
+      "reward": -3.179999828338623,
+      "max_native_logp_error": 4.76837158203125e-06,
+      "max_native_value_error": 3.5762786865234375e-07,
+      "difficulty": 2
+    },
+    {
+      "title": 8,
+      "seed": 1630802,
+      "steps": 643,
+      "reward": -3.2100000381469727,
+      "max_native_logp_error": 5.7220458984375e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 3
+    },
+    {
+      "title": 8,
+      "seed": 1630803,
+      "steps": 768,
+      "reward": -3.119999885559082,
+      "max_native_logp_error": 3.993511199951172e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 2
+    },
+    {
+      "title": 8,
+      "seed": 1630804,
+      "steps": 257,
+      "reward": -3.0,
+      "max_native_logp_error": 3.6954879760742188e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 3
+    },
+    {
+      "title": 8,
+      "seed": 1630805,
+      "steps": 766,
+      "reward": -3.239999771118164,
+      "max_native_logp_error": 3.814697265625e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 2
+    },
+    {
+      "title": 8,
+      "seed": 1630806,
+      "steps": 489,
+      "reward": -3.1499998569488525,
+      "max_native_logp_error": 3.814697265625e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 3
+    },
+    {
+      "title": 8,
+      "seed": 1630807,
+      "steps": 543,
+      "reward": -3.119999885559082,
+      "max_native_logp_error": 3.2186508178710938e-06,
+      "max_native_value_error": 4.172325134277344e-07,
+      "difficulty": 2
+    },
+    {
+      "title": 8,
+      "seed": 1630808,
+      "steps": 295,
+      "reward": -3.0299999713897705,
+      "max_native_logp_error": 2.86102294921875e-06,
+      "max_native_value_error": 2.980232238769531e-07,
+      "difficulty": 3
+    }
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "lr": 2e-05,
+      "loss_per_minibatch": 0.01539158410038605,
+      "per_title_joint_kl": {
+        "TH8-Hard": 0.0026802954284903535,
+        "TH8-Lunatic": 0.0027437569501671533
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 2,
+      "lr": 2e-05,
+      "loss_per_minibatch": -0.0005181097600143403,
+      "per_title_joint_kl": {
+        "TH8-Hard": 0.0029027478904026793,
+        "TH8-Lunatic": 0.0028272520403334056
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 3,
+      "lr": 2e-05,
+      "loss_per_minibatch": -0.011279753374644012,
+      "per_title_joint_kl": {
+        "TH8-Hard": 0.0028478623844421236,
+        "TH8-Lunatic": 0.002874630486985552
+      },
+      "accepted": true
+    },
+    {
+      "epoch": 4,
+      "lr": 2e-05,
+      "loss_per_minibatch": -0.020272786058679534,
+      "per_title_joint_kl": {
+        "TH8-Hard": 0.0034070809651893796,
+        "TH8-Lunatic": 0.003523389055771986
+      },
+      "accepted": true
+    }
+  ],
+  "equal_weight_strata": [
+    "TH8-Hard",
+    "TH8-Lunatic"
+  ],
+  "replay_anchor_weight": 0.0,
+  "replay_anchor_training_sha256": [],
+  "native_procedure": "All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."
+}
