@@ -210,7 +210,7 @@ def main():
             row.update(verify_rank(title,path,receipt,protocol['rank_by_seed'][str(title)][str(row['seed'])]))
         from scripts.score_native_stage_clock import summarize as clock_summary
         strata={}
-        for rank,name in ((2,'Hard'),(3,'Lunatic')):
+        for rank,name in enumerate(('Easy','Normal','Hard','Lunatic')):
             selected=[r for r in rows if r['difficulty']==rank]
             seeds={t:[s for s in ss if protocol['rank_by_seed'][t][str(s)]==rank] for t,ss in protocol['eval_seeds'].items()}
             seeds={t:ss for t,ss in seeds.items() if ss}

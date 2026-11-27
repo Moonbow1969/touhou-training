@@ -13,7 +13,7 @@ from PIL import Image
 
 
 @torch.inference_mode()
-def verify(folder, policy, *, prefix=True):
+def verify(folder, policy, *, prefix=True,expected_rank=2):
     r=json.loads((folder/"receipt.json").read_bytes())
     p=folder/"rollout.npz"
     assert digest(policy)==r["policy_sha256"] and digest(p)==r["sha256"] and r["continues"]==0
@@ -29,13 +29,13 @@ def verify(folder, policy, *, prefix=True):
         for i in range(0,len(inputs),32):
             heads=model(inputs[i:i+32])
             selected.append(torch.stack([h.log_softmax(1).gather(1,a[i:i+32,j,None])[:,0] for j,h in enumerate(heads[:4])],1))
-            values.append(heads[4].reshape(-1))
+            values.append(heads[4].reshape(-1) if len(heads)>4 else torch.zeros(len(a[i:i+32])))
         lp=float(np.max(np.abs(torch.cat(selected).numpy()-b["logp"])))
         value=float(np.max(np.abs(torch.cat(values).numpy()-b["value"])))
         assert max(lp,value)<3e-4 and b["terminated"].sum()==1 and b["terminated"][-1]
         n=len(frames)
     raw=np.fromfile(folder/"steps.bin",dtype="<f4").reshape(-1,143)
-    assert len(raw)==n and np.all(raw[:,141]==2) and not raw[:,132].any()
+    assert len(raw)==n and np.all(raw[:,141]==expected_rank) and not raw[:,132].any()
     assert raw[-1,128]==-1 and r["native_key_match"]/n>=.98
     image=folder/"ranking.png"
     with Image.open(image) as im:ranking=classify(im,load_templates())

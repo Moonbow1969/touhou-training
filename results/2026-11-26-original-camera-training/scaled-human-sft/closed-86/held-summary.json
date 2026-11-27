@@ -1,0 +1,267 @@
+{
+  "scope": "Human movement and Bomb-onset prediction on the same six held players. Original-game whole-credit outcomes are evaluated separately.",
+  "registration_sha256": "1cd1b8bdc7cb16ef3c684645d670b82d553c537aec7cb460c8e3f252b87482dc",
+  "source_eligibility_sha256": "3fd22bc94d1b56fb123e53ea237f0aa0049a75ff2c3580b5280da0bb7273b958",
+  "increment": {
+    "registered_sources": 96,
+    "qualified_replays": 86,
+    "excluded_replays": 10,
+    "new_credited_train_authors": 83
+  },
+  "old_vs_new_training": {
+    "earlier_qualified_source_count": 64,
+    "new_qualified_source_count": 86,
+    "earlier_total_credited": 77,
+    "new_total_credited": 97,
+    "unchanged_held_credited": 6
+  },
+  "checkpoints": {
+    "earlier_64_original_stack": {
+      "sha256": "5fa285072ead0cc62cae6c6f1e5051e12a40e1e96068388c9360119a29113bb2",
+      "steps": 44149,
+      "train_decisions": 235457,
+      "held_credited_authors": 6,
+      "held_stage_count": 10,
+      "movement": {
+        "all": {
+          "rows": 28241,
+          "correct": 18528,
+          "accuracy": 0.6560674197089338,
+          "nll": 1.0541422607257858
+        },
+        "change": {
+          "rows": 7681,
+          "correct": 1729,
+          "accuracy": 0.22510089832053118,
+          "nll": 2.140190915629324
+        },
+        "start": {
+          "rows": 2278,
+          "correct": 248,
+          "accuracy": 0.10886742756804214,
+          "nll": 2.7234888650326483
+        },
+        "turn": {
+          "rows": 3127,
+          "correct": 656,
+          "accuracy": 0.20978573712823792,
+          "nll": 2.1279765133816553
+        }
+      },
+      "bomb": {
+        "covered_native_X_onsetting_windows": 32,
+        "positive_stage_count": 4,
+        "average_precision_mean_over_positive_stages": 0.008524887442334202,
+        "top5percent_flagged": 1419,
+        "top5percent_true_onset": 4,
+        "top5percent_false_alert": 1415,
+        "model_argmax_alerts": 0,
+        "model_argmax_true_onsets": 0
+      }
+    },
+    "closed_86_44149": {
+      "sha256": "9e61243b8c13362281d43f4d2d2e608535b24d182f2d53068cfb2aa0f7f94256",
+      "steps": 44149,
+      "train_decisions": 290583,
+      "held_credited_authors": 6,
+      "held_stage_count": 10,
+      "movement": {
+        "all": {
+          "rows": 28241,
+          "correct": 18488,
+          "accuracy": 0.6546510392691477,
+          "nll": 1.0568035262586088
+        },
+        "change": {
+          "rows": 7681,
+          "correct": 1748,
+          "accuracy": 0.22757453456581175,
+          "nll": 2.136052553393912
+        },
+        "start": {
+          "rows": 2278,
+          "correct": 271,
+          "accuracy": 0.1189640035118525,
+          "nll": 2.7458851767591055
+        },
+        "turn": {
+          "rows": 3127,
+          "correct": 666,
+          "accuracy": 0.2129836904381196,
+          "nll": 2.1327024536998955
+        }
+      },
+      "bomb": {
+        "covered_native_X_onsetting_windows": 32,
+        "positive_stage_count": 4,
+        "average_precision_mean_over_positive_stages": 0.004495644334934504,
+        "top5percent_flagged": 1419,
+        "top5percent_true_onset": 2,
+        "top5percent_false_alert": 1417,
+        "model_argmax_alerts": 0,
+        "model_argmax_true_onsets": 0
+      },
+      "actual_sample_presentations": 2825536,
+      "actual_unique_windows": 286316,
+      "coverage": 0.9853157273481243
+    },
+    "closed_86_54485": {
+      "sha256": "8516af02e3464f5b8ed2f49dbf2e0e606b9220ab8c63c0a0fee5e290170f12ac",
+      "steps": 54485,
+      "train_decisions": 290583,
+      "held_credited_authors": 6,
+      "held_stage_count": 10,
+      "movement": {
+        "all": {
+          "rows": 28241,
+          "correct": 18472,
+          "accuracy": 0.6540844870932332,
+          "nll": 1.0454463733204582
+        },
+        "change": {
+          "rows": 7681,
+          "correct": 1830,
+          "accuracy": 0.23825022783491734,
+          "nll": 2.134969192593533
+        },
+        "start": {
+          "rows": 2278,
+          "correct": 275,
+          "accuracy": 0.12071992976294996,
+          "nll": 2.7557576189342563
+        },
+        "turn": {
+          "rows": 3127,
+          "correct": 653,
+          "accuracy": 0.20882635113527342,
+          "nll": 2.1513848698554727
+        }
+      },
+      "bomb": {
+        "covered_native_X_onsetting_windows": 32,
+        "positive_stage_count": 4,
+        "average_precision_mean_over_positive_stages": 0.006553006042040285,
+        "top5percent_flagged": 1419,
+        "top5percent_true_onset": 3,
+        "top5percent_false_alert": 1416,
+        "model_argmax_alerts": 0,
+        "model_argmax_true_onsets": 0
+      },
+      "actual_sample_presentations": 3487040,
+      "actual_unique_windows": 288504,
+      "coverage": 0.9928454176603586
+    },
+    "earlier_64_rerun_44149": {
+      "sha256": "4f11f98746193fa434f4d2e3bbef324c06caaed4018c329a9da21d8972aa36de",
+      "steps": 44149,
+      "train_decisions": 235457,
+      "held_credited_authors": 6,
+      "held_stage_count": 10,
+      "movement": {
+        "all": {
+          "rows": 28241,
+          "correct": 18538,
+          "accuracy": 0.6564215148188803,
+          "nll": 1.055223368974926
+        },
+        "change": {
+          "rows": 7681,
+          "correct": 1751,
+          "accuracy": 0.2279651087098034,
+          "nll": 2.1415486244496664
+        },
+        "start": {
+          "rows": 2278,
+          "correct": 262,
+          "accuracy": 0.11501316944688324,
+          "nll": 2.731608996169414
+        },
+        "turn": {
+          "rows": 3127,
+          "correct": 664,
+          "accuracy": 0.21234409977614327,
+          "nll": 2.1257564131352784
+        }
+      },
+      "bomb": {
+        "covered_native_X_onsetting_windows": 32,
+        "positive_stage_count": 4,
+        "average_precision_mean_over_positive_stages": 0.007425845006241809,
+        "top5percent_flagged": 1419,
+        "top5percent_true_onset": 3,
+        "top5percent_false_alert": 1416,
+        "model_argmax_alerts": 0,
+        "model_argmax_true_onsets": 0
+      },
+      "actual_sample_presentations": 2825536,
+      "actual_unique_windows": 233748,
+      "coverage": 0.9927417745065978
+    }
+  },
+  "status": "All three Momentum checkpoints evaluated; same-device data-only comparison complete.",
+  "disk_archive": "The compact result retains model/compiled weights, code, protocols, losses, sampling counts and held reports. The demonstration probability matrices are stored separately.",
+  "large_demonstration_matrices": {
+    "closed_86_44149": {
+      "bytes": 91710445,
+      "sha256": "8dc3901d6595c24d7a13f175452fa02148e1fbbf5d6751d85f00bf5a1e11fd16"
+    },
+    "closed_86_54485": {
+      "bytes": 91705692,
+      "sha256": "0a52440d3cca906d7659d62609daec9e311f0756035fbcfc7ecc789e00df4982"
+    },
+    "earlier_64_rerun_44149": {
+      "bytes": 74423061,
+      "sha256": "96c4020e21290d409182216553db55e103212ccbe07738cbfa8440385eae9fa6"
+    }
+  },
+  "same_device_paired_equal_author_effects": {
+    "all": {
+      "mean_pilot_accuracy_change": -8.666975448847387e-05,
+      "pilot_bootstrap95_accuracy_change": [
+        -0.006949659147909644,
+        0.006902104131637198
+      ],
+      "mean_pilot_nll_change": -0.007463115146436087,
+      "pilot_bootstrap95_nll_change": [
+        -0.032762954452289016,
+        0.01934083087352878
+      ]
+    },
+    "change": {
+      "mean_pilot_accuracy_change": -0.002617110758996737,
+      "pilot_bootstrap95_accuracy_change": [
+        -0.018180497440857646,
+        0.009526523638781944
+      ],
+      "mean_pilot_nll_change": -0.010030224264026888,
+      "pilot_bootstrap95_nll_change": [
+        -0.04525505569859156,
+        0.017286549528017742
+      ]
+    },
+    "start": {
+      "mean_pilot_accuracy_change": 0.0011465066835147804,
+      "pilot_bootstrap95_accuracy_change": [
+        -0.017326655432815332,
+        0.01449527835435352
+      ],
+      "mean_pilot_nll_change": 0.002695761271491811,
+      "pilot_bootstrap95_nll_change": [
+        -0.0892480714409442,
+        0.07924958458761917
+      ]
+    },
+    "turn": {
+      "mean_pilot_accuracy_change": -0.002401244943710241,
+      "pilot_bootstrap95_accuracy_change": [
+        -0.015982153770932636,
+        0.010670673969199055
+      ],
+      "mean_pilot_nll_change": 0.012597025325991681,
+      "pilot_bootstrap95_nll_change": [
+        -0.04239009335139299,
+        0.0707940559953315
+      ]
+    }
+  }
+}

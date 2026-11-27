@@ -1,4 +1,4 @@
-"""Verify a registered higher difficulty directly against a complete original-game trace."""
+"""Verify a registered difficulty directly against a complete original-game trace."""
 import csv
 import gzip
 
@@ -8,7 +8,8 @@ from scripts.checkpoint_storage import digest
 
 
 def verify(title, receipt_file, receipt, expected):
-    if expected not in (2,3) or receipt.get('difficulty')!=expected:
+    supported = (0,1,2,3) if title == 13 else (2,3)
+    if expected not in supported or receipt.get('difficulty')!=expected:
         raise ValueError(f'Unexpected original difficulty for {receipt_file}')
     folder=receipt_file.parent
     if title==11:
