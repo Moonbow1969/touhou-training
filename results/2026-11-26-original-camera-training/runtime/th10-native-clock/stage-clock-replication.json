@@ -1,0 +1,145 @@
+{
+  "game": "TH10 Mountain of Faith official Windows trial 0.02a",
+  "game_sha256": "5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8",
+  "stage_register": "0x472b40",
+  "stage_clock_register": "0x472b4c",
+  "public_evidence_sha256": "eae29bced6a8c17bcbb976276533890cc9af9f2a3375e7ec25c3c840e0777d89",
+  "negative_control": "The background script timer at *(0x475448)+0x3c repeatedly jumps backwards near the Stage 1 boss.",
+  "primary": "Last directly sampled 0x472b4c value while the original stage register still reads 1. The counter may reset after stage change; Stage 2 arrival uses the separate stage register.",
+  "interpretation": "Elapsed within-stage simulation ticks. Different boss durations can produce different totals after entering the same phase. Use the stage transition as the independent progression endpoint.",
+  "engineering_witnesses": [
+    {
+      "witness": "witness-4f3fe31acec8",
+      "observed_rows": 4122,
+      "span_s": 368.899,
+      "true_stage_transitions": 1,
+      "observed_pause_rows": 29,
+      "backwards_background_loops": 15,
+      "native_stage1_decreases": 0,
+      "fraction_active_background_increments_matching_within_one": 0.9997397188964081,
+      "clock": {
+        "field": "0x472b4c",
+        "first_observed": 374,
+        "last_observed": 807,
+        "pause_limits": [
+          459,
+          459
+        ],
+        "before_after_each_stage_change": [
+          [
+            11469,
+            11471
+          ]
+        ],
+        "before_after_first_background_loop": [
+          [
+            4177,
+            4181,
+            4177,
+            3669
+          ]
+        ],
+        "first_four_seconds_after_stage2": {
+          "minimum": 0,
+          "maximum": 11471,
+          "decreases": [
+            {
+              "ms_after_first2": 100,
+              "before": 11471,
+              "after": 0
+            },
+            {
+              "ms_after_first2": 2500,
+              "before": 28,
+              "after": 1
+            }
+          ]
+        },
+        "right": {
+          "observations": 7,
+          "candidate_increment": 11,
+          "background_increment": 11
+        },
+        "left": {
+          "observations": 8,
+          "candidate_increment": 16,
+          "background_increment": 16
+        }
+      },
+      "source_trace_sha256": "34fc6ec11d915374f9a392145dfbe63042d8d9ad17cb7f22a284e08ddbfa8e01"
+    },
+    {
+      "witness": "witness-4f3fe31acec8-r2",
+      "observed_rows": 5008,
+      "span_s": 370.801,
+      "true_stage_transitions": 1,
+      "observed_pause_rows": 29,
+      "backwards_background_loops": 18,
+      "native_stage1_decreases": 0,
+      "fraction_active_background_increments_matching_within_one": 0.9997643176997407,
+      "clock": {
+        "field": "0x472b4c",
+        "first_observed": 413,
+        "last_observed": 833,
+        "pause_limits": [
+          505,
+          505
+        ],
+        "before_after_each_stage_change": [
+          [
+            12996,
+            0
+          ]
+        ],
+        "before_after_first_background_loop": [
+          [
+            4180,
+            4183,
+            4180,
+            3671
+          ]
+        ],
+        "first_four_seconds_after_stage2": {
+          "minimum": 0,
+          "maximum": 101,
+          "decreases": [
+            {
+              "ms_after_first2": 0,
+              "before": 12996,
+              "after": 0
+            },
+            {
+              "ms_after_first2": 1552,
+              "before": 28,
+              "after": 2
+            }
+          ]
+        },
+        "right": {
+          "observations": 8,
+          "candidate_increment": 18,
+          "background_increment": 18
+        },
+        "left": {
+          "observations": 10,
+          "candidate_increment": 20,
+          "background_increment": 20
+        }
+      },
+      "source_trace_sha256": "e5b35c10b6299b84073500eea9cd39db7256e7fe30890f52bffd69274fee6e30"
+    }
+  ],
+  "production": {
+    "source_sha256": "7594fce626f19d3ba1cf731d4ac5a22ac73ca5cf1e8a0ee7aac6cf8a28247b0f",
+    "sensor": "qualified-v2-clock",
+    "native_columns": [
+      "utc_ms",
+      "stage",
+      "stage_tick",
+      "lives",
+      "difficulty"
+    ],
+    "input": "Separate read-only observer; actor sees the original camera only.",
+    "scope": "New credits with their separate native-stage-clock.csv.gz, compressed trace checksum and terminal stock cross-check."
+  }
+}

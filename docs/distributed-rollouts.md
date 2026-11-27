@@ -193,6 +193,20 @@ Training the three independent branches and returning their weights took 9.37 se
 
 Transferring an SB3 archive across the Windows NumPy 1 and Linux NumPy 2 environments failed to deserialize. The pilot transferred tensor weights only and reconstructed the model on each side, which also kept optimizer state local to each branch. [CartPole benchmark and raw returns](../results/2026-11-23-distributed-rollouts/cartpole-weight-merge.json)
 
+### Four-title visual policy merge
+
+Four visual policies started from the same 38-player SFT checkpoint. Each used 750 updates on Hard and Lunatic human replay from one game. The joint baseline used 3,000 updates across all four games. The specialists consumed 48,000 sampled decisions per title. The joint model consumed 47,064 to 48,832 per title. All five policies used the same image input and action heads. [Training allocation and checkpoint hashes](../results/2026-11-26-original-camera-training/specialist-vs-shared/protocol.json)
+
+| Expert movement accuracy on held players | TH10 | TH12 | TH13 | TH17 |
+| --- | ---: | ---: | ---: | ---: |
+| Common parent | 61.83% | 52.50% | 64.99% | 40.33% |
+| Joint SFT | 60.36% | 50.73% | 64.09% | 44.57% |
+| Same-title specialist | 61.56% | 51.99% | 64.89% | 44.90% |
+| Joint update scaled to the merge's distance from the parent | 62.26% | 53.24% | 65.47% | 43.27% |
+| Equal-weight parameter average | 62.38% | 53.78% | 65.84% | 45.18% |
+
+The average retained 30.15% of the joint update's parameter distance from the parent. Scaling the joint update to match that distance recovered most of the accuracy difference on TH10, TH12 and TH13. The merge still led that control by 1.91 percentage points on TH17. Each game contributed two development players, and all four specialists used one optimization seed. Separate full-credit pairs measure game progress and remaining stock. [Player-level results](../results/2026-11-26-original-camera-training/specialist-vs-shared/weight-merge-controls.json) · [Full-credit protocol](../results/2026-11-26-original-camera-training/merged-four-native/camera-protocol.json) · [Model Soups](https://proceedings.mlr.press/v162/wortsman22a.html)
+
 [Paper and resource list](resources.md)
 
 [Compute placement and GPU admission](compute-plan.md)
