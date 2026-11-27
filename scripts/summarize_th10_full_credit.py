@@ -97,7 +97,7 @@ def draw(arms,out):
     names=list(arms);colors=["#2275a0","#d47537","#497a56"]
     for ax,key,label in zip(axs,("duration_s","raw_score","final_power"),("Whole-credit wall seconds","Original score (× 10,000)","Power at Game Over")):
         table=np.array([[arms[g][s][key] for g in names] for s in sorted(arms[names[0]])])
-        if key=="raw_score":table=table/1000.
+        if key=="raw_score":table=table/10000.
         for i,row in enumerate(table):
             jitter=(i-(len(table)-1)/2)*.009;x=np.arange(len(names))+jitter
             ax.plot(x,row,color="#a4afba",alpha=.56,lw=.8)

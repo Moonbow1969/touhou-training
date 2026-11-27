@@ -1,0 +1,97 @@
+{
+  "name": "Second direct CNN PPO update on 16 new frozen behavior credits per original title",
+  "train_seeds": {
+    "10": [
+      755101,
+      755102,
+      755103,
+      755104,
+      755105,
+      755106,
+      755107,
+      755108,
+      755109,
+      755110,
+      755111,
+      755112,
+      755113,
+      755114,
+      755115,
+      755116
+    ],
+    "12": [
+      765101,
+      765102,
+      765103,
+      765104,
+      765105,
+      765106,
+      765107,
+      765108,
+      765109,
+      765110,
+      765111,
+      765112,
+      765113,
+      765114,
+      765115,
+      765116
+    ],
+    "13": [
+      775101,
+      775102,
+      775103,
+      775104,
+      775105,
+      775106,
+      775107,
+      775108,
+      775109,
+      775110,
+      775111,
+      775112,
+      775113,
+      775114,
+      775115,
+      775116
+    ]
+  },
+  "eval_seeds": {
+    "13": [
+      879001,
+      879002,
+      879003,
+      879004,
+      879005,
+      879006,
+      879007,
+      879008,
+      879009,
+      879010,
+      879011,
+      879012
+    ]
+  },
+  "reference_arm": "ppo2",
+  "candidate": "ppo2-progress",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "interpretation": "Compare successive on-policy updates on a new seed block. Same reward and KL bound as the first camera PPO update.",
+  "reward_change": "Only TH13 receives +0.25 once at each of the 25th/50th/75th percentiles of maximum Stage 1 script ticks on eight prior SFT training credits. Same 48 PPO1 original credits, action samples, optimizer seed, epochs, LR and starting weights as plain PPO2.",
+  "test": "Fresh TH13 held original credits on the same machine, counterbalanced by seed. Primary Stage 2 and Stage 1 native ticks; secondary Bomb stock."
+}

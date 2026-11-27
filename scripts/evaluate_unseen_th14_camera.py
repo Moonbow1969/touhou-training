@@ -17,6 +17,7 @@ parser.add_argument('--transfer-ablation',action='store_true')
 parser.add_argument('--ppo-generation',type=int,choices=(2,3,4,5),help="Evaluate one later frozen generation on the registered six held-title seeds")
 parser.add_argument('--transfer-arm',choices=('matched-th13','cross-sft','cross-ppo'),help="Evaluate one arm of the preregistered 12-seed transfer study")
 parser.add_argument('--anchor-arm',choices=('plain-cross-ppo','anchored-cross-ppo'),help="Evaluate one replay-regularization arm on 12 fresh controllers")
+parser.add_argument('--supervised-budget-arm',choices=('old-joint-sft','joint-v2-3000','joint-v2-9000'),help="Evaluate the registered replay corpus and training budget comparison")
 parser.add_argument('--workers',type=int,choices=range(1,9),default=3)
 opts=parser.parse_args()
 def linux(path):
@@ -41,6 +42,10 @@ if opts.anchor_arm:
     if extra or opts.ppo_generation or opts.transfer_arm:parser.error("Choose one experiment arm group")
     folder='camera-cross-ppo' if opts.anchor_arm=='plain-cross-ppo' else 'replay-anchor/policy'
     models={opts.anchor_arm:d/folder/'policy.ts'}
+if opts.supervised_budget_arm:
+    if extra or opts.ppo_generation or opts.transfer_arm or opts.anchor_arm:parser.error("Choose one experiment arm group")
+    folder=d/'camera-cross-sft' if opts.supervised_budget_arm=='old-joint-sft' else d/'v2-supervised'/opts.supervised_budget_arm
+    models={opts.supervised_budget_arm:folder/'policy.ts'}
 plan={'title':14,'edition':'Official original trial 0.01b Normal Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
       'arms':{k:sha(v) for k,v in models.items()},'seeds':list(range(787001,787007)),
       'zero_shot':'Both direct checkpoints trained only on TH10/12/13. No TH14 optimizer input. Exclude technical failures from results.',
@@ -58,6 +63,10 @@ if opts.anchor_arm:
     plan['seeds']=list(range(791001,791013))
     plan['training']='Identical 24 original credits and supervised parent, optional joint KL on its training replay images.'
     protocol_name=opts.anchor_arm+'-protocol.json'
+if opts.supervised_budget_arm:
+    plan['seeds']=list(range(792001,792013))
+    plan['training']='Compare original SFT with enlarged human corpus at 3000 and 9000 updates on identical held controller seeds.'
+    protocol_name=opts.supervised_budget_arm+'-protocol.json'
 save_json(root/protocol_name,plan);torch.set_num_threads(1)
 
 def play(arm,seed):
@@ -111,7 +120,7 @@ if extra:
         pair=['frequency','transition'] if i%2==0 else ['transition','frequency']
         jobs.append(('expanded',787001+i))
         jobs.extend((arm,788001+i) for arm in pair)
-elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm:
+elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm or opts.supervised_budget_arm:
     jobs=[(next(iter(models)),seed) for seed in plan['seeds']]
 else:jobs=[(arm,seed) for i,seed in enumerate(plan['seeds']) for arm in (['sft','ppo1'] if i%2==0 else ['ppo1','sft'])]
 def retry(arm,seed):
