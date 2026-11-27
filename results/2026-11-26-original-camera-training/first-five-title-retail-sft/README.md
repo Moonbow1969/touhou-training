@@ -9,4 +9,6 @@ Both policies start from the same visual encoder and train all four action heads
 
 The TH11 development population is a single other player, Dagoth2hu, on Lunatic Marisa C. These values describe imitation on that player’s original screens. A larger distinct player roster provides the next check.
 
+The [two TH11 training stages](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/first-five-title-retail-sft-th11-train-original-inputs.zip) and [one TH11 development stage](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/first-five-title-retail-sft-th11-development-original-inputs.zip) each include the original screen/action arrays and synchronization evidence. Extract them beside the [four-title camera inputs](../four-title-complete-epochs/training-data.md) to reconstruct the 76 training stages and 19 development stages used here. The [training receipt](th11-train-original-inputs.release.json) and [development receipt](th11-development-original-inputs.release.json) record the remote checksums.
+
 [Original two training stages and stock/score evidence](added-th11.json) · [Study registration](protocol.json) · [All 19 development stages](development/held.json) · [Four-title weights](four/policy.ts) · [Five-title weights](five/policy.ts) · [Five-title training log](five/loss.jsonl)
