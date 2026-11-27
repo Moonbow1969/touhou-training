@@ -1,0 +1,691 @@
+{
+  "scope": "Elapsed times from original Windows coordinator file seals during this live generation. Collection includes competing queues, deployment, verification and technical retries. Packing includes polling. Learner includes input re-forward, four PPO epochs and checkpoint export. These are end-to-end intervals for this run, not isolated hardware benchmarks or exclusive resource use.",
+  "coordinator_markers": {
+    "registered": {
+      "file": "camera-protocol.json",
+      "sha256": "9c3bbb32c204a1278c0bdf98b37b8125290f3c50b3e2c5049e6a70e4afeca1a6",
+      "utc_ns": 1795767736622758900,
+      "utc": "2026-11-27T08:22:16.622759+00:00"
+    },
+    "last_lane_qualified": {
+      "file": "th12-train-source-selection.json",
+      "sha256": "d6d433fdec0552f5b4c35d940b91afa134da0685fd55a1988c764b9432eb0f31",
+      "utc_ns": 1795771959087958400,
+      "utc": "2026-11-27T09:32:39.087958+00:00"
+    },
+    "camera_manifest": {
+      "file": "camera-batch/credits.json",
+      "sha256": "917a62acef6fa5b58aacd5e9bbcf3d22855d8ff74621246c3cbb0ee0d830c5fb",
+      "utc_ns": 1795772013389565100,
+      "utc": "2026-11-27T09:33:33.389565+00:00"
+    },
+    "learner_input": {
+      "file": "corrected/clock-audit.json",
+      "sha256": "bef51a8fdf3420582a3c463f76442a8c90d3713abc2457cb758a976d7a78e162",
+      "utc_ns": 1795772022779550000,
+      "utc": "2026-11-27T09:33:42.779550+00:00"
+    },
+    "fitted": {
+      "file": "policy/report.json",
+      "sha256": "e5315a454e57efaabd8145778d225926c5f5babd1a275a542a542cb1523d503d",
+      "utc_ns": 1795772166227286000,
+      "utc": "2026-11-27T09:36:06.227286+00:00"
+    }
+  },
+  "elapsed_seconds": {
+    "collection_and_qualification": 4222.4651995,
+    "camera_packing": 54.3016067,
+    "reward_preparation": 9.3899849,
+    "learner_and_export": 143.447736
+  },
+  "total_seconds": 4429.6045271,
+  "accepted_training_credits_by_physical_host": {
+    "momentum": 32,
+    "deck": 8,
+    "entropy": 8,
+    "endeavour": 16,
+    "gamer-wsl": 16
+  },
+  "original_receipts": [
+    {
+      "title": 10,
+      "seed": 1461001,
+      "source": "native10/hard/momentum-1461001/report.json",
+      "sha256": "47c60a9164d0019730855d6d8cdef9b0baf69e964b50811edd75cf55d98b8bb5",
+      "host": "momentum",
+      "utc_ns": 1795767999956388000
+    },
+    {
+      "title": 10,
+      "seed": 1461002,
+      "source": "native10/lunatic/momentum-1461002/report.json",
+      "sha256": "cbc206321ff03578de0ee3b9201a744cb758c65af598ca432f6ad1e22677343d",
+      "host": "momentum",
+      "utc_ns": 1795767987198094300
+    },
+    {
+      "title": 10,
+      "seed": 1461003,
+      "source": "native10/hard/momentum-1461003/report.json",
+      "sha256": "b593ab456bba904d23699e628809bf8512123e4a7cb8b0d028a0d023b730815f",
+      "host": "momentum",
+      "utc_ns": 1795767987211819800
+    },
+    {
+      "title": 10,
+      "seed": 1461004,
+      "source": "native10/lunatic/momentum-1461004/report.json",
+      "sha256": "ca49815863dcef96759f7a48676e3460de7343b83e396bf196cbfd4023fc487d",
+      "host": "momentum",
+      "utc_ns": 1795767999952859800
+    },
+    {
+      "title": 10,
+      "seed": 1461005,
+      "source": "native10/hard/momentum-1461005/report.json",
+      "sha256": "a00e7bb8a74411f58d43ff0c5a7a610585115a001322551b9f834f3d0772877f",
+      "host": "momentum",
+      "utc_ns": 1795768043401016300
+    },
+    {
+      "title": 10,
+      "seed": 1461006,
+      "source": "native10/lunatic/momentum-1461006/report.json",
+      "sha256": "84c6d0f23ff5d6e6f5f8a8468b69a904a63327f2d8423a08a3984a28bb5b48e3",
+      "host": "momentum",
+      "utc_ns": 1795768043430625800
+    },
+    {
+      "title": 10,
+      "seed": 1461007,
+      "source": "native10/hard/momentum-1461007/report.json",
+      "sha256": "316d248287b10a71d6bd9d75abb682d0df135ea3ee7d3fb959bc5c791f56e48c",
+      "host": "momentum",
+      "utc_ns": 1795768068692031700
+    },
+    {
+      "title": 10,
+      "seed": 1461008,
+      "source": "native10/lunatic/momentum-1461008/report.json",
+      "sha256": "f067ef73ac5aed990b0281f31a1628bdbd834c26b71fe608a063bfe8fd2e002e",
+      "host": "momentum",
+      "utc_ns": 1795768055931907000
+    },
+    {
+      "title": 10,
+      "seed": 1461009,
+      "source": "native10/hard/momentum-1461009/report.json",
+      "sha256": "560b23509f53e91529c3a9a194dca0ec8de2f95a20cc1d682272c700890429ba",
+      "host": "momentum",
+      "utc_ns": 1795768103847695300
+    },
+    {
+      "title": 10,
+      "seed": 1461010,
+      "source": "native10/lunatic/momentum-1461010/report.json",
+      "sha256": "2d0eb319edc5bc48f15cb0c2971dfa9f6d95406fd9c09696095c783e31ebb054",
+      "host": "momentum",
+      "utc_ns": 1795768103851370000
+    },
+    {
+      "title": 10,
+      "seed": 1461011,
+      "source": "native10/hard/momentum-1461011/report.json",
+      "sha256": "ac0c304f1b70257110acc51fe6355918902847bae7081ac00225d2d095694dfb",
+      "host": "momentum",
+      "utc_ns": 1795768137328538200
+    },
+    {
+      "title": 10,
+      "seed": 1461012,
+      "source": "native10/lunatic/momentum-1461012/report.json",
+      "sha256": "1bf49888bc451cde266ef96fb3e0ccf5ea3610cd8c6bf34ea0bae3e6847bd38e",
+      "host": "momentum",
+      "utc_ns": 1795768111995236400
+    },
+    {
+      "title": 10,
+      "seed": 1461013,
+      "source": "native10/hard/momentum-1461013/report.json",
+      "sha256": "9252807c8c3dcc417aeb77e32103f14cd453ccf52c3c1cccd6787234d78bb2f3",
+      "host": "momentum",
+      "utc_ns": 1795768164319713900
+    },
+    {
+      "title": 10,
+      "seed": 1461014,
+      "source": "native10/lunatic/momentum-1461014/report.json",
+      "sha256": "a68cb634c3611497008964f768dcb6f86e4e9d450357b76563e54e74a281ef23",
+      "host": "momentum",
+      "utc_ns": 1795768160003501700
+    },
+    {
+      "title": 10,
+      "seed": 1461015,
+      "source": "native10/hard/momentum-1461015/report.json",
+      "sha256": "94bd7c7271f70af2403330b498c26c4ef5405ea7dc5b95df67b9d211eeaff39c",
+      "host": "momentum",
+      "utc_ns": 1795768185018442100
+    },
+    {
+      "title": 10,
+      "seed": 1461016,
+      "source": "native10/lunatic/momentum-1461016/report.json",
+      "sha256": "f0e6d137eb5f9b2c95d2b1567a41a6cfa91ad48b739f0d072e84e40a97da35c9",
+      "host": "momentum",
+      "utc_ns": 1795768172188173500
+    },
+    {
+      "title": 11,
+      "seed": 1461101,
+      "source": "native11/train-five-ppo-1461101/receipt.json",
+      "sha256": "cef1e2eacf6995eafdd4b6047f9d5e3c687bc88b15720116a2c9dbc9c8547a79",
+      "host": "momentum",
+      "utc_ns": 1795768327283450700
+    },
+    {
+      "title": 11,
+      "seed": 1461102,
+      "source": "native11/train-five-ppo-1461102/receipt.json",
+      "sha256": "6bfda7ef10d275b8bdaac637992960a79038126bd27fab19ea3b340b0bcc03ba",
+      "host": "momentum",
+      "utc_ns": 1795768327283450700
+    },
+    {
+      "title": 11,
+      "seed": 1461103,
+      "source": "native11/train-five-ppo-1461103/receipt.json",
+      "sha256": "93bac319a6c6b941684f2592bc0a3768f8163321f522897a28f4b622b90780d0",
+      "host": "momentum",
+      "utc_ns": 1795768387119865700
+    },
+    {
+      "title": 11,
+      "seed": 1461104,
+      "source": "native11/train-five-ppo-1461104/receipt.json",
+      "sha256": "85e6a4dcd7410cc71056dbd0e8018580c51b6bada31bc8d366559f0cb34ed3a1",
+      "host": "momentum",
+      "utc_ns": 1795768393777348200
+    },
+    {
+      "title": 11,
+      "seed": 1461105,
+      "source": "native11/train-five-ppo-1461105/receipt.json",
+      "sha256": "482952620d3bd1f81303016328b5100e73c0845bbe917b8348f0db42ef0c9ae9",
+      "host": "momentum",
+      "utc_ns": 1795768453295844100
+    },
+    {
+      "title": 11,
+      "seed": 1461106,
+      "source": "native11/train-five-ppo-1461106/receipt.json",
+      "sha256": "70e38dd410736ca2ed06ced9f2e3b4cd9dec4269c53a39b505ab22c63e7fb9e5",
+      "host": "momentum",
+      "utc_ns": 1795768477738740200
+    },
+    {
+      "title": 11,
+      "seed": 1461107,
+      "source": "native11/train-five-ppo-1461107/receipt.json",
+      "sha256": "c91ec77b42c7882291e873bfab17aa1caa3c8b563198c15b70ae2c796ff606b1",
+      "host": "momentum",
+      "utc_ns": 1795768519736059300
+    },
+    {
+      "title": 11,
+      "seed": 1461108,
+      "source": "native11/train-five-ppo-1461108/receipt.json",
+      "sha256": "e533278838ac7dc506aeb30521d8a88763c14e4c493b19ef75c4d4731e642b77",
+      "host": "momentum",
+      "utc_ns": 1795768549132374000
+    },
+    {
+      "title": 11,
+      "seed": 1461109,
+      "source": "native11/train-five-ppo-1461109/receipt.json",
+      "sha256": "d2f19593950a6199af0186bd227ac3a462ba968d6ce936c8e28434804641b326",
+      "host": "momentum",
+      "utc_ns": 1795768588098805500
+    },
+    {
+      "title": 11,
+      "seed": 1461110,
+      "source": "native11/train-five-ppo-1461110/receipt.json",
+      "sha256": "4da5c5a0302dbfdeb608dadb07d70baeae0a9a7790087fb3faed26b0529193a2",
+      "host": "momentum",
+      "utc_ns": 1795768615429671000
+    },
+    {
+      "title": 11,
+      "seed": 1461111,
+      "source": "native11/train-five-ppo-1461111/receipt.json",
+      "sha256": "39e1f8616ca2650e5c1dcf930a01354ff6b270fa9e32b18e68c397e2b2202946",
+      "host": "momentum",
+      "utc_ns": 1795768663458644800
+    },
+    {
+      "title": 11,
+      "seed": 1461112,
+      "source": "native11/train-five-ppo-1461112/receipt.json",
+      "sha256": "800bddad7ab18833a4edc2cae09ebfd0490bb58ea1ab91ab24f7efd0da0953f9",
+      "host": "momentum",
+      "utc_ns": 1795768676925468100
+    },
+    {
+      "title": 11,
+      "seed": 1461113,
+      "source": "native11/train-five-ppo-1461113/receipt.json",
+      "sha256": "d996fb295ca05afce88cf4e2b431b1807d08566fc428ee2cdc8c030326b3e922",
+      "host": "momentum",
+      "utc_ns": 1795768736876028800
+    },
+    {
+      "title": 11,
+      "seed": 1461114,
+      "source": "native11/train-five-ppo-1461114/receipt.json",
+      "sha256": "7acde3ce5a8763f80dc324ac5c4692b4ed435119852debc21a885bcc545d1408",
+      "host": "momentum",
+      "utc_ns": 1795768747733374100
+    },
+    {
+      "title": 11,
+      "seed": 1461115,
+      "source": "native11/train-five-ppo-1461115/receipt.json",
+      "sha256": "9cdd1edf230492bff2a01a1873dfe0bf7537873e5e8681bfd2843e537b4a6772",
+      "host": "momentum",
+      "utc_ns": 1795768805707505100
+    },
+    {
+      "title": 11,
+      "seed": 1461116,
+      "source": "native11/train-five-ppo-1461116/receipt.json",
+      "sha256": "3f06e85b3cb24e5e7ba944cdd49855c3f2e6fc0abc7414696c2b3d89f4ee23d7",
+      "host": "momentum",
+      "utc_ns": 1795768819083102500
+    },
+    {
+      "title": 12,
+      "seed": 1461201,
+      "source": "native12/credits/train-five-ppo-1461201-alpha.json",
+      "sha256": "81be78a73019b3b9317e035cc2e43d454427fb61a7a2a43a2368414cdb226f8d",
+      "host": "deck",
+      "utc_ns": 1795770520052175400
+    },
+    {
+      "title": 12,
+      "seed": 1461202,
+      "source": "native12/credits/train-five-ppo-1461202-alpha.json",
+      "sha256": "0d2d3ef4f5c17a204b8ea3c3557941ea6eca9a9bb59d4028e976d4d3d5a9d232",
+      "host": "deck",
+      "utc_ns": 1795770746742588300
+    },
+    {
+      "title": 12,
+      "seed": 1461203,
+      "source": "native12/credits/train-five-ppo-1461203-beta.json",
+      "sha256": "fbd29d845c902b5ec61719c346ad9181bfac294bdbfc047df9747d34e8ca5223",
+      "host": "entropy",
+      "utc_ns": 1795770998327682500
+    },
+    {
+      "title": 12,
+      "seed": 1461205,
+      "source": "native12/credits/train-five-ppo-1461205-alpha.json",
+      "sha256": "8bde11c2cc0e0c0a12df408c5ff34e397dd8d21a7665e2915aaafacb1b7532aa",
+      "host": "entropy",
+      "utc_ns": 1795770183970298100
+    },
+    {
+      "title": 12,
+      "seed": 1461206,
+      "source": "native12/credits/train-five-ppo-1461206-alpha.json",
+      "sha256": "0ec0b05f54f233cc4b13780d6d5b6429f125b583cac2a692e795c0c2325c10a4",
+      "host": "entropy",
+      "utc_ns": 1795770337705198400
+    },
+    {
+      "title": 12,
+      "seed": 1461207,
+      "source": "native12/credits/train-five-ppo-1461207-beta.json",
+      "sha256": "b505914a00df099d7b897962246cf1e509c4c379829f60d2c270858979f6f8e0",
+      "host": "deck",
+      "utc_ns": 1795771214527074600
+    },
+    {
+      "title": 12,
+      "seed": 1461208,
+      "source": "native12/credits/train-five-ppo-1461208-beta.json",
+      "sha256": "3c59d65214b9a1ca595ac183257755e38676380652d7d0a703b0af7f1a98f473",
+      "host": "deck",
+      "utc_ns": 1795771368258167500
+    },
+    {
+      "title": 12,
+      "seed": 1461209,
+      "source": "native12/credits/train-five-ppo-1461209-alpha.json",
+      "sha256": "88854554a0e785fac97e128def824dc4ea04120da1f8aa8d3bce50ad07ea99af",
+      "host": "deck",
+      "utc_ns": 1795770930825317500
+    },
+    {
+      "title": 12,
+      "seed": 1461210,
+      "source": "native12/credits/train-five-ppo-1461210-alpha.json",
+      "sha256": "a31c524ff6a464bf5c3041b41651793907cb35a9d5aa1b5df0c763dfd8d9b920",
+      "host": "deck",
+      "utc_ns": 1795771074860571300
+    },
+    {
+      "title": 12,
+      "seed": 1461211,
+      "source": "native12/credits/train-five-ppo-1461211-beta.json",
+      "sha256": "62cc59a794145854ea8d5370dd590e97ff1004316c9057a7612a51b8fdbb61a3",
+      "host": "entropy",
+      "utc_ns": 1795771291511598700
+    },
+    {
+      "title": 12,
+      "seed": 1461212,
+      "source": "native12/credits/train-five-ppo-1461212-beta.json",
+      "sha256": "1c797ab9b986b4301965e4f683508b14308ac6d4e0d418e7ca851f335e0b42a5",
+      "host": "entropy",
+      "utc_ns": 1795771515873745000
+    },
+    {
+      "title": 12,
+      "seed": 1461214,
+      "source": "native12/credits/train-five-ppo-1461214-alpha.json",
+      "sha256": "ac0a456bcba9ddb7b792fa6c211d7630645edceb43a4f0d18797a78d928d4949",
+      "host": "entropy",
+      "utc_ns": 1795770711783022300
+    },
+    {
+      "title": 12,
+      "seed": 1461216,
+      "source": "native12/credits/train-five-ppo-1461216-beta.json",
+      "sha256": "c46711d6ad2e962672b1c716a62de8b5f7063fe2ac6ca0a2772df2a03f0a92a9",
+      "host": "deck",
+      "utc_ns": 1795771760730511700
+    },
+    {
+      "title": 12,
+      "seed": 1471204,
+      "source": "native12/credits/train-five-ppo-1471204-beta.json",
+      "sha256": "d93f3cfd0e81ef3c8a1c567b7b2f4f46fe7ec471aaaf8c58c163f1de67f13df8",
+      "host": "entropy",
+      "utc_ns": 1795771379515139100
+    },
+    {
+      "title": 12,
+      "seed": 1471213,
+      "source": "native12/credits/train-five-ppo-1471213-alpha.json",
+      "sha256": "e3b0d2bbaad50b204a82392cda13c0e25b69fcb97e2de29db8240f0e3fc9125e",
+      "host": "entropy",
+      "utc_ns": 1795770830458273700
+    },
+    {
+      "title": 12,
+      "seed": 1471215,
+      "source": "native12/credits/train-five-ppo-1471215-beta.json",
+      "sha256": "c27e772f9173b65a8f3432bf134732afdc3b91bb9a4df6dd9932fdb4486e30b9",
+      "host": "deck",
+      "utc_ns": 1795771850293099600
+    },
+    {
+      "title": 13,
+      "seed": 1461301,
+      "source": "native13/train-five-ppo-1461301/receipt.json",
+      "sha256": "1fda95f194bbd2af08efe37cef742e7c46fced7d285914eca3a58f6d4bcf27da",
+      "host": "endeavour",
+      "utc_ns": 1795769566216956900
+    },
+    {
+      "title": 13,
+      "seed": 1461302,
+      "source": "native13/train-five-ppo-1461302/receipt.json",
+      "sha256": "c0f79b48c3c14b84f273d317237a17bd90f261bf2cd5e41b06dabc28518f0574",
+      "host": "endeavour",
+      "utc_ns": 1795769698994954300
+    },
+    {
+      "title": 13,
+      "seed": 1461303,
+      "source": "native13/train-five-ppo-1461303/receipt.json",
+      "sha256": "3b3665ad66c71bef034f13229af6e816a2af47d19849e9b4884dc09111ff344c",
+      "host": "endeavour",
+      "utc_ns": 1795769656635732800
+    },
+    {
+      "title": 13,
+      "seed": 1461304,
+      "source": "native13/train-five-ppo-1461304/receipt.json",
+      "sha256": "1f32bf4160035bf58bf13acb6445a513c578de586a5d960f803212755f10cb2f",
+      "host": "endeavour",
+      "utc_ns": 1795769692650866900
+    },
+    {
+      "title": 13,
+      "seed": 1461305,
+      "source": "native13/train-five-ppo-1461305/receipt.json",
+      "sha256": "016ea8e3cfafaa71a2419dc66a167079c2607c31ecd6454bf9c51d4b78a895be",
+      "host": "endeavour",
+      "utc_ns": 1795769929968789600
+    },
+    {
+      "title": 13,
+      "seed": 1461306,
+      "source": "native13/train-five-ppo-1461306/receipt.json",
+      "sha256": "822a76cbb7823a5ac0c57c2fe0a39469d5b5a81a51e72183b37673c1e77e97f1",
+      "host": "endeavour",
+      "utc_ns": 1795769998021021800
+    },
+    {
+      "title": 13,
+      "seed": 1461307,
+      "source": "native13/train-five-ppo-1461307/receipt.json",
+      "sha256": "42ed972c5ac480f7dfe2f94de09356a55d96042c960775a89b4c42402517333d",
+      "host": "endeavour",
+      "utc_ns": 1795769895864054200
+    },
+    {
+      "title": 13,
+      "seed": 1461308,
+      "source": "native13/train-five-ppo-1461308/receipt.json",
+      "sha256": "fb93dd60c612f3490d1dcd6b0d5561c7a0100bed4dadf03b8a17dbc76e2fc00a",
+      "host": "endeavour",
+      "utc_ns": 1795769885284228200
+    },
+    {
+      "title": 13,
+      "seed": 1461309,
+      "source": "native13/train-five-ppo-1461309/receipt.json",
+      "sha256": "26a68ca0420dd8eb2a8ed7ce2df98a92c05b4ddcca628d1f08a15c0c456e92c5",
+      "host": "endeavour",
+      "utc_ns": 1795770215816514200
+    },
+    {
+      "title": 13,
+      "seed": 1461310,
+      "source": "native13/train-five-ppo-1461310/receipt.json",
+      "sha256": "88d13bab7936c10794dafb72906217cf4c94cf35858a6b47a1a68e65bb75f9d2",
+      "host": "endeavour",
+      "utc_ns": 1795770052069087700
+    },
+    {
+      "title": 13,
+      "seed": 1461311,
+      "source": "native13/train-five-ppo-1461311/receipt.json",
+      "sha256": "f2b2a698acf5c0b44374c7f35b6e7f53a6e490d42b33e7c6641de54b10876aa7",
+      "host": "endeavour",
+      "utc_ns": 1795770129974308400
+    },
+    {
+      "title": 13,
+      "seed": 1461312,
+      "source": "native13/train-five-ppo-1461312/receipt.json",
+      "sha256": "9b8863e2838f47bcb0d084630fbfb841a525e63602f6b923f94e015456dd8d9f",
+      "host": "endeavour",
+      "utc_ns": 1795770269159535900
+    },
+    {
+      "title": 13,
+      "seed": 1461313,
+      "source": "native13/train-five-ppo-1461313/receipt.json",
+      "sha256": "e61fa61e9b840be5bf6f221e6042286b8b8695482aa59e51da2d31cba89a1555",
+      "host": "endeavour",
+      "utc_ns": 1795770303039296000
+    },
+    {
+      "title": 13,
+      "seed": 1461314,
+      "source": "native13/train-five-ppo-1461314/receipt.json",
+      "sha256": "a3a59e2078a843781e072ff1afeec7cf754f70443b835ab7484af3939607b349",
+      "host": "endeavour",
+      "utc_ns": 1795770320213411800
+    },
+    {
+      "title": 13,
+      "seed": 1461315,
+      "source": "native13/train-five-ppo-1461315/receipt.json",
+      "sha256": "af3af9c2eadb97305b7a65349ac38ba45fb00566c724048a871dd2d285422ad8",
+      "host": "endeavour",
+      "utc_ns": 1795770508568699400
+    },
+    {
+      "title": 13,
+      "seed": 1461316,
+      "source": "native13/train-five-ppo-1461316/receipt.json",
+      "sha256": "6dcca5da0e4d3fa93b500e34b6b9888d452d01a5799f46854a6c1e7d17a27845",
+      "host": "endeavour",
+      "utc_ns": 1795770509922637000
+    },
+    {
+      "title": 17,
+      "seed": 1461701,
+      "source": "native17/train-five-ppo-1461701/receipt.json",
+      "sha256": "2db23718a66c0e033dac6fd42dd6af8935933e771500d604e800859ff00e8ea5",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768468366846900
+    },
+    {
+      "title": 17,
+      "seed": 1461702,
+      "source": "native17/train-five-ppo-1461702/receipt.json",
+      "sha256": "c18dde06372cfe5678f48e8941f79c97e84959afe63fa9bae80247336d732001",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768586231623500
+    },
+    {
+      "title": 17,
+      "seed": 1461703,
+      "source": "native17/train-five-ppo-1461703/receipt.json",
+      "sha256": "75d14de0a35b292d49e6ace61e57d8afe152c8dbd1eed3235e43bd304d0911d1",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768543832498200
+    },
+    {
+      "title": 17,
+      "seed": 1461704,
+      "source": "native17/train-five-ppo-1461704/receipt.json",
+      "sha256": "b880a195ff5c3f3c58bf0a329e2b030d983e27ca2088d128b5d2574c8d6c9f95",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768607873905900
+    },
+    {
+      "title": 17,
+      "seed": 1461705,
+      "source": "native17/train-five-ppo-1461705/receipt.json",
+      "sha256": "e35303df03561549d427d53bf2a7c55bafde1675156416b6a9c05e6881742bb3",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768090662435000
+    },
+    {
+      "title": 17,
+      "seed": 1461706,
+      "source": "native17/train-five-ppo-1461706/receipt.json",
+      "sha256": "5e5844b82fb791fd99495d6f1aab5cb908af832bd1090cd72981144b7a16d5a2",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768379989872400
+    },
+    {
+      "title": 17,
+      "seed": 1461707,
+      "source": "native17/train-five-ppo-1461707/receipt.json",
+      "sha256": "633fca401d8d596498fa7ac467b390c3acc97e0fd027c16ad514914c5d4c2a86",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768465270620700
+    },
+    {
+      "title": 17,
+      "seed": 1461708,
+      "source": "native17/train-five-ppo-1461708/receipt.json",
+      "sha256": "c3155f62f6e9c9dcf9d76c87a82e68040065aba43074166c81d8ebde8cdf6fb7",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768529459842700
+    },
+    {
+      "title": 17,
+      "seed": 1461709,
+      "source": "native17/train-five-ppo-1461709/receipt.json",
+      "sha256": "185d15160b9b8eca8beeb7ca398b5019c85e265a9c89f40c85c447446a59e196",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768787741221300
+    },
+    {
+      "title": 17,
+      "seed": 1461710,
+      "source": "native17/train-five-ppo-1461710/receipt.json",
+      "sha256": "f9c11db610600a8debd88c718734f504db4ed9d95f134231c60829a119508699",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768854711882100
+    },
+    {
+      "title": 17,
+      "seed": 1461711,
+      "source": "native17/train-five-ppo-1461711/receipt.json",
+      "sha256": "2584aa999ad79f0203856dc020627f01009fbd90188b8503a2f4865a67b644ed",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768794358722100
+    },
+    {
+      "title": 17,
+      "seed": 1461712,
+      "source": "native17/train-five-ppo-1461712/receipt.json",
+      "sha256": "30b6e54b5269c360b440ff94c08dbfeb2c3b35a8f7b40c33a866c417a417e996",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768916002900100
+    },
+    {
+      "title": 17,
+      "seed": 1461713,
+      "source": "native17/train-five-ppo-1461713/receipt.json",
+      "sha256": "f05a1e6d15ce162c64fb7b581f892c3a42238b1c6341333964e4016196a22d02",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768594959766800
+    },
+    {
+      "title": 17,
+      "seed": 1461714,
+      "source": "native17/train-five-ppo-1461714/receipt.json",
+      "sha256": "83ce5969def51d6f77b4547b3a4e654446e1a2fdafa7362d7bc99062c7e1411a",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768794354008900
+    },
+    {
+      "title": 17,
+      "seed": 1461715,
+      "source": "native17/train-five-ppo-1461715/receipt.json",
+      "sha256": "07b35f43e19d6c001f50a88d672d6e4ce3b875098435cfc871a3808ca779ee9b",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768764865412000
+    },
+    {
+      "title": 17,
+      "seed": 1461716,
+      "source": "native17/train-five-ppo-1461716/receipt.json",
+      "sha256": "e056ae25ea5160f14286d5962b9865beabfc93b459eaafe779a60c18711ecbfa",
+      "host": "gamer-wsl",
+      "utc_ns": 1795768833952666700
+    }
+  ]
+}

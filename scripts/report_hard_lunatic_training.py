@@ -13,7 +13,7 @@ def main():
     args=parser.parse_args()
     data=args.data.resolve()
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
-             'th11-original-ppo','human78-online-covered','five-game-generation2']
+             'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo']
     counts=Counter();seen=set();reports={}
     for study in studies:
         path=data/study/'policy/report.json'

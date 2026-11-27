@@ -1,0 +1,8 @@
+{
+  "origin": "Post-hoc explanatory control after the registered feedback comparison",
+  "registration_sha256": "59f07ce946b4455338b229bea1a739f9d345aae3416a248297239fe3c460f1b3",
+  "feedback_sha256": "ad978c306f5b49a76c6f540824f29f6023bc4fbe0158a9e7c016d42174f2bc32",
+  "action_only": "Estimate nine-by-nine human transition counts with equal total weight per TRAIN game and rank. Add 0.5 per cell to the effective training counts. One model sees only the preceding direction.",
+  "image_alignment": "Within each held stage permute the learned image-specific transition matrices by one-half of the complete retained stage. Preserve the true previous direction and each stage-specific marginal distribution of images. This destroys their timing relative to human actions. Evaluate with the same episode boundaries and rows as the original development comparison.",
+  "outcomes": "NLL for all directions and true changes, conditioning on human prior or propagating own model distribution on the fixed human images. Original-game performance is measured elsewhere."
+}
