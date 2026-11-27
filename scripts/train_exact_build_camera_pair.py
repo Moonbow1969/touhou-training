@@ -38,7 +38,9 @@ def main():
                 raise ValueError(f'Unexpected trial source {key}')
             f=resolve(r['path'],r['archive_sha256'])
             side=json.loads(f.with_suffix('.json').read_bytes())
-            if side['player_group']!=r['player_group'] or side['replay_sha256']!=r['replay_sha256']:
+            source_hash = side['replay']['sha256'] if r['title'] == 'TH12' else side['replay_sha256']
+            side_identity = (side['title'], side['split'], source_hash, side['stage'])
+            if side_identity != key or side['player_group'] != r['player_group']:
                 raise ValueError('Trial sidecar differs')
             trial[r['split']].append(f)
             found[key]=f
