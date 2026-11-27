@@ -101,6 +101,13 @@ def main():
         dest=public/path.relative_to(root)
         dest.parent.mkdir(exist_ok=True,parents=True)
         shutil.copy2(path,dest)
+    phases=[i for i in result['history'] if i['accepted']]
+    (public/'README.md').write_text('\n'.join([
+        '# Six-title full-action PPO from the five-title human policy','',
+        f"The learner restored the same trained actor and critic as the five-title comparator. It consumed all {len(old)} selected games from that comparator and 16 fresh TH08 games, with eight Hard and eight Lunatic TH08 starts. The shared six-title checkpoint learned from {result['steps']:,} playable decisions across twelve game/difficulty combinations.",
+        '',f"Both recipes attempted {chunks} optimizer steps per epoch. The six-title fit accepted {len(phases)} epochs. Adding TH08 changes the fraction of the batch allocated to each previously trained work. Both arms were frozen before their 64 independent TH08 comparison games.",
+        '', '[Source allocation](camera-protocol.json) · [Exact selected seeds](fit-protocol.json) · [Full optimizer log](policy/report.json) · [Deployable policy](policy/policy.ts) · [Existing five-title input archives](../chained-five-game-ppo/README.md)',
+        '']),encoding='utf8')
     print('Completed six-title fit',len(result['credits']),result['steps'],result['policy_sha256'],flush=True)
 
 
