@@ -18,11 +18,15 @@ parser.add_argument('--ppo-generation',type=int,choices=(2,3,4,5),help="Evaluate
 parser.add_argument('--transfer-arm',choices=('matched-th13','cross-sft','cross-ppo'),help="Evaluate one arm of the preregistered 12-seed transfer study")
 parser.add_argument('--anchor-arm',choices=('plain-cross-ppo','anchored-cross-ppo'),help="Evaluate one replay-regularization arm on 12 fresh controllers")
 parser.add_argument('--supervised-budget-arm',choices=('old-joint-sft','joint-v2-3000','joint-v2-9000'),help="Evaluate the registered replay corpus and training budget comparison")
+parser.add_argument('--easy-menu-tap',type=int,choices=range(1,13),help="Use the independently qualified original Easy selection and require native difficulty zero")
 parser.add_argument('--workers',type=int,choices=range(1,9),default=3)
 opts=parser.parse_args()
 def linux(path):
     return subprocess.check_output(['wsl','-d',opts.wsl_distro,'--exec','wslpath','-a','-u',path.resolve().as_posix()],text=True).strip()
-d=opts.root.resolve();root=d/'zero-shot-th14'
+d=opts.root.resolve();root=d/('easy-th14' if opts.easy_menu_tap else 'zero-shot-th14')
+if opts.easy_menu_tap and opts.transfer_arm not in ('cross-sft','cross-ppo'):
+    parser.error('Easy study requires the joint SFT or its first online PPO')
+difficulty='Easy' if opts.easy_menu_tap else 'Normal'
 launcher=linux(Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/run-th14-camera-worker.sh')
 clock=linux(opts.camera_clock)
 root.mkdir(exist_ok=True)
@@ -46,7 +50,7 @@ if opts.supervised_budget_arm:
     if extra or opts.ppo_generation or opts.transfer_arm or opts.anchor_arm:parser.error("Choose one experiment arm group")
     folder=d/'camera-cross-sft' if opts.supervised_budget_arm=='old-joint-sft' else d/'v2-supervised'/opts.supervised_budget_arm
     models={opts.supervised_budget_arm:folder/'policy.ts'}
-plan={'title':14,'edition':'Official original trial 0.01b Normal Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
+plan={'title':14,'edition':f'Official original trial 0.01b {difficulty} Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
       'arms':{k:sha(v) for k,v in models.items()},'seeds':list(range(787001,787007)),
       'zero_shot':'Both direct checkpoints trained only on TH10/12/13. No TH14 optimizer input. Exclude technical failures from results.',
       'credit':'Original stock, four advancing native ticks per control, no continues. Zero keys during final hit animation, verify final negative stock and game-over menu with original capture. Controller randomness matched within seed.'}
@@ -73,7 +77,9 @@ def play(arm,seed):
     model=torch.jit.load(str(models[arm]),map_location='cpu').eval();rng=np.random.default_rng(seed)
     name=f'v26th14-{arm}-{seed}';dest=root/name;dest.mkdir(exist_ok=True)
     if (dest/'report.json').exists():return
-    command=['wsl','-d',opts.wsl_distro,'--','sh',launcher,name,linux(dest),opts.linux_game_dir,clock,opts.image]
+    container_name=name.replace('v26th14-','v26th14-easy-') if opts.easy_menu_tap else name
+    command=['wsl','-d',opts.wsl_distro,'--','sh',launcher,container_name,linux(dest),opts.linux_game_dir,clock,opts.image]
+    if opts.easy_menu_tap:command.append(str(opts.easy_menu_tap))
     frames=[];actions=[];likelihood=[];state_rows=[];start=time.monotonic();prev=None;stage2=None
     with TrialWorker(command,shutdown_timeout=15) as worker,torch.inference_mode():
         def advance(keys, previous):
@@ -87,6 +93,8 @@ def play(arm,seed):
                 raise
         s=worker.read(timeout=120)
         if (s['stage'],s['mode'],s['lives'])!=(1,2,2):raise ValueError(f'Unexpected initial stock: {str(s)[:100]}')
+        if opts.easy_menu_tap and s.get('difficulty')!=0:raise ValueError('Original game did not confirm Easy')
+        verified_rank=s.get('difficulty',None)
         start_stock=s['bombs']; first_tick=s['ticks']
         flags=0
         while True:
@@ -111,12 +119,12 @@ def play(arm,seed):
             state_rows.append([s[k] for k in ('ticks','frame','stage','lives','bombs','mode')]+s['player'])
             if len(actions)==1:print('ACTIVE',arm,seed,s['lives'],s['bombs'],flush=True)
             s=advance(action_mask(a),s)
-        subprocess.run(['wsl','-d',opts.wsl_distro,'--','docker','exec','-e','DISPLAY=:66',name,'scrot','-o','/capture/terminal.png'],check=True)
+        subprocess.run(['wsl','-d',opts.wsl_distro,'--','docker','exec','-e','DISPLAY=:66',container_name,'scrot','-o','/capture/terminal.png'],check=True)
         trace=dest/'native.npz'
         np.savez_compressed(trace,frames=np.stack(frames),action=np.asarray(actions,np.int8),logp=np.asarray(likelihood,np.float32),
                             native=np.asarray(state_rows,np.float64))
         y=np.asarray(actions)
-        save_json(dest/'report.json',dict(arm=arm,seed=seed,policy=sha(models[arm]),source='clock-locked official TH14 Normal trial',
+        save_json(dest/'report.json',dict(arm=arm,seed=seed,policy=sha(models[arm]),source=f'clock-locked official TH14 {difficulty} trial',difficulty=difficulty,native_difficulty=verified_rank,
             title=14,host='Gamer WSL2',continued=False,terminal='game_over',stage2=stage2,steps=len(y),elapsed_native_ticks=s['ticks']-first_tick,
             last_observed_stage=s['stage'],terminal_spares=s['lives'],terminal_bombs=s['bombs'],initial_spares=2,initial_bombs=start_stock,
             action_counts=[np.bincount(y[:,k],minlength=n).tolist() for k,n in enumerate((9,2,2,2))],trace_sha256=sha(trace),

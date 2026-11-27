@@ -149,7 +149,11 @@ int main(int argc,char **argv){
         if(index%32==0)fflush(rows);
     }
     set_keys(d,current,0);
-    if(!strcmp(outcome,"game_over"))save_terminal(im);
+    if(!strcmp(outcome,"game_over")){
+        save_terminal(im);
+        FILE *state=fopen("terminal-state.txt","wx");
+        if(!state || fprintf(state,"%s\n",status)<0 || fclose(state))fail("Cannot write terminal menu state.");
+    }
     XDestroyImage(im);XCloseDisplay(d);
     if(fclose(rows)||(f&&fclose(f))||(pixels&&fclose(pixels)))fail("Trajectory close failed.");
 #ifdef CAMERA_ACTOR

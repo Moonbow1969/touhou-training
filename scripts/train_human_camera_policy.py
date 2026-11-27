@@ -19,7 +19,7 @@ def camera_labels(words, focus_bit=8):
                             (first & 1) != 0, ((words & 2) != 0).any(1))).astype(np.int64)
 
 
-def load_replay(path, include_eight_tick_camera=False):
+def load_replay(path, include_eight_tick_camera=False, include_player_position=False):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
     title=str(metadata["title"]).upper()
     focus_bit={"TH10":4,"TH12":8,"TH13":8}.get(title)
@@ -32,6 +32,8 @@ def load_replay(path, include_eight_tick_camera=False):
         actions = z["action"].astype(np.int64)
         past = z["past_input_chunk"] if "past_input_chunk" in z else None
         valid = z["stable"].astype(bool) if "stable" in z else np.ones(len(obs), dtype=bool)
+        if include_player_position:
+            native_xy=z['xy'].astype(np.float32)
     if obs.dtype != np.uint8 or obs.shape != (len(frame),112,96) or chunk.shape != (len(frame),4):
         raise ValueError(f"Camera/control layout differs: {path}")
     if not np.array_equal(actions, camera_labels(chunk,focus_bit)):
@@ -64,6 +66,10 @@ def load_replay(path, include_eight_tick_camera=False):
         raise ValueError("A replay needs an identified player group")
     result={"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
             "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep]}
+    if include_player_position:
+        if native_xy.shape!=(len(frame),2):raise ValueError('Missing native player coordinates')
+        native_xy[:,0]+=192
+        result['player_xy']=native_xy[keep]/4.
     if include_eight_tick_camera:
         # The two native four-tick intervals must both exist and be playable.
         eight=(idx>=2)&(frame-np.roll(frame,2)==8)&np.roll(valid,1)&np.roll(valid,2)
@@ -107,9 +113,11 @@ def main():
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
+    parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
+    if args.player_location_weight<0:parser.error('Auxiliary weight must be nonnegative')
     device="cuda" if torch.cuda.is_available() else "cpu"
-    train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags) for p in args.train];held=[load_replay(p) for p in args.held]
+    train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[load_replay(p) for p in args.held]
     if {r["group"] for r in train}&{r["group"] for r in held}:
         raise ValueError("Player leakage across replay partitions")
     if {r["sha256"] for r in train}&{r["sha256"] for r in held}:
@@ -121,6 +129,10 @@ def main():
     opt=torch.optim.AdamW([{"params":model.spatial.parameters(),"lr":.00015},
                            {"params":model.policy.parameters(),"lr":.0005}],weight_decay=.001)
     data=pool(train,device)
+    if args.player_location_weight:
+        opt.add_param_group({"params":model.player.parameters(),"lr":.00015})
+        positions=torch.from_numpy(np.concatenate([r['player_xy'] for r in train])).to(device)/2
+        gy,gx=torch.meshgrid(torch.arange(56,device=device),torch.arange(48,device=device),indexing='ij')
     if args.mixed_difference_lags:
         alternate=torch.from_numpy(np.concatenate([r["raw8"] for r in train])).to(device)
         lag_rng=torch.Generator(device=device).manual_seed(182116)
@@ -158,9 +170,21 @@ def main():
         flip=torch.rand(len(ids),device=device)<.5
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
         px*=.85+.3*torch.rand(len(ids),1,1,1,device=device)
-        heads=model(px)
+        if args.player_location_weight:
+            spatial=model.spatial(px);heads=model.policy(spatial).split(WIDTHS,dim=1)
+        else:
+            heads=model(px)
         per_move=F.cross_entropy(heads[0],y[:,0],label_smoothing=.025,reduction="none")
         loss=(move_weight[ids]*per_move).mean()+sum(F.cross_entropy(heads[k],y[:,k],label_smoothing=.025) for k in range(1,4))
+        if args.player_location_weight:
+            xy=positions[ids].clone()
+            valid=(xy[:,0]>=0)&(xy[:,0]<48)&(xy[:,1]>=0)&(xy[:,1]<56)
+            xy[flip,0]=47.5-xy[flip,0];xy=xy[valid]
+            if len(xy):
+                dist=(gx-xy[:,0,None,None]).square()+(gy-xy[:,1,None,None]).square()
+                target=(-dist.flatten(1)/1.4).softmax(1)
+                predicted=model.player(spatial[valid]).flatten(1).log_softmax(1)
+                loss=loss-args.player_location_weight*(target*predicted).sum(1).mean()
         opt.zero_grad(set_to_none=True);loss.backward();torch.nn.utils.clip_grad_norm_(model.parameters(),1.);opt.step()
         if step==1 or step%100==0:
             with (args.out/"loss.jsonl").open("a") as f:f.write(json.dumps({"step":step,"loss":loss.item()})+"\n")
@@ -193,6 +217,7 @@ def main():
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
               "natural_movement_frequency":args.natural_movement_frequency,
               "title_balanced":args.balance_titles,
+              "player_location_weight":args.player_location_weight,
               "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})

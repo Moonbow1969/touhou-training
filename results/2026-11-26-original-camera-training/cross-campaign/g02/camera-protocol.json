@@ -1,0 +1,83 @@
+{
+  "name": "Three-title human replay camera PPO generation 2 on 48 new original credits",
+  "train_seeds": {
+    "10": [
+      921001,
+      921002,
+      921003,
+      921004,
+      921005,
+      921006,
+      921007,
+      921008,
+      921009,
+      921010,
+      921011,
+      921012,
+      921013,
+      921014,
+      921015,
+      921016
+    ],
+    "12": [
+      921201,
+      921202,
+      921203,
+      921204,
+      921205,
+      921206,
+      921207,
+      921208,
+      921209,
+      921210,
+      921211,
+      921212,
+      921213,
+      921214,
+      921215,
+      921216
+    ],
+    "13": [
+      921301,
+      921302,
+      921303,
+      921304,
+      921305,
+      921306,
+      921307,
+      921308,
+      921309,
+      921310,
+      921311,
+      921312,
+      921313,
+      921314,
+      921315,
+      921316
+    ]
+  },
+  "eval_seeds": {},
+  "reference_arm": "camera-cross-ppo",
+  "candidate": "camera-cross-ppo2",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "generation": 2,
+  "registered_parent": "camera-cross-ppo",
+  "registered_train_credits_per_title": 16,
+  "selection": "Fixed training budget and reward. Final paired live test compares camera-cross-ppo3 with camera-cross-ppo."
+}

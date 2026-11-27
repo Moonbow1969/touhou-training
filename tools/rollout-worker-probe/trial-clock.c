@@ -136,6 +136,8 @@ static int observe_entities(const struct Target *game, const struct State *state
     return -1;
 }
 
+static uint32_t selected_difficulty;
+
 static int emit_state(const struct Target *game, const struct State *state, uint32_t delta) {
 #ifdef TRIAL_CAMERA
     int count=0;
@@ -149,6 +151,7 @@ static int emit_state(const struct Target *game, const struct State *state, uint
            (unsigned long)state->clock, (unsigned long)state->frame, (unsigned long)delta,
            (unsigned long)state->mode, (unsigned long)state->stage, (long)state->lives,
            state->position[0], state->position[1], count);
+    printf("\"difficulty\":%lu,", (unsigned long)selected_difficulty);
 #ifdef TRIAL_CONTACT_TELEMETRY
     printf("\"contact_schema\":1,\"player_state\":%lu,\"bombs\":%ld,\"held\":%u,",
            (unsigned long)state->player_state, (long)state->bombs, game->held);
@@ -232,10 +235,15 @@ static int tap(const struct Target *game, WORD key) {
 static int start_stage(struct Target *game, struct State *state) {
     ULONGLONG deadline = GetTickCount64() + 55000;
     uint32_t next_selection = 90;
+    const char *easy_menu = getenv("TH14_EASY_MENU_TAP");
+    const int easy_tap = easy_menu ? atoi(easy_menu) : 0;
+    if (easy_menu && (easy_tap < 1 || easy_tap > 12)) return 0;
+    int selection = 0;
     while (GetTickCount64() < deadline) {
         if (ready(game, state)) {
-            uint32_t rank, character, shot;
-            return read_memory(game, GAME_DIFFICULTY, &rank, sizeof(rank)) && rank == 1
+            uint32_t character, shot;
+            return read_memory(game, GAME_DIFFICULTY, &selected_difficulty, sizeof(selected_difficulty))
+                   && selected_difficulty == (easy_tap ? 0u : 1u)
                    && read_memory(game, GAME_CHARACTER, &character, sizeof(character)) && character == 0
                    && read_memory(game, GAME_SHOT, &shot, sizeof(shot)) && shot == 0;
         }
@@ -243,6 +251,7 @@ static int start_stage(struct Target *game, struct State *state) {
         if (GetForegroundWindow() == game->window
             && read_field(game, CLOCK_POINTER, CLOCK_FIELD, &clock, sizeof(clock))
             && clock >= next_selection) {
+            if (++selection == easy_tap && !tap(game, VK_UP)) return 0;
             if (!tap(game, 'Z'))
                 return 0;
             next_selection = clock + 74;
@@ -296,7 +305,7 @@ int main(void) {
     struct State state;
     if (!start_stage(&game, &state) || !freeze(&game) || !snapshot(&game, &state)
         || !emit_state(&game, &state, 0)) {
-        fputs("TH14 trial did not reach a readable Normal Stage 1 state.\n", stderr);
+        fputs("TH14 trial did not reach the requested difficulty and Stage 1 character.\n", stderr);
         thaw(&game);
         CloseHandle(game.process);
         return 4;

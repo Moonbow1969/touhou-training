@@ -14,6 +14,31 @@ from scripts.run_th10_camera_pair import switches
 from scripts.summarize_th10_full_credit import draw, read_arm, summarize
 
 
+def paired_secondary(result):
+    """Summarize within-seed changes over the eight independent controller seeds."""
+    measures = {
+        'first_death_s': lambda r: r['loss_events'][0]['seconds'],
+        'survival_s': lambda r: r['duration_s'],
+        'score': lambda r: r['raw_score'],
+        'confirmed_casts': lambda r: len(r['native_bomb_spends']),
+    }
+    indices = np.random.default_rng(895101).integers(0, 8, size=(20000,8))
+    result['secondary_pairing_method']='Unadjusted exploratory paired percentile intervals. Each draw resamples eight complete matched controller seeds with replacement; native game RNG is uncontrolled.'
+    comparisons={}
+    for baseline,candidate in [('cross-SFT','v2-3000'),('cross-SFT','v2-9000'),('v2-3000','v2-9000')]:
+        left=result['credits'][baseline]
+        right=result['credits'][candidate]
+        assert len(left)==len(right)==8 and all(a['seed']==b['seed'] and a['host']==b['host'] for a,b in zip(left,right))
+        metrics={}
+        for key,measure in measures.items():
+            delta=np.array([measure(b)-measure(a) for a,b in zip(left,right)])
+            metrics[key]=dict(mean_delta=float(delta.mean()),per_seed=delta.tolist(),
+                above=int((delta>0).sum()),below=int((delta<0).sum()),tied=int((delta==0).sum()),
+                paired_percentile_95pct=np.quantile(delta[indices].mean(1),[.025,.975]).tolist())
+        comparisons[candidate+' vs '+baseline]=metrics
+    result['secondary_matched_outcomes']=comparisons
+
+
 def run(root, workers):
     torch.set_num_threads(2)
     root, workers = root.resolve(), workers.resolve()
@@ -71,6 +96,7 @@ def run(root, workers):
             movement_switch_rate=movement[name]['pooled_rate'],
             movement_hold_rate=1-movement[name]['pooled_rate'])
     result['movement_switches']=movement
+    paired_secondary(result)
     save(out/'paired.json',result)
     draw(rows,out/'paired.png')
     package(out/'native-logs.zip',[out/name for name in policy])

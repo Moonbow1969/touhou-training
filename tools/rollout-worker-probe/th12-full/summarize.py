@@ -16,7 +16,25 @@ def summarize(raw, output, stage2_step=None):
     with (raw/"decisions.tsv").open(encoding="ascii") as f:
         rows=list(csv.DictReader(f,delimiter="\t"))
     n=len(rows)
-    if int(count)!=n or n<1 or rows[-1]["status"] not in ("gameover","gameover_retry","score_ranking"):
+    terminal_labels = ("gameover", "gameover_retry", "score_ranking")
+    if int(count)!=n or n<1:
+        raise ValueError("Missing original terminal frame or action rows.")
+    last_status = rows[-1]["status"]
+    terminal_state = last_status
+    if last_status == "loading":
+        # No policy decisions are issued while the original game fades into its terminal menu.
+        # The worker saves the exact terminal XImage separately after this no-input wait.
+        exact_terminal = raw / "terminal-at-control.ppm"
+        native_status = raw / "terminal-state.txt"
+        reviewed_status = raw / "terminal-review.json"
+        if native_status.exists() and exact_terminal.is_file():
+            terminal_state = native_status.read_text().strip()
+        elif reviewed_status.exists():
+            review = json.loads(reviewed_status.read_bytes())
+            if review["sha256"] != hashlib.sha256(exact_terminal.read_bytes()).hexdigest():
+                raise ValueError("Reviewed terminal screen hash mismatch.")
+            terminal_state = review["state"]
+    if terminal_state not in terminal_labels:
         raise ValueError("Missing original terminal frame or action rows.")
     action=np.array([[int(r[k]) for k in ("move","focus","shoot","bomb")] for r in rows],np.int8)
     logp=np.array([[float(r["logp_"+k]) for k in ("move","focus","shoot","bomb")] for r in rows],np.float32)
@@ -111,7 +129,7 @@ def summarize(raw, output, stage2_step=None):
     report=dict(title=12,game="TH12 UFO official trial 0.02a",episode=episode,seed=int(seed),mode=mode,
                 lane=episode.split('-')[-1],policy_sha256=fingerprint,actions=n,seconds=float(wall),
                 native_outcome=end,stage2_reached=stage2_step is not None,stage2_step=stage2_step,
-                native_terminal_state=rows[-1]["status"],terminal_observation_sha256=terminal_hash,
+                native_terminal_state=terminal_state,terminal_observation_sha256=terminal_hash,
                 stage2_remaining_spare_lives=stage2_spares,stage2_remaining_bombs=stage2_bombs,
                 stage2_stock_source=stage2_stock_source,
                 stage2_review="Review the time-stamped original color progression and terminal screen for each credit.",
@@ -125,5 +143,7 @@ def summarize(raw, output, stage2_step=None):
                 screenshot_count=len(frames),median_control_ms=float(np.median(np.diff(onset))/1e6) if n>1 else None)
     if camera:
         report.update(camera_frames=n, camera_shape=[112, 96], max_camera_logp_error=camera_logp_error)
+    if last_status != terminal_state:
+        report.update(last_action_observation_state=last_status,terminal_seen_after_action_release=True)
     (output/(episode+".json")).write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
     return report

@@ -56,6 +56,8 @@ def campaign(args):
     paired(SimpleNamespace(workers=workers,out=root/'campaign/g05/native10',reference=root/'camera-ppo2/policy.ts',
         candidate=root/'camera-ppo5/policy.ts',reference_name='held-ppo2',candidate_name='held-ppo5',
         seeds=seeds,concurrency=args.concurrency,host='fleet',candidate_history=False))
+    out=root/'campaign/g05/native10'
+    package(out.parent/'th10-held-native-logs.zip',[out/'held-ppo2',out/'held-ppo5'])
 
 
 if __name__=='__main__':

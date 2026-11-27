@@ -1,0 +1,13 @@
+{
+  "supervised_steps": 12000,
+  "presentations": 768000,
+  "arms": [
+    "all-human-12k",
+    "all-human-12k-location"
+  ],
+  "train_manifest": "human-cross-title-v2-union/train-all-qualified-frozen.json plus six frozen TH13 pilots",
+  "held_manifest": "human-cross-title-v2-union/held-stage1-and-stage2-frozen.json plus two frozen TH13 pilots",
+  "intervention": "Change only weight on auxiliary sprite-location cross-entropy from 0 to 0.15. Native x/y are strictly a supervised training target; both deployed policies accept the same two-channel camera and emit identical action head shapes. Same initial weights, player splits, random permutations and augmentations.",
+  "rationale": "Frozen player readout at 9000 SFT steps gave higher median sprite-position error than the original encoder on five of six held Stage1 pilots. Test whether a joint loss preserves the representation and changes human action imitation.",
+  "endpoints": "Held-player movement NLL, move changes, exact human Bomb-key onset precision and player localization. Inspect original credits separately from offline metrics."
+}
