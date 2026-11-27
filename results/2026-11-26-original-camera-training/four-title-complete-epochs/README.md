@@ -24,3 +24,5 @@ Evaluation uses separate credited players. Ten earlier development stages and ei
 [Epoch 20 weights](epoch-20/policy.ts) · [Human metrics and training log](epoch-20/report.json)
 
 [Exact training data and initialization](training-data.md)
+
+Five of six prospectively allocated new players supplied synchronized later-stage screens on TH10, TH12 and TH13. One TH12 Lunatic stage fell below the frozen optical alignment threshold on both capture attempts. In 19,551 qualified decisions, movement hits rose from 9,086 at epoch 1 to 9,175 at epoch 20. Start hits rose from 127 to 180 of 1,694 and turns from 324 to 410 of 2,621. Separate full-stock original testing recorded 0/64 Stage 2 for each epoch. [Per-title metrics and all four epochs](prospective-six/by-title-and-epoch.json) · [Learning curves](prospective-six/movement-by-epoch.png) · [128 native tests](../full-epochs-original/evaluation/README.md) · [Frozen human capture roster](../unseen-later-stage-author-challenge/held-original-synchronized-frozen.json)
