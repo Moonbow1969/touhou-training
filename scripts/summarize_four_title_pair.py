@@ -21,6 +21,7 @@ def main():
          f'Across {len(rows)//2} paired original-game starts, {a} reached Stage 2 on {counts[a]} credits and {b} on {counts[b]}. Each pair uses the same controller seed, physical host and original build. The score uses native stage evidence. The uncontrolled game RNG can differ within a pair.','',
          f'Values run from **{a}** to **{b}**. Stock is averaged across complete credits.'
          +(' TH10 spends Power to cast.' if 10 in names else '')
+         +(' TH11 also spends Power to cast.' if 11 in names else '')
          +(' TH17 shows stock on the last playable frame because the game replenishes Bombs after final death.' if 17 in names else '')
          +(f' Native stage evidence was unresolved on {unverified} credits.' if unverified else ''),'',
          '| Game | Difficulty | Pairs | Stage 2 | Spare lives at end | Power or Bombs | Effective casts, total |',
@@ -29,7 +30,7 @@ def main():
         for rank in ('Hard','Lunatic'):
             cell=results[rank]['by_title'][str(t)]
             left,right=cell[a],cell['candidate']
-            field='mean_terminal_power' if t==10 else 'mean_last_playable_bombs' if t==17 else 'mean_terminal_bombs'
+            field='mean_terminal_power' if t in (10,11) else 'mean_last_playable_bombs' if t==17 else 'mean_terminal_bombs'
             stage=[s['stage2'] if s['stage2'] is not None else 'unresolved' for s in (left,right)]
             out.append(f"| {name} | {rank} | {left['n']} | {stage[0]} → {stage[1]} | {left['mean_terminal_spares']:.2f} → {right['mean_terminal_spares']:.2f} | {left[field]:.2f} → {right[field]:.2f} | {left['total_confirmed_bombs']} → {right['total_confirmed_bombs']} |")
     out.extend(['','[Per-seed outcomes and action traces](credits.json) · [Paired uncertainty by difficulty](paired-by-difficulty.json) · [Training and evaluation protocol](../camera-protocol.json)',''])

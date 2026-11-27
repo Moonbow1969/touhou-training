@@ -73,6 +73,7 @@ def verified_th10_entry(receipt, folder):
 def records(root, camera, round2=False):
     if round2:
         yield from ((10,f) for f in (root/"native10").rglob("report.json"))
+        yield from ((11,f) for f in (root/"native11").glob("*/receipt.json"))
         yield from ((12,f) for f in (root/"native12/credits").glob("*.json"))
         yield from ((13,f) for f in (root/"native13").glob("*/receipt.json"))
         yield from ((17,f) for f in (root/"native17").glob("*/receipt.json"))
@@ -91,6 +92,16 @@ def verify(title, f, r, trace, arm, out):
         photo=f.parent/"endpoint.png";steps=r["steps"];seconds=r["duration_s"];casts=len(r["successful_bombs"])
         lives=r["final_lives"];bombs=None;power=r["final_power"];build=r["game_sha256"]
         entry=(r.get("stage2_lives"),None,r.get("stage2_power"))
+    elif title==11:
+        from scripts.qualified_th11_stage2 import read_credit
+        checked11=read_credit(f.parent)
+        photo=f.parent/'endpoint.png';steps=r['steps'];seconds=r['real_wall_seconds']
+        lives=r['terminal_spares'];bombs=None;power=r['terminal_power_units']/r['power_units_per_level']
+        casts=r['effective_confirmed_casts'];build=r['assets']['asset_sha256']['th11.exe']
+        first=checked11['first_stage2']
+        entry=(first['spares'],None,first['power_units']/r['power_units_per_level']) if first else (None,None,None)
+        if digest(photo)!=checked11['endpoint_sha256'] or digest(f.parent/'native.bin')!=r['evidence_sha256']['native.bin']:
+            raise ValueError('Changed TH11 stock or endpoint evidence')
     elif title==12:
         raw=f.parent.parent/"raw"/r["episode"]
         photo=raw/"terminal-at-control.ppm"
@@ -133,11 +144,12 @@ def verify(title, f, r, trace, arm, out):
     if not any(x in outcome for x in ("final_life","game_over","ranking","clear","ending")):
         raise ValueError("Unrecognized end state")
     stage_evidence=None
-    stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r['stage2_reached']))
+    stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r.get('stage2_reached')))
     if title==10:
         from scripts.th10_native_stage_clock import verify as verify_th10_clock
         stage_flag,stage_evidence,entry=verified_th10_entry(r,f.parent)
         stage1_tick=verify_th10_clock(f.parent,r)
+    if title==11:stage_flag,stage_evidence=checked11['stage2_reached'],checked11['trajectory_sha256']
     if title==12:stage_flag,stage_evidence=verified_th12_stage(raw)
     if title==17:
         stage_flag,stage_evidence=checked['stage2_reached'],checked['stage2_evidence_sha256']
@@ -160,7 +172,7 @@ def main():
     for k in ("root","protocol","parent","candidate","out"):p.add_argument("--"+k,type=Path,required=True)
     p.add_argument("--camera",action="store_true")
     p.add_argument("--round2",action="store_true")
-    p.add_argument("--titles",nargs="+",type=int,choices=(10,12,13,17))
+    p.add_argument("--titles",nargs="+",type=int,choices=(10,11,12,13,17))
     p.add_argument("--arm-names",nargs=2,metavar=("REFERENCE","CANDIDATE"))
     args=p.parse_args()
     arms=args.arm_names or (("camera-sft","camera-ppo") if args.camera else ("ppo3","ppo4"))
@@ -174,7 +186,7 @@ def main():
         key=(t,r.get("seed"),arm)
         if key not in wanted:continue
         if t==13 and not r.get("ranking_photo"):continue
-        trace=f.parent/r.get("behavior",r.get("trajectory",r.get("file","missing")))
+        trace=f.parent/("trajectory.npz" if t==11 else r.get("behavior",r.get("trajectory",r.get("file","missing"))))
         if key in found:raise ValueError(f"Duplicate native credit {key}")
         found[key]=(t,f,r,trace,arm)
     if found.keys()!=wanted:

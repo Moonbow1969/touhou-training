@@ -52,7 +52,7 @@ def qualified_stage2(row):
             return None
     if row['title']==12 and row.get('game_sha256')=='c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a' and not row.get('stage2_evidence_sha256'):
         return None
-    if row['title']==17 and not row.get('stage2_evidence_sha256'):
+    if row['title'] in (11,17) and not row.get('stage2_evidence_sha256'):
         return None
     return row['stage2_reached']
 

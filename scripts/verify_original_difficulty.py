@@ -11,6 +11,11 @@ def verify(title, receipt_file, receipt, expected):
     if expected not in (2,3) or receipt.get('difficulty')!=expected:
         raise ValueError(f'Unexpected original difficulty for {receipt_file}')
     folder=receipt_file.parent
+    if title==11:
+        from scripts.qualified_th11_stage2 import read_credit
+        row=read_credit(folder)
+        return dict(difficulty=expected,difficulty_verified_native_samples=receipt['native_samples'],
+                    difficulty_evidence_sha256=row['trajectory_sha256'])
     if title==17:
         from scripts.verify_th17_original_credit import inspect
         result=inspect(receipt_file,receipt,expected)

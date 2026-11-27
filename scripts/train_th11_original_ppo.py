@@ -10,6 +10,7 @@ import time
 import numpy as np
 
 from scripts.checkpoint_storage import digest
+from scripts.qualified_th11_stage2 import read_credit as verify_stage
 
 
 def wait_file(path):
@@ -107,11 +108,19 @@ def main():
     report=json.loads((policy/'report.json').read_bytes())
     if alt!=report['policy_sha256'] or report['native_behavior_sha256']!=h:raise ValueError('Model lineage differs')
     held=[];arms=(plan['reference_arm'],plan['candidate'])
+    gate=root/'stage2-qualification.json'
+    wait_file(gate)
+    qualification=json.loads(gate.read_bytes())
+    if (not qualification['qualified'] or qualification['native_executable_sha256']!=plan['native_executable_sha256']
+            or digest(root/qualification['evidence_zip'])!=qualification['evidence_zip_sha256']):
+        raise ValueError('Unverified original positive Stage 2 transition')
     for seed in plan['eval_seeds']['11']:
         pair=[]
         for arm,sha in zip(arms,(h,alt)):
-            _,s=audit(root/'native11'/f'held-{arm}-{seed}','held',seed,sha,plan)
-            pair.append(dict(arm=arm,**s))
+            folder=root/'native11'/f'held-{arm}-{seed}'
+            _,s=audit(folder,'held',seed,sha,plan)
+            stage=verify_stage(folder)
+            pair.append(dict(arm=arm,stage2_reached=stage['stage2_reached'],first_stage2=stage['first_stage2'],**s))
         if pair[0]['host']!=pair[1]['host'] or pair[0]['lane']!=pair[1]['lane']:
             raise ValueError('Pair must share its physical lane')
         held+=pair
@@ -123,7 +132,9 @@ def main():
         values={arm:[r for r in cohort if r['arm']==arm] for arm in arms}
         pairs=len(values[arms[0]])
         rng=np.random.default_rng(1401126);idx=rng.integers(pairs,size=(20000,pairs))
-        result=dict(pairs=pairs,stage2_reach_rate=None,stage2_evidence='A positive original transition is required for the stage sensor.')
+        result=dict(pairs=pairs,stage2_reached={arm:sum(r['stage2_reached'] for r in values[arm]) for arm in arms},
+                    stage2_rate={arm:sum(r['stage2_reached'] for r in values[arm])/pairs for arm in arms},
+                    stage_qualification_sha256=digest(gate))
         for field in ('score','first_loss_wall_seconds','wall_seconds','terminal_spares','last_loss_power','terminal_power','effective_casts','decisions'):
             x,y=(np.array([r[field] for r in values[arm]],dtype=float) for arm in arms)
             delta=y-x

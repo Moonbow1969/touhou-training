@@ -13,7 +13,7 @@ from scripts.score_original_camera_run import records
 
 
 def load_source(title, receipt, data, verified, evaluation):
-    trace = receipt.parent / data.get('behavior', data.get('trajectory', data.get('file', 'missing')))
+    trace = receipt.parent / ('trajectory.npz' if title == 11 else data.get('behavior', data.get('trajectory', data.get('file', 'missing'))))
     if digest(trace) != verified['original_trace_sha256'] or digest(receipt) != verified['native_log_sha256']:
         raise ValueError('Original data changed after scoring')
     with np.load(trace, allow_pickle=False) as z:
@@ -87,7 +87,7 @@ def main():
                     draw.text((x,y+285),directions[action[0]]+'   '+buttons,font=small,fill='white')
                 else:
                     panel.paste(end,(x,y+47))
-                    resource = f"{row['terminal_power']:.2f} Power" if key[0] == 10 else f"{row['terminal_bombs']} Bombs"
+                    resource = f"{row['terminal_power']:.2f} Power" if key[0] in (10,11) else f"{row['terminal_bombs']} Bombs"
                     draw.text((x,y+285),f"{row['terminal'].replace('_',' ')}  ·  {row['terminal_spares']} spares  ·  {resource}",font=small,fill='white')
                     if row.get('last_playable_bombs') is not None:
                         draw.text((x,y+304),f"Last playable stock: {row['last_playable_bombs']} Bombs",font=small,fill='white')
