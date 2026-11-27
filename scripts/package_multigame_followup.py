@@ -24,6 +24,8 @@ def main():
     def run(module,*argv):
         subprocess.run([sys.executable,'-m','scripts.'+module,*map(str,argv)],check=True)
     run('report_whole_game_controls','--root',root)
+    has_coverage=12 in titles and (root/'th12-held-qualified-coverage.json').is_file()
+    if has_coverage:run('report_th12_held_populations','--root',root)
     film_kind='full' if root.name=='five-game-generation3' else 'native'
     for rank in ('Hard','Lunatic'):
         stem='first-'+rank.lower()+'-'+film_kind+'-credits'
@@ -57,6 +59,9 @@ def main():
     summary+=['',f'[Full-stock records](credits.json) · [Input and resource counts](whole-game-controls.json) · [Paired results by difficulty](paired-by-difficulty.json) · [Full Hard recording](first-hard-{film_kind}-credits.mp4) · [Full Lunatic recording](first-lunatic-{film_kind}-credits.mp4)','','![Observed original outcomes and physical inputs](whole-game-controls.png)']
     if (out/'README.md').is_file():
         summary=[(out/'README.md').read_text(encoding='utf8').rstrip(),'','[Native four-head input counts](whole-game-controls.json) · [Whole-game controls figure](whole-game-controls.png)']
+    if has_coverage:
+        coverage=json.loads((out/'th12-physical-and-qualified.json').read_bytes())['by_rank']
+        summary+=['','TH12 pairs with complete input coverage in both arms include '+', '.join(f"{len(coverage[str(k)]['qualified_pairs']['paired_seeds'])}/{len(coverage[str(k)]['all_observed']['paired_seeds'])} {rank}" for k,rank in ((2,'Hard'),(3,'Lunatic')))+'. The main table uses every verified physical endpoint. [Resources and Stage 2 in both populations](th12-physical-and-qualified.json)']
     (dest/'README.md').write_text('\n'.join(summary)+'\n',encoding='utf8')
     freeze(out/'publication-summary.json',dict(verified_count=expected,raw_manifest=digest(scored),controls=digest(out/'whole-game-controls.json')))
     print('Mirrored verified ordinary games',root.name,expected,flush=True)

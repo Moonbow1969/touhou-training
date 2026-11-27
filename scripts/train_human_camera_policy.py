@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 import json
 from pathlib import Path
+import tempfile
 
 import numpy as np
 import torch
@@ -23,9 +24,9 @@ def camera_labels(words, focus_bit=8):
 def load_replay(path, include_eight_tick_camera=False, include_player_position=False):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
     title=str(metadata["title"]).upper()
-    focus_bit={"TH10":4,"TH12":8,"TH13":8,"TH17":8}.get(title)
-    if title=="TH17" and metadata.get("focus_bit")!=focus_bit:
-        raise ValueError('TH17 replay requires an explicitly qualified native focus bit')
+    focus_bit={"TH10":4,"TH11":8,"TH12":8,"TH13":8,"TH17":8}.get(title)
+    if title in {"TH11","TH17"} and metadata.get("focus_bit")!=focus_bit:
+        raise ValueError(f'{title} replay requires an explicitly qualified native focus bit')
     if focus_bit is None or metadata.get("focus_bit",focus_bit)!=focus_bit:
         raise ValueError(f"Unverified original input schema for {title}")
     with np.load(path, allow_pickle=False) as z:
@@ -89,6 +90,21 @@ def pool(rows, device, cpu_replay=False):
     return {key: torch.from_numpy(np.concatenate([r[key] for r in rows])).to(device) for key in keys}
 
 
+def file_backed_replay(path, directory, **options):
+    row = load_replay(path, **options)
+    for field in ('raw', 'raw8'):
+        if field not in row:
+            continue
+        bank = row.pop(field)
+        # The OS drops the temporary backing when the last mapping closes.
+        # Camera bytes then compete for the file cache, not process commit.
+        with tempfile.TemporaryFile(dir=directory) as backing:
+            bank.tofile(backing)
+            backing.flush()
+            row[field] = np.memmap(backing, mode='r', dtype=bank.dtype, shape=bank.shape)
+    return row
+
+
 def future_movement_targets(row):
     """Future supervised labels within one contiguous native stage. Inputs stay causal."""
     clock=row['native_frame']
@@ -149,6 +165,7 @@ def main():
     parser.add_argument("--bomb-label-smoothing",type=float,default=.025,help="Target smoothing for the binary Bomb head only.")
     parser.add_argument("--spatial-attention",action="store_true",help="Learn residual multihead attention on the spatial policy grid.")
     parser.add_argument("--cpu-replay",action="store_true",help="Keep the full image bank in host RAM and transfer only selected minibatches.")
+    parser.add_argument('--file-backed-replay',action='store_true',help='Map temporary immutable camera arrays from disk to reduce committed host memory.')
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
     parser.add_argument('--future-movement-weight',type=float,default=0.,help='Auxiliary expert directions 4, 8 and 12 native ticks ahead. No extra runtime inputs or action heads.')
@@ -159,7 +176,9 @@ def main():
     if args.future_movement_weight<0:parser.error('Future movement weight must be nonnegative')
     if args.active_change_weight!=1 and not args.natural_movement_frequency:parser.error('Active change weighting uses the natural-frequency objective')
     device="cuda" if torch.cuda.is_available() else "cpu"
-    train=[load_replay(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[load_replay(p) for p in args.held]
+    if args.file_backed_replay and not args.cpu_replay:parser.error('File-backed camera storage requires --cpu-replay')
+    loader=(lambda path, **options: file_backed_replay(path,args.out.parent,**options)) if args.file_backed_replay else load_replay
+    train=[loader(p,include_eight_tick_camera=args.mixed_difference_lags,include_player_position=args.player_location_weight>0) for p in args.train];held=[loader(p) for p in args.held]
     if {r["group"] for r in train}&{r["group"] for r in held}:
         raise ValueError("Player leakage across replay partitions")
     if {r["sha256"] for r in train}&{r["sha256"] for r in held}:
@@ -311,6 +330,7 @@ def main():
                   'future_movement_training_rows':(future_labels>=0).sum(0).tolist()} if args.future_movement_weight else {}),
               "spatial_attention":args.spatial_attention,
               "cpu_replay":args.cpu_replay,
+              **({'file_backed_replay':True} if args.file_backed_replay else {}),
               "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
               "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"head_label_smoothing":smoothing,"metrics":report,

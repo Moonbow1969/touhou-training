@@ -1,0 +1,180 @@
+{
+  "physical_host": "Gamer WSL",
+  "train_lane_by_seed": {
+    "1791701": "alpha",
+    "1791702": "alpha",
+    "1791703": "beta",
+    "1791704": "beta",
+    "1791705": "gamma",
+    "1791706": "gamma",
+    "1791707": "delta",
+    "1791708": "delta",
+    "1791709": "alpha",
+    "1791710": "alpha",
+    "1791711": "beta",
+    "1791712": "beta",
+    "1791713": "gamma",
+    "1791714": "gamma",
+    "1791715": "delta",
+    "1791716": "delta",
+    "1791717": "alpha",
+    "1791718": "alpha",
+    "1791719": "beta",
+    "1791720": "beta",
+    "1791721": "gamma",
+    "1791722": "gamma",
+    "1791723": "delta",
+    "1791724": "delta",
+    "1791725": "alpha",
+    "1791726": "alpha",
+    "1791727": "beta",
+    "1791728": "beta",
+    "1791729": "gamma",
+    "1791730": "gamma",
+    "1791731": "delta",
+    "1791732": "delta"
+  },
+  "held_lane_by_seed": {
+    "1791751": "alpha",
+    "1791752": "alpha",
+    "1791753": "beta",
+    "1791754": "beta",
+    "1791755": "gamma",
+    "1791756": "gamma",
+    "1791757": "delta",
+    "1791758": "delta",
+    "1791759": "alpha",
+    "1791760": "alpha",
+    "1791761": "beta",
+    "1791762": "beta",
+    "1791763": "gamma",
+    "1791764": "gamma",
+    "1791765": "delta",
+    "1791766": "delta"
+  },
+  "arm_order": {
+    "1791751": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791759": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791752": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791760": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791753": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791761": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791754": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791762": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791755": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791763": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791756": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791764": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791757": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791765": [
+      "teacher-ppo",
+      "teacher"
+    ],
+    "1791758": [
+      "teacher",
+      "teacher-ppo"
+    ],
+    "1791766": [
+      "teacher-ppo",
+      "teacher"
+    ]
+  },
+  "policy_sha256": {
+    "teacher": "5782c537a496eb912e4d12b4521739e34d979e9dbf1d531576b051294c3266b3"
+  },
+  "worker_sha256": "242679f0a903cd8c03982cdf4b8887eff26a6d337275a401108b76948f684475",
+  "native_exe_sha256": "3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba",
+  "shared_registration_sha256": "cc89abf2b17be01720fbc16a832c5b129ddfd395266729465f9bb4bad0b18e2f",
+  "preceding_native_allocation_sha256": "9e65fc13d0bfe27b3dad3342f4cacc41cde79f751fd279ca886885c4f7c01cce",
+  "candidate_path": "four-step-feedback-online/policy/policy.ts",
+  "ranks": {
+    "1791701": 2,
+    "1791702": 3,
+    "1791703": 2,
+    "1791704": 3,
+    "1791705": 2,
+    "1791706": 3,
+    "1791707": 2,
+    "1791708": 3,
+    "1791709": 2,
+    "1791710": 3,
+    "1791711": 2,
+    "1791712": 3,
+    "1791713": 2,
+    "1791714": 3,
+    "1791715": 2,
+    "1791716": 3,
+    "1791717": 2,
+    "1791718": 3,
+    "1791719": 2,
+    "1791720": 3,
+    "1791721": 2,
+    "1791722": 3,
+    "1791723": 2,
+    "1791724": 3,
+    "1791725": 2,
+    "1791726": 3,
+    "1791727": 2,
+    "1791728": 3,
+    "1791729": 2,
+    "1791730": 3,
+    "1791731": 2,
+    "1791732": 3,
+    "1791751": 2,
+    "1791752": 3,
+    "1791753": 2,
+    "1791754": 3,
+    "1791755": 2,
+    "1791756": 3,
+    "1791757": 2,
+    "1791758": 3,
+    "1791759": 2,
+    "1791760": 3,
+    "1791761": 2,
+    "1791762": 3,
+    "1791763": 2,
+    "1791764": 3,
+    "1791765": 2,
+    "1791766": 3
+  },
+  "allocation": "Four full original games per lane and train rank. Two held seeds per lane and rank, one per arm order. Each physical instance first finishes its assigned 178 native tests. Both frozen arms use H1 previous actual direction, neutral on entry. Separate native telemetry checks rank, zero continues and full stock through terminal; original RNG uncontrolled."
+}

@@ -47,7 +47,7 @@ def main():
             encoder=d/design['parent']/'camera-policy.pt'
             if digest(encoder)!=old['encoder']:raise ValueError('Changed control initialization')
             run('train_human_camera_policy','--encoder',encoder,'--reference',a.reference,'--out',out,'--steps',3000,
-                '--cpu-replay','--natural-movement-frequency','--active-change-weight',2,'--balance-titles','--balance-difficulties',
+                '--cpu-replay','--file-backed-replay','--natural-movement-frequency','--active-change-weight',2,'--balance-titles','--balance-difficulties',
                 '--bomb-label-smoothing','.025','--train',*paths,'--held',*dev)
     sources=read(d/'human-retail17-wave2-held/held-original-synchronized-frozen.json')['qualified']
     def compare(files,output):

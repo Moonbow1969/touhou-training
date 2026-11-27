@@ -7,14 +7,13 @@ import sys
 import time
 
 from scripts.checkpoint_storage import digest
-from scripts.run_registered_camera_update import wait_th12_coverage
 from scripts.score_original_camera_run import records
 
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost'),required=True)
+    p.add_argument('--study',choices=('five-game-crossfit-advantages','six-game-retention','six-game-return-horizon','six-game-bomb-cost','full-epochs-original'),required=True)
     a=p.parse_args();d=a.data.resolve();root=d/a.study
     plan=json.loads((root/'camera-protocol.json').read_bytes())
     five=a.study=='five-game-crossfit-advantages'
@@ -24,6 +23,9 @@ def main():
     if a.study=='six-game-bomb-cost':
         reference=d/'six-game-online/joint-six/policy/policy.ts'
         candidate=root/'policy/policy.ts'
+    if a.study=='full-epochs-original':
+        reference=d/'four-title-complete-epochs'/plan['reference_arm']/'policy.ts'
+        candidate=d/'four-title-complete-epochs'/plan['candidate']/'policy.ts'
     while not candidate.with_name('report.json').is_file():time.sleep(15)
     refs={digest(reference),digest(candidate)}
     titles=sorted(int(t) for t in plan['eval_seeds'] if t!='8')
@@ -31,7 +33,7 @@ def main():
     previous=-1
     while True:
         seen={}
-        for t,file in records(root,True,True,include_held_endpoints=five):
+        for t,file in records(root,True,True,include_held_endpoints=True):
             try:r=json.loads(file.read_bytes())
             except (json.JSONDecodeError,PermissionError):continue
             key=(t,r.get('seed'),r.get('policy_sha256'))
@@ -46,19 +48,17 @@ def main():
     if 12 in titles:
         coverage=root/'th12-held-qualified-coverage.json'
         physical=[f for (t,s,h),f in seen.items() if t==12]
-        if five:
-            while not coverage.exists():time.sleep(10)
-            rows=json.loads(coverage.read_bytes())['credits']
-            expected_status={digest(f):'indeterminate' if f.parent.name=='endpoint-only' else 'qualified' for f in physical}
-            if len(rows)!=len(physical) or {z['receipt_sha256']:z['coverage'] for z in rows}!=expected_status or any(not z['evidence_sha256'] for z in rows):
-                raise ValueError('Original TH12 input coverage and endpoint populations do not reconcile')
-        else:wait_th12_coverage(coverage,physical)
+        while not coverage.exists():time.sleep(10)
+        rows=json.loads(coverage.read_bytes())['credits']
+        expected_status={digest(f):'indeterminate' if f.parent.name=='endpoint-only' else 'qualified' for f in physical}
+        if len(rows)!=len(physical) or {z['receipt_sha256']:z['coverage'] for z in rows}!=expected_status or any(not z['evidence_sha256'] for z in rows):
+            raise ValueError('Original TH12 input coverage and endpoint populations do not reconcile')
     def run(module,*args):
         subprocess.run([sys.executable,'-m','scripts.'+module,*map(str,args)],check=True)
     out=root/'evaluation'
     run('score_original_camera_run','--root',root,'--round2','--protocol',root/'camera-protocol.json',
         '--parent',reference,'--candidate',candidate,'--arm-names',plan['reference_arm'],plan['candidate'],
-        '--titles',*titles,'--out',out,*(['--include-held-endpoints'] if five else []))
+        '--titles',*titles,'--out',out,'--include-held-endpoints')
     if 13 in titles:
         run('score_native_stage_clock','--credits',out/'credits.json','--title',13,'--arms',plan['reference_arm'],plan['candidate'],'--out',out/'native13-stage-clock.json')
     run('plot_full_action_results','--folder',out,'--candidates',plan['candidate'])

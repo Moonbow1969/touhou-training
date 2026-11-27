@@ -105,6 +105,15 @@ def main():
                 for arm in orders[str(s)]:
                     dest=root/'native08'/f'held-{arm}-{seed}'
                     entry_failures=[]
+                    incident=dest/'technical-process-exit.json'
+                    if incident.is_file():
+                        interruption=json.loads(incident.read_bytes())
+                        if (interruption['seed']!=seed or interruption['rank']!=rank or interruption['policy']!=digests[arm]
+                            or (dest/'receipt.json').exists() or (dest/'terminal.png').exists()
+                            or any(digest(dest/name)!=h for name,h in interruption['evidence'].items())):
+                            raise ValueError('Conflicting incomplete original-game attempt')
+                        bad.append(dict(arm=arm,seed=seed,source_sha256=digest(incident),reason=interruption['reason']))
+                        continue
                     if not (dest/'receipt.json').exists():
                         runtime=assets
                         if a.postcredit_assets:

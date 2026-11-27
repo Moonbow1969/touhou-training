@@ -12,7 +12,11 @@ from scripts.train_five_original_games import freeze
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--data',type=Path,required=True)
-    d=p.parse_args().data.resolve()
+    p.add_argument('--four-step',action='store_true',help='Continue the conventional teacher-forced 68-stage direction SFT on 64 fresh credits.')
+    args=p.parse_args();d=args.data.resolve()
+    if args.four_step:
+        start_four_step(d)
+        return
     root=d/'direction-feedback-original-ppo'
     root.mkdir(exist_ok=True)
     movement=d/'four-title-direction-feedback'
@@ -39,6 +43,35 @@ def main():
     subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update',
                     '--root',root,'--parent',actor,'--from-sft','--feedback-camera',visual,'--direction-residual',movement/'feedback.ts',
                     '--protocol',protocol],check=True)
+
+
+def start_four_step(d):
+    root=d/'four-step-feedback-online'
+    root.mkdir(exist_ok=True)
+    movement=d/'four-title-four-step-feedback'
+    actor=movement/'teacher'
+    visual=d/'four-title-later-stage-sft/policy/camera-policy.pt'
+    comparison=d/'four-step-feedback-original/camera-protocol.json'
+    previous=json.loads(comparison.read_bytes())
+    fit=json.loads((actor/'fit.json').read_bytes())
+    if digest(actor/'policy.ts')!=fit['actor'] or fit['actor']!=previous['policies']['teacher'] or digest(actor/'residual.ts')!=fit['residual']:
+        raise ValueError('Unexpected human feedback parent')
+    train={str(t):list(range(1790000+t*100+1,1790000+t*100+33)) for t in (10,17)}
+    held={str(t):list(range(1790000+t*100+51,1790000+t*100+67)) for t in (10,17)}
+    prior=json.loads((d/'direction-feedback-original-ppo/camera-protocol.json').read_bytes())
+    rule=dict(name='Two-title PPO from the 68-stage human direction feedback model',games=prior['games'],
+              train_seeds=train,eval_seeds=held,rank_by_seed={t:{str(s):2 if s%2 else 3 for s in train[t]+held[t]} for t in train},
+              behavior_sha256=fit['actor'],residual_sha256=fit['residual'],camera_sft_sha256=digest(visual),
+              sft_protocol_sha256=digest(movement/'protocol.json'),preceding_evaluation_sha256=digest(comparison),
+              previous_direction_input=True,balanced_title_rank=True,verify_th10_playable_end=True,
+              reference_arm='teacher',candidate='teacher-ppo',learning_rates=prior['learning_rates'],
+              training='Use the conventional teacher-forced conditional SFT before any of its original paired outcomes are available. Both games supply 16 fresh Hard and 16 fresh Lunatic full-stock starts. Update all four action heads and shared camera features. Replay the native previous actions and verify behavior likelihoods and zero-initialized critic. Exclude all prior evaluation trajectories. The per-title, per-rank balanced objective uses the existing PPO recipe.',
+              evaluation='Eight independent paired seeds per title and rank. Same build, host and lane, balanced order. Start at Stage 1 with full normal stock. Report Stage 2, entry stock if observed, terminal spares, effective casts and last native progress. Original RNG uncontrolled. No automatic evasion, aim or Bomb.')
+    protocol=root/'camera-protocol.json'
+    freeze(protocol,rule)
+    print('Registered 64 fresh original training games and 32 independent held pairs',digest(protocol),flush=True)
+    subprocess.run([sys.executable,'-u','-m','scripts.run_registered_camera_update','--root',root,'--parent',actor,
+                    '--from-sft','--feedback-camera',visual,'--direction-residual',actor/'residual.ts','--protocol',protocol],check=True)
 
 
 if __name__=='__main__':
