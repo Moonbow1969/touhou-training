@@ -19,8 +19,20 @@ if command -v xset >/dev/null; then xset r off; fi
 tap() { xdotool keydown "$1"; sleep .16; xdotool keyup "$1"; sleep .62; }
 test "$(/input/th12-full-actor status)" = title
 tap z; sleep .45
+if [ "${TH12_READ_RETAINED_RANK:-0}" = 1 ]; then
+    rank_read() {
+        scrot -o -a 3,22,640,480 "$dir/current-rank.ppm"
+        /input/th12-warm-menu "$dir/current-rank.ppm" /input/th12-warm-menu.mask
+    }
+    scrot -o -a 3,22,640,480 "$dir/rank-menu-as-entered.png"
+    actual=$(rank_read)
+    printf '%s\n' "$actual" > "$dir/rank-menu-as-entered.txt"
+    while [ "$actual" -gt 1 ]; do tap Up; actual=$((actual-1)); done
+    test "$(rank_read)" = 1
+fi
 scrot -o -a 3,22,640,480 "$dir/difficulty-menu-initial.png"
 for i in $(seq 2 "$TH12_DIFFICULTY"); do tap Down; done
+if [ "${TH12_READ_RETAINED_RANK:-0}" = 1 ]; then test "$(rank_read)" = "$TH12_DIFFICULTY"; fi
 scrot -o -a 3,22,640,480 "$dir/difficulty-menu-selected.png"
 for item in rank character shot; do tap z; sleep .6; done
 for i in $(seq 1 90); do

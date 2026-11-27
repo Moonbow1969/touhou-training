@@ -44,4 +44,4 @@ case "${1:-}" in
     *) exit 2 ;;
 esac
 # Keep this bounded test desktop alive for private control and snapshots.
-sleep 14400
+sleep "${TH12_DESKTOP_LIFETIME:-14400}"

@@ -1,0 +1,67 @@
+{
+  "seed": 261128,
+  "parent_sha256": "22981e8b48e829b57730e1723ad0d93d4051e9154f7a846f6e67f8446348dfee",
+  "th08_only_sha256": "9517f54887f2dd0fdadaf1e06aed40914db5b5661abdf887cc58d0fd2e0a73fb",
+  "source_sha256": "52f77f3997f7170853dd4d04a2634a001063d205f5e2fc7d34b00c48a89c3f93",
+  "token_array_sha256": "4bf8b7175c28739a2c8ec63759c3e5ba628e69a20a6375dbbab8e2bf82f60d2a",
+  "epochs": 4,
+  "tiles_per_epoch": 21825,
+  "decisions_per_tile": 64,
+  "batch_sequences": 128,
+  "optimizer": "AdamW lr=0.0002",
+  "cells": [
+    {
+      "title": 8,
+      "rank": "Hard",
+      "eligible_tiles": 11019
+    },
+    {
+      "title": 8,
+      "rank": "Lunatic",
+      "eligible_tiles": 10806
+    },
+    {
+      "title": 13,
+      "rank": "Hard",
+      "eligible_tiles": 28837
+    },
+    {
+      "title": 13,
+      "rank": "Lunatic",
+      "eligible_tiles": 36954
+    },
+    {
+      "title": 14,
+      "rank": "Hard",
+      "eligible_tiles": 26381
+    },
+    {
+      "title": 14,
+      "rank": "Lunatic",
+      "eligible_tiles": 58144
+    },
+    {
+      "title": 16,
+      "rank": "Hard",
+      "eligible_tiles": 22477
+    },
+    {
+      "title": 16,
+      "rank": "Lunatic",
+      "eligible_tiles": 104692
+    },
+    {
+      "title": 17,
+      "rank": "Hard",
+      "eligible_tiles": 13486
+    },
+    {
+      "title": 17,
+      "rank": "Lunatic",
+      "eligible_tiles": 62537
+    }
+  ],
+  "sampling": "Half the tile budget to TH08, divided evenly between ranks. Half to the other eight cells equally. Rotate integer remainders per epoch. Draw without replacement in each cell and shuffle across cells.",
+  "comparisons": "Fixed 4-pass TH08-only and mixed models from exact same initial weights with equal exposures. Frozen mean-metadata control uses mean trained title and shot rows for unknown metadata. Metrics by held credited author, game and difficulty. Historical test names absent from either training source. Two TH08 held names known to parent weights.",
+  "primary": "Direction accuracy on actual turns. Report next-direction accuracy and joint NLL alongside. Historical TH16 Hard has zero independently held files."
+}

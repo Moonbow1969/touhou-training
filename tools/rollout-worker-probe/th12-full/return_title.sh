@@ -7,7 +7,13 @@ export PULSE_SERVER=unix:/tmp/th12-pulse.sock XDG_RUNTIME_DIR=/tmp/runtime
 case "$(/input/th12-full-actor status)" in
   score_ranking) ;;
   gameover|gameover_retry) test "${TH12_ALLOW_TERMINAL_RELAUNCH:-0}" = 1 ;;
-  *) exit 2 ;;
+  *)
+    # Explicit mode entry keeps the private credit lock across a failed menu
+    # or initial-stock check. No policy decision exists in this new credit.
+    label=${TH12_FAILED_RESET_LABEL:-}
+    case "$label" in ''|*[!a-zA-Z0-9_.-]*) exit 2;; esac
+    test -e /proc/$$/fd/8 && test -f "/capture/full/$label/warm-failure.txt" && test ! -e "/capture/full/$label/decisions.tsv" || exit 2
+    ;;
 esac
 wineserver -k || true
 sleep 1

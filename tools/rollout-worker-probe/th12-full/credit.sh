@@ -22,7 +22,11 @@ exec 8>/capture/active-credit-v2.lock
 flock -x 8
 clock_reader=${TH12_CLOCK_READER:-/input/th12-full-actor}
 if [ "${TH12_NATIVE_STAGE_SENSOR:-0}" = 1 ]; then credit_start=$("$clock_reader" clock); fi
-sh "${TH12_RESET_SCRIPT:-/input/th12-full-reset.sh}" "$label"
+if [ -n "${TH12_RESET_MODE:-}" ]; then
+    sh /input/th12-mode-reset.sh "$label"
+else
+    sh "${TH12_RESET_SCRIPT:-/input/th12-full-reset.sh}" "$label"
+fi
 cd "/capture/full/$label"
 test ! -e decisions.tsv
 mkdir evidence
@@ -105,6 +109,9 @@ case "$(/input/th12-full-actor status)" in
             fi
         done ;;
 esac
+if [ -n "${TH12_RESET_MODE:-}" ] && [ "$rc" = 0 ]; then
+    sh /input/th12-reset-provenance.sh finish "$label"
+fi
 cat outcome.txt
 flock -u 8
 flock -u 9

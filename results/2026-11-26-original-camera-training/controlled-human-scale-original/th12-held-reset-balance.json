@@ -1,0 +1,964 @@
+{
+  "scope": "All registered terminal outcomes regardless of effective reset. Predecessor comes from the prospective per-lane order, independently checked against contemporaneous PID/terminal-SHA markers on every warm run. Elapsed setup uses the native monotonic clock to the first real policy action. Previous native score/rank screens are fingerprinted, allowing independent reading of retained ranking state. Uncontrolled original RNG and possible carryover limit an interpretation as exact matched native randomness.",
+  "cells": [
+    {
+      "arm": "same-device-64",
+      "rank": 2,
+      "credits": 12,
+      "reset_modes": {
+        "warm": 9,
+        "cold_fallback": 3
+      },
+      "previous_ranks": {
+        "2": 6,
+        "3": 6
+      },
+      "previous_arms": {
+        "same-device-86": 8,
+        "five-ppo": 1,
+        "same-device-64": 3
+      },
+      "median_setup_seconds": 15.488720422086772
+    },
+    {
+      "arm": "same-device-64",
+      "rank": 3,
+      "credits": 12,
+      "reset_modes": {
+        "warm": 10,
+        "cold_fallback": 2
+      },
+      "previous_ranks": {
+        "3": 6,
+        "2": 6
+      },
+      "previous_arms": {
+        "same-device-86": 10,
+        "same-device-64": 2
+      },
+      "median_setup_seconds": 17.867439169436693
+    },
+    {
+      "arm": "same-device-86",
+      "rank": 2,
+      "credits": 12,
+      "reset_modes": {
+        "warm": 12
+      },
+      "previous_ranks": {
+        "3": 6,
+        "2": 6
+      },
+      "previous_arms": {
+        "five-ppo": 3,
+        "same-device-64": 8,
+        "same-device-86": 1
+      },
+      "median_setup_seconds": 17.391530983615667
+    },
+    {
+      "arm": "same-device-86",
+      "rank": 3,
+      "credits": 12,
+      "reset_modes": {
+        "cold_fallback": 5,
+        "warm": 7
+      },
+      "previous_ranks": {
+        "2": 6,
+        "3": 6
+      },
+      "previous_arms": {
+        "same-device-64": 10,
+        "same-device-86": 2
+      },
+      "median_setup_seconds": 19.032638586999383
+    }
+  ],
+  "credits": [
+    {
+      "episode": "held-same-device-86-1581251-alpha",
+      "seed": 1581251,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "engineering-prime-1581201-alpha",
+      "previous_rank": 3,
+      "previous_arm": "five-ppo",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "2fca108b45d214ce4b353e6175255e87e11a5eaa5b3a269d37d0b0ea441b87a1",
+        "endpoint.png": "2fca108b45d214ce4b353e6175255e87e11a5eaa5b3a269d37d0b0ea441b87a1"
+      },
+      "setup_seconds": 18.43550042802235,
+      "credit_seconds": 118.496811,
+      "actions": 950
+    },
+    {
+      "episode": "held-same-device-64-1581251-alpha",
+      "seed": 1581251,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-86-1581251-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "7fb99f213c20e64f3351a394236683e60747ee8c42301e561e13483cdda2dc9e"
+      },
+      "setup_seconds": 14.423252177948598,
+      "credit_seconds": 62.635358,
+      "actions": 530
+    },
+    {
+      "episode": "held-same-device-86-1581252-alpha",
+      "seed": 1581252,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581251-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "1fa64586820719503dbde5d73c1aa616b378f1aaaa1b48bfd05112be68c97975"
+      },
+      "setup_seconds": 25.18312994396547,
+      "credit_seconds": 42.732074,
+      "actions": 343
+    },
+    {
+      "episode": "held-same-device-64-1581252-alpha",
+      "seed": 1581252,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-86-1581252-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "fa8377e96f6ac2de83769a5b87da67c7247f372e1a5212ec2e79539d7321a5ee"
+      },
+      "setup_seconds": 16.187874359020498,
+      "credit_seconds": 43.863685,
+      "actions": 365
+    },
+    {
+      "episode": "held-same-device-64-1581253-beta",
+      "seed": 1581253,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "engineering-prime-1581202-beta",
+      "previous_rank": 3,
+      "previous_arm": "five-ppo",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "52e9abe4f76ab38b4153be08bfe74ef50f076d0faa8b820449431cb3159020b4"
+      },
+      "setup_seconds": 15.356743067968637,
+      "credit_seconds": 51.840932,
+      "actions": 423
+    },
+    {
+      "episode": "held-same-device-86-1581253-beta",
+      "seed": 1581253,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-64-1581253-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "3b4273ca9a05c751364d780641f7f5dcd419dfe5fb5a053daff176b7250ed5cc",
+        "endpoint.png": "3b4273ca9a05c751364d780641f7f5dcd419dfe5fb5a053daff176b7250ed5cc"
+      },
+      "setup_seconds": 17.755868940032087,
+      "credit_seconds": 73.028287,
+      "actions": 605
+    },
+    {
+      "episode": "held-same-device-64-1581254-beta",
+      "seed": 1581254,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581253-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "e6f0521ac8c2025bb632fce46df8208c94b155d8df782ae868a743240d26d41b",
+        "endpoint.png": "e6f0521ac8c2025bb632fce46df8208c94b155d8df782ae868a743240d26d41b"
+      },
+      "setup_seconds": 18.560150203993544,
+      "credit_seconds": 59.372705,
+      "actions": 486
+    },
+    {
+      "episode": "held-same-device-86-1581254-beta",
+      "seed": 1581254,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-64-1581254-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "cd8764ecab250e7cbac80defe0bd5a95e1df00de0560f263123d07ce2c1c1add",
+        "endpoint.png": "cd8764ecab250e7cbac80defe0bd5a95e1df00de0560f263123d07ce2c1c1add"
+      },
+      "setup_seconds": 19.46206427400466,
+      "credit_seconds": 37.800381,
+      "actions": 308
+    },
+    {
+      "episode": "held-same-device-86-1581255-alpha",
+      "seed": 1581255,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "engineering-prime-1581203-alpha",
+      "previous_rank": 3,
+      "previous_arm": "five-ppo",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "38f9c3362a4b00e2424efa2e16b8a22695b329729e63707d966c4ccbb4acb618",
+        "endpoint.png": "38f9c3362a4b00e2424efa2e16b8a22695b329729e63707d966c4ccbb4acb618"
+      },
+      "setup_seconds": 17.526357757858932,
+      "credit_seconds": 64.538518,
+      "actions": 588
+    },
+    {
+      "episode": "held-same-device-64-1581255-alpha",
+      "seed": 1581255,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-86-1581255-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "56ff99a840af26d1e537fc842e9ff3f982169de0fdc106ad6ad929f32dade9b8"
+      },
+      "setup_seconds": 21.877181524410844,
+      "credit_seconds": 95.29004,
+      "actions": 912
+    },
+    {
+      "episode": "held-same-device-86-1581256-alpha",
+      "seed": 1581256,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581255-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "0f2339e9ae878d6dbfb41e913f0d0ba05fc1abd27539a2fd7931fc6416f43dc7",
+        "endpoint.png": "0f2339e9ae878d6dbfb41e913f0d0ba05fc1abd27539a2fd7931fc6416f43dc7"
+      },
+      "setup_seconds": 16.710316192358732,
+      "credit_seconds": 47.492493,
+      "actions": 503
+    },
+    {
+      "episode": "held-same-device-64-1581256-alpha",
+      "seed": 1581256,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-86-1581256-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "2fec1ceaf3589e06f81fa403a7fb4678b09ece0c5e67f63470556f969d7c22b1",
+        "endpoint.png": "2fec1ceaf3589e06f81fa403a7fb4678b09ece0c5e67f63470556f969d7c22b1"
+      },
+      "setup_seconds": 17.863543946295977,
+      "credit_seconds": 34.304235,
+      "actions": 324
+    },
+    {
+      "episode": "held-same-device-86-1581257-beta",
+      "seed": 1581257,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "engineering-prime-1581204-beta",
+      "previous_rank": 3,
+      "previous_arm": "five-ppo",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "7b379210dc13677c9ef557e07bdc9c764d78dc8e27f1b20614654270db419dd0",
+        "endpoint.png": "7b379210dc13677c9ef557e07bdc9c764d78dc8e27f1b20614654270db419dd0"
+      },
+      "setup_seconds": 17.2567042093724,
+      "credit_seconds": 98.032214,
+      "actions": 956
+    },
+    {
+      "episode": "held-same-device-64-1581257-beta",
+      "seed": 1581257,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-86-1581257-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "0008fade19e95ef820bb03c3f3dba6b2c373e216125acc4f9d9ee3484c9e5061",
+        "endpoint.png": "0008fade19e95ef820bb03c3f3dba6b2c373e216125acc4f9d9ee3484c9e5061"
+      },
+      "setup_seconds": 16.11370754055679,
+      "credit_seconds": 34.49543,
+      "actions": 364
+    },
+    {
+      "episode": "held-same-device-86-1581258-beta",
+      "seed": 1581258,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581257-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "dfea76ed9110757f62c442c78f20571e6733f7cf6ae3dfb4bf0e42c26a4b22d9"
+      },
+      "setup_seconds": 13.763699283823371,
+      "credit_seconds": 74.872856,
+      "actions": 783
+    },
+    {
+      "episode": "held-same-device-64-1581258-beta",
+      "seed": 1581258,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-86-1581258-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "bdea2c0abc03b0df7b08554ec4fb2762241ee6e444b8974984a64fabb5bc85eb",
+        "endpoint.png": "bdea2c0abc03b0df7b08554ec4fb2762241ee6e444b8974984a64fabb5bc85eb"
+      },
+      "setup_seconds": 17.87133439257741,
+      "credit_seconds": 73.794366,
+      "actions": 739
+    },
+    {
+      "episode": "held-same-device-86-1581259-alpha",
+      "seed": 1581259,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581252-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "02e7010a4ad8000ee802e13ce115f51c829b45c520f914d895701675850d73e1"
+      },
+      "setup_seconds": 15.166141002962831,
+      "credit_seconds": 74.633766,
+      "actions": 629
+    },
+    {
+      "episode": "held-same-device-64-1581259-alpha",
+      "seed": 1581259,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-86-1581259-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "d41011913b03fd6e47c09fb3a7554f2e3d7f58b373259b8cbeb103e8ca24ab48"
+      },
+      "setup_seconds": 14.326230311999097,
+      "credit_seconds": 87.471729,
+      "actions": 736
+    },
+    {
+      "episode": "held-same-device-64-1581260-alpha",
+      "seed": 1581260,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581259-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "3ee1ea623c16e2356e5aba785fce6b7f16b211971c08de18736f26b5bfd9a30f",
+        "endpoint.png": "3ee1ea623c16e2356e5aba785fce6b7f16b211971c08de18736f26b5bfd9a30f"
+      },
+      "setup_seconds": 18.505902380973566,
+      "credit_seconds": 63.718376,
+      "actions": 522
+    },
+    {
+      "episode": "held-same-device-86-1581260-alpha",
+      "seed": 1581260,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581260-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "7e69498abe2b4a6d7b84b57d396d782b2786a3813408027d736ec995502e7abd"
+      },
+      "setup_seconds": 16.41235781798605,
+      "credit_seconds": 32.370722,
+      "actions": 262
+    },
+    {
+      "episode": "held-same-device-64-1581261-beta",
+      "seed": 1581261,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581254-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "9a921b57e506c20368e9d209e40cac25c0a131e52ac81d90502f2b38020d1a18"
+      },
+      "setup_seconds": 15.518301579984836,
+      "credit_seconds": 64.229115,
+      "actions": 530
+    },
+    {
+      "episode": "held-same-device-86-1581261-beta",
+      "seed": 1581261,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-64-1581261-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "0536da4a56df9d018580caddb5c580dd20a347e11d513cb5f05e34de0f068d3a",
+        "endpoint.png": "0536da4a56df9d018580caddb5c580dd20a347e11d513cb5f05e34de0f068d3a"
+      },
+      "setup_seconds": 17.585540003026836,
+      "credit_seconds": 76.477406,
+      "actions": 629
+    },
+    {
+      "episode": "held-same-device-86-1581262-beta",
+      "seed": 1581262,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581261-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "1f01d16f4f7fa89303438af963b91f38a159f5cdc932eac6d4aabd160343f714",
+        "endpoint.png": "1f01d16f4f7fa89303438af963b91f38a159f5cdc932eac6d4aabd160343f714"
+      },
+      "setup_seconds": 18.603212899994105,
+      "credit_seconds": 76.470173,
+      "actions": 641
+    },
+    {
+      "episode": "held-same-device-64-1581262-beta",
+      "seed": 1581262,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581262-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "cc051ce6f17afc7087067c45d307369e50aed03c1db6a6f085227aa33808dcf2",
+        "endpoint.png": "cc051ce6f17afc7087067c45d307369e50aed03c1db6a6f085227aa33808dcf2"
+      },
+      "setup_seconds": 18.97191090101842,
+      "credit_seconds": 95.350405,
+      "actions": 781
+    },
+    {
+      "episode": "held-same-device-64-1581263-alpha",
+      "seed": 1581263,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581256-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "8cf8ac2cc3077e384e415cea4170464a09ae899dbd58344add8675692d150445"
+      },
+      "setup_seconds": 22.09403996448964,
+      "credit_seconds": 56.049187,
+      "actions": 588
+    },
+    {
+      "episode": "held-same-device-86-1581263-alpha",
+      "seed": 1581263,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581263-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "00e51f99802bb34486c4e76e60feb1731ddedfba25ccfd59c5b54771f3d0b31f",
+        "endpoint.png": "00e51f99802bb34486c4e76e60feb1731ddedfba25ccfd59c5b54771f3d0b31f"
+      },
+      "setup_seconds": 16.195874811150134,
+      "credit_seconds": 26.545992,
+      "actions": 264
+    },
+    {
+      "episode": "held-same-device-64-1581264-alpha",
+      "seed": 1581264,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-86-1581263-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "29cfe3253cdba3e9be5529fa08708e3cc6d90df1bfa36ffa3d2d524bc70987f0"
+      },
+      "setup_seconds": 13.965887102298439,
+      "credit_seconds": 46.399082,
+      "actions": 482
+    },
+    {
+      "episode": "held-same-device-86-1581264-alpha",
+      "seed": 1581264,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581264-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "4405c2e626f9c484b5779b2b886134230e94975411dc1ee9056e0de8b4d7a81a"
+      },
+      "setup_seconds": 15.110533914528787,
+      "credit_seconds": 46.177915,
+      "actions": 483
+    },
+    {
+      "episode": "held-same-device-64-1581265-beta",
+      "seed": 1581265,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581258-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "a118f83f6ba91b709da203ef46c07f68919820874ca3624c6195539db6749dbc",
+        "endpoint.png": "a118f83f6ba91b709da203ef46c07f68919820874ca3624c6195539db6749dbc"
+      },
+      "setup_seconds": 17.15913699194789,
+      "credit_seconds": 101.877259,
+      "actions": 1003
+    },
+    {
+      "episode": "held-same-device-86-1581265-beta",
+      "seed": 1581265,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581265-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "9de6bf4741a8c96e79dc6e72ccb4f66cf13e13a61474deef1d93f87b3125f820",
+        "endpoint.png": "9de6bf4741a8c96e79dc6e72ccb4f66cf13e13a61474deef1d93f87b3125f820"
+      },
+      "setup_seconds": 16.09955154825002,
+      "credit_seconds": 33.930832,
+      "actions": 367
+    },
+    {
+      "episode": "held-same-device-86-1581266-beta",
+      "seed": 1581266,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-86-1581265-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "69a5bb96fb1b68fcbfc9b96f4b4a2734c88a1f45a85a2b597d3b0b4a15206b4c"
+      },
+      "setup_seconds": 22.863987371325493,
+      "credit_seconds": 23.332595,
+      "actions": 229
+    },
+    {
+      "episode": "held-same-device-64-1581266-beta",
+      "seed": 1581266,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-86-1581266-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "f8508d5e283d034290cdd2fabae59e60aeac7ec4b1c8078eafb884a90df0936c"
+      },
+      "setup_seconds": 22.706752764992416,
+      "credit_seconds": 26.898757,
+      "actions": 256
+    },
+    {
+      "episode": "held-same-device-64-1581267-alpha",
+      "seed": 1581267,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-86-1581260-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "9a615855feba03894ab25dfadd0682b4408b772a9f835542547b3158ae3567c7"
+      },
+      "setup_seconds": 15.31286275095772,
+      "credit_seconds": 85.39649,
+      "actions": 719
+    },
+    {
+      "episode": "held-same-device-86-1581267-alpha",
+      "seed": 1581267,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581267-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "9a2e9d675a1e72f679b67562f535deff4387a5136f0233a4b36b39c7252534e3",
+        "endpoint.png": "9a2e9d675a1e72f679b67562f535deff4387a5136f0233a4b36b39c7252534e3"
+      },
+      "setup_seconds": 17.538248963013757,
+      "credit_seconds": 45.380551,
+      "actions": 373
+    },
+    {
+      "episode": "held-same-device-64-1581268-alpha",
+      "seed": 1581268,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-86-1581267-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "5e4c1d594893d2cf19f805154f693b953c00d0f5b48bfe898fa6e22d186a12ab"
+      },
+      "setup_seconds": 28.781125201960094,
+      "credit_seconds": 48.365384,
+      "actions": 405
+    },
+    {
+      "episode": "held-same-device-86-1581268-alpha",
+      "seed": 1581268,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/alpha",
+      "previous_episode": "held-same-device-64-1581268-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "b826666bcf8bdb5023ac3d12799e13f997f360effd88b986e1509e00651450e2"
+      },
+      "setup_seconds": 16.174002823012415,
+      "credit_seconds": 38.163991,
+      "actions": 318
+    },
+    {
+      "episode": "held-same-device-86-1581269-beta",
+      "seed": 1581269,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-64-1581262-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "c73e255efb0df2a09d66af71312dc7a3d92549fde7cefd6336743d3c0d0412a2",
+        "endpoint.png": "c73e255efb0df2a09d66af71312dc7a3d92549fde7cefd6336743d3c0d0412a2"
+      },
+      "setup_seconds": 18.438423907966353,
+      "credit_seconds": 51.631787,
+      "actions": 427
+    },
+    {
+      "episode": "held-same-device-64-1581269-beta",
+      "seed": 1581269,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581269-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "228d76c387d50778c1195dd6f202cf3597d1b53e6839471a34ade4d43e786171"
+      },
+      "setup_seconds": 14.719243152998388,
+      "credit_seconds": 60.099049,
+      "actions": 493
+    },
+    {
+      "episode": "held-same-device-86-1581270-beta",
+      "seed": 1581270,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-64-1581269-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "19c9246f8bd7bc874040afe00d2989c6c7fcb3f77b7c3e123809c338ecb50c77"
+      },
+      "setup_seconds": 24.86317206698004,
+      "credit_seconds": 43.769386,
+      "actions": 352
+    },
+    {
+      "episode": "held-same-device-64-1581270-beta",
+      "seed": 1581270,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "deck/beta",
+      "previous_episode": "held-same-device-86-1581270-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "9c8ed66236f3e4d4fae4e738aa6cee1f1349d63882d2d1bbc27097f6d7c499ac"
+      },
+      "setup_seconds": 16.040469798026606,
+      "credit_seconds": 41.931647,
+      "actions": 334
+    },
+    {
+      "episode": "held-same-device-86-1581271-alpha",
+      "seed": 1581271,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-86-1581264-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "37855bdffb41b04a6b33d9b1ea6d8a68a6127741ffe826007e157c3f37751456"
+      },
+      "setup_seconds": 13.896768091246486,
+      "credit_seconds": 46.475614,
+      "actions": 489
+    },
+    {
+      "episode": "held-same-device-64-1581271-alpha",
+      "seed": 1581271,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-86-1581271-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "c4556e24f01b2671bfa18e909792e1ffbe4404bac7ceece44822416723cd889c"
+      },
+      "setup_seconds": 23.289684891700745,
+      "credit_seconds": 62.096953,
+      "actions": 621
+    },
+    {
+      "episode": "held-same-device-64-1581272-alpha",
+      "seed": 1581272,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581271-alpha",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "cff473dd21317e948086a3fb77c41d7211b2a20cca0d86a606681d7db7a8ac04"
+      },
+      "setup_seconds": 14.038334115408361,
+      "credit_seconds": 43.379125,
+      "actions": 417
+    },
+    {
+      "episode": "held-same-device-86-1581272-alpha",
+      "seed": 1581272,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/alpha",
+      "previous_episode": "held-same-device-64-1581272-alpha",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "d7557eb91f604279407895bc032cd89711b77efae654fd82bfa662272c2e1c38"
+      },
+      "setup_seconds": 22.753484475426376,
+      "credit_seconds": 60.339236,
+      "actions": 605
+    },
+    {
+      "episode": "held-same-device-64-1581273-beta",
+      "seed": 1581273,
+      "rank": 2,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581266-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 3,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "40273c599237560541b2f66417bd62d8b3690a38bbd4a49962161894f0778790"
+      },
+      "setup_seconds": 15.459139264188707,
+      "credit_seconds": 67.098098,
+      "actions": 609
+    },
+    {
+      "episode": "held-same-device-86-1581273-beta",
+      "seed": 1581273,
+      "rank": 2,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581273-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-64",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "stage-ranking.png": "4bd71273d961c925eaf0f6ed0c00ac9ff1ca00025bc9eaeea5e8139e8771528b",
+        "endpoint.png": "4bd71273d961c925eaf0f6ed0c00ac9ff1ca00025bc9eaeea5e8139e8771528b"
+      },
+      "setup_seconds": 17.20527746900916,
+      "credit_seconds": 67.769225,
+      "actions": 611
+    },
+    {
+      "episode": "held-same-device-64-1581274-beta",
+      "seed": 1581274,
+      "rank": 3,
+      "arm": "same-device-64",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-86-1581273-beta",
+      "previous_rank": 2,
+      "previous_arm": "same-device-86",
+      "actual_reset": "warm",
+      "remembered_rank": 2,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "d608203c4c3073c2b58e037e9587577da603d41df509f4f24928f4e6565ac35e"
+      },
+      "setup_seconds": 14.392994038760662,
+      "credit_seconds": 32.659985,
+      "actions": 331
+    },
+    {
+      "episode": "held-same-device-86-1581274-beta",
+      "seed": 1581274,
+      "rank": 3,
+      "arm": "same-device-86",
+      "lane": "entropy/beta",
+      "previous_episode": "held-same-device-64-1581274-beta",
+      "previous_rank": 3,
+      "previous_arm": "same-device-64",
+      "actual_reset": "cold_fallback",
+      "remembered_rank": null,
+      "preceding_score_or_gameover_photo": {
+        "endpoint.png": "6b2eac59672801837116c3c97577abf0e853d62d9b699f49c5737de8f8c85186"
+      },
+      "setup_seconds": 22.977656071074307,
+      "credit_seconds": 42.698012,
+      "actions": 427
+    }
+  ]
+}

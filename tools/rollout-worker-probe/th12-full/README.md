@@ -2,6 +2,21 @@
 
 The worker runs the official *Undefined Fantastic Object* trial 0.02a in an isolated 640×480 Wine window. A policy acts from the 384×448 playfield downsampled to 96×112 grayscale. At each control it samples a nine-way direction, Focus, Shoot and Bomb. `XQueryKeymap` checks the seven physical key states after input delivery. The HUD, native Game Over menu and Score Ranking serve as evidence for the experiment. The actor receives only playfield pixels.
 
+## Warm reset for a new Hard/Lunatic cohort
+
+The registered older cohorts use the existing cold setup. A new cohort can set `TH12_RESET_MODE=warm` on the full native tick collector. This option requires the calibrated original rank and stage observers and the full native input trace. Register the reset mode and physical lane before collection. An explicit `cold` mode records the same provenance for a new cold control.
+
+Stage `reset_with_mode.sh`, `reset_provenance.sh`, `reset_difficulty.sh` and `return_title.sh` under `/input` as `th12-mode-reset.sh`, `th12-reset-provenance.sh`, `th12-mode-rank-reset.sh` and `th12-mode-return-title.sh`. Preserve the existing `th12-rank-return-title.sh` used by the cold path. Compile `warm_menu.c` for the worker's Linux ABI and export the three preexisting rank templates in rank order. These commands run from this directory with a writable `input` staging directory.
+
+```sh
+cc -std=c11 -O2 warm_menu.c -o input/th12-warm-menu
+python -c "import numpy as np; z=np.load('difficulty-menu-glyphs.npz'); np.stack([z[str(i)] for i in (1,2,3)]).astype('u1').tofile('input/th12-warm-menu.mask')"
+```
+
+Run the normal bounded native credit command with `-e TH12_RESET_MODE=warm` passed to the container. The first warm request in a private lane that lacks a signed previous terminal runs a cold fallback. After Game Over the collector binds the signed terminal, native trace, difficulty, game PID and process start time to that lane. A later warm request verifies those sources, navigates the score ranking to the original title, reads the retained rank cursor and starts a fresh full-stock Stage 1. Unrecognized menus, incorrect native entry stock and changed processes trigger a recorded cold fallback before the first policy action. Each completed credit writes `reset-mode.txt`, `new-story-process.txt` and `terminal-process.txt`. Warm attempts also retain the menu evidence and predecessor identity. `reset_provenance.inspect_reset` verifies the realized path. Read the actual mode for every credit when summarizing timings.
+
+Returning through the title preserves prior high scores and the difficulty cursor. Engine RNG may carry across credits. The seed controls action sampling. For a new evaluation, counterbalance arm order and predecessor difficulty within each physical lane, record the preceding episode and qualify both policy arms under the same reset procedure.
+
 ## Build and stage
 
 From this directory on an x86-64 Linux build host, compile against the repository's portable actor. Xlib and Xtst are resolved dynamically inside the Wine container.

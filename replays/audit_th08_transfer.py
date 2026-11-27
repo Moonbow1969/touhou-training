@@ -19,8 +19,7 @@ def identity(name):
     return unicodedata.normalize('NFKC', name).casefold().strip()
 
 
-def old_credits(directory, index):
-    old = json.loads((directory / 'expanded-corpus.json').read_bytes())
+def old_credit_lookup(directory, index):
     lookup = {}
     for title, file_sha in index['source_credit_scoreboard_sha256'].items():
         f = directory / f'th{title}-index.html'
@@ -31,6 +30,12 @@ def old_credits(directory, index):
             fields = re.findall(r'<td[^>]*>(.*?)</td>', row, re.S)
             if link and len(fields) == 9:
                 lookup[Path(link[1]).name] = identity(unescape(re.sub('<[^>]*>', '', fields[6])))
+    return lookup
+
+
+def old_credits(directory, index):
+    lookup = old_credit_lookup(directory, index)
+    old = json.loads((directory / 'expanded-corpus.json').read_bytes())
     source = [r for r in old if r['split'] == 'train']
     if len(source) != 1738 or any(r['name'] not in lookup for r in source):
         raise ValueError('Incomplete parent training-author assignments')

@@ -36,13 +36,14 @@ def pack(rows, directory):
 
 
 @torch.inference_mode()
-def score(model, stream, spans, vocab, device):
+def score(model, stream, spans, vocab, device, *, turn_detection=False):
     model.eval()
     result = {}
     for author in sorted({s['author'] for s in spans if s['split'] == 'held'}):
         subset = [s for s in spans if s['author'] == author]
         group = tile(subset, 'held', 64, vocab)
         counts = np.zeros(6, dtype=np.int64)
+        predicted_changes = detected_changes = 0
         nll = 0.
         for keys, targets, labels, positions in batches(stream, group, np.arange(len(group[0])), device, 64, 128):
             logits = model(keys, labels, positions)
@@ -50,6 +51,10 @@ def score(model, stream, spans, vocab, device):
             real = targets % 9
             changed = keys % 9 != real
             correct = guess == real
+            if turn_detection:
+                predicts_turn = guess != keys % 9
+                predicted_changes += int(predicts_turn.sum())
+                detected_changes += int((predicts_turn & changed).sum())
             counts += [targets.numel(), int(correct.sum()), int(changed.sum()), int((changed & correct).sum()),
                        int((logits.argmax(-1) == targets).sum()), int((targets == keys).sum())]
             nll += float(F.cross_entropy(logits.flatten(0, 1), targets.flatten(), reduction='sum'))
@@ -58,6 +63,11 @@ def score(model, stream, spans, vocab, device):
                               next_direction=match/n, repeat_direction=(n-changes)/n,
                               correct_changes=turns/changes, joint_action_accuracy=exact/n,
                               repeated_joint_action=same/n, joint_nll=nll/n)
+        if turn_detection:
+            result[author].update(predicted_turns=predicted_changes, detected_turns=detected_changes,
+                                  exact_turns=turns, predicted_turn_rate=predicted_changes/n,
+                                  turn_precision=detected_changes/predicted_changes if predicted_changes else None,
+                                  turn_recall=detected_changes/changes)
     return result
 
 

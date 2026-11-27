@@ -23,7 +23,16 @@ def summarize(raw, output, stage2_step=None, ranking_reference=None):
     last_status = rows[-1]["status"]
     terminal_state = last_status
     terminal_ranking_evidence = None
-    if last_status == "loading":
+    # The covered actor keeps controlling the dark combat frame through the
+    # last collision. A rendered play frame can still be visible while the
+    # original already reports -1 spares and begins the Game Over fade.
+    covered_terminal = False
+    if last_status == "play" and (raw/"coverage-decisions.tsv").is_file():
+        last_line=(raw/"coverage-decisions.tsv").read_text().splitlines()[-1].split("\t")
+        covered_terminal=(last_line[0]=="#terminal" and last_line[1] in terminal_labels
+                          and "physical_keys=0" in last_line and "stock=-1" in last_line
+                          and (raw/"terminal-state.txt").read_text().strip()==last_line[1])
+    if last_status == "loading" or covered_terminal:
         # No policy decisions are issued while the original game fades into its terminal menu.
         # The worker saves the exact terminal XImage separately after this no-input wait.
         exact_terminal = raw / "terminal-at-control.ppm"
