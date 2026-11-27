@@ -1,0 +1,91 @@
+{
+  "name": "Paired training-only cost of TH10 payable casts lost on death",
+  "train_seeds": {
+    "10": [
+      1101001,
+      1101002,
+      1101003,
+      1101004,
+      1101005,
+      1101006,
+      1101007,
+      1101008,
+      1101009,
+      1101010,
+      1101011,
+      1101012
+    ],
+    "12": [
+      1101201,
+      1101202,
+      1101203,
+      1101204,
+      1101205,
+      1101206,
+      1101207,
+      1101208,
+      1101209,
+      1101210,
+      1101211,
+      1101212
+    ],
+    "13": [
+      1101301,
+      1101302,
+      1101303,
+      1101304,
+      1101305,
+      1101306,
+      1101307,
+      1101308,
+      1101309,
+      1101310,
+      1101311,
+      1101312
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      1131051,
+      1131052,
+      1131053,
+      1131054,
+      1131055,
+      1131056,
+      1131057,
+      1131058,
+      1131059,
+      1131060,
+      1131061,
+      1131062
+    ]
+  },
+  "reference_arm": "plain-curriculum",
+  "candidate": "power-loss",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Both arms share the same controller seed, host, executable, difficulty and original controls within each pair. All four heads execute independently of hand-coded game logic.",
+  "initialization": "Frozen fourteen-player PPO actor and critic a66d0b55f330a554df8ba70051089aaead5799cba0f37272b781a278ff6368c2",
+  "reward": "TH13 native script survival clock, same event terms; TH10/12 unchanged. These two titles lack verified per-action native script time in the shared camera batch.",
+  "test": "Same 36 complete original credits, parent actor+critic, optimizer, random seeds and other rewards as the frozen mixed-curriculum update. Twelve fresh corrected-stage TH10 Easy original pairs on Accelerator. Analyze survival, first loss, casts, remaining Power and Stage 2.",
+  "original_difficulty": {
+    "10": "Easy",
+    "12": "Normal",
+    "13": "Normal"
+  },
+  "intervention": "Charge .03 per whole payable Spirit Strike lost at a native spare-life decrement, matching the existing cost per actual Spirit Strike. Censor 250ms near ambiguous native X edges; no intervention in action selection."
+}
