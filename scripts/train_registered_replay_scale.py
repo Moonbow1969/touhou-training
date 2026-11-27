@@ -21,6 +21,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     for name in ('root', 'base-protocol', 'milestone', 'encoder', 'reference', 'out'):
         p.add_argument('--' + name, type=Path, required=True)
+    p.add_argument('--architecture',choices=('cnn','spatial-attention'),default='spatial-attention')
     args = p.parse_args()
     root = args.root.resolve()
     fixed = json.loads(args.base_protocol.read_bytes())['split']
@@ -51,7 +52,7 @@ def main():
                    train_players=len(old_train | added), held_players=len(old_held), train_windows=milestone['union_decisions'],
                    optimizer_steps=steps, presentations=64*steps, initialization_sha256=digest(args.encoder),
                    sampling='Twelve corpus-equivalent presentations under the original title-balanced, transition-enriched sampler.',
-                   actor='Camera spatial attention, auxiliary training-only player location weight 0.15.')
+                   actor=args.architecture, player_location_weight=.15)
     plan_file = args.out / 'protocol.json'
     if plan_file.exists() and json.loads(plan_file.read_bytes()) != receipt:
         raise ValueError('Existing training registration differs')
@@ -61,7 +62,8 @@ def main():
     if not (train_dir / 'report.json').exists():
         run('train_human_camera_policy', '--encoder', args.encoder, '--reference', args.reference,
             '--train', *train, '--held', *held, '--out', train_dir, '--steps', steps, '--natural-movement-frequency',
-            '--balance-titles', '--player-location-weight', .15, '--spatial-attention', '--cpu-replay')
+            '--balance-titles', '--player-location-weight', .15, '--cpu-replay',
+            *(['--spatial-attention'] if args.architecture=='spatial-attention' else []))
     actual = json.loads((train_dir / 'report.json').read_bytes())
     if sum(r['decisions'] for r in actual['train']) != receipt['train_windows'] or actual['steps'] != steps:
         raise ValueError('Actual training windows or optimizer budget differs')
