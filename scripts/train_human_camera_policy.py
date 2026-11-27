@@ -79,9 +79,20 @@ def load_replay(path, include_eight_tick_camera=False, include_player_position=F
     return result
 
 
-def pool(rows, device):
-    return {key: torch.from_numpy(np.concatenate([r[key] for r in rows])).to(device)
-            for key in ("raw","features","action","prior")}
+def pool(rows, device, cpu_replay=False):
+    keys=("features","action","prior") if cpu_replay else ("raw","features","action","prior")
+    return {key: torch.from_numpy(np.concatenate([r[key] for r in rows])).to(device) for key in keys}
+
+
+def sample_host_images(rows, ends, ids, key):
+    indices=ids.cpu().numpy()
+    sources=np.searchsorted(ends,indices,side='right')
+    batch=np.empty((len(indices),*rows[0][key].shape[1:]),dtype=np.uint8)
+    for source in np.unique(sources):
+        selected=sources==source
+        start=ends[source-1] if source else 0
+        batch[selected]=rows[source][key][indices[selected]-start]
+    return torch.from_numpy(batch).to(ids.device)
 
 
 def evaluation(r, probs):
@@ -113,6 +124,7 @@ def main():
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
     parser.add_argument("--spatial-attention",action="store_true",help="Learn residual multihead attention on the spatial policy grid.")
+    parser.add_argument("--cpu-replay",action="store_true",help="Keep the full image bank in host RAM and transfer only selected minibatches.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
@@ -132,13 +144,15 @@ def main():
     reference=FullActor.from_bin(args.reference).to(device).eval()
     opt=torch.optim.AdamW([{"params":model.spatial.parameters(),"lr":.00015},
                            {"params":model.policy.parameters(),"lr":.0005}],weight_decay=.001)
-    data=pool(train,device)
+    data=pool(train,device,args.cpu_replay)
+    replay_ends=np.cumsum([len(r['raw']) for r in train])
     if args.player_location_weight:
         opt.add_param_group({"params":model.player.parameters(),"lr":.00015})
         positions=torch.from_numpy(np.concatenate([r['player_xy'] for r in train])).to(device)/2
         gy,gx=torch.meshgrid(torch.arange(56,device=device),torch.arange(48,device=device),indexing='ij')
     if args.mixed_difference_lags:
-        alternate=torch.from_numpy(np.concatenate([r["raw8"] for r in train])).to(device)
+        if not args.cpu_replay:
+            alternate=torch.from_numpy(np.concatenate([r["raw8"] for r in train])).to(device)
         lag_rng=torch.Generator(device=device).manual_seed(182116)
     # Give each replay equal sampling weight; half of its draws are movement transitions when available.
     chunks=[];offset=0
@@ -166,10 +180,13 @@ def main():
             bank=chunks[replay][i%2]
             chosen.append(bank[torch.randint(len(bank),(8,),device=device)])
         ids=torch.cat(chosen)
-        px=data["raw"][ids].float()/255
+        pixels=sample_host_images(train,replay_ends,ids,'raw') if args.cpu_replay else data['raw'][ids]
+        px=pixels.float()/255
         if args.mixed_difference_lags:
             longer=torch.rand(len(ids),device=device,generator=lag_rng)<.5
-            px[longer]=alternate[ids[longer]].float()/255
+            alternate_ids=ids[longer]
+            sampled=sample_host_images(train,replay_ends,alternate_ids,'raw8') if args.cpu_replay else alternate[alternate_ids]
+            px[longer]=sampled.float()/255
         y=data["action"][ids].clone()
         flip=torch.rand(len(ids),device=device)<.5
         px[flip]=px[flip].flip(3);v=y[flip,0];y[flip,0]=v//3*3+(2-v%3)
@@ -223,6 +240,7 @@ def main():
               "title_balanced":args.balance_titles,
               "player_location_weight":args.player_location_weight,
               "spatial_attention":args.spatial_attention,
+              "cpu_replay":args.cpu_replay,
               "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
               "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,

@@ -31,9 +31,22 @@ def save(path, data):
     tmp.replace(path)
 
 
-def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False):
+def pin(client, paired=False, actor_header=None, locator_params=None, warm_reset=False, camera=False, camera_history=False, difficulty=1):
     files = {name:(PROBE/name).read_bytes() for name in
              ("run-th10-trial-probe.sh","th10-trial-state.h","th10-trial-observe.c","th10-full-stock.c","th10-full-actor.c")}
+    if difficulty not in (0,1):raise ValueError('Full-credit capture supports Easy (0) and Normal (1).')
+    if difficulty==0:
+        # Build a distinct Easy-only launcher from the same verified difficulty-menu detector.
+        # The existing Normal source bundle and cache identity stay byte-for-byte reproducible.
+        launcher=files['run-th10-trial-probe.sh']
+        for old,new in [(b'difficulty=1\n',b'difficulty=0\n'),
+                        (b'if test "$difficulty" -eq 2; then\n    rank=',b'if test "$difficulty" -eq 0; then\n    rank='),
+                        (b'xdotool keydown Down; sleep .18; xdotool keyup Down',b'xdotool keydown Up; sleep .18; xdotool keyup Up'),
+                        (b'/capture/hard-rank.png',b'/capture/easy-rank.png')]:
+            if launcher.count(old)!=1:raise ValueError('Original difficulty-menu launcher changed.')
+            launcher=launcher.replace(old,new)
+        files['run-th10-trial-probe.sh']=launcher
+        files['th10-rank-screen.pl']=(PROBE/'th10-rank-screen.pl').read_bytes()
     if paired:
         for n in ("th10-paired-targets.c","th10-trial-step.c"):files[n]=(PROBE/n).read_bytes()
     if warm_reset:
@@ -69,7 +82,9 @@ sha256sum "$src/full-actor" | cut -d' ' -f1
 """.replace("BUNDLE",bundle).replace("ACTOR_FLAGS","-O3 -DFA_LEARNED_LOCATOR=1" if locator_params else "-O2")
     reply=subprocess.run([*client["command"][:-1],script],input=payload.getvalue(),capture_output=True,timeout=30)
     if reply.returncode:raise RuntimeError(reply.stderr.decode(errors="replace")[-700:])
-    return dict(bundle=bundle,sources=sources,executable=digest(files["th10-full-actor.c"]),linux_binary=reply.stdout.decode().strip(),camera=camera,camera_history=camera_history)
+    result=dict(bundle=bundle,sources=sources,executable=digest(files["th10-full-actor.c"]),linux_binary=reply.stdout.decode().strip(),camera=camera,camera_history=camera_history)
+    if difficulty!=1:result['difficulty']=difficulty
+    return result
 
 
 def install_weights(client,path,expected_sha=None):
@@ -133,6 +148,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
             for flag in ('camera','camera_history'):
                 if bool(identity['source'].get(flag))!=bool(pinned.get(flag)):
                     raise ValueError('The original worker used a different observation contract.')
+            if identity['source'].get('difficulty',1)!=pinned.get('difficulty',1):
+                raise ValueError('The original worker used another difficulty selection.')
             pinned=identity['source']
         stop=read("native-stop").decode().strip()
         if stop!="native_final_life_lost":
@@ -145,10 +162,15 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
                 raise EOFError("Stage 3 endpoint needs review. Full original credit and endpoint were preserved.")
             raise RuntimeError("Technical censor: "+stop)
         opening=list(csv.DictReader(io.StringIO(read("opening.csv").decode())))[0]
-        if [int(opening[k]) for k in ("stage","difficulty","lives","score")]!=[1,1,2,0]:
-            raise ValueError("A fresh Normal credit was not verified.")
+        difficulty=pinned.get('difficulty',1)
+        if [int(opening[k]) for k in ("stage","difficulty","lives","score")]!=[1,difficulty,2,0]:
+            raise ValueError("A fresh original credit at the specified difficulty was not verified.")
         data=read("native.csv")
         states=list(csv.DictReader(io.StringIO(data.decode())))
+        if difficulty==0:
+            if any(int(row['difficulty'])!=0 for row in states):raise ValueError('Native Easy difficulty changed during the credit.')
+            (folder/'easy-rank.png').write_bytes(read('easy-rank.png'))
+            (folder/'opening.csv').write_bytes(read('opening.csv'))
         logs=list(csv.DictReader(io.StringIO(read("action.csv").decode())))
         feature_data=np.frombuffer(read("features.f32"),dtype="<f4")
         if not logs or len(feature_data)%len(logs):raise ValueError("Invalid full-actor feature stream")
@@ -237,6 +259,8 @@ def unpack(raw,folder,host,seed,arm,sha,pinned,hold=120):
         result.update(camera_policy=True,camera_model_inputs="original-pixels.npz obs[:-1]; [gray,abs(gray-previous)] / 255; first difference zero",features_role="Portable diagnostic features; raw camera is the model input.")
         if pinned.get('camera_history'):result['additional_policy_input']='Previous sampled movement; 4 (neutral) at the start of each credit.'
     if result['median_control_ms']<hold-3:raise ValueError('Observed camera cadence is faster than the registered native hold.')
+    if difficulty==0:result.update(difficulty=0,difficulty_name='Easy',difficulty_verified_native_samples=len(states),
+                                   difficulty_menu_sha256=digest((folder/'easy-rank.png').read_bytes()))
     save(folder/'report.json',result)
     return result
 
@@ -247,6 +271,7 @@ def one(task):
     if (folder/'report.json').is_file():
         cached=json.loads((folder/'report.json').read_bytes())
         if cached['policy_sha256']!=sha:raise ValueError("Cannot resume with different weights.")
+        if cached['source'].get('difficulty',1)!=pinned.get('difficulty',1):raise ValueError("Cannot resume another difficulty.")
         if cached.get('requested_hold_ms',120)!=hold:raise ValueError("Cannot resume a different control cadence.")
         if not paired or ((folder/'privileged-targets.json').is_file() and (folder/'privileged-targets.npz').is_file()):
             return cached
@@ -267,12 +292,14 @@ tar -tzf behavior.tar.gz >/dev/null
 rm -f -- pixels.u8 features.f32 rich.bin
 """.replace('BUNDLE',pinned['bundle']).replace('GAME',GAME_SHA).replace('SHA',sha).replace('IMAGE',shlex.quote(client['runtime'])).replace('SEED',str(seed)).replace('HOLD',str(hold))
     script=script.replace("MODE","full-paired" if paired else "full-credit").replace(" RICH",(" rich.bin" if paired else "")+(" camera-logits.f32" if pinned.get("camera") else "")+(" previous-move.u8" if pinned.get("camera_history") else ""))
+    if pinned.get('difficulty',1)==0:script=script.replace('endpoint.png settled-inventory.csv','endpoint.png easy-rank.png settled-inventory.csv')
     script=script.replace('IDENTITY',shlex.quote(json.dumps(dict(source=pinned,seed=seed,hold_ms=hold,policy_sha256=sha),separators=(',',':'))))
     if pinned.get("camera"):
         mount='--env TOHO_CAMERA_SHA='+sha+' --mount "type=bind,source=$base/camera-services/'+sha+'-'+pinned['bundle']+',target=/camera,readonly" '
         script=script.replace("--entrypoint /bin/sh",mount+"--entrypoint /bin/sh")
     for attempt in range(1,4):
         cadence_suffix="" if hold==120 else f"-h{hold}"
+        if pinned.get('difficulty',1)==0:cadence_suffix+='-easy'
         label=f"{seed}-{sha[:12]}{cadence_suffix}-{attempt}"
         directory=f'"$HOME/.local/share/toho-ml/th10-official-trial-002a/full-story/{label}"'
         endpoint=client["command"][:-1]
@@ -332,6 +359,7 @@ def main():
     p.add_argument("--expected-sha")
     p.add_argument("--camera",action="store_true",help="Deploy a hash-pinned TorchScript camera policy through the host's private Unix socket.")
     p.add_argument("--camera-history",action="store_true",help="Include the preceding sampled movement byte with each camera request.")
+    p.add_argument("--difficulty",type=int,choices=(0,1),default=1,help="Select Easy (0) or Normal (1) in the original menu.")
     p.add_argument("--only-host",choices=FLEET)
     p.add_argument("--prepare-only",action="store_true");p.add_argument("--arm",default="sft")
     p.add_argument("--out",type=Path,required=True);p.add_argument("--seeds",nargs="+",type=int)
@@ -344,7 +372,7 @@ def main():
         if (args.actor_header or args.locator_params or args.camera) and not args.expected_sha:p.error("Custom actors require --expected-sha")
         if args.camera and (args.actor_header or args.locator_params):p.error("The camera actor manages its own header.")
         if args.camera_history and not args.camera:p.error('--camera-history requires --camera')
-        pins=dict(zip(fleet,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params,camera=args.camera,camera_history=args.camera_history),fleet)))
+        pins=dict(zip(fleet,pool.map(lambda h:pin(workers[h],args.paired,args.actor_header,args.locator_params,camera=args.camera,camera_history=args.camera_history,difficulty=args.difficulty),fleet)))
         if args.prepare_only:save(args.out/'builds.json',pins);return
         shas=list(pool.map(lambda h:install_weights(workers[h],args.model,args.expected_sha),fleet))
         if args.camera:list(pool.map(lambda h:start_camera_service(workers[h],pins[h],shas[0]),fleet))

@@ -92,7 +92,7 @@ def summarize(arms,design=None,baseline='SFT'):
         group=groups,**{f"paired_versus_{baseline.lower()}":paired},credits={name:[group[s] for s in sorted(group)] for name,group in arms.items()})
 
 
-def draw(arms,out):
+def draw(arms,out,difficulty_name="Normal"):
     fig,axs=plt.subplots(1,3,figsize=(10.8,3.9),layout="constrained")
     names=list(arms);colors=["#2275a0","#d47537","#497a56"]
     for ax,key,label in zip(axs,("duration_s","raw_score","final_power"),("Whole-credit wall seconds","Original score (× 10,000)","Power at Game Over")):
@@ -105,7 +105,7 @@ def draw(arms,out):
         ax.scatter(range(len(names)),table.mean(0),color="#26242b",marker="_",s=270,lw=2.3,zorder=4)
         ax.set_xticks(range(len(names)),names);ax.set_ylabel(label);ax.set_xlim(-.35,len(names)-.65);ax.grid(axis="y",alpha=.18)
         ax.spines[["right","top"]].set_visible(False)
-    fig.suptitle(f"TH10 original Normal  ·  {len(arms[names[0]])} matched full credits per policy  ·  no Continues")
+    fig.suptitle(f"TH10 original {difficulty_name}  ·  {len(arms[names[0]])} matched full credits per policy  ·  no Continues")
     fig.supxlabel("Lines pair controller seeds within the same physical host. Bars show arm means.",fontsize=9)
     fig.savefig(out,dpi=160);plt.close(fig)
 

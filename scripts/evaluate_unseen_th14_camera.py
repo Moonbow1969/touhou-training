@@ -1,5 +1,6 @@
 """Original TH14 0.01b held-title evaluation in local isolated WSL games."""
 import argparse,concurrent.futures,json,subprocess,time
+import re
 from pathlib import Path
 import numpy as np
 import torch
@@ -20,12 +21,15 @@ parser.add_argument('--anchor-arm',choices=('plain-cross-ppo','anchored-cross-pp
 parser.add_argument('--supervised-budget-arm',choices=('old-joint-sft','joint-v2-3000','joint-v2-9000'),help="Evaluate the registered replay corpus and training budget comparison")
 parser.add_argument('--easy-menu-tap',type=int,choices=range(1,13),help="Use the independently qualified original Easy selection and require native difficulty zero")
 parser.add_argument('--calibration-arm',choices=('v2-ordinary','v2-calibrated'),help="Evaluate an original SFT or its training-calibrated movement sampling distribution")
+parser.add_argument('--study-arm',help="Arm name within a registered evaluation manifest")
+parser.add_argument('--study-manifest',type=Path,help="JSON registration with checkpoint paths, SHA256 values, difficulty and controller seeds")
 parser.add_argument('--workers',type=int,choices=range(1,9),default=3)
 opts=parser.parse_args()
 def linux(path):
     return subprocess.check_output(['wsl','-d',opts.wsl_distro,'--exec','wslpath','-a','-u',path.resolve().as_posix()],text=True).strip()
 d=opts.root.resolve();root=d/('easy-th14' if opts.easy_menu_tap else 'zero-shot-th14')
-if opts.easy_menu_tap and not opts.calibration_arm and opts.transfer_arm not in ('cross-sft','cross-ppo'):
+if bool(opts.study_arm)!=bool(opts.study_manifest):parser.error('A registered study requires both a manifest and an arm')
+if opts.easy_menu_tap and not opts.study_arm and not opts.calibration_arm and opts.transfer_arm not in ('cross-sft','cross-ppo'):
     parser.error('Easy study requires the joint SFT or its first online PPO')
 difficulty='Easy' if opts.easy_menu_tap else 'Normal'
 launcher=linux(Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/run-th14-camera-worker.sh')
@@ -55,6 +59,17 @@ if opts.calibration_arm:
     if any((extra,opts.ppo_generation,opts.transfer_arm,opts.anchor_arm,opts.supervised_budget_arm)):parser.error("Choose one experiment arm group")
     folder=d/'v2-supervised/joint-v2-3000' if opts.calibration_arm=='v2-ordinary' else d/'v2-calibrated'
     models={opts.calibration_arm:folder/'policy.ts'}
+if opts.study_arm:
+    if any((extra,opts.ppo_generation,opts.transfer_arm,opts.anchor_arm,opts.supervised_budget_arm,opts.calibration_arm)):
+        parser.error('Choose one experiment arm group')
+    study=json.loads(opts.study_manifest.read_bytes())
+    if study['difficulty']!=difficulty or not re.fullmatch('[a-z0-9-]+',opts.study_arm):
+        parser.error('Invalid difficulty or arm name')
+    checkpoint=study['arms'][opts.study_arm]
+    path=(d/checkpoint['file']).resolve()
+    path.relative_to(d)
+    if sha(path)!=checkpoint['sha256']:raise ValueError('Registered policy bytes differ')
+    models={opts.study_arm:path}
 plan={'title':14,'edition':f'Official original trial 0.01b {difficulty} Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
       'arms':{k:sha(v) for k,v in models.items()},'seeds':list(range(787001,787007)),
       'zero_shot':'Both direct checkpoints trained only on TH10/12/13. No TH14 optimizer input. Exclude technical failures from results.',
@@ -79,7 +94,15 @@ if opts.supervised_budget_arm:
 if opts.calibration_arm:
     plan['seeds']=list(range(793001,793013));plan['training']='Identical supervised network; only movement sampling temperature differs.'
     protocol_name=opts.calibration_arm+'-protocol.json'
-save_json(root/protocol_name,plan);torch.set_num_threads(1)
+if opts.study_arm:
+    seeds=study['seeds']
+    if not seeds or len(set(seeds))!=len(seeds) or any(type(s)!=int or s<0 for s in seeds):parser.error('Invalid study seeds')
+    plan.update(seeds=seeds,registration_sha256=sha(opts.study_manifest),training=study['training'])
+    protocol_name=opts.study_arm+'-protocol.json'
+target=root/protocol_name
+if opts.study_arm and target.exists() and json.loads(target.read_bytes())!=plan:
+    raise ValueError('Registered arm name already has another protocol')
+save_json(target,plan);torch.set_num_threads(1)
 
 def play(arm,seed):
     model=torch.jit.load(str(models[arm]),map_location='cpu').eval();rng=np.random.default_rng(seed)
@@ -145,7 +168,7 @@ if extra:
         pair=['frequency','transition'] if i%2==0 else ['transition','frequency']
         jobs.append(('expanded',787001+i))
         jobs.extend((arm,788001+i) for arm in pair)
-elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm or opts.supervised_budget_arm or opts.calibration_arm:
+elif len(models)==1:
     jobs=[(next(iter(models)),seed) for seed in plan['seeds']]
 else:jobs=[(arm,seed) for i,seed in enumerate(plan['seeds']) for arm in (['sft','ppo1'] if i%2==0 else ['ppo1','sft'])]
 def retry(arm,seed):
@@ -155,6 +178,7 @@ def retry(arm,seed):
             return
         except Exception as exc:
             log=root/f'v26th14-{arm}-{seed}'/'technical-attempts.jsonl'
+            log.parent.mkdir(parents=True,exist_ok=True)
             with log.open('a') as f:f.write(json.dumps({'attempt':attempt+1,'error':str(exc),'epoch_seconds':time.time()})+'\n')
             if attempt==2:raise
             time.sleep(3)

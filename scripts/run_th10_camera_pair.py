@@ -43,7 +43,9 @@ def run(args):
     arms=[(args.reference_name,args.reference.resolve()),(args.candidate_name,args.candidate.resolve())]
     first,second=np.array_split(args.seeds,2)
     first,second=first.tolist(),second.tolist()
-    design=(f'Original TH10 Normal official trial stage 1 with stock lives, four sampled actions and no Continue. '
+    difficulty=getattr(args,'difficulty',1)
+    difficulty_name={0:'Easy',1:'Normal'}[difficulty]
+    design=(f'Original TH10 {difficulty_name} official trial stage 1 with stock lives, four sampled actions and no Continue. '
             f'One {args.host} host per matched pair. First half of controller seeds plays {args.reference_name} '
             f'first; second half plays {args.candidate_name} first. Game RNG and concurrent host load uncontrolled. '
             'The 9-way movement switch rate counts every change between consecutive decisions, including neutral, within each credit.')
@@ -59,7 +61,7 @@ def run(args):
     data={};movement={}
     for name,path in arms:
         folder=args.out/name
-        verify(folder,path,models[name],args.seeds,'held',host=args.host,history=name==args.candidate_name and args.candidate_history)
+        verify(folder,path,models[name],args.seeds,'held',host=args.host,history=name==args.candidate_name and args.candidate_history,difficulty=difficulty)
         data[name]=read_arm([folder],sorted(args.seeds))
         movement[name]=switches(folder,args.host,args.seeds)
     a,b=movement[args.reference_name]['credits'],movement[args.candidate_name]['credits']
@@ -68,7 +70,7 @@ def run(args):
     boot=np.random.default_rng(args.seeds[0]).choice(dif,(10000,len(dif))).mean(1)
     movement['paired_bootstrap_95pct_interval']=np.quantile(boot,[.025,.975]).tolist()
     result=summarize(data,design,args.reference_name);result['movement_switches']=movement
-    save(args.out/'paired.json',result);draw(data,args.out/'paired.png')
+    save(args.out/'paired.json',result);draw(data,args.out/'paired.png',difficulty_name)
 
 
 if __name__=='__main__':
@@ -77,6 +79,7 @@ if __name__=='__main__':
         p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--reference-name',required=True);p.add_argument('--candidate-name',required=True)
     p.add_argument('--host',choices=('accelerator','momentum','fleet'),required=True)
+    p.add_argument('--difficulty',choices=(0,1),type=int,default=1)
     p.add_argument('--candidate-history',action='store_true')
     p.add_argument('--seeds',required=True,nargs='+',type=int)
     p.add_argument('--concurrency',type=int,default=3)

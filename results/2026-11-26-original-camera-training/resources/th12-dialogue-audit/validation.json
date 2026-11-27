@@ -1,0 +1,1138 @@
+{
+  "method": "Signed cosine similarity to 24 native TRAIN portrait gradient prototypes. Threshold fixed to midpoint of minimum positive and maximum calibration-negative TRAIN scores. Positive stage and title scope is official TH12 0.02a Normal Reimu A, Stage 1 Nazrin dialogue only.",
+  "train_positive": "train-camera-cross-ppo2-931204-beta",
+  "prototype_actions": [
+    1122,
+    1240,
+    946,
+    949,
+    947,
+    918,
+    939,
+    1210,
+    933,
+    921,
+    950,
+    1251,
+    951,
+    913,
+    916,
+    1260,
+    952,
+    919,
+    934,
+    1130,
+    908,
+    1131,
+    955,
+    917
+  ],
+  "calibration_negative_credits": [
+    "train-camera-sft-762104-beta",
+    "train-camera-sft-762108-beta",
+    "train-camera-ppo-765104-beta",
+    "train-camera-ppo-765108-beta",
+    "train-camera-ppo-765112-beta",
+    "train-camera-ppo-765116-beta",
+    "train-camera-cross-sft-862104-beta",
+    "train-camera-cross-sft-862108-beta",
+    "train-camera-ppo2-831204-beta",
+    "train-camera-ppo2-831208-beta",
+    "train-camera-ppo2-831212-beta",
+    "train-camera-ppo2-831216-beta",
+    "train-camera-ppo2-831220-beta",
+    "train-camera-ppo2-831224-beta",
+    "train-camera-ppo3-841204-beta",
+    "train-camera-ppo3-841208-beta",
+    "train-camera-ppo3-841212-beta",
+    "train-camera-ppo3-841216-beta",
+    "train-camera-ppo3-841220-beta",
+    "train-camera-ppo3-841224-beta",
+    "train-camera-ppo4-851208-beta",
+    "train-camera-ppo4-851212-beta",
+    "train-camera-ppo4-851216-beta",
+    "train-camera-ppo4-851220-beta",
+    "train-camera-ppo4-851224-beta",
+    "train-camera-cross-ppo-921204-beta",
+    "train-camera-cross-ppo-921208-beta",
+    "train-camera-cross-ppo-921212-beta",
+    "train-camera-cross-ppo-921216-beta",
+    "train-camera-cross-ppo2-931208-beta",
+    "train-camera-cross-ppo2-931212-beta",
+    "train-camera-cross-ppo2-931216-beta",
+    "train-camera-cross-ppo2-931220-beta",
+    "train-camera-cross-ppo2-931224-beta",
+    "train-v2-sft-981208-beta"
+  ],
+  "calibration_negative_frames": 2800,
+  "labelled_positive_training_frames": 430,
+  "train_negative_max": 0.36702603101730347,
+  "train_positive_min": 0.7551147937774658,
+  "threshold": 0.5610704123973846,
+  "overlay_applied": false,
+  "manual_original_validation": [
+    {
+      "episode": "train-camera-cross-ppo2-931204-beta",
+      "host": "entropy",
+      "source_receipt_sha256": "79558398d9341812343291b131b7ed831d75920863d34c0485344aafdb02dc41",
+      "seconds": 189.326002,
+      "bounds_seconds_after_first_action": [
+        119.238,
+        120.748,
+        176.598,
+        178.108
+      ],
+      "dialogue_duration_bounds_seconds": [
+        55.85,
+        58.87
+      ],
+      "independently_labelled_dialogue_frames": 429,
+      "true_positive_frames": 429,
+      "independently_labelled_outside_frames": 980,
+      "false_positive_frames": 0,
+      "undetermined_edge_frames": 25,
+      "model_dialogue_frames": 435,
+      "observed_active_control_seconds_excluded": 53.123398868367076,
+      "frozen_whole_credit_survival_reward": 0.1746748387813568,
+      "estimated_dialogue_survival_reward": 0.05312339961528778,
+      "survival_reward_bounds": [
+        0.05238582193851471,
+        0.055447809398174286
+      ]
+    },
+    {
+      "episode": "held-camera-cross-sft-895206-beta",
+      "host": "deck",
+      "source_receipt_sha256": "3da4ee322eecdbe3ac0a2ece49c590b023964378a1466d4f97b4c6d902df303f",
+      "seconds": 185.575847,
+      "bounds_seconds_after_first_action": [
+        130.134,
+        131.644,
+        164.934,
+        166.444
+      ],
+      "dialogue_duration_bounds_seconds": [
+        33.29,
+        36.31
+      ],
+      "independently_labelled_dialogue_frames": 249,
+      "true_positive_frames": 248,
+      "independently_labelled_outside_frames": 1117,
+      "false_positive_frames": 0,
+      "undetermined_edge_frames": 24,
+      "model_dialogue_frames": 264,
+      "observed_active_control_seconds_excluded": 32.52537066693185,
+      "frozen_whole_credit_survival_reward": 0.1709614396095276,
+      "estimated_dialogue_survival_reward": 0.03252536803483963,
+      "survival_reward_bounds": [
+        0.030674174427986145,
+        0.033637743443250656
+      ]
+    }
+  ],
+  "candidate_credits": [
+    {
+      "episode": "train-camera-cross-ppo2-931204-beta",
+      "branch": "cross-campaign/g03/native12",
+      "seed": 931204,
+      "steps": 1434,
+      "hit_steps": 435,
+      "start": 904,
+      "last": 1338,
+      "contiguous": true
+    },
+    {
+      "episode": "held-camera-cross-sft-895206-beta",
+      "branch": "v2-supervised/native12",
+      "seed": 895206,
+      "steps": 1390,
+      "hit_steps": 264,
+      "start": 979,
+      "last": 1243,
+      "contiguous": false
+    }
+  ],
+  "screened": {
+    "credits": 141,
+    "decisions": 84405
+  },
+  "short_noncalibration_controls": {
+    "credits": 97,
+    "frames": 47775,
+    "maximum_score": 0.4219083786010742,
+    "predicted_dialogue": 0,
+    "uncertain": 13,
+    "entries": [
+      {
+        "episode": "train-camera-sft-762101-alpha",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 356,
+        "peak": 0.26224830746650696,
+        "peak_action": 183,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-sft-762102-beta",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 593,
+        "peak": 0.3183993101119995,
+        "peak_action": 530,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-sft-762103-alpha",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 497,
+        "peak": 0.2220984399318695,
+        "peak_action": 52,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-sft-762105-alpha",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 459,
+        "peak": 0.31170517206192017,
+        "peak_action": 290,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-sft-762106-beta",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 654,
+        "peak": 0.32261955738067627,
+        "peak_action": 520,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-sft-762107-alpha",
+        "host": "entropy",
+        "branch": "camera-native12",
+        "steps": 456,
+        "peak": 0.13557809591293335,
+        "peak_action": 290,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765103-alpha",
+        "host": "entropy",
+        "branch": "camera-round2/native12",
+        "steps": 334,
+        "peak": 0.36751338839530945,
+        "peak_action": 134,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo-765106-beta",
+        "host": "deck",
+        "branch": "camera-round2/native12",
+        "steps": 433,
+        "peak": 0.2952277958393097,
+        "peak_action": 176,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765107-alpha",
+        "host": "entropy",
+        "branch": "camera-round2/native12",
+        "steps": 378,
+        "peak": 0.3255698084831238,
+        "peak_action": 147,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765109-alpha",
+        "host": "deck",
+        "branch": "camera-round2/native12",
+        "steps": 664,
+        "peak": 0.37627363204956055,
+        "peak_action": 356,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo-765110-beta",
+        "host": "deck",
+        "branch": "camera-round2/native12",
+        "steps": 543,
+        "peak": 0.11023705452680588,
+        "peak_action": 109,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765111-alpha",
+        "host": "entropy",
+        "branch": "camera-round2/native12",
+        "steps": 375,
+        "peak": 0.2986176908016205,
+        "peak_action": 133,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765113-alpha",
+        "host": "deck",
+        "branch": "camera-round2/native12",
+        "steps": 630,
+        "peak": 0.2927515208721161,
+        "peak_action": 413,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765114-beta",
+        "host": "deck",
+        "branch": "camera-round2/native12",
+        "steps": 600,
+        "peak": 0.2442665696144104,
+        "peak_action": 98,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo-765115-alpha",
+        "host": "entropy",
+        "branch": "camera-round2/native12",
+        "steps": 587,
+        "peak": 0.3975483179092407,
+        "peak_action": 118,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-cross-sft-862101-alpha",
+        "host": "deck",
+        "branch": "cross-title-online/native12",
+        "steps": 469,
+        "peak": 0.38938072323799133,
+        "peak_action": 203,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-cross-sft-862103-alpha",
+        "host": "entropy",
+        "branch": "cross-title-online/native12",
+        "steps": 608,
+        "peak": 0.3389643430709839,
+        "peak_action": 409,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-sft-862106-beta",
+        "host": "deck",
+        "branch": "cross-title-online/native12",
+        "steps": 585,
+        "peak": 0.16942709684371948,
+        "peak_action": 80,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-sft-862107-alpha",
+        "host": "entropy",
+        "branch": "cross-title-online/native12",
+        "steps": 490,
+        "peak": 0.39614337682724,
+        "peak_action": 138,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo2-831201-alpha",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 517,
+        "peak": 0.16070882976055145,
+        "peak_action": 208,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831202-beta",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 634,
+        "peak": 0.30310654640197754,
+        "peak_action": 200,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831203-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 485,
+        "peak": 0.2991359829902649,
+        "peak_action": 301,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831205-alpha",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 317,
+        "peak": 0.3781346380710602,
+        "peak_action": 177,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo2-831207-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 620,
+        "peak": 0.1268758773803711,
+        "peak_action": 445,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831211-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 453,
+        "peak": 0.2444642186164856,
+        "peak_action": 55,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831215-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 560,
+        "peak": 0.2592774033546448,
+        "peak_action": 387,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831217-alpha",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 559,
+        "peak": 0.31093940138816833,
+        "peak_action": 192,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831218-beta",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 600,
+        "peak": 0.3160671591758728,
+        "peak_action": 222,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831219-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 424,
+        "peak": 0.2557419538497925,
+        "peak_action": 150,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831221-alpha",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 581,
+        "peak": 0.3012310266494751,
+        "peak_action": 366,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831222-beta",
+        "host": "deck",
+        "branch": "campaign/g03/native12",
+        "steps": 510,
+        "peak": 0.3164318799972534,
+        "peak_action": 201,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo2-831223-alpha",
+        "host": "entropy",
+        "branch": "campaign/g03/native12",
+        "steps": 613,
+        "peak": 0.2023116499185562,
+        "peak_action": 456,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841203-alpha",
+        "host": "entropy",
+        "branch": "campaign/g04/native12",
+        "steps": 467,
+        "peak": 0.4219083786010742,
+        "peak_action": 155,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo3-841207-alpha",
+        "host": "entropy",
+        "branch": "campaign/g04/native12",
+        "steps": 591,
+        "peak": 0.3079262971878052,
+        "peak_action": 509,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841210-beta",
+        "host": "deck",
+        "branch": "campaign/g04/native12",
+        "steps": 633,
+        "peak": 0.26270341873168945,
+        "peak_action": 450,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841215-alpha",
+        "host": "entropy",
+        "branch": "campaign/g04/native12",
+        "steps": 665,
+        "peak": 0.38523706793785095,
+        "peak_action": 539,
+        "predicted": 0,
+        "uncertain": 2
+      },
+      {
+        "episode": "train-camera-ppo3-841217-alpha",
+        "host": "deck",
+        "branch": "campaign/g04/native12",
+        "steps": 334,
+        "peak": 0.1923561692237854,
+        "peak_action": 198,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841218-beta",
+        "host": "deck",
+        "branch": "campaign/g04/native12",
+        "steps": 611,
+        "peak": 0.31380918622016907,
+        "peak_action": 494,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841221-alpha",
+        "host": "deck",
+        "branch": "campaign/g04/native12",
+        "steps": 572,
+        "peak": 0.3176935315132141,
+        "peak_action": 155,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo3-841223-alpha",
+        "host": "entropy",
+        "branch": "campaign/g04/native12",
+        "steps": 632,
+        "peak": 0.2843414843082428,
+        "peak_action": 122,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851201-alpha",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 493,
+        "peak": 0.31084758043289185,
+        "peak_action": 359,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851203-alpha",
+        "host": "entropy",
+        "branch": "campaign/g05/native12",
+        "steps": 630,
+        "peak": 0.3240298330783844,
+        "peak_action": 588,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851207-alpha",
+        "host": "entropy",
+        "branch": "campaign/g05/native12",
+        "steps": 472,
+        "peak": 0.1169966533780098,
+        "peak_action": 381,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851210-beta",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 613,
+        "peak": 0.4076233506202698,
+        "peak_action": 21,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo4-851211-alpha",
+        "host": "entropy",
+        "branch": "campaign/g05/native12",
+        "steps": 446,
+        "peak": 0.3138864040374756,
+        "peak_action": 279,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851213-alpha",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 485,
+        "peak": 0.20546545088291168,
+        "peak_action": 81,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851215-alpha",
+        "host": "entropy",
+        "branch": "campaign/g05/native12",
+        "steps": 451,
+        "peak": 0.10489002615213394,
+        "peak_action": 159,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851217-alpha",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 669,
+        "peak": 0.28993353247642517,
+        "peak_action": 196,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851218-beta",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 478,
+        "peak": 0.22473585605621338,
+        "peak_action": 36,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851221-alpha",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 440,
+        "peak": 0.38319650292396545,
+        "peak_action": 381,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-ppo4-851222-beta",
+        "host": "deck",
+        "branch": "campaign/g05/native12",
+        "steps": 315,
+        "peak": 0.3412032425403595,
+        "peak_action": 159,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-ppo4-851223-alpha",
+        "host": "entropy",
+        "branch": "campaign/g05/native12",
+        "steps": 499,
+        "peak": 0.2834716737270355,
+        "peak_action": 317,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921203-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 345,
+        "peak": 0.31895244121551514,
+        "peak_action": 135,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921205-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 279,
+        "peak": 0.12122291326522827,
+        "peak_action": 196,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921206-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 469,
+        "peak": 0.34488585591316223,
+        "peak_action": 216,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921207-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 568,
+        "peak": 0.24781754612922668,
+        "peak_action": 19,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921209-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 439,
+        "peak": 0.149224191904068,
+        "peak_action": 288,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921211-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 455,
+        "peak": 0.31374186277389526,
+        "peak_action": 331,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921213-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 436,
+        "peak": 0.213641956448555,
+        "peak_action": 292,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921214-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 663,
+        "peak": 0.23834727704524994,
+        "peak_action": 17,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo-921215-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g02/native12",
+        "steps": 597,
+        "peak": 0.3180738389492035,
+        "peak_action": 14,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931201-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 537,
+        "peak": 0.13002924621105194,
+        "peak_action": 197,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931202-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 566,
+        "peak": 0.29710277915000916,
+        "peak_action": 432,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931203-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 229,
+        "peak": 0.32177820801734924,
+        "peak_action": 150,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931206-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 540,
+        "peak": 0.2294270545244217,
+        "peak_action": 364,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931207-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 357,
+        "peak": 0.26015225052833557,
+        "peak_action": 243,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931209-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 423,
+        "peak": 0.4128131866455078,
+        "peak_action": 343,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931210-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 537,
+        "peak": 0.2953873872756958,
+        "peak_action": 485,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931211-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 663,
+        "peak": 0.24819795787334442,
+        "peak_action": 535,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931213-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 491,
+        "peak": 0.32452329993247986,
+        "peak_action": 204,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931215-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 375,
+        "peak": 0.30351728200912476,
+        "peak_action": 118,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931219-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 650,
+        "peak": 0.21488690376281738,
+        "peak_action": 402,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931221-alpha",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 436,
+        "peak": 0.26502588391304016,
+        "peak_action": 40,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931222-beta",
+        "host": "deck",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 331,
+        "peak": 0.11521993577480316,
+        "peak_action": 55,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-camera-cross-ppo2-931223-alpha",
+        "host": "entropy",
+        "branch": "cross-campaign/g03/native12",
+        "steps": 463,
+        "peak": 0.29537007212638855,
+        "peak_action": 296,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-v2-sft-981201-alpha",
+        "host": "deck",
+        "branch": "v2-online/native12",
+        "steps": 588,
+        "peak": 0.30136236548423767,
+        "peak_action": 204,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-v2-sft-981202-beta",
+        "host": "deck",
+        "branch": "v2-online/native12",
+        "steps": 457,
+        "peak": 0.3114214241504669,
+        "peak_action": 347,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-v2-sft-981203-alpha",
+        "host": "entropy",
+        "branch": "v2-online/native12",
+        "steps": 542,
+        "peak": 0.3321489989757538,
+        "peak_action": 459,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "train-v2-sft-981206-beta",
+        "host": "deck",
+        "branch": "v2-online/native12",
+        "steps": 584,
+        "peak": 0.38099488615989685,
+        "peak_action": 478,
+        "predicted": 0,
+        "uncertain": 1
+      },
+      {
+        "episode": "train-v2-sft-981207-alpha",
+        "host": "entropy",
+        "branch": "v2-online/native12",
+        "steps": 379,
+        "peak": 0.23928344249725342,
+        "peak_action": 48,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895201-alpha",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 518,
+        "peak": 0.32984113693237305,
+        "peak_action": 474,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-3000-895201-beta",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 581,
+        "peak": 0.3041520118713379,
+        "peak_action": 73,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895202-beta",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 407,
+        "peak": 0.2625470459461212,
+        "peak_action": 362,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895202-beta",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 434,
+        "peak": 0.3249232769012451,
+        "peak_action": 199,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895203-beta",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 217,
+        "peak": 0.1602211892604828,
+        "peak_action": 27,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-3000-895203-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 436,
+        "peak": 0.2358238846063614,
+        "peak_action": 174,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895204-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 577,
+        "peak": 0.26170051097869873,
+        "peak_action": 350,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-3000-895204-beta",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 382,
+        "peak": 0.28498440980911255,
+        "peak_action": 284,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895204-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 184,
+        "peak": 0.1148812472820282,
+        "peak_action": 27,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895205-alpha",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 653,
+        "peak": 0.2886721193790436,
+        "peak_action": 498,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895206-beta",
+        "host": "deck",
+        "branch": "v2-supervised/native12",
+        "steps": 298,
+        "peak": 0.2617749273777008,
+        "peak_action": 31,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895207-beta",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 586,
+        "peak": 0.35204410552978516,
+        "peak_action": 339,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-3000-895207-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 444,
+        "peak": 0.23855066299438477,
+        "peak_action": 275,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895207-beta",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 352,
+        "peak": 0.3593495786190033,
+        "peak_action": 137,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-camera-cross-sft-895208-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 250,
+        "peak": 0.19994816184043884,
+        "peak_action": 128,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-3000-895208-beta",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 632,
+        "peak": 0.3534696400165558,
+        "peak_action": 390,
+        "predicted": 0,
+        "uncertain": 0
+      },
+      {
+        "episode": "held-joint-v2-9000-895208-alpha",
+        "host": "entropy",
+        "branch": "v2-supervised/native12",
+        "steps": 345,
+        "peak": 0.23576222360134125,
+        "peak_action": 14,
+        "predicted": 0,
+        "uncertain": 0
+      }
+    ]
+  }
+}

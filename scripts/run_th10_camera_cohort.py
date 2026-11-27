@@ -1,5 +1,7 @@
 """Collect exact camera trajectories and compare three frozen TH10 actors on the same host."""
 import argparse
+import csv
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -43,6 +45,7 @@ def collect(args, arm, model, seeds, destination, active, camera, history=False)
            "--concurrency", str(active), "--seeds", *map(str, seeds)]
     if camera:
         cmd.append("--camera")
+    if getattr(args,'difficulty',1)!=1:cmd.extend(['--difficulty',str(args.difficulty)])
     if history:cmd.append("--camera-history")
     host=getattr(args,"host","momentum")
     if host!="fleet":cmd.extend(["--only-host",host])
@@ -57,7 +60,7 @@ def collect(args, arm, model, seeds, destination, active, camera, history=False)
 
 
 @torch.inference_mode()
-def verify(directory, model_path, model, seeds, role, write=True, host="momentum",history=False):
+def verify(directory, model_path, model, seeds, role, write=True, host="momentum",history=False,difficulty=1):
     sha = digest(model_path)
     receipts, audits = [], []
     for seed in seeds:
@@ -65,6 +68,7 @@ def verify(directory, model_path, model, seeds, role, write=True, host="momentum
         folder = directory / f"{actual_host}-{seed}"
         r = json.loads((folder / "report.json").read_bytes())
         assert r["camera_policy"] and r["terminal"] and r["continues"] == 0
+        assert r['source'].get('difficulty',1)==difficulty
         assert r["seed"] == seed and r["policy_sha256"] == sha
         assert r["host"] == actual_host and r["stage_entries"][0]["lives"] == 2
         assert digest(folder / "endpoint.png") == r["terminal_screenshot_sha256"]
@@ -99,6 +103,14 @@ def verify(directory, model_path, model, seeds, role, write=True, host="momentum
             file=str(behavior), behavior=str(behavior), path=str(behavior), sha256=r["behavior_sha256"],
             pixels=str(pixels), pixel_file=str(pixels), pixel_sha256=digest(pixels), steps=n,
             native_outcome=r["native_outcome"], outcome="game_over" if r["game_over"] else "ending"))
+        if difficulty==0:
+            with gzip.open(folder/'native.csv.gz','rt') as raw:
+                native_difficulties=[int(row['difficulty']) for row in csv.DictReader(raw)]
+            assert len(native_difficulties)==r['native_samples']>0 and set(native_difficulties)=={0}
+            menu_hash=digest(folder/'easy-rank.png')
+            assert r.get('difficulty_menu_sha256',menu_hash)==menu_hash
+            receipts[-1].update(difficulty=0,difficulty_label='Easy',native_difficulty_samples=r['native_samples'],
+                                menu_sha256=menu_hash)
     if write:
         save(directory / "on-policy-validation.json", audits)
         save(directory / ("ppo-receipts.json" if role=="train" else "held-receipts.json"), receipts)

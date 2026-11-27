@@ -1,0 +1,28 @@
+{
+  "difficulty": "Easy",
+  "seeds": [
+    1114051,
+    1114052,
+    1114053,
+    1114054,
+    1114055,
+    1114056,
+    1114057,
+    1114058,
+    1114059,
+    1114060,
+    1114061,
+    1114062
+  ],
+  "training": "Same 76,167 train windows, 12,000 supervised updates and native position auxiliary. Compare ordinary convolution to a learned attention residual. TH14 only used for development evaluations.",
+  "arms": {
+    "stage2-cnn": {
+      "file": "spatial-policy-study/cnn/policy.ts",
+      "sha256": "483a6ae461ed3e5033191d87f67120c4518e2f6e5af4e1a1ced193363be55e4a"
+    },
+    "stage2-attention": {
+      "file": "spatial-policy-study/spatial-attention/policy.ts",
+      "sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2"
+    }
+  }
+}

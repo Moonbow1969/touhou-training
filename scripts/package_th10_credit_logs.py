@@ -21,7 +21,9 @@ def package(out,directories):
                 r=json.loads(file.read_bytes());credit=file.parent
                 if not r['terminal'] or r['continues']!=0 or r['title']!=10:raise ValueError(f'Incomplete native credit in {file}')
                 checks={}
-                for name in ['report.json','behavior.npz','native.csv.gz','endpoint.png']:
+                files_to_package=['report.json','behavior.npz','native.csv.gz','endpoint.png']
+                if r['source'].get('difficulty',1)==0:files_to_package.extend(['opening.csv','easy-rank.png'])
+                for name in files_to_package:
                     data=(credit/name).read_bytes()
                     checked=sha(data)
                     if name=='behavior.npz':assert checked==r['behavior_sha256']
