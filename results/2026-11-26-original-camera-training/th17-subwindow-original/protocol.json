@@ -1,0 +1,185 @@
+{
+  "title": 17,
+  "name": "Original TH17 same-observation four-tick vs two consecutive two-tick human SFT actions",
+  "models": {
+    "four-tick": "732c2b8b3bdccf47e60f7630296e9fa943c64a1e5cf8ab333731cbd72fa9e451",
+    "two-subwindows": "c06a9cf45adc9b07dae919d38a1242fd89075dceba7930508ada042bc2f70011"
+  },
+  "original_sha256": "3ffa3963003cce6dc02b1dae5adeb4411138772834efdb195a05b9081027aaba",
+  "fast_sensor_deployment_sha256": "d742bc0ab70b9f098dcdaf95ae492ef28b54ff765296a2ee9e0149fc39247c38",
+  "source_engineering_sha256": {
+    "engineering-four-tick-1851793": "1a075e4b9f033fc104e7a265f85b24c48c5a22cbb547ae93d8d8d67b28205815",
+    "engineering-two-subwindows-1851794": "dcf0af422794795b89d19123e3202cf6b2aef918900b9dc9612b6f88aee776cc"
+  },
+  "pairs": [
+    {
+      "seed": 1851751,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 2,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851752,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 3,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851753,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 2,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851754,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 3,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851755,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 2,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851756,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 3,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851757,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 2,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851758,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 3,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851759,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 2,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851760,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 3,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851761,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 2,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851762,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 3,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851763,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 2,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851764,
+      "physical_host": "Accelerator",
+      "lane": "alpha",
+      "rank": 3,
+      "arms": [
+        "two-subwindows",
+        "four-tick"
+      ]
+    },
+    {
+      "seed": 1851765,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 2,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    },
+    {
+      "seed": 1851766,
+      "physical_host": "Accelerator",
+      "lane": "beta",
+      "rank": 3,
+      "arms": [
+        "four-tick",
+        "two-subwindows"
+      ]
+    }
+  ],
+  "ordinary_start": "Original TH17 trial full Stage1 stock, Reimu Wolf, Hard or Lunatic, signed 2 spares/3 Bombs, no continue. Both directly sampled full four-head camera policies from the earlier TH12 cohort. One image for 4 native stage ticks; exact halfway command application measured separately. Four no-input warmups; physical CPU-only inference on same host. Controller seeds do not specify native game RNG.",
+  "primary": "Stage 2 arrival on full physical original starts; missing/unreadable endpoints remain unknown.",
+  "secondary": [
+    "First native life-loss tick and stage",
+    "Final native stage and tick; compare within same stage, report stage-ordered wins when a pair ends on different stages.",
+    "Last live spare lives and Bombs, postdeath stock and Stage 2 entry resources",
+    "Achieved actuator and input-clock offsets and complete original source movie"
+  ],
+  "analysis": "8 pairs per rank, both arms same physical host/lane, two candidate-first of four seeds per lane and rank. Exact paired randomization test uses the 36 allowed order assignments per rank. No seed selection or exclusions based on death, clear or observer success. Original endpoints and continuous action evidence reported independently. Technical setup before first policy input may retry the same original host/lane, arm, rank and seed after preserving evidence."
+}
