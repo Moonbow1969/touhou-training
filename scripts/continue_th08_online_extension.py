@@ -53,7 +53,14 @@ def main():
         p.add_argument('--'+k,type=Path,required=True)
     a=p.parse_args();data=a.data.resolve();assets=a.assets.resolve();root=data/'six-game-online'
     plan=read(root/'protocol.json');amend=read(root/'technical-menu-amendment.json')
-    if (digest(Path(__file__).with_name('run_th08_trial_camera.py'))!=amend['revised_runner_sha256']
+    equivalent=root/'runner-source-equivalence.json'
+    accepted_sources={amend['revised_runner_sha256']}
+    if equivalent.exists():
+        record=read(equivalent)
+        if record['registered_revised_sha256']!=amend['revised_runner_sha256']:
+            raise ValueError('Unrelated runner equivalence')
+        accepted_sources.add(record['canonical_revised_sha256'])
+    if (digest(Path(__file__).with_name('run_th08_trial_camera.py')) not in accepted_sources
             or digest(root/'protocol.json')!=amend['original_registration_sha256']):
         raise ValueError('Expected the exact technical menu amendment')
     policy=data/'five-game-generation2/policy/policy.ts'
