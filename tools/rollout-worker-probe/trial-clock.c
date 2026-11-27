@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#ifdef TRIAL_CAMERA
+#include "th14-camera.h"
+#endif
 
 #ifdef TRIAL_CONTACT_TELEMETRY
 /* Verified against the SHA-pinned trial's player-state getter and writes. */
@@ -134,9 +137,13 @@ static int observe_entities(const struct Target *game, const struct State *state
 }
 
 static int emit_state(const struct Target *game, const struct State *state, uint32_t delta) {
+#ifdef TRIAL_CAMERA
+    int count=0;
+#else
     int count = observe_entities(game, state);
     if (count < 0)
         return 0;
+#endif
     printf("{\"ticks\":%lu,\"frame\":%lu,\"delta\":%lu,\"mode\":%lu,\"stage\":%lu,"
            "\"lives\":%ld,\"player\":[%.4f,%.4f],\"bullet_count\":%d,",
            (unsigned long)state->clock, (unsigned long)state->frame, (unsigned long)delta,
@@ -145,6 +152,9 @@ static int emit_state(const struct Target *game, const struct State *state, uint
 #ifdef TRIAL_CONTACT_TELEMETRY
     printf("\"contact_schema\":1,\"player_state\":%lu,\"bombs\":%ld,\"held\":%u,",
            (unsigned long)state->player_state, (long)state->bombs, game->held);
+#endif
+#ifdef TRIAL_CAMERA
+    if(!emit_camera(game->window))return 0;
 #endif
     fputs("\"bullets\":[", stdout);
     for (int i = 0; i < count && i < MAX_ENTITIES; i++) {

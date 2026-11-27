@@ -35,7 +35,13 @@ test -n "$game"
 xdotool getwindowname "$game" >&2
 xdotool windowfocus --sync "$game"
 if test "$mode" = serve; then
-    if wine /probe/trial-clock.exe; then exit; fi
+    if wine /probe/trial-clock.exe; then
+        if test "${TH14_SETTLED_CAPTURE:-0}" = 1; then
+            sleep 4
+            scrot --overwrite /capture/settled.png
+        fi
+        exit
+    fi
     scrot --overwrite /capture/failed.png
     exit 1
 fi

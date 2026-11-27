@@ -66,6 +66,7 @@ def decompress(data, expected):
 
 REPLAY_LAYOUTS = {
     10: (b"t10r", 0x4C, 0x64, 0x1C4),
+    12: (b"t12r", 0x58, 0x70, 0xA0),
     13: (b"t13r", 0x58, 0x74, 0xC4),
     14: (b"t13r", 0x78, 0x94, 0xDC),
     16: (b"t16r", 0x80, 0xA0, 0x294),
@@ -83,6 +84,9 @@ def read_gameplay_payload(path, title=14):
         # Mountain of Faith uses its own shuffle keys and second block size.
         data = unshuffle(data[36:36 + compressed], 0x400, 0xAA, 0xE1)
         data = unshuffle(data, 0x80, 0x3D, 0x7A)
+    elif title == 12:
+        data = unshuffle(data[36:36 + compressed], 0x800, 0x5E, 0xE1)
+        data = unshuffle(data, 0x40, 0x7D, 0x3A)
     else:
         data = unshuffle(data[36:36 + compressed], 0x400, 0x5C, 0xE1)
         data = unshuffle(data, 0x100, 0x7D, 0x3A)

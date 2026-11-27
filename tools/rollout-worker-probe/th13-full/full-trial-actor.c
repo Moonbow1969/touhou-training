@@ -74,7 +74,9 @@ int main(int argc,char**argv){
    player_label(player,label.after);label.end_ns=now_ns();
    if(fwrite(&label,sizeof(label),1,labels)!=1)return 9;
   }
-  int a[4];actor_step(&frame[0][0],a);int next=mask(a);
+  int a[4];actor_step(&frame[0][0],a);
+  if(a[0]<0 || a[0]>8){control(d,old,0);return 12;}
+  int next=mask(a);
   int64_t t=now_ns();control(d,old,next);old=next;int xheld=held(d);
   int32_t at_control[21];
   if(cadence_trace){if(!native(fd,at_control))return 8;}

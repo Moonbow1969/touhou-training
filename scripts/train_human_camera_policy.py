@@ -12,15 +12,19 @@ from scripts.train_portable_full_sft import FullActor, WIDTHS
 from scripts.train_replay_camera_encoder import CameraPolicy, channels, save_json, sha
 
 
-def camera_labels(words):
+def camera_labels(words, focus_bit=8):
     """Decode the next tick at a camera boundary; retain short Bomb taps inside the window."""
     first = words[:, 0]
-    return np.column_stack((movement_direction(first), (first & 8) != 0,
+    return np.column_stack((movement_direction(first), (first & focus_bit) != 0,
                             (first & 1) != 0, ((words & 2) != 0).any(1))).astype(np.int64)
 
 
 def load_replay(path):
     metadata = json.loads(path.with_suffix(".json").read_bytes())
+    title=str(metadata["title"]).upper()
+    focus_bit={"TH10":4,"TH12":8,"TH13":8}.get(title)
+    if focus_bit is None or metadata.get("focus_bit",focus_bit)!=focus_bit:
+        raise ValueError(f"Unverified original input schema for {title}")
     with np.load(path, allow_pickle=False) as z:
         obs = z["obs"]
         frame = z["native_frame"].reshape(-1).astype(np.int64)
@@ -30,7 +34,7 @@ def load_replay(path):
         valid = z["stable"].astype(bool) if "stable" in z else np.ones(len(obs), dtype=bool)
     if obs.dtype != np.uint8 or obs.shape != (len(frame),112,96) or chunk.shape != (len(frame),4):
         raise ValueError(f"Camera/control layout differs: {path}")
-    if not np.array_equal(actions, camera_labels(chunk)):
+    if not np.array_equal(actions, camera_labels(chunk,focus_bit)):
         raise ValueError(f"Decoded replay controls disagree with stored action heads: {path}")
     idx = np.arange(len(frame))
     continuous = (idx >= 1) & (frame - np.roll(frame,1) == 4)
@@ -43,7 +47,7 @@ def load_replay(path):
     if past is not None:
         if past.shape!=(len(frame),8):
             raise ValueError("Expected eight strictly preceding decoded control words")
-        last, older = camera_labels(past[:,4:]), camera_labels(past[:,:4])
+        last, older = camera_labels(past[:,4:],focus_bit), camera_labels(past[:,:4],focus_bit)
     else:
         last, older = np.roll(actions,1,axis=0), np.roll(actions,2,axis=0)
         continuous &= (idx>=2) & (frame-np.roll(frame,2)==8)
@@ -58,7 +62,7 @@ def load_replay(path):
     player=metadata.get("player_group",metadata.get("player"))
     if not player:
         raise ValueError("A replay needs an identified player group")
-    return {"name":path.name,"group":str(player).casefold(),"sha256":sha(path),
+    return {"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
             "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep]}
 
 
@@ -94,6 +98,7 @@ def main():
     parser.add_argument("--steps",type=int,default=800)
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
+    parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
     device="cuda" if torch.cuda.is_available() else "cpu"
     train=[load_replay(p) for p in args.train];held=[load_replay(p) for p in args.held]
@@ -120,10 +125,18 @@ def main():
             move_weight[ids]=2.
             move_weight[changes]=2./(1.+len(ids)/len(changes))
         chunks.append((ids,changes if len(changes) else ids))
+    by_title={}
+    for i,row in enumerate(train):by_title.setdefault(row["title"],[]).append(i)
+    titles=sorted(by_title)
     for step in range(1,args.steps+1):
         chosen=[]
         for i in range(8):
-            bank=chunks[int(torch.randint(len(chunks),(1,)))][i%2]
+            if args.balance_titles:
+                indices=by_title[titles[int(torch.randint(len(titles),(1,)))]]
+                replay=indices[int(torch.randint(len(indices),(1,)))]
+            else:
+                replay=int(torch.randint(len(chunks),(1,)))
+            bank=chunks[replay][i%2]
             chosen.append(bank[torch.randint(len(bank),(8,),device=device)])
         ids=torch.cat(chosen)
         px=data["raw"][ids].float()/255
@@ -162,9 +175,10 @@ def main():
     np.savez_compressed(args.out/"training-demonstrations.npz",features=data["features"].cpu().numpy(),
                         action=data["action"].cpu().numpy().astype(np.int8),prior=data["prior"].cpu().numpy().astype(np.int8),
                         teacher_probs=demo_probs,replay_index=np.repeat(np.arange(len(train)),[len(r["action"]) for r in train]))
-    manifest=lambda rows:[{**{k:r[k] for k in ("name","group","sha256")},"decisions":len(r["action"])} for r in rows]
+    manifest=lambda rows:[{**{k:r[k] for k in ("name","group","title","sha256")},"decisions":len(r["action"])} for r in rows]
     save_json(args.out/"report.json",{"train":manifest(train),"held":manifest(held),"encoder":sha(args.encoder),
               "natural_movement_frequency":args.natural_movement_frequency,
+              "title_balanced":args.balance_titles,
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})
 
