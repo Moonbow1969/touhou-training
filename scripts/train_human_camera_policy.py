@@ -65,7 +65,7 @@ def load_replay(path, include_eight_tick_camera=False, include_player_position=F
     if not player:
         raise ValueError("A replay needs an identified player group")
     result={"name":path.name,"group":str(player).casefold(),"title":title,"sha256":sha(path),
-            "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep]}
+            "raw":pair[keep],"features":feat[keep],"action":actions[keep],"prior":last[keep],"native_frame":frame[keep]}
     if include_player_position:
         if native_xy.shape!=(len(frame),2):raise ValueError('Missing native player coordinates')
         native_xy[:,0]+=192

@@ -19,12 +19,13 @@ parser.add_argument('--transfer-arm',choices=('matched-th13','cross-sft','cross-
 parser.add_argument('--anchor-arm',choices=('plain-cross-ppo','anchored-cross-ppo'),help="Evaluate one replay-regularization arm on 12 fresh controllers")
 parser.add_argument('--supervised-budget-arm',choices=('old-joint-sft','joint-v2-3000','joint-v2-9000'),help="Evaluate the registered replay corpus and training budget comparison")
 parser.add_argument('--easy-menu-tap',type=int,choices=range(1,13),help="Use the independently qualified original Easy selection and require native difficulty zero")
+parser.add_argument('--calibration-arm',choices=('v2-ordinary','v2-calibrated'),help="Evaluate an original SFT or its training-calibrated movement sampling distribution")
 parser.add_argument('--workers',type=int,choices=range(1,9),default=3)
 opts=parser.parse_args()
 def linux(path):
     return subprocess.check_output(['wsl','-d',opts.wsl_distro,'--exec','wslpath','-a','-u',path.resolve().as_posix()],text=True).strip()
 d=opts.root.resolve();root=d/('easy-th14' if opts.easy_menu_tap else 'zero-shot-th14')
-if opts.easy_menu_tap and opts.transfer_arm not in ('cross-sft','cross-ppo'):
+if opts.easy_menu_tap and not opts.calibration_arm and opts.transfer_arm not in ('cross-sft','cross-ppo'):
     parser.error('Easy study requires the joint SFT or its first online PPO')
 difficulty='Easy' if opts.easy_menu_tap else 'Normal'
 launcher=linux(Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/run-th14-camera-worker.sh')
@@ -50,6 +51,10 @@ if opts.supervised_budget_arm:
     if extra or opts.ppo_generation or opts.transfer_arm or opts.anchor_arm:parser.error("Choose one experiment arm group")
     folder=d/'camera-cross-sft' if opts.supervised_budget_arm=='old-joint-sft' else d/'v2-supervised'/opts.supervised_budget_arm
     models={opts.supervised_budget_arm:folder/'policy.ts'}
+if opts.calibration_arm:
+    if any((extra,opts.ppo_generation,opts.transfer_arm,opts.anchor_arm,opts.supervised_budget_arm)):parser.error("Choose one experiment arm group")
+    folder=d/'v2-supervised/joint-v2-3000' if opts.calibration_arm=='v2-ordinary' else d/'v2-calibrated'
+    models={opts.calibration_arm:folder/'policy.ts'}
 plan={'title':14,'edition':f'Official original trial 0.01b {difficulty} Reimu A on Gamer WSL2, each process has private Xvfb, Wine state and input',
       'arms':{k:sha(v) for k,v in models.items()},'seeds':list(range(787001,787007)),
       'zero_shot':'Both direct checkpoints trained only on TH10/12/13. No TH14 optimizer input. Exclude technical failures from results.',
@@ -71,6 +76,9 @@ if opts.supervised_budget_arm:
     plan['seeds']=list(range(792001,792013))
     plan['training']='Compare original SFT with enlarged human corpus at 3000 and 9000 updates on identical held controller seeds.'
     protocol_name=opts.supervised_budget_arm+'-protocol.json'
+if opts.calibration_arm:
+    plan['seeds']=list(range(793001,793013));plan['training']='Identical supervised network; only movement sampling temperature differs.'
+    protocol_name=opts.calibration_arm+'-protocol.json'
 save_json(root/protocol_name,plan);torch.set_num_threads(1)
 
 def play(arm,seed):
@@ -137,7 +145,7 @@ if extra:
         pair=['frequency','transition'] if i%2==0 else ['transition','frequency']
         jobs.append(('expanded',787001+i))
         jobs.extend((arm,788001+i) for arm in pair)
-elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm or opts.supervised_budget_arm:
+elif opts.ppo_generation or opts.transfer_arm or opts.anchor_arm or opts.supervised_budget_arm or opts.calibration_arm:
     jobs=[(next(iter(models)),seed) for seed in plan['seeds']]
 else:jobs=[(arm,seed) for i,seed in enumerate(plan['seeds']) for arm in (['sft','ppo1'] if i%2==0 else ['ppo1','sft'])]
 def retry(arm,seed):
