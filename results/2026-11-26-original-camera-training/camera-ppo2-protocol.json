@@ -1,0 +1,123 @@
+{
+  "name": "Second direct CNN PPO update on 16 new frozen behavior credits per original title",
+  "train_seeds": {
+    "10": [
+      755101,
+      755102,
+      755103,
+      755104,
+      755105,
+      755106,
+      755107,
+      755108,
+      755109,
+      755110,
+      755111,
+      755112,
+      755113,
+      755114,
+      755115,
+      755116
+    ],
+    "12": [
+      765101,
+      765102,
+      765103,
+      765104,
+      765105,
+      765106,
+      765107,
+      765108,
+      765109,
+      765110,
+      765111,
+      765112,
+      765113,
+      765114,
+      765115,
+      765116
+    ],
+    "13": [
+      775101,
+      775102,
+      775103,
+      775104,
+      775105,
+      775106,
+      775107,
+      775108,
+      775109,
+      775110,
+      775111,
+      775112,
+      775113,
+      775114,
+      775115,
+      775116
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      756001,
+      756002,
+      756003,
+      756004,
+      756005,
+      756006,
+      756007,
+      756008,
+      756009,
+      756010,
+      756011,
+      756012
+    ],
+    "12": [
+      766001,
+      766002,
+      766003,
+      766004,
+      766005,
+      766006,
+      766007,
+      766008,
+      766009,
+      766010,
+      766011,
+      766012
+    ],
+    "13": [
+      776001,
+      776002,
+      776003,
+      776004,
+      776005,
+      776006,
+      776007,
+      776008,
+      776009,
+      776010,
+      776011,
+      776012
+    ]
+  },
+  "reference_arm": "camera-ppo",
+  "candidate": "camera-ppo2",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "ppo": {
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "epochs": 4,
+    "batch_size_approx": 144,
+    "clip": 0.12,
+    "entropy": 0.002,
+    "value": 0.25,
+    "max_title_joint_kl": 0.025
+  },
+  "frozen": "Common controller seed within physical host on original Normal credits; title-specific stocks; no automatic shooting/bombing or geometric control.",
+  "interpretation": "Compare successive on-policy updates on a new seed block. Same reward and KL bound as the first camera PPO update."
+}

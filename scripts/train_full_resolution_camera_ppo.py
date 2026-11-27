@@ -108,11 +108,21 @@ def fit(model,data,lr,device):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    for key in ('manifest','protocol','sft','behavior','out'):p.add_argument('--'+key,required=True,type=Path)
+    for key in ('manifest','protocol','behavior','out'):p.add_argument('--'+key,required=True,type=Path)
+    initial=p.add_mutually_exclusive_group(required=True)
+    initial.add_argument('--sft',type=Path)
+    initial.add_argument('--parent-actor-critic',type=Path)
     a=p.parse_args();torch.set_num_threads(2);torch.manual_seed(261127)
+    # Native actors execute full FP32 convolutions on CPU. TF32 can shift a
+    # rare action's log probability enough to invalidate the behavior check.
+    torch.backends.cudnn.allow_tf32=False
+    torch.backends.cuda.matmul.allow_tf32=False
     device='cuda' if torch.cuda.is_available() else 'cpu'
-    camera=CameraPolicy();camera.load_state_dict(torch.load(a.sft,weights_only=True,map_location='cpu'))
-    model=CameraActorCritic(camera).to(device)
+    camera=CameraPolicy()
+    if a.sft:camera.load_state_dict(torch.load(a.sft,weights_only=True,map_location='cpu'))
+    model=CameraActorCritic(camera)
+    if a.parent_actor_critic:model.load_state_dict(torch.load(a.parent_actor_critic,weights_only=True,map_location='cpu'))
+    model=model.to(device)
     parent=sha(a.behavior);rows=json.loads(a.manifest.read_bytes());plan=json.loads(a.protocol.read_bytes())
     expected={(int(t),s) for t,seeds in plan['train_seeds'].items() for s in seeds}
     if {(r['title'],r['seed']) for r in rows}!=expected or len(rows)!=len(expected):
@@ -140,10 +150,11 @@ def main():
         for expected_tensor,actual in zip(model(fixture),script(fixture)):
             torch.testing.assert_close(expected_tensor,actual)
         script.save(str(a.out/'policy.ts'))
-    save_json(a.out/'report.json',dict(parent_sft_sha256=sha(a.sft),native_behavior_sha256=parent,
+    save_json(a.out/'report.json',dict(parent_sft_sha256=sha(a.sft) if a.sft else None,
+              parent_actor_critic_sha256=sha(a.parent_actor_critic) if a.parent_actor_critic else None,native_behavior_sha256=parent,
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
-              native_procedure="All four action heads and the spatial encoder receive gradients. The initial critic is zero; game-over is the only terminal in these trajectories."))
+              native_procedure="All four action heads and the spatial encoder receive gradients. The SFT critic initializes at zero; later generations restore the trained critic. Game-over and ending are full-credit terminals."))
 
 
 if __name__=='__main__':main()

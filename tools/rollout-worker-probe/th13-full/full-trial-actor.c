@@ -1,6 +1,10 @@
 #define _POSIX_C_SOURCE 200809L
 #include "x11_pixels.h"
+#ifdef TOHO_CAMERA_POLICY
+#include "camera_actor.h"
+#else
 #include "full_actor.h"
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <string.h>

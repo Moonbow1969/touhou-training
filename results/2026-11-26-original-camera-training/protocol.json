@@ -1,0 +1,164 @@
+{
+  "titles": [
+    10,
+    12,
+    13
+  ],
+  "train_seeds": {
+    "10": [
+      750101,
+      750102,
+      750103,
+      750104,
+      750105,
+      750106,
+      750107,
+      750108,
+      750109,
+      750110,
+      750111,
+      750112,
+      750113,
+      750114,
+      750115,
+      750116
+    ],
+    "12": [
+      760101,
+      760102,
+      760103,
+      760104,
+      760105,
+      760106,
+      760107,
+      760108,
+      760109,
+      760110,
+      760111,
+      760112,
+      760113,
+      760114,
+      760115,
+      760116
+    ],
+    "13": [
+      770101,
+      770102,
+      770103,
+      770104,
+      770105,
+      770106,
+      770107,
+      770108,
+      770109,
+      770110,
+      770111,
+      770112,
+      770113,
+      770114,
+      770115,
+      770116
+    ]
+  },
+  "eval_seeds": {
+    "10": [
+      751001,
+      751002,
+      751003,
+      751004,
+      751005,
+      751006,
+      751007,
+      751008,
+      751009,
+      751010,
+      751011,
+      751012
+    ],
+    "12": [
+      761001,
+      761002,
+      761003,
+      761004,
+      761005,
+      761006,
+      761007,
+      761008,
+      761009,
+      761010,
+      761011,
+      761012
+    ],
+    "13": [
+      771001,
+      771002,
+      771003,
+      771004,
+      771005,
+      771006,
+      771007,
+      771008,
+      771009,
+      771010,
+      771011,
+      771012
+    ]
+  },
+  "initialization": "Frozen PPO3 on 48 new original full credits, same loss per title and complete-credit GAE.",
+  "arms": [
+    "ppo3",
+    "ppo4"
+  ],
+  "eval": "Original full starting stock Normal. Separate native Game Over or ending per credit. Record whether Stage 2 was reached, first-entry stocks conditional on reach, last-playable and terminal resources, deaths, confirmed Bombs and elapsed/decisions. No continue. TH10 uses power rather than discrete Bomb stock. Exclude technical partials as censored and retry exact controller seed, retain original attempt. Native RNG uncontrolled. Match identical seeds and lanes where practical. Report n/d and Wilson 95% CI, paired discordances by title without pooling ranks or endpoints.",
+  "reward": {
+    "native_life_loss": -1,
+    "earned_life": 1,
+    "stage_advance": 2,
+    "valid_play_per_wall_second": 0.001,
+    "effective_bomb_same_life": -0.03
+  },
+  "ppo": {
+    "seed": 48214,
+    "gamma": 0.999,
+    "gae_lambda": 0.985,
+    "lr": 0.00012,
+    "epochs": 4,
+    "batch_size": 384,
+    "clip": 0.12,
+    "vf": 0.25,
+    "entropy": 0.002,
+    "max_title_kl": 0.025,
+    "human_camera_demonstrations": {
+      "coefficient": 0.25,
+      "history_dropout": 0.5,
+      "teacher_fraction": 0.2,
+      "sha256": "ffc198df4359104d94581667067d3172cc8c3cf616934a7c538bf29e65fd2647"
+    }
+  },
+  "round": 4,
+  "camera_sft_sha256": "967d171346671ec88a7a7ef41c43961141af90c4d57cd6ae8f0888b28b268a6b",
+  "human_replays": {
+    "train": [
+      {
+        "name": "th13_ud0a42-s1.npz",
+        "group": "mps16",
+        "sha256": "e6d5ff1ba80c6c43604d725060610c04fc05fee0e45eec9ba2e088b39d79b2d0",
+        "decisions": 2243
+      },
+      {
+        "name": "th13_ud0c5d-s1.npz",
+        "group": "aiz",
+        "sha256": "05f96dbbcd97961a767cbcac893fe9f5501ee13c6063fd97c361ba7c356a9115",
+        "decisions": 2249
+      }
+    ],
+    "held": [
+      {
+        "name": "th13_ud0cd3-s1.npz",
+        "group": "mon",
+        "sha256": "a3e032acb9e77af399403b767d4f7f171085721b60289f530eb6591d346681a6",
+        "decisions": 2243
+      }
+    ]
+  }
+}
