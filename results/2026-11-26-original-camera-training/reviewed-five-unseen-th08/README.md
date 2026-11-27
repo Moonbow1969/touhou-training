@@ -10,3 +10,5 @@ Both policies trained on TH10, TH11, TH12, TH13 and TH17. The supervised policy 
 All 32 endpoints were identified. The 95% paired stratified bootstrap intervals for the mean time difference were −8.57 to +18.35 seconds on Hard and −0.49 to +17.17 on Lunatic. Both arms used nine directions and the three learned buttons. The physical logs cover 19,634 decisions.
 
 [Per-seed outcomes and interval estimates](original-paired-results.json) · [Checkpoint lineage](verified-checkpoint-lineage.json) · [Trial registration](protocol.json)
+
+[All 16 Hard recordings and input traces](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-unseen-th08-th08-original-hard-held.zip) · [All 16 Lunatic recordings and input traces](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/reviewed-five-unseen-th08-th08-original-lunatic-held.zip)
