@@ -3,7 +3,9 @@ import argparse
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
+import tempfile
 import zipfile
 
 import numpy as np
@@ -39,6 +41,16 @@ def indexed(rows):
     return lookup
 
 
+def install_verified(target,data,checksum):
+    if hashlib.sha256(data).hexdigest()!=checksum:raise ValueError('Output digest changed before writing')
+    with tempfile.TemporaryDirectory(dir=target.parent) as temporary:
+        staged=Path(temporary)/target.name
+        staged.write_bytes(data)
+        try:os.link(staged,target)
+        except FileExistsError:
+            if digest(target)!=checksum:raise ValueError(f'Different existing output {target}')
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     choices=parser.add_subparsers(dest='mode',required=True)
@@ -56,20 +68,23 @@ def main():
         originals=indexed(json.loads((base/'credits.json').read_bytes()))
         report=json.loads((study/'policy/report.json').read_bytes())
         if rows.keys()!=originals.keys() or digest(manifest)!=report['manifest_sha256']:raise ValueError('Unexpected optimizer manifest')
-        with zipfile.ZipFile(args.patch,'w',zipfile.ZIP_STORED) as out:
-            out.write(manifest,'credits.json')
-            out.write(corrected/'clock-audit.json','clock-audit.json')
-            for name,entry in rows.items():
-                patch=None
-                if entry['title']==13:
-                    with np.load(corrected/name,allow_pickle=False) as actual:
-                        buff=io.BytesIO()
-                        np.savez_compressed(buff,native_ticks_earned=actual['native_ticks_earned'],reward=actual['reward'])
-                        patch=buff.getvalue()
-                    out.writestr('th13-rewards/'+name,patch)
-                rebuild((base/name).read_bytes(),entry,patch,originals[name])
-            out.writestr('integrity.json',json.dumps(dict(raw_manifest_sha256=digest(base/'credits.json'),
-                         corrected_manifest_sha256=digest(manifest),policy_sha256=report['policy_sha256']),indent=2)+'\n')
+        with tempfile.TemporaryDirectory(dir=args.patch.parent) as tmp:
+            staging=Path(tmp)/args.patch.name
+            with zipfile.ZipFile(staging,'w',zipfile.ZIP_STORED) as out:
+                out.write(manifest,'credits.json')
+                out.write(corrected/'clock-audit.json','clock-audit.json')
+                for name,entry in rows.items():
+                    patch=None
+                    if entry['title']==13:
+                        with np.load(corrected/name,allow_pickle=False) as actual:
+                            buff=io.BytesIO()
+                            np.savez_compressed(buff,native_ticks_earned=actual['native_ticks_earned'],reward=actual['reward'])
+                            patch=buff.getvalue()
+                        out.writestr('th13-rewards/'+name,patch)
+                    rebuild((base/name).read_bytes(),entry,patch,originals[name])
+                out.writestr('integrity.json',json.dumps(dict(raw_manifest_sha256=digest(base/'credits.json'),
+                             corrected_manifest_sha256=digest(manifest),policy_sha256=report['policy_sha256']),indent=2)+'\n')
+            staging.replace(args.patch)
         print('Reconstructed and verified',len(rows),'optimizer shards;',args.patch.stat().st_size,'correction bytes',flush=True)
     else:
         args.out.mkdir(parents=True,exist_ok=True)
@@ -87,10 +102,9 @@ def main():
                     continue
                 patch=delta.read('th13-rewards/'+name) if row['title']==13 else None
                 result=rebuild(raw.read(name),row,patch,originals[name])
-                with target.open('xb') as f:f.write(result)
+                install_verified(target,result,row['sha256'])
             evidence=args.out/'credits.json'
-            if evidence.exists() and evidence.read_bytes()!=manifests[1]:raise ValueError('Different output manifest exists')
-            evidence.write_bytes(manifests[1])
+            install_verified(evidence,manifests[1],hashes['corrected_manifest_sha256'])
         print('Restored',len(entries),'verified optimizer-ready shards',flush=True)
 
 

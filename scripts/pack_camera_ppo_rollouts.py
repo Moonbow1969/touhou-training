@@ -51,12 +51,16 @@ def main():
         target=a.out/f'th{title}-{seed}.npz'
         np.savez_compressed(target,frames=frames,**arrays)
         rank={}
-        boundary=r.get('covered_native_events',{}).get('postterminal_input_boundary')
-        if boundary is not None or 'native_action_eligible' in arrays:
+        native=r.get('covered_native_events',{})
+        boundary=native.get('postterminal_input_boundary')
+        measured=native.get('native_terminal_consumption')
+        if title==12 and (a.root/'th12-terminal-consumption-registration.json').exists() and measured is None:
+            raise ValueError('Missing registered original terminal input readback')
+        if boundary is not None or measured or 'native_action_eligible' in arrays:
             from scripts.th12_playable_actions import verify_source
             verified=verify_source(title,r,trace,receipt.parent.parent/'raw'/r['episode'])
-            if verified is None:raise ValueError('Missing native input-exclusion evidence')
-            rank['postterminal_input_boundary']=verified
+            if verified is not None:rank['postterminal_input_boundary']=verified
+            if measured:rank['native_terminal_consumption']=measured
         if 'rank_by_seed' in plan:
             from scripts.verify_original_difficulty import verify
             rank.update(verify(title,receipt,r,plan['rank_by_seed'][str(title)][str(seed)]))

@@ -24,11 +24,13 @@ def playable_length(title,mask,reward,boundary):
 
 
 def verify_source(title,receipt,trace,folder):
-    boundary=receipt.get('covered_native_events',{}).get('postterminal_input_boundary')
+    native=receipt.get('covered_native_events',{})
+    boundary=native.get('postterminal_input_boundary')
+    measured=native.get('native_terminal_consumption')
     if title!=12 and boundary is None:return None
     with np.load(trace,allow_pickle=False) as z:
         mask=z['native_action_eligible'] if 'native_action_eligible' in z else None
-        if boundary is None and mask is None:return None
+        if boundary is None and mask is None and measured is None:return None
         reward=z['reward'].reshape(-1)
         playable_length(title,mask,reward,boundary)
         fields={k:z[k] for k in ('onset_ns','observed_ns')}
@@ -36,10 +38,12 @@ def verify_source(title,receipt,trace,folder):
     path=Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th12-full/covered_events.py'
     spec=importlib.util.spec_from_file_location('th12_native_reward_evidence',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-    rebuilt=module.prepare(folder,fields,dict(receipt))
+    if measured and measured['schema']!='th12-native-consumption-v2':raise ValueError('Unregistered native consumption schema')
+    rebuilt=module.prepare(folder,fields,dict(receipt),verify_terminal_consumption=measured is not None)
     if rebuilt!=receipt['covered_native_events'] or rebuilt['live_interval_gaps']:
         raise ValueError('Reconstructed TH12 original input consumption differs')
-    np.testing.assert_array_equal(mask,fields['native_action_eligible'])
+    if mask is not None:np.testing.assert_array_equal(mask,fields['native_action_eligible'])
+    elif 'native_action_eligible' in fields:raise ValueError('Missing observed native eligibility mask')
     np.testing.assert_array_equal(reward,fields['reward'].reshape(-1))
     np.testing.assert_array_equal(parts,fields['reward_parts'])
     return boundary

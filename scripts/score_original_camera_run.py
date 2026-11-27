@@ -134,11 +134,12 @@ def verify(title, f, r, trace, arm, out):
         y=z["action"];done=z["terminated"].astype(bool)
         if len(y)!=steps or not done[-1] or done[:-1].any():raise ValueError("Invalid full-credit action trace")
         raw_steps=steps
-        if "native_action_eligible" in z or r.get('covered_native_events',{}).get('postterminal_input_boundary'):
+        native=r.get('covered_native_events',{})
+        if "native_action_eligible" in z or native.get('postterminal_input_boundary') or native.get('native_terminal_consumption'):
             from scripts.th12_playable_actions import verify_source
             boundary=verify_source(title,r,trace,raw)
-            if boundary is None:raise ValueError('Missing terminal input consumption evidence')
-            steps=boundary['live_actions'];y=y[:steps]
+            if boundary is not None:
+                steps=boundary['live_actions'];y=y[:steps]
         counts=[np.bincount(y[:,k].astype(int),minlength=n).tolist() for k,n in enumerate((9,2,2,2))]
         if "stage" in z and "native_frame" in z:
             s1=z["native_frame"][z["stage"]==1]
@@ -192,6 +193,8 @@ def main():
         r=json.loads(f.read_bytes()); arm=hashes.get(r.get("policy_sha256"))
         key=(t,r.get("seed"),arm)
         if key not in wanted:continue
+        if t==12 and (args.root/'th12-terminal-consumption-registration.json').exists() and not r.get('covered_native_events',{}).get('native_terminal_consumption'):
+            raise ValueError('Missing registered TH12 terminal consumption evidence')
         if t==13 and not r.get("ranking_photo"):continue
         trace=f.parent/("trajectory.npz" if t==11 else r.get("behavior",r.get("trajectory",r.get("file","missing"))))
         if key in found:raise ValueError(f"Duplicate native credit {key}")
