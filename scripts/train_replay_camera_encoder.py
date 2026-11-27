@@ -1,5 +1,6 @@
 """Learn spatial features from native training credits and a four-head policy from aligned human replay cameras."""
 import argparse
+from collections import OrderedDict
 import hashlib
 import json
 from pathlib import Path
@@ -15,6 +16,30 @@ from scripts.probe_full_action_player_vision import metrics
 from scripts.train_portable_full_sft import WIDTHS
 
 
+class SpatialContext(nn.Module):
+    """Residual self-attention over the policy's 7 by 6 spatial feature grid."""
+
+    def __init__(self):
+        super().__init__()
+        self.input = nn.Linear(24, 96)
+        self.position = nn.Parameter(torch.randn(1, 42, 96) * .02)
+        self.norm = nn.LayerNorm(96)
+        self.qkv = nn.Linear(96, 288)
+        self.mix = nn.Linear(96, 96)
+        self.ff = nn.Sequential(nn.LayerNorm(96), nn.Linear(96, 192), nn.GELU(), nn.Linear(192, 96))
+        self.output = nn.Linear(96, 24)
+        nn.init.zeros_(self.output.weight)
+        nn.init.zeros_(self.output.bias)
+
+    def forward(self, grid):
+        tokens = self.input(grid.flatten(2).transpose(1, 2)) + self.position
+        q, k, v = self.qkv(self.norm(tokens)).reshape(-1, 42, 3, 4, 24).permute(2, 0, 3, 1, 4).unbind(0)
+        attention = ((q @ k.transpose(-2, -1)) * (24 ** -.5)).softmax(-1)
+        tokens = tokens + self.mix((attention @ v).transpose(1, 2).reshape(-1, 42, 96))
+        residual = self.output(tokens + self.ff(tokens))
+        return grid + residual.transpose(1, 2).reshape_as(grid)
+
+
 class CameraPolicy(nn.Module):
     def __init__(self):
         super().__init__()
@@ -28,6 +53,14 @@ class CameraPolicy(nn.Module):
 
     def forward(self, x):
         return self.policy(self.spatial(x)).split(WIDTHS, dim=1)
+
+    def add_spatial_context(self):
+        if 'spatial_context' in self.policy._modules:
+            raise ValueError('Spatial attention already installed')
+        layers = list(self.policy.named_children())
+        with torch.random.fork_rng(devices=[]):
+            context = SpatialContext()
+        self.policy = nn.Sequential(OrderedDict(layers[:3] + [('spatial_context', context)] + layers[3:]))
 
 
 def save_json(path, data):

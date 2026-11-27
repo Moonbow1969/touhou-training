@@ -112,6 +112,7 @@ def main():
     parser.add_argument("--natural-movement-frequency",action="store_true",
                         help="Importance-correct movement cross entropy for the transition-enriched sampler.")
     parser.add_argument("--balance-titles",action="store_true",help="Give each original title equal sampling mass.")
+    parser.add_argument("--spatial-attention",action="store_true",help="Learn residual multihead attention on the spatial policy grid.")
     parser.add_argument("--mixed-difference-lags",action="store_true",help="Mix four- and eight-tick camera differences while preserving the same future action labels.")
     parser.add_argument("--player-location-weight",type=float,default=0.,help="Auxiliary original player-location prediction during SFT; runtime inputs remain camera only.")
     args=parser.parse_args();torch.set_num_threads(2);torch.manual_seed(261126)
@@ -123,8 +124,11 @@ def main():
     if {r["sha256"] for r in train}&{r["sha256"] for r in held}:
         raise ValueError("Repeated replay file across partitions")
     args.out.mkdir(parents=True,exist_ok=False)
-    model=CameraPolicy().to(device)
+    model=CameraPolicy()
     model.load_state_dict(torch.load(args.encoder,weights_only=True,map_location=device))
+    if args.spatial_attention:
+        model.add_spatial_context()
+    model=model.to(device)
     reference=FullActor.from_bin(args.reference).to(device).eval()
     opt=torch.optim.AdamW([{"params":model.spatial.parameters(),"lr":.00015},
                            {"params":model.policy.parameters(),"lr":.0005}],weight_decay=.001)
@@ -218,6 +222,8 @@ def main():
               "natural_movement_frequency":args.natural_movement_frequency,
               "title_balanced":args.balance_titles,
               "player_location_weight":args.player_location_weight,
+              "spatial_attention":args.spatial_attention,
+              "deployed_actor_parameters":sum(p.numel() for p in (*model.spatial.parameters(),*model.policy.parameters())),
               "camera_difference_native_ticks":[4,8] if args.mixed_difference_lags else [4],
               "sft":sha(weights),"steps":args.steps,"label_smoothing":.025,"metrics":report,
               "torchscript_sha256":sha(args.out/"policy.ts"),"demo_sha256":sha(args.out/"training-demonstrations.npz")})

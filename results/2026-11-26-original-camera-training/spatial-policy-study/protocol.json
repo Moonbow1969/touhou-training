@@ -1,0 +1,188 @@
+{
+  "hypothesis": "Test whether learned spatial self-attention across the visual policy grid improves held-pilot movement decisions after expanding TH13 Stage 2 replay coverage. Native location prediction improved on original agent-visited frames without clear changes in movement imitation.",
+  "arms": [
+    "cnn",
+    "spatial-attention"
+  ],
+  "train_steps": 12000,
+  "presentations": 768000,
+  "player_location_weight": 0.15,
+  "shared": "Frozen source players, stages, four heads, PPO-compatible camera, visual initialization, sampling, random augmentation, four-step targets, and optimizer. The attention residual projects to zero at initialization.",
+  "endpoints": "Equal-shard movement NLL and movement-change NLL, pooled held accuracy, rare Bomb onset AP. Original whole-credit evidence is separate from offline inference.",
+  "split": {
+    "train": [
+      {
+        "file": "human-cross-title-v2/train/th10-gensokyo-4343-s1.npz",
+        "sha256": "1be2663f1bd29884a16143c2fe384e522fa0c79a3a617e6b468873bd65575d92",
+        "player": "geomil"
+      },
+      {
+        "file": "human-cross-title-v2/train/th10-gensokyo-4343-s2.npz",
+        "sha256": "53b86842dc9a143079a03b9a240c25a63ca740691eae7daed9eaa3d7baa17279",
+        "player": "geomil"
+      },
+      {
+        "file": "human-cross-title-v2/train/th10-gensokyo-17749-s1.npz",
+        "sha256": "43538ecf7179ed877c30b60d07060e60a4883799a95551cc765f85012d9b0a1a",
+        "player": "mikkey"
+      },
+      {
+        "file": "human-cross-title-v2/train/th10-gensokyo-27829-s1.npz",
+        "sha256": "c94f52c5f37f7aa5ccb2f04ae810049b80c2da4be5d6ac6f2fc8950644d79fe8",
+        "player": "minogame"
+      },
+      {
+        "file": "human-cross-title-v2/train/th10-gensokyo-20167-s1.npz",
+        "sha256": "77015562d78b1d3d158a102714a363f15ebe46297543e65628b9e224da4111e3",
+        "player": "chirpy13"
+      },
+      {
+        "file": "human-cross-title-bomb-train/train/th10-gensokyo-17749-s6.npz",
+        "sha256": "a1e3c4327654db1795bbb8d105c22dca1463cddb5e9bca158754b9d7f48c49c2",
+        "player": "mikkey"
+      },
+      {
+        "file": "human-cross-title-v2/train/th12-gensokyo-33473-s1.npz",
+        "sha256": "41a8128c5e5d8683df53eb0f4d0b50f0c0402c99271918f5509cd954f795014e",
+        "player": "legs"
+      },
+      {
+        "file": "human-cross-title-v2/train/th12-gensokyo-33473-s2.npz",
+        "sha256": "f8123d51c2c9c3692cc3c8ad8ba64d87334497c3a0d0c4f517bebd544e500c0a",
+        "player": "legs"
+      },
+      {
+        "file": "human-cross-title-v2/train/th12-gensokyo-14658-s1.npz",
+        "sha256": "b7699f94fc252d8271a74d136ce5b1487834cd0f21ab6fae8938d2fa45187840",
+        "player": "reddo"
+      },
+      {
+        "file": "human-cross-title-v2/train/th12-gensokyo-18009-s1.npz",
+        "sha256": "ef975d5e4137bac562bf2f5edd1a1b338ef1563046b737238bfbba1b40e0e18e",
+        "player": "addatoho"
+      },
+      {
+        "file": "human-cross-title-v2/train/th12-gensokyo-6041-s1.npz",
+        "sha256": "c02af6198c4b7ac97c326e556b1aa5184f74dbf09dc5f0b4e583770b5e8c4ad3",
+        "player": "cookie"
+      },
+      {
+        "file": "human-cross-title-bomb-train/train/th12-gensokyo-14658-s5.npz",
+        "sha256": "8c164a97c9188998ad68cfa6ad0b7de958b5678bb16a5543af3c7ae368de3edb",
+        "player": "reddo"
+      },
+      {
+        "file": "human-cross-title-bomb-train/train/th12-gensokyo-18009-s5.npz",
+        "sha256": "5bf49a6654709e4ef9449276274ca6a26723fd73361d8f469bd6243ad459b5f9",
+        "player": "addatoho"
+      },
+      {
+        "file": "human-cross-title-bomb-train/train/th12-gensokyo-6041-s6.npz",
+        "sha256": "4683dbe5bbee800853071c163d2bea2edbb8a0b729a81b78338c67000dc8714b",
+        "player": "cookie"
+      },
+      {
+        "file": "human/train/th13_ud0a42-s1.npz",
+        "sha256": "e6d5ff1ba80c6c43604d725060610c04fc05fee0e45eec9ba2e088b39d79b2d0",
+        "player": "mps16"
+      },
+      {
+        "file": "human/train/th13_ud0a42-s2.npz",
+        "sha256": "18f70fdf2cc033f8ad3abffe4a2559754a23bae4b44893f70ac61fd10ca75743",
+        "player": "mps16"
+      },
+      {
+        "file": "human/train/th13_ud0adb-s1.npz",
+        "sha256": "243166093cbd27347ebaff55c1d0bd2faa29ce193bb296acfc98cb71068ff512",
+        "player": "k@g"
+      },
+      {
+        "file": "human/train/th13_ud0adb-s2.npz",
+        "sha256": "819c7531fef2d05a5e6ffa900efab5f699c413baf7303d29e83d8bca5019ef9a",
+        "player": "k@g"
+      },
+      {
+        "file": "human/train/th13_ud0b9f-s1.npz",
+        "sha256": "7c3ae5393bc8f6074084b77d25558bbeef17ee52fc2204a075fc2c3eceb40ef8",
+        "player": "edamame"
+      },
+      {
+        "file": "human/train/th13_ud0bf1-s1.npz",
+        "sha256": "70012a4311ae2a9bd9024076d7d26265fa5857b42612992a8f3c1dfd4a2c8445",
+        "player": "sikieimu"
+      },
+      {
+        "file": "human/train/th13_ud0c5d-s1.npz",
+        "sha256": "05f96dbbcd97961a767cbcac893fe9f5501ee13c6063fd97c361ba7c356a9115",
+        "player": "aiz"
+      },
+      {
+        "file": "human/train/th13_ud0c5d-s2.npz",
+        "sha256": "99ec04affcd5aefa15542db39df3fb17b438c48b6636103df063e011818823fc",
+        "player": "aiz"
+      },
+      {
+        "file": "human/train/th13_ud0c76-s1.npz",
+        "sha256": "3d536ad510ade8e00475f94636f5b0c9c7db59944807b1bc7fcbc8b33c7750c8",
+        "player": "star4res"
+      },
+      {
+        "file": "human/train/th13_ud0c76-s2.npz",
+        "sha256": "ac1adf9b0a50a836089391fae882ce7bf00f79bcc23a3efad51f9848ccfed8ed",
+        "player": "star4res"
+      }
+    ],
+    "held": [
+      {
+        "file": "human-cross-title-v2/held/th10-gensokyo-2749-s1.npz",
+        "sha256": "15f06a168be277e939313be7a22fcd9e42aa6a27257095c54152feb936c305c7",
+        "player": "duckator"
+      },
+      {
+        "file": "human-cross-title-v2/held/th10-gensokyo-2749-s2.npz",
+        "sha256": "3ea1d82c7e283b130d9275f8dac8f6a0c135bf6ce4c616ba180aad3751c885ed",
+        "player": "duckator"
+      },
+      {
+        "file": "human-cross-title-v2/held/th10-gensokyo-7045-s1.npz",
+        "sha256": "feeb4a8c895552bbde1a75d59d13003a25445111a79845364c6e417ed16f1bbe",
+        "player": "funen1"
+      },
+      {
+        "file": "human-cross-title-v2/held/th12-gensokyo-39322-s1.npz",
+        "sha256": "c61994bdac7b26e913460f9e6da9b638a9ea86695aa68f541a8b5fcb93fcf45d",
+        "player": "benji"
+      },
+      {
+        "file": "human-cross-title-v2/held/th12-gensokyo-39322-s2.npz",
+        "sha256": "50bc3bb75f74e25f0a857f3a02034fa7453816dfd63cf548e8f943cfb1b33080",
+        "player": "benji"
+      },
+      {
+        "file": "human-cross-title-v2/held/th12-gensokyo-12658-s1.npz",
+        "sha256": "e7ec4f1a273bc9dcff52c3c8a68e57057fd0912b853f4d589e4fd8146690ffdd",
+        "player": "naut"
+      },
+      {
+        "file": "human/held/th13_ud0cd3-s1.npz",
+        "sha256": "a3e032acb9e77af399403b767d4f7f171085721b60289f530eb6591d346681a6",
+        "player": "mon"
+      },
+      {
+        "file": "human/held/th13_ud0cd3-s2.npz",
+        "sha256": "c64c37bc0c8fb0416a9ee90d8399f052e0f16d149b85fdc392deb1d50e0f5d6d",
+        "player": "mon"
+      },
+      {
+        "file": "human/held/th13_ud0d02-s1.npz",
+        "sha256": "aba85d7fe9ddbf5cb6021fa26b6b8d93ba7edb62297885896d9431fa24ecb535",
+        "player": "shaoflan"
+      },
+      {
+        "file": "human/held/th13_ud0d02-s2.npz",
+        "sha256": "2f3106c84e3af936e87b54659a34beb55fc5056b117125527978ec99b6883212",
+        "player": "shaoflan"
+      }
+    ]
+  }
+}

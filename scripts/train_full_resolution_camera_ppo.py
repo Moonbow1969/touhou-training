@@ -155,9 +155,12 @@ def main():
     torch.backends.cuda.matmul.allow_tf32=False
     device='cuda' if torch.cuda.is_available() else 'cpu'
     camera=CameraPolicy()
-    if a.sft:camera.load_state_dict(torch.load(a.sft,weights_only=True,map_location='cpu'))
+    state=torch.load(a.sft or a.parent_actor_critic,weights_only=True,map_location='cpu')
+    if any('policy.spatial_context.' in name for name in state):
+        camera.add_spatial_context()
+    if a.sft:camera.load_state_dict(state)
     model=CameraActorCritic(camera)
-    if a.parent_actor_critic:model.load_state_dict(torch.load(a.parent_actor_critic,weights_only=True,map_location='cpu'))
+    if a.parent_actor_critic:model.load_state_dict(state)
     model=model.to(device)
     parent=sha(a.behavior);rows=json.loads(a.manifest.read_bytes());plan=json.loads(a.protocol.read_bytes())
     expected={(int(t),s) for t,seeds in plan['train_seeds'].items() for s in seeds}
