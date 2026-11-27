@@ -7,9 +7,16 @@ import numpy as np
 import torch
 from torch.nn import functional as F
 
-from scripts.pretrain_policy import label_actions
+from scripts.pretrain_policy import movement_direction
 from scripts.train_portable_full_sft import FullActor, WIDTHS
 from scripts.train_replay_camera_encoder import CameraPolicy, channels, save_json, sha
+
+
+def camera_labels(words):
+    """Decode the next tick at a camera boundary; retain short Bomb taps inside the window."""
+    first = words[:, 0]
+    return np.column_stack((movement_direction(first), (first & 8) != 0,
+                            (first & 1) != 0, ((words & 2) != 0).any(1))).astype(np.int64)
 
 
 def load_replay(path):
@@ -23,7 +30,7 @@ def load_replay(path):
         valid = z["stable"].astype(bool) if "stable" in z else np.ones(len(obs), dtype=bool)
     if obs.dtype != np.uint8 or obs.shape != (len(frame),112,96) or chunk.shape != (len(frame),4):
         raise ValueError(f"Camera/control layout differs: {path}")
-    if not np.array_equal(actions, label_actions(chunk)):
+    if not np.array_equal(actions, camera_labels(chunk)):
         raise ValueError(f"Decoded replay controls disagree with stored action heads: {path}")
     idx = np.arange(len(frame))
     continuous = (idx >= 1) & (frame - np.roll(frame,1) == 4)
@@ -36,7 +43,7 @@ def load_replay(path):
     if past is not None:
         if past.shape!=(len(frame),8):
             raise ValueError("Expected eight strictly preceding decoded control words")
-        last, older = label_actions(past[:,4:]), label_actions(past[:,:4])
+        last, older = camera_labels(past[:,4:]), camera_labels(past[:,:4])
     else:
         last, older = np.roll(actions,1,axis=0), np.roll(actions,2,axis=0)
         continuous &= (idx>=2) & (frame-np.roll(frame,2)==8)
@@ -71,6 +78,10 @@ def evaluation(r, probs):
                       "movement_nll":float(-np.log(np.maximum(probs[0][ids,truth[ids,0]],1e-9)).mean()) if len(ids) else None}
     result["head_accuracy"]=(guess==truth).mean(0).tolist()
     result["bomb_onsets"]=int(((prior[:,3]==0)&(truth[:,3]==1)).sum())
+    result["movement_confusion_true_by_predicted"]=np.bincount(truth[:,0]*9+guess[:,0],minlength=81).reshape(9,9).tolist()
+    result["bomb"]={"positives":int(truth[:,3].sum()),"predicted_positive_argmax":int(guess[:,3].sum()),
+                    "mean_p_on_bomb_rows":float(probs[3][truth[:,3]==1,1].mean()) if truth[:,3].any() else None,
+                    "mean_p_on_other_rows":float(probs[3][truth[:,3]==0,1].mean()) if (truth[:,3]==0).any() else None}
     return result
 
 

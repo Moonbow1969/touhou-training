@@ -1,0 +1,46 @@
+{
+  "protocol": "TH13 PC retail 1.00c, original human replay observation/action pairing",
+  "camera": {
+    "source": "stock game window rendered via PIL ImageGrab.grab(window=HWND)",
+    "client_px": [
+      640,
+      480
+    ],
+    "crop_xywh": [
+      32,
+      16,
+      384,
+      448
+    ],
+    "grayscale": "PIL RGB→L then resample BOX 96x112"
+  },
+  "clock": {
+    "sampling_stride_native_ticks": 4,
+    "stability": "native stage and stage tick and input word must agree on both sides of the actual pixel grab",
+    "lattice": "next native tick divisible by 4 where available; true observed ticks retained",
+    "mode": "only controllable play; excludes dialogue, ending and respawn; read gaps from native_frame"
+  },
+  "schema": {
+    "obs": "uint8 [N,112,96]",
+    "action": "int64 [N,4]: first next tick move, focus, shoot. Bomb is OR across upcoming four ticks.",
+    "native_frame": "int64 [N], stock stage timer",
+    "native_input": "uint16 [N], observed physical replay word on screenshot tick",
+    "input_chunk": "uint16 [N,4], replay words at validated native index+1..+4",
+    "past_input_chunk": "uint16 [N,8], replay words at native index-7..0 inclusive. Last entry is the action already applied on camera tick.",
+    "xy": "float32 [N,2], native player center. Pixel center on output image approximately (48+x/4,y/4). Diagnostic only",
+    "stable": "bool [N]"
+  },
+  "decoded_input_bits": {
+    "shoot": 1,
+    "bomb": 2,
+    "focus": 8,
+    "up": 16,
+    "down": 32,
+    "left": 64,
+    "right": 128
+  },
+  "movement": "row-major ([up-left,up,up-right],[left,neutral,right],[down-left,down,down-right])",
+  "grouping": "Entire source player belongs to exactly one split. Held maps to existing upstream validation split. Use native_frame for contiguous windows; never bridge players or missing chunks.",
+  "quality": "Measure native input agreement over decoded native index offsets [-60,+60] on moving controllable frames. Require ≥97% best-offset agreement, then keep only individually exact words. Separate audit also tests movement-vs-coordinate phase and original image correspondence.",
+  "design": "Stage 1 first at several difficulties and shots, chosen before capture. Corpus is replay-selected and native stock game RNG is replay-fixed. Independent gameplay outcomes are reported by the online evaluation separately."
+}
