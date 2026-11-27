@@ -1,0 +1,26 @@
+{
+  "host": "accelerator",
+  "cpu_threads": 1,
+  "batch_size": 1,
+  "torch_version": "2.15.0+cpu",
+  "protocol": "128 preselected camera pairs from engineering seed 967301, 3 repeated passes, alternating actor invocation order, both policies warm; excludes screen capture, socket and keyboard injection. Original rollout workers ran concurrently.",
+  "input_frame_count": 900,
+  "policy_sha256": {
+    "v2-sft": "79feff3444aae72c83cdc478444d553de7bbeab3bde5b736ad74eef90662122a",
+    "spatial-attention": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2"
+  },
+  "results": {
+    "v2-sft": {
+      "n": 384,
+      "p50_ms": 2.0764519999999997,
+      "p95_ms": 2.1539288500000002,
+      "mean_ms": 2.0792484453125
+    },
+    "spatial-attention": {
+      "n": 384,
+      "p50_ms": 2.2515755000000004,
+      "p95_ms": 2.34896065,
+      "mean_ms": 2.257858453125
+    }
+  }
+}

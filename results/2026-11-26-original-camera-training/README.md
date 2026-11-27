@@ -196,3 +196,5 @@ The two frozen policies completed all 72 registered original Normal credits. Eac
 | TH10 | 0.142 → 0.000 Power | 12 → 16 | 46.31 → 42.36 |
 | TH12 | 0.67 → 1.00 Bombs | 44 → 45 | 74.37 → 69.08 |
 | TH13 | 0.08 → 0.58 Bombs | 62 → 56 | 113.40 → 92.85 |
+
+The six-panel recording replays every captured decision of the lowest registered seed for each title and arm. The panel labels list movement, focus, shot and Bomb, followed by the verified original endpoint and resources. Playback uses 15 decisions per second, so wall clocks and game clocks can differ between panels. [Fourteen-player SFT and PPO full credits](v2-online/evaluation/fourteen-player-sft-ppo.mp4) · [Video checksum and source credits](v2-online/evaluation/fourteen-player-sft-ppo.json)
