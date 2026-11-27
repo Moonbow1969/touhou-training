@@ -9,6 +9,15 @@ from scripts.checkpoint_storage import digest
 from scripts.train_human_camera_policy import load_replay
 
 
+def onset_labels(path):
+    with np.load(path,allow_pickle=False) as z:
+        future=(z['input_chunk']&2)!=0;past=(z['past_input_chunk'][:,-1:]&2)!=0
+        words=np.column_stack((past,future));rises=(~words[:,:-1])&words[:,1:]
+        tick=z['native_frame'].astype(int)
+        keep=z['stable'].astype(bool)&np.r_[False,np.diff(tick)==4]
+        return rises.any(1)[keep],int(rises[keep].sum())
+
+
 def score(prob,truth):
     n=len(truth);positives=int(truth.sum())
     order=np.argsort(-prob,kind='stable')
@@ -31,14 +40,9 @@ def main():
     torch.set_num_threads(2);data=[]
     for path in a.held:
         row=load_replay(path)
-        with np.load(path,allow_pickle=False) as z:
-            future=(z['input_chunk']&2)!=0;past=(z['past_input_chunk'][:,-1:]&2)!=0
-            words=np.column_stack((past,future));rises=(~words[:,:-1])&words[:,1:]
-            tick=z['native_frame'].astype(int)
-            keep=z['stable'].astype(bool)&np.r_[False,np.diff(tick)==4]
-            target=rises.any(1)[keep]
+        target,edges=onset_labels(path)
         if len(target)!=len(row['raw']):raise ValueError('Causal human action and onset windows differ')
-        data.append((row,target,int(rises[keep].sum())))
+        data.append((row,target,edges))
     report={}
     with torch.inference_mode():
         for folder in a.models:
