@@ -1,4 +1,4 @@
-"""Count genuine per-title and per-rank transitions for the four-game policy series and TH11."""
+"""Count distinct Hard and Lunatic original-game interactions by title before optimizer repetition."""
 import argparse
 from collections import Counter
 import json
@@ -13,8 +13,9 @@ def main():
     args=parser.parse_args()
     data=args.data.resolve()
     studies=['high-rank-online','four-game-online','four-game-ppo-generation2','four-game-merged-online',
-             'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3']
-    counts=Counter();seen=set();reports={}
+             'th11-original-ppo','human78-online-covered','five-game-generation2','direction-feedback-original-ppo','five-game-generation3',
+             'six-game-online/first-eight','six-game-online/joint-six']
+    counts=Counter();seen=set();steps_by_source={};reports={}
     for study in studies:
         path=data/study/'policy/report.json'
         if not path.exists():continue
@@ -22,13 +23,23 @@ def main():
         if result['policy_sha256']!=digest(path.with_name('policy.ts')):
             raise ValueError(f'Unverified fitted {study} checkpoint')
         reports[study]=dict(learner_report_sha256=digest(path),checkpoint=result['policy_sha256'],steps=result['steps'])
+        local=set()
+        reused_sources=0
         for c in result['credits']:
             key=(c['title'],c['seed'],result['native_behavior_sha256'])
-            if key in seen:raise ValueError(f'Duplicate original credit {key}')
-            seen.add(key)
+            if key in local:raise ValueError(f'Duplicate credit within one update {key}')
+            local.add(key)
+            if key in seen:
+                if study!='six-game-online/joint-six' or steps_by_source[key]!=c['steps']:
+                    raise ValueError(f'Unexpected repeated original credit {key}')
+                reused_sources+=1
+                continue
+            seen.add(key);steps_by_source[key]=c['steps']
             counts[c['title'],c['difficulty'],'credits']+=1
             counts[c['title'],c['difficulty'],'decisions']+=c['steps']
-    table={f'TH{t}':{name:{k:counts[t,r,k] for k in ('credits','decisions')} for r,name in ((2,'Hard'),(3,'Lunatic'))}
+        reports[study]['new_original_credits']=len(local)-reused_sources
+        reports[study]['previously_counted_original_credits']=reused_sources
+    table={f'TH{t:02}':{name:{k:counts[t,r,k] for k in ('credits','decisions')} for r,name in ((2,'Hard'),(3,'Lunatic'))}
            for t in sorted({k[0] for k in counts})}
     reused={}
     for study in ('merged-three-control-coverage','five-game-online','five-game-th11-score'):

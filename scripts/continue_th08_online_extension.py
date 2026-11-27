@@ -47,10 +47,36 @@ def launch(assets,policy,folder,rank,seed,role):
                     '--role',role,'--verified-menu'],check=True)
 
 
+def launch_after_entry_failures(assets,policy,base,rank,seed,role):
+    history=[]
+    for number in range(1,4):
+        folder=base if number==1 else base.with_name(base.name+f'-entry-{number}')
+        if (folder/'receipt.json').is_file():
+            return folder,history
+        if (folder/'protocol.json').exists():
+            if (folder/'first-policy-frame.png').exists():
+                raise RuntimeError(f'Unfinished original gameplay in {folder.name}')
+        else:
+            try:
+                if (base/'original-stream').exists() and folder!=base:
+                    folder.mkdir(exist_ok=True)
+                    import os
+                    if not (folder/'original-stream').exists():os.link(base/'original-stream',folder/'original-stream')
+                launch(assets,policy,folder,rank,seed,role)
+                return folder,history
+            except subprocess.CalledProcessError:
+                if (folder/'first-policy-frame.png').exists():
+                    raise
+        history.append(dict(folder=folder.name,policy_decisions=0,
+                            protocol_sha256=digest(folder/'protocol.json'),reason='Game worker exited before first policy observation'))
+    raise RuntimeError(f'Three failed game entries for {seed}')
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('data','assets'):
         p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--only-rank',choices=('Hard','Lunatic'))
     a=p.parse_args();data=a.data.resolve();assets=a.assets.resolve();root=data/'six-game-online'
     plan=read(root/'protocol.json');amend=read(root/'technical-menu-amendment.json')
     equivalent=root/'runner-source-equivalence.json'
@@ -78,7 +104,7 @@ def main():
                 if (original/'receipt.json').is_file() and read(original/'receipt.json')['outcome']!='original_continue_prompt':
                     original_stopped=True
                 continue
-            rejected=[]
+            rejected=[];entries=[]
             for attempt in range(3):
                 seed=slot+attempt*10000
                 folder=root/'native08'/f'train-five-ppo2-{seed}'
@@ -88,7 +114,9 @@ def main():
                         while not receipt.is_file():
                             time.sleep(5)
                     else:
-                        launch(assets,policy,folder,rank,seed,'train')
+                        folder,entry_failures=launch_after_entry_failures(assets,policy,folder,rank,seed,'train')
+                        entries.extend(entry_failures)
+                        receipt=folder/'receipt.json'
                 physical=read(receipt)
                 if attempt==0 and physical['outcome']!='original_continue_prompt':
                     original_stopped=True
@@ -98,7 +126,7 @@ def main():
                     atomic_json(staging/f'{slot}-rejected-{seed}.json',bad)
                     print('Excluded incomplete physical attempt',slot,seed,bad['reason'],flush=True)
                     continue
-                result.update(slot=slot,selected_seed=seed,rejected_attempts=rejected,
+                result.update(slot=slot,selected_seed=seed,rejected_attempts=rejected,technical_entries=entries,
                               registration_sha256=digest(root/'technical-menu-amendment.json'))
                 atomic_json(output,result)
                 print('Selected physical credit',slot,seed,result['audit']['decisions'],flush=True)
@@ -106,7 +134,7 @@ def main():
             else:
                 raise ValueError(f'Both registered reserves exhausted for {slot}')
     with ThreadPoolExecutor(2) as pool:
-        tasks=[pool.submit(lane,rank) for rank in ('Hard','Lunatic')]
+        tasks=[pool.submit(lane,rank) for rank in ((a.only_rank,) if a.only_rank else ('Hard','Lunatic'))]
         for task in tasks:task.result()
 
 

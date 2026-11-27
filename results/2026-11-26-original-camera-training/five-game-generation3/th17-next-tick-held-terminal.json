@@ -1,0 +1,109 @@
+{
+  "native_original": {
+    "difficulty": 3,
+    "difficulty_verified_native_samples": 4345,
+    "difficulty_evidence_sha256": "cbd2df9886c55c7a86b7923f64566f58459c1016d9da0035da5c2a387fa6ec9a",
+    "stage2_reached": false,
+    "stage2_spares": null,
+    "stage2_bombs": null,
+    "effective_bombs": 7,
+    "stage2_evidence_sha256": "cbd2df9886c55c7a86b7923f64566f58459c1016d9da0035da5c2a387fa6ec9a",
+    "terminal_bombs": 3,
+    "last_playable_bombs": 1,
+    "last_playable_stage1_tick": 4311
+  },
+  "frozen_camera": {
+    "actions": 1036,
+    "policy_sha256": "b7d33148162c8a547a7cd9f49bca30d8e5f83053fb8a8c5f899d116ab5f57fd2",
+    "trajectory_sha256": "0575642d38c79fd0f5ffa609748bc1e3b810082308c53e8c9f234ce772fbdae3",
+    "mean_direction_non_neutral": 0.6949806809425354,
+    "model_input": "actual pre-action grayscale plus consecutive absolute difference, initial difference zero",
+    "maximum_head_logp_error": [
+      3.0994415283203125e-06,
+      3.5762786865234375e-06,
+      3.0994415283203125e-06,
+      1.430511474609375e-06
+    ],
+    "maximum_value_error": 5.364418029785156e-07,
+    "torch": "2.5.1+cu124"
+  },
+  "boundary": {
+    "rule": "native-next-tick-death-held-v1",
+    "role": "held",
+    "optimizer_eligible": false,
+    "controllable_original_ticks_between_observations": 0,
+    "final_action": {
+      "action_t": 1035,
+      "onset_ns": 550080778948068,
+      "observed_ns": 550080901469659,
+      "move": 1,
+      "focus": 1,
+      "shoot": 1,
+      "bomb": 0,
+      "keys": 52,
+      "observed_keys": 52,
+      "stage": 1,
+      "after_stage": 1,
+      "tick": 4307,
+      "after_tick": 4311,
+      "spares": 0,
+      "bombs": 1
+    },
+    "last_live_native": {
+      "ms": 141909,
+      "stage": 1,
+      "start_stage": 1,
+      "tick": 4311,
+      "level_tick": 4311,
+      "total_tick": 4311,
+      "character": 0,
+      "beast": 0,
+      "score": 54029,
+      "rank": 3,
+      "continues": 0,
+      "power": 176,
+      "spares": 0,
+      "life_pieces": 1,
+      "bombs": 1,
+      "bomb_pieces": 1
+    },
+    "first_dead_native": {
+      "ms": 141930,
+      "stage": 1,
+      "start_stage": 1,
+      "tick": 4312,
+      "level_tick": 4312,
+      "total_tick": 4312,
+      "character": 0,
+      "beast": 0,
+      "score": 54029,
+      "rank": 3,
+      "continues": 0,
+      "power": 176,
+      "spares": -1,
+      "life_pieces": 1,
+      "bombs": 3,
+      "bomb_pieces": 1
+    },
+    "postdeath_rows": 31,
+    "raw_hashes": {
+      "decisions.tsv": "60e14008f0cd00465f536b2370234954733b2196b42bc2ec0abaa86bf8f49b97",
+      "native.tsv": "cbd2df9886c55c7a86b7923f64566f58459c1016d9da0035da5c2a387fa6ec9a",
+      "deployed-source.json": "8048b6f75d39d8e418c2cd5078ada4fbd60a40dcc38621661feb42851cb1077e",
+      "terminal.png": "800ff318cf97e1d843f5c966dcc8ae460b9a0c6b5c666c3de806e99c527259ba",
+      "worker.rc": "2e6d31a5983a91251bfae5aefa1c0a19d8ba3cf601d0e8a706b4cfa9661a6b8a",
+      "sensor.rc": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  },
+  "negative_regressions": {
+    "training role": "Expected a scored held credit and the original worker/sensor records",
+    "one unobserved controllable tick": "Missing or non-adjacent measured action and original death",
+    "changed stage at last action": "Final measured policy action not a qualified, live original command",
+    "last command not applied": "Final measured policy action not a qualified, live original command",
+    "last Bomb stock disagreement": "Missing or non-adjacent measured action and original death",
+    "score-only evidence without irreversible death": "Original native final life was not exhausted irreversibly",
+    "truncated chronology": "Final measured policy action not a qualified, live original command"
+  },
+  "receipt_sha256": "292db3dcba3b93112e8879d3a8a078c81e242b84c7c0c9a483f80ccc3f5c032f",
+  "provenance": "Original held trace and all actions remain byte-identical. Final registered action was measured while live; the independent original witness observed death at the immediately following native tick. This row is evaluation only. The native outcome and GAE train eligibility are separate."
+}

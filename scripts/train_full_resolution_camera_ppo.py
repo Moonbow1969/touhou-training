@@ -56,7 +56,7 @@ def logits_on(model, images, device, previous_moves=None):
         return tuple(torch.cat(part).cpu() for part in zip(*output))
 
 
-def credit(record, manifest, model, parent, device, *, direction_history=False):
+def credit(record, manifest, model, parent, device, *, direction_history=False, actor_baseline=None):
     if record['role']!='train' or record['policy_sha256']!=parent or record['outcome'] not in ('game_over','ending'):
         raise ValueError('Unverified policy or endpoint')
     path=manifest.parent/record['file']
@@ -93,8 +93,16 @@ def credit(record, manifest, model, parent, device, *, direction_history=False):
         images=images[:length];actions=actions[:length];native_lp=native_lp[:length]
         native_v=native_v[:length];reward=reward[:length];heads=[h[:length] for h in heads]
     adv=calculate_gae(reward,native_v,.999,.985)
+    returns=native_v+adv
+    if actor_baseline is not None:
+        if actor_baseline.shape!=(length,) or actor_baseline.dtype!=np.float32 or not np.isfinite(actor_baseline).all():
+            raise ValueError('Invalid out-of-fold actor baseline')
+        original=adv
+        adv=calculate_gae(reward,actor_baseline,.999,.985)
+        eligibility_audit.update(native_advantage_sd=float(original.std()),crossfit_advantage_sd=float(adv.std()),
+                                 advantage_mean_absolute_change=float(np.mean(abs(adv-original))))
     arrays=(images,actions,torch.from_numpy(native_lp.sum(1)),torch.from_numpy(adv),
-            torch.from_numpy(native_v+adv),torch.cat(heads,dim=1))
+            torch.from_numpy(returns),torch.cat(heads,dim=1))
     if direction_history:
         arrays+= (prior[:length],)
     return arrays,dict(title=record['title'],seed=record['seed'],steps=length,reward=float(reward.sum()),**eligibility_audit,
@@ -180,6 +188,7 @@ def main():
     p.add_argument('--direction-residual',type=Path,help='Qualified previous-direction movement head fitted on top of the specified SFT camera.')
     p.add_argument('--replay-anchor',nargs='+',type=Path,help='Exact human image training shards for KL to the initial SFT actor')
     p.add_argument('--anchor-weight',type=float,default=0.)
+    p.add_argument('--actor-advantage-baselines',type=Path)
     a=p.parse_args();torch.set_num_threads(2);torch.manual_seed(261127)
     if (a.replay_anchor and (not a.sft or a.anchor_weight<=0)) or (not a.replay_anchor and a.anchor_weight!=0.):
         p.error('A replay anchor needs an SFT parent, its training shards, and a positive weight')
@@ -214,8 +223,17 @@ def main():
     if {(r['title'],r['seed']) for r in rows}!=expected or len(rows)!=len(expected):
         raise ValueError('Missing or duplicate training credit')
     by_title={};quality=[]
+    baselines={}
+    if a.actor_advantage_baselines or plan.get('actor_advantage_baselines_sha256'):
+        if not a.actor_advantage_baselines or sha(a.actor_advantage_baselines)!=plan.get('actor_advantage_baselines_sha256'):
+            raise ValueError('Actor baselines differ from the registered plan')
+        with np.load(a.actor_advantage_baselines,allow_pickle=False) as archive:
+            if set(archive.files)!={f'th{t}-{s}' for t,s in expected} or len(archive.files)!=len(expected):
+                raise ValueError('Expected one out-of-fold baseline per training credit')
+            baselines=dict(archive)
     for r in rows:
-        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback)
+        key=f"th{r['title']}-{r['seed']}"
+        arrays,details=credit(r,a.manifest,model,parent,device,direction_history=feedback,actor_baseline=baselines.get(key))
         group=r['title']
         if plan.get('balanced_title_rank'):
             rank=plan['rank_by_seed'][str(group)][str(r['seed'])]
@@ -262,6 +280,7 @@ def main():
               policy_sha256=sha(a.out/'policy.ts'),manifest_sha256=sha(a.manifest),steps=sum(r['steps'] for r in quality),
               protocol_sha256=sha(a.protocol),credits=quality,history=history,
               equal_weight_strata=sorted(data),
+              **({'actor_advantage_baselines_sha256':sha(a.actor_advantage_baselines)} if baselines else {}),
               **({'previous_direction_input':True,'direction_residual_sha256':sha(a.direction_residual) if a.direction_residual else None} if feedback else {}),
               **({'optimizer_decision_sampling':sampling} if sampling else {}),
               replay_anchor_weight=a.anchor_weight,replay_anchor_training_sha256=[sha(p) for p in (a.replay_anchor or [])],

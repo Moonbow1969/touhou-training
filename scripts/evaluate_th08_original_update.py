@@ -2,6 +2,7 @@
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
+import os
 from pathlib import Path
 import time
 
@@ -12,6 +13,7 @@ import torch
 from scripts.checkpoint_storage import digest
 from scripts.continue_th08_online_extension import atomic_json, launch, selected_credit
 from scripts.train_five_original_games import freeze
+from scripts.score_th08_original_ranking import inspect_results
 
 
 def wait(path):
@@ -38,6 +40,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for k in ('data','assets'):
         p.add_argument('--'+k,type=Path,required=True)
+    p.add_argument('--postcredit-assets',type=Path)
     a=p.parse_args();data=a.data.resolve();assets=a.assets.resolve()
     root=data/'six-game-online';sub=root/'first-eight';out=sub/'evaluation'
     out.mkdir(exist_ok=True,parents=True)
@@ -53,6 +56,12 @@ def main():
               technical='Recover verified first terminal before considering missing footage. If either matched credit lacks a verified first terminal, preserve both and try the same controller-seed pair at +10000, then +20000. No selection on survival or resources.',
               summary='Per difficulty report 8 pairs, macro wall-clock duration from opening to first continue, physical decisions, final Bombs, spares and credited stage evidence, plus paired bootstrap intervals.')
     freeze(out/'held-protocol.json',plan)
+    if a.postcredit_assets:
+        freeze(out/'ranking-addendum.json',dict(original_protocol=digest(out/'held-protocol.json'),
+              original_physical_stream=digest(assets/'stream'),post_game_wrapper=digest(a.postcredit_assets/'stream'),
+              calibration_source=digest(qualifiers/'score-row-stage-one.npz'),
+              scope='After game control ends and all policy keys are released, use the original continue menu to expose the new score row. The physical gameplay stream, language, game version, policy and data split remain as registered.',
+              acceptance='Require the original score-table header and a unique dated row with a margin greater than .30 over the other nine baseline entries. The native Stage 1 glyph must correlate above .88 in at least two independent captured ranking frames. Other stage digits require separate original-image adjudication.'))
     wait(sub/'policy/report.json')
     files={'five-ppo2':data/'five-game-generation2/policy/policy.ts','th08-ppo':sub/'policy/policy.ts'}
     digests={k:digest(v) for k,v in files.items()}
@@ -75,13 +84,24 @@ def main():
                 for arm in orders[str(s)]:
                     dest=root/'native08'/f'held-{arm}-{seed}'
                     if not (dest/'receipt.json').exists():
-                        launch(assets,files[arm],dest,rank,seed,'held')
+                        runtime=assets
+                        if a.postcredit_assets:
+                            runtime=a.postcredit_assets.resolve()
+                            dest.mkdir(exist_ok=True,parents=True)
+                            if not (dest/'original-stream').exists():os.link(assets/'stream',dest/'original-stream')
+                            if digest(dest/'original-stream')!=digest(assets/'stream'):
+                                raise ValueError('Changed physical gameplay capture')
+                        launch(runtime,files[arm],dest,rank,seed,'held')
                     item,reason=selected_credit(root,dest,models[arm],digests[arm],seed,rank,'held',sub/'packed-held'/arm)
                     if reason:
                         bad.append(dict(arm=arm,**reason))
                     else:
                         terminal=root/item['qualified_source']/'terminal.png'
                         item.update(known_stage_one(terminal))
+                        ranking=inspect_results(dest)
+                        item['original_ranking']=ranking
+                        if ranking['stage']==1:
+                            item.update(terminal_stage=1,stage2=False)
                         rows[arm]=item
                 if bad:
                     rejected.append(dict(seed=seed,technical=bad,qualified_in_incomplete_pair=rows))

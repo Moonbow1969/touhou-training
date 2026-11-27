@@ -1,8 +1,8 @@
 {
-  "verified_unique_credits": 1036,
-  "verified_unique_decisions": 638231,
+  "verified_unique_credits": 1204,
+  "verified_unique_decisions": 721327,
   "definition": "Main online PPO series. Deduplicate physical original credit by game title, controller seed and frozen behavior policy checksum. Exclude evaluation, synthetic examples, optimizer repetitions and additional updates over the same credits. Earlier TH10 stage rewards use the invalidated legacy channel. A separate matched-decision-budget curriculum pilot below reports both full-opening and post-handoff trajectories outside the main-series totals.",
-  "unique_updates": 24,
+  "unique_updates": 26,
   "updates": [
     {
       "path": "camera-ppo/report.json",
@@ -256,6 +256,30 @@
       "by_title": {
         "10": 3665,
         "17": 11472
+      }
+    },
+    {
+      "path": "five-game-generation3/policy/report.json",
+      "learner_report_sha256": "8bac54947f6cff36fc225025aa0716279a17821c2bb52ac1ee8beff13b63b55e",
+      "policy_sha256": "b7d33148162c8a547a7cd9f49bca30d8e5f83053fb8a8c5f899d116ab5f57fd2",
+      "unique_credits": 160,
+      "unique_decisions": 78740,
+      "by_title": {
+        "10": 6785,
+        "11": 7087,
+        "12": 16324,
+        "13": 21893,
+        "17": 26651
+      }
+    },
+    {
+      "path": "six-game-online/first-eight/policy/report.json",
+      "learner_report_sha256": "2c7f2d2054273264fd46b2c1a734859f3f8edb1f5b752431366a91615ded7e06",
+      "policy_sha256": "e47c7ea2610b745609d654474c0e83ef0dd0bc774318641e3a4335e74abeba34",
+      "unique_credits": 8,
+      "unique_decisions": 4356,
+      "by_title": {
+        "8": 4356
       }
     }
   ],

@@ -1,0 +1,17 @@
+{
+  "seed": 1630826,
+  "reason": "Wine did not expose a mapped 640x480 game client before the 15-second startup check. Container ended before the original title, rank selection or any gameplay input.",
+  "existing_files": {
+    "build.sha256": "f9d6b07616da64a1f20560c131f104ec6cb2ac292281905d67b200ad72323e96",
+    "container.stderr": "c68a9330326853325d605d737f99f2c2e39e26af6319a72d6375cc6d252d0494",
+    "game.log": "404ecf525627eedef69a69ab131ed1c85d9b422a7ebc2fcb1774367488afbfaf",
+    "original-observations.mp4": "7817119d388f19407bdacbd714686f779bc1cf19bf9fb8e7438fde492f502be2",
+    "protocol.json": "e343bc205e90e30b2e1b8d195ee44c2ec29dc4f7b2e58bf180a190aa663730d8",
+    "wine-init.log": "5af29909fc11cf2498886ddbd18fb28289c7a104d7b940d99df9a62c2e63a7ad"
+  },
+  "previously_waited_seconds": 15,
+  "max_new_wait_seconds": 60,
+  "old_entry_shell_sha256": "6e09d67f3ba7d72b680a876a210fcc51ca20951a99d9df7ab8cae414dd1c3152",
+  "new_entry_shell_sha256": "db0501833cc7afde32e51a13109101afa3ccccbb26764e0c703a3d75dca9ca7c",
+  "retry": "Keep every failed entry in place. A launch with no policy frame and zero gameplay inputs can retry the same physical seed in a separate entry directory. A failure after gameplay starts follows the existing first-terminal or registered reserve rules."
+}

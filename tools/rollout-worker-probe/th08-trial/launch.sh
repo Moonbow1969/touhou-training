@@ -11,7 +11,7 @@ for n in $(seq 1 35); do if xdpyinfo >/dev/null 2>&1 && pactl list short sinks >
 timeout 40 wineboot --init > /capture/wine-init.log 2>&1
 export LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe
 WINEDEBUG=err+all wine explorer /desktop=study,800x600 th08tr.exe > /capture/game.log 2>&1 &
-for n in $(seq 1 50); do
+for n in $(seq 1 200); do
  game=$(xdotool search --class '^th08tr.exe$' 2>/dev/null | while read -r w; do sz=$(xdotool getwindowgeometry "$w" 2>/dev/null); case "$sz" in *640x480*) echo "$w";; esac; done | tail -1)
  [ -z "$game" ] || break
  sleep .3
