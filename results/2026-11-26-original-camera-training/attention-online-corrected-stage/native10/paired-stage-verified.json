@@ -1,0 +1,2481 @@
+{
+  "design": "Original TH10 Normal official trial stage 1 with stock lives, four sampled actions and no Continue. One momentum host per matched pair. First half of controller seeds plays held-sft first; second half plays held-ppo first. Game RNG and concurrent host load uncontrolled. The 9-way movement switch rate counts every change between consecutive decisions, including neutral, within each credit.",
+  "n_per_arm": 12,
+  "group": {
+    "held-sft": {
+      "n": 12,
+      "stage2_reached": 0,
+      "stage2_rate": 0.0,
+      "stage2_wilson_95pct": [
+        0.0,
+        0.24249400665524085
+      ],
+      "native_game_overs": 12,
+      "stage2_resources": [],
+      "final_spare_life_counts": {
+        "-1": 12
+      },
+      "mean_final_power": 0.19166666666666665,
+      "mean_wall_survival_s": 51.35233333333334,
+      "mean_raw_score": 363229.5,
+      "confirmed_bomb_spends": 28,
+      "bomb_held_decisions": 81,
+      "losses": 36,
+      "movement_decisions": 3679,
+      "moves_by_direction": [
+        300,
+        830,
+        274,
+        650,
+        1282,
+        578,
+        240,
+        604,
+        203
+      ],
+      "losses_with_at_least_one_power": 23,
+      "losses_with_power_and_no_recent_bomb": 22,
+      "decisions": 4961,
+      "decisions_matching_native_input": 4961,
+      "native_first_life_movement": {
+        "credits_moving_on_both_axes": 12,
+        "median_xy_span_game_units": [
+          323.725,
+          360.57000000000005
+        ],
+        "min_xy_span_game_units": [
+          117.82,
+          160.52999999999997
+        ]
+      },
+      "stage2_sensor_validated": true
+    },
+    "held-ppo": {
+      "n": 12,
+      "stage2_reached": 0,
+      "stage2_rate": 0.0,
+      "stage2_wilson_95pct": [
+        0.0,
+        0.24249400665524085
+      ],
+      "native_game_overs": 12,
+      "stage2_resources": [],
+      "final_spare_life_counts": {
+        "-1": 12
+      },
+      "mean_final_power": 0.2833333333333333,
+      "mean_wall_survival_s": 47.95500000000001,
+      "mean_raw_score": 313679.75,
+      "confirmed_bomb_spends": 27,
+      "bomb_held_decisions": 78,
+      "losses": 36,
+      "movement_decisions": 3414,
+      "moves_by_direction": [
+        306,
+        739,
+        259,
+        587,
+        1221,
+        555,
+        207,
+        586,
+        175
+      ],
+      "losses_with_at_least_one_power": 17,
+      "losses_with_power_and_no_recent_bomb": 17,
+      "decisions": 4635,
+      "decisions_matching_native_input": 4634,
+      "native_first_life_movement": {
+        "credits_moving_on_both_axes": 12,
+        "median_xy_span_game_units": [
+          325.595,
+          368.0
+        ],
+        "min_xy_span_game_units": [
+          184.0,
+          214.35
+        ]
+      },
+      "stage2_sensor_validated": true
+    }
+  },
+  "paired_versus_held-sft": {
+    "held-ppo": {
+      "pairs": [
+        {
+          "seed": 1121051,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -1.8089999999999975,
+          "delta_raw_score": 35683,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121052,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": 9.533999999999999,
+          "delta_raw_score": -122502,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121053,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -9.180000000000014,
+          "delta_raw_score": 122528,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121054,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": 0.34600000000000364,
+          "delta_raw_score": 66116,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121055,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": 11.810000000000016,
+          "delta_raw_score": -99903,
+          "delta_settled_power": 0.45
+        },
+        {
+          "seed": 1121056,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -23.758999999999986,
+          "delta_raw_score": -492718,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121057,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": 9.634000000000007,
+          "delta_raw_score": 281872,
+          "delta_settled_power": 0.5
+        },
+        {
+          "seed": 1121058,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -4.516999999999996,
+          "delta_raw_score": -238323,
+          "delta_settled_power": -0.45
+        },
+        {
+          "seed": 1121059,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -18.955999999999996,
+          "delta_raw_score": -237755,
+          "delta_settled_power": 0.0
+        },
+        {
+          "seed": 1121060,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -0.37700000000000955,
+          "delta_raw_score": -14325,
+          "delta_settled_power": -0.44999999999999996
+        },
+        {
+          "seed": 1121061,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -13.279000000000003,
+          "delta_raw_score": -160419,
+          "delta_settled_power": -0.19999999999999996
+        },
+        {
+          "seed": 1121062,
+          "host": "momentum",
+          "stage2_baseline": false,
+          "stage2_candidate": false,
+          "delta_wall_survival_s": -0.2149999999999963,
+          "delta_raw_score": 265149,
+          "delta_settled_power": 1.25
+        }
+      ],
+      "mean_survival_delta_s": -3.397333333333331,
+      "positive": 4,
+      "stage2_gained": 0,
+      "stage2_lost": 0,
+      "stage2_delta_rate": 0.0,
+      "stage2_mcnemar_exact_p": 1.0,
+      "paired_resampled_95pct_interval_for_mean_s": [
+        -9.587568749999999,
+        2.593183333333337
+      ]
+    }
+  },
+  "credits": {
+    "held-sft": [
+      {
+        "host": "momentum",
+        "seed": 1121051,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "fe7f393b2ce4d6795587d6da47732951b07b25364b84d9c14756f43c21dfac83",
+        "terminal_screenshot_sha256": "9021678d4a30bf3728a27c98020f590476cbe86d34d6d5685d2499713c346c17",
+        "steps": 438,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 2.8,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 372578,
+        "duration_s": 54.56700000000001,
+        "native_inputs_matching": 438,
+        "native_inputs_with_sample": 438,
+        "median_control_ms": 124.605254,
+        "shoot_on": 406,
+        "focus_on": 71,
+        "bomb_on": 11,
+        "moves": [
+          26,
+          55,
+          32,
+          59,
+          138,
+          44,
+          22,
+          46,
+          16
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 266,
+            "power_before": 1.45,
+            "power_after": 0.45,
+            "lives": 0
+          },
+          {
+            "step": 286,
+            "power_before": 3.7,
+            "power_after": 2.7,
+            "lives": 0
+          },
+          {
+            "step": 365,
+            "power_before": 3.35,
+            "power_after": 2.35,
+            "lives": 0
+          },
+          {
+            "step": 400,
+            "power_before": 2.45,
+            "power_after": 1.45,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 22.247,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 4.6,
+            "seconds": 28.74,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.8,
+            "seconds": 54.567,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          345.95,
+          193.5
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121052,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "4809d30fc615e5439d7920f3add03fc8b809d61b97e12283177be7eeb60fc912",
+        "terminal_screenshot_sha256": "7db36eae4b9f27dbff27198967474e39ab3aba5f4a8d4c8e4bcdb524fa604029",
+        "steps": 409,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 2.6,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 403995,
+        "duration_s": 50.94200000000001,
+        "native_inputs_matching": 409,
+        "native_inputs_with_sample": 409,
+        "median_control_ms": 124.592185,
+        "shoot_on": 373,
+        "focus_on": 67,
+        "bomb_on": 6,
+        "moves": [
+          31,
+          59,
+          21,
+          55,
+          110,
+          57,
+          20,
+          44,
+          12
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 166,
+            "power_before": 2.1,
+            "power_after": 1.1,
+            "lives": 1
+          },
+          {
+            "step": 356,
+            "power_before": 3.5,
+            "power_after": 2.5,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.0,
+            "seconds": 17.838,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.85,
+            "seconds": 31.193,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.6,
+            "seconds": 50.942,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          301.5,
+          160.52999999999997
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121053,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "7ca89362b45db63f34660f790b6cd03131c3d05d856bebde308e17764550a056",
+        "terminal_screenshot_sha256": "78f1a231abbc43d3ad241183f64830f47de51ec950aecaf6be8df5a0f3256ddd",
+        "steps": 475,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 2.2,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 298255,
+        "duration_s": 59.11100000000001,
+        "native_inputs_matching": 475,
+        "native_inputs_with_sample": 475,
+        "median_control_ms": 124.570395,
+        "shoot_on": 433,
+        "focus_on": 135,
+        "bomb_on": 8,
+        "moves": [
+          22,
+          87,
+          23,
+          54,
+          129,
+          45,
+          26,
+          60,
+          29
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 198,
+            "power_before": 1.7,
+            "power_after": 0.7,
+            "lives": 2
+          },
+          {
+            "step": 244,
+            "power_before": 1.0,
+            "power_after": 0.0,
+            "lives": 2
+          },
+          {
+            "step": 366,
+            "power_before": 2.75,
+            "power_after": 1.75,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.0,
+            "seconds": 37.613,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.75,
+            "seconds": 52.286,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.2,
+            "seconds": 59.111,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          368.0,
+          400.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121054,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "237569729ffacd039dd5773763603e4bad4ff375d894a43b9c6992f843bf4ae8",
+        "terminal_screenshot_sha256": "d5deff357b4e1b8381507baf7354f2b71ca768f3233f66d2c147e551bba799dd",
+        "steps": 354,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 0.75,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 302642,
+        "duration_s": 44.015,
+        "native_inputs_matching": 354,
+        "native_inputs_with_sample": 354,
+        "median_control_ms": 124.646467,
+        "shoot_on": 328,
+        "focus_on": 49,
+        "bomb_on": 6,
+        "moves": [
+          17,
+          53,
+          15,
+          50,
+          100,
+          45,
+          23,
+          36,
+          15
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 227,
+            "power_before": 2.5,
+            "power_after": 1.5,
+            "lives": 1
+          },
+          {
+            "step": 320,
+            "power_before": 1.1,
+            "power_after": 0.1,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.15,
+            "seconds": 17.913,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.5,
+            "seconds": 33.095,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.75,
+            "seconds": 44.015,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          363.37,
+          357.22
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121055,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "8db3b1ac6a3f61aa1e6d66123a5602c4341246d9969bfb9bd6db33fa755941a2",
+        "terminal_screenshot_sha256": "ceaaeec8434616af9a9148ca7d1de6e8e1b0c89bfcca96c647c9114c3e5158fb",
+        "steps": 424,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 2.3,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 371506,
+        "duration_s": 52.82600000000001,
+        "native_inputs_matching": 424,
+        "native_inputs_with_sample": 424,
+        "median_control_ms": 124.706355,
+        "shoot_on": 374,
+        "focus_on": 70,
+        "bomb_on": 11,
+        "moves": [
+          29,
+          78,
+          30,
+          57,
+          70,
+          55,
+          27,
+          57,
+          21
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 191,
+            "power_before": 4.75,
+            "power_after": 3.75,
+            "lives": 1
+          },
+          {
+            "step": 262,
+            "power_before": 3.85,
+            "power_after": 2.85,
+            "lives": 1
+          },
+          {
+            "step": 287,
+            "power_before": 2.95,
+            "power_after": 1.95,
+            "lives": 1
+          },
+          {
+            "step": 379,
+            "power_before": 3.2,
+            "power_after": 2.2,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 18.3,
+            "bomb_in_preceding_half_second": true
+          },
+          {
+            "before_power": 2.6,
+            "seconds": 41.673,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.3,
+            "seconds": 52.826,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          368.0,
+          363.92
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121056,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "56f7442c2bbc29021fe4e09b1eed3ef56ef83327a5803a32b9acdcaaf97c9a56",
+        "terminal_screenshot_sha256": "6f7ad999bf22b5b9dabbe101bbf5910e13352ebc5fb7085115be5e23a3562e78",
+        "steps": 708,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.3,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 715514,
+        "duration_s": 87.995,
+        "native_inputs_matching": 708,
+        "native_inputs_with_sample": 708,
+        "median_control_ms": 124.524896,
+        "shoot_on": 630,
+        "focus_on": 122,
+        "bomb_on": 13,
+        "moves": [
+          48,
+          100,
+          30,
+          87,
+          215,
+          83,
+          31,
+          88,
+          26
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 308,
+            "power_before": 3.7,
+            "power_after": 2.7,
+            "lives": 1
+          },
+          {
+            "step": 369,
+            "power_before": 3.35,
+            "power_after": 2.35,
+            "lives": 1
+          },
+          {
+            "step": 386,
+            "power_before": 2.45,
+            "power_after": 1.45,
+            "lives": 1
+          },
+          {
+            "step": 556,
+            "power_before": 1.15,
+            "power_after": 0.15,
+            "lives": 0
+          },
+          {
+            "step": 599,
+            "power_before": 3.2,
+            "power_after": 2.2,
+            "lives": 0
+          },
+          {
+            "step": 646,
+            "power_before": 2.3,
+            "power_after": 1.3,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 1.45,
+            "seconds": 20.696,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.15,
+            "seconds": 64.128,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.3,
+            "seconds": 87.995,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          284.82,
+          351.89
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121057,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "6d162829ecc02485473898ae105188a25922b83407970dc8117a4cbfe8661a3b",
+        "terminal_screenshot_sha256": "dca3c4052107da2437ccd85d9243ed60f6d06687cb7bfa6a4e95c34edbdd448b",
+        "steps": 258,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.3,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 26492,
+        "duration_s": 31.969,
+        "native_inputs_matching": 258,
+        "native_inputs_with_sample": 258,
+        "median_control_ms": 124.2844015,
+        "shoot_on": 225,
+        "focus_on": 42,
+        "bomb_on": 1,
+        "moves": [
+          14,
+          43,
+          15,
+          32,
+          83,
+          15,
+          7,
+          39,
+          10
+        ],
+        "native_bomb_spends": [],
+        "loss_events": [
+          {
+            "before_power": 0.2,
+            "seconds": 16.515,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.05,
+            "seconds": 24.57,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.3,
+            "seconds": 31.969,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          184.0,
+          400.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121058,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "dee25b7866cfaa43bec6b58a0f52bfe73c313823acd4627aad51cd46208f2fc6",
+        "terminal_screenshot_sha256": "97bd40a23c0c0abfc01e9f89fde2c819108766ebed6bf3de207dc919be53e186",
+        "steps": 376,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.45,
+        "power_at_final_life_loss": 3.65,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 545752,
+        "duration_s": 46.592,
+        "native_inputs_matching": 376,
+        "native_inputs_with_sample": 376,
+        "median_control_ms": 124.244387,
+        "shoot_on": 342,
+        "focus_on": 57,
+        "bomb_on": 5,
+        "moves": [
+          21,
+          75,
+          17,
+          54,
+          80,
+          51,
+          15,
+          49,
+          14
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 286,
+            "power_before": 4.9,
+            "power_after": 3.9,
+            "lives": 0
+          },
+          {
+            "step": 327,
+            "power_before": 4.65,
+            "power_after": 3.65,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.15,
+            "seconds": 12.235,
+            "bomb_in_preceding_half_second": true
+          },
+          {
+            "before_power": 1.1,
+            "seconds": 19.605,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.65,
+            "seconds": 46.592,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          286.9,
+          383.25
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121059,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "96e1aee66865217823635f32ec1ddc3672cbbf269fd212cea803c3fbdc21a617",
+        "terminal_screenshot_sha256": "2b215ae6e2a7df78251539dad251957d56ba3172fc85f78baf199bdf17881346",
+        "steps": 510,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 0.15,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 411199,
+        "duration_s": 63.237,
+        "native_inputs_matching": 510,
+        "native_inputs_with_sample": 510,
+        "median_control_ms": 124.249985,
+        "shoot_on": 472,
+        "focus_on": 107,
+        "bomb_on": 5,
+        "moves": [
+          32,
+          94,
+          37,
+          71,
+          109,
+          49,
+          21,
+          74,
+          23
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 254,
+            "power_before": 4.15,
+            "power_after": 3.15,
+            "lives": 1
+          },
+          {
+            "step": 300,
+            "power_before": 3.15,
+            "power_after": 2.15,
+            "lives": 1
+          },
+          {
+            "step": 440,
+            "power_before": 1.05,
+            "power_after": 0.05,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 4.208,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.9,
+            "seconds": 47.147,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.15,
+            "seconds": 63.237,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          117.82,
+          282.79
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121060,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "4a74f3343fd8d35526eb67453de428d3f62faebd5321a3fa053332913568ab73",
+        "terminal_screenshot_sha256": "ce10fc49d8021450965a0d61dcf889319d522b3f0da8b5fafcef2336afcc0f4b",
+        "steps": 324,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 1.15,
+        "power_at_final_life_loss": 4.35,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 398452,
+        "duration_s": 40.144000000000005,
+        "native_inputs_matching": 324,
+        "native_inputs_with_sample": 324,
+        "median_control_ms": 124.271719,
+        "shoot_on": 286,
+        "focus_on": 45,
+        "bomb_on": 3,
+        "moves": [
+          21,
+          59,
+          11,
+          47,
+          87,
+          43,
+          13,
+          29,
+          14
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 284,
+            "power_before": 1.65,
+            "power_after": 0.65,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.45,
+            "seconds": 16.609,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 4.85,
+            "seconds": 32.185,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 4.35,
+            "seconds": 40.144,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          287.02,
+          353.82
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121061,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "66c21881e9fc89c9cd64c2529cbfb8728adbe39c025e5bd5f6dfe640287aed3b",
+        "terminal_screenshot_sha256": "53bc9f62f831e81a06c8aaf5e31a0c96394f595b40ed678eef9ee5e2ee9bbf1b",
+        "steps": 359,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.7,
+        "power_at_final_life_loss": 3.9,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 343764,
+        "duration_s": 44.468,
+        "native_inputs_matching": 359,
+        "native_inputs_with_sample": 359,
+        "median_control_ms": 124.260587,
+        "shoot_on": 312,
+        "focus_on": 34,
+        "bomb_on": 10,
+        "moves": [
+          19,
+          71,
+          23,
+          43,
+          86,
+          44,
+          16,
+          44,
+          13
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 190,
+            "power_before": 1.1,
+            "power_after": 0.1,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.1,
+            "seconds": 17.463,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.75,
+            "seconds": 29.78,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.9,
+            "seconds": 44.468,
+            "bomb_in_preceding_half_second": true
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          349.89,
+          400.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121062,
+        "policy_sha256": "05a58fa330702bf066b05203a3a19af56fa336485ad205d0e81e123192841bf2",
+        "behavior_sha256": "542d885179188694e4fb62d9983dad35957d85c22a97b4009161ca83b0fae29b",
+        "terminal_screenshot_sha256": "5cdcb9b41569190d7fb77a25773347baeb101eca262192669cbaccd108a7c45f",
+        "steps": 326,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.45,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 168605,
+        "duration_s": 40.362,
+        "native_inputs_matching": 326,
+        "native_inputs_with_sample": 326,
+        "median_control_ms": 124.155838,
+        "shoot_on": 289,
+        "focus_on": 35,
+        "bomb_on": 2,
+        "moves": [
+          20,
+          56,
+          20,
+          41,
+          75,
+          47,
+          19,
+          38,
+          10
+        ],
+        "native_bomb_spends": [],
+        "loss_events": [
+          {
+            "before_power": 1.5,
+            "seconds": 21.725,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.45,
+            "seconds": 28.391,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.45,
+            "seconds": 40.362,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          368.0,
+          368.0
+        ]
+      }
+    ],
+    "held-ppo": [
+      {
+        "host": "momentum",
+        "seed": 1121051,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "6124021044468c0171b4539530cf96f1f659b539938abca81cba210c9b844b2e",
+        "terminal_screenshot_sha256": "2d35b38f3a559434c9c086a2163740671b1e14e7f783e4b027fc2434a8868d2a",
+        "steps": 424,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 0.45,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 408261,
+        "duration_s": 52.75800000000001,
+        "native_inputs_matching": 424,
+        "native_inputs_with_sample": 424,
+        "median_control_ms": 124.583032,
+        "shoot_on": 386,
+        "focus_on": 63,
+        "bomb_on": 11,
+        "moves": [
+          20,
+          73,
+          30,
+          51,
+          96,
+          46,
+          25,
+          67,
+          16
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 266,
+            "power_before": 3.6,
+            "power_after": 2.6,
+            "lives": 0
+          },
+          {
+            "step": 286,
+            "power_before": 2.6,
+            "power_after": 1.6,
+            "lives": 0
+          },
+          {
+            "step": 303,
+            "power_before": 1.8,
+            "power_after": 0.8,
+            "lives": 0
+          },
+          {
+            "step": 365,
+            "power_before": 1.35,
+            "power_after": 0.35,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 15.455,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.15,
+            "seconds": 21.685,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.45,
+            "seconds": 52.758,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          342.54,
+          281.25
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121052,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "88472f401ebec6268a03873a536b7ad405287933791d9702159755e52009e9d8",
+        "terminal_screenshot_sha256": "e1a583710ac99c41ce6d9d365a79bca5fe03660f6f1e5f0dffd6060fa6220103",
+        "steps": 486,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.3,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 281493,
+        "duration_s": 60.476000000000006,
+        "native_inputs_matching": 486,
+        "native_inputs_with_sample": 486,
+        "median_control_ms": 124.5818,
+        "shoot_on": 450,
+        "focus_on": 91,
+        "bomb_on": 6,
+        "moves": [
+          36,
+          70,
+          20,
+          54,
+          135,
+          56,
+          28,
+          66,
+          21
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 295,
+            "power_before": 1.4,
+            "power_after": 0.4,
+            "lives": 1
+          },
+          {
+            "step": 356,
+            "power_before": 1.15,
+            "power_after": 0.15,
+            "lives": 1
+          },
+          {
+            "step": 430,
+            "power_before": 3.15,
+            "power_after": 2.15,
+            "lives": 0
+          },
+          {
+            "step": 451,
+            "power_before": 2.3,
+            "power_after": 1.3,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.0,
+            "seconds": 19.241,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.15,
+            "seconds": 50.217,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.3,
+            "seconds": 60.476,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          340.75,
+          214.35
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121053,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "6e37e7070c6863e0cb676d015a441771effc356bedc1311272cde1ec3a7570e8",
+        "terminal_screenshot_sha256": "88e93cc88b116b8625c15fd96aaf0e41d21d072bd0306446cf16cee7613af77f",
+        "steps": 401,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 3.15,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 420783,
+        "duration_s": 49.931,
+        "native_inputs_matching": 401,
+        "native_inputs_with_sample": 401,
+        "median_control_ms": 124.588966,
+        "shoot_on": 367,
+        "focus_on": 50,
+        "bomb_on": 6,
+        "moves": [
+          21,
+          87,
+          25,
+          48,
+          87,
+          56,
+          18,
+          45,
+          14
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 135,
+            "power_before": 1.1,
+            "power_after": 0.1,
+            "lives": 1
+          },
+          {
+            "step": 198,
+            "power_before": 3.7,
+            "power_after": 2.7,
+            "lives": 1
+          },
+          {
+            "step": 244,
+            "power_before": 3.0,
+            "power_after": 2.0,
+            "lives": 1
+          },
+          {
+            "step": 276,
+            "power_before": 2.0,
+            "power_after": 1.0,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.3,
+            "seconds": 12.366,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.55,
+            "seconds": 43.496,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.15,
+            "seconds": 49.931,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          187.26,
+          395.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121054,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "1818da6fb624b78dfd1ef799c78ebd20b25094f63433e6fecbd7efe29599602a",
+        "terminal_screenshot_sha256": "3bcca502cd31efc0cbf83f9a04762c9ba0372fc52ecf3ac435b378917e743deb",
+        "steps": 358,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 2.9,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 368758,
+        "duration_s": 44.361000000000004,
+        "native_inputs_matching": 358,
+        "native_inputs_with_sample": 358,
+        "median_control_ms": 124.3147105,
+        "shoot_on": 312,
+        "focus_on": 32,
+        "bomb_on": 5,
+        "moves": [
+          22,
+          56,
+          17,
+          30,
+          143,
+          32,
+          7,
+          36,
+          15
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 241,
+            "power_before": 3.9,
+            "power_after": 2.9,
+            "lives": 1
+          },
+          {
+            "step": 320,
+            "power_before": 1.05,
+            "power_after": 0.05,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 15.409,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.9,
+            "seconds": 35.017,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.9,
+            "seconds": 44.361,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          251.95999999999998,
+          368.79
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121055,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "46d2448b1c41e62c496f15f5d710a398a88a9515b9814de13065f028394a4afd",
+        "terminal_screenshot_sha256": "35230e4eec5c22344f5a6869637228a1a5bb2becd169a09d6537a278e7adf66f",
+        "steps": 521,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.45,
+        "power_at_final_life_loss": 3.65,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 271603,
+        "duration_s": 64.63600000000002,
+        "native_inputs_matching": 521,
+        "native_inputs_with_sample": 521,
+        "median_control_ms": 124.197662,
+        "shoot_on": 467,
+        "focus_on": 115,
+        "bomb_on": 10,
+        "moves": [
+          42,
+          75,
+          30,
+          85,
+          95,
+          71,
+          19,
+          82,
+          22
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 287,
+            "power_before": 4.85,
+            "power_after": 3.85,
+            "lives": 1
+          },
+          {
+            "step": 329,
+            "power_before": 4.15,
+            "power_after": 3.15,
+            "lives": 1
+          },
+          {
+            "step": 379,
+            "power_before": 3.6,
+            "power_after": 2.6,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.1,
+            "seconds": 18.986,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 2.7,
+            "seconds": 53.608,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.65,
+            "seconds": 64.636,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          349.61,
+          366.32
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121056,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "53fafacbfeb92e824406f2a390e99d25ae32d425a5afe32b1bb82cb267f7f57e",
+        "terminal_screenshot_sha256": "61bc74087c633f19caecd174a6edc5ab3ff1f1eba5dc42fb39c19351ac007541",
+        "steps": 518,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 0.05,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 222796,
+        "duration_s": 64.23600000000002,
+        "native_inputs_matching": 518,
+        "native_inputs_with_sample": 518,
+        "median_control_ms": 124.210669,
+        "shoot_on": 475,
+        "focus_on": 103,
+        "bomb_on": 13,
+        "moves": [
+          31,
+          76,
+          32,
+          60,
+          133,
+          59,
+          33,
+          72,
+          22
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 308,
+            "power_before": 4.85,
+            "power_after": 3.85,
+            "lives": 1
+          },
+          {
+            "step": 340,
+            "power_before": 4.55,
+            "power_after": 3.55,
+            "lives": 1
+          },
+          {
+            "step": 369,
+            "power_before": 3.6,
+            "power_after": 2.6,
+            "lives": 1
+          },
+          {
+            "step": 386,
+            "power_before": 2.7,
+            "power_after": 1.7,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.25,
+            "seconds": 17.71,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.1,
+            "seconds": 54.64,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.05,
+            "seconds": 64.236,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          340.78,
+          389.5
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121057,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "4cb60a7fcfbc42a9d72f489a5da9bb52df547e5a6589db38fac41d0afcbc8bf4",
+        "terminal_screenshot_sha256": "f692edefc257a2933c2f7ba26eb22ce619e055ef357be7e438872b6fd55b10f9",
+        "steps": 335,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.5,
+        "power_at_final_life_loss": 3.7,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 308364,
+        "duration_s": 41.60300000000001,
+        "native_inputs_matching": 335,
+        "native_inputs_with_sample": 335,
+        "median_control_ms": 124.391317,
+        "shoot_on": 303,
+        "focus_on": 54,
+        "bomb_on": 0,
+        "moves": [
+          28,
+          59,
+          14,
+          42,
+          106,
+          28,
+          10,
+          36,
+          12
+        ],
+        "native_bomb_spends": [],
+        "loss_events": [
+          {
+            "before_power": 0.1,
+            "seconds": 11.559,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.1,
+            "seconds": 20.205,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.7,
+            "seconds": 41.603,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          184.0,
+          368.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121058,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "be3c641ea53b992221d9a4f8ed80c71935955180163d06b72c1fd97fe7c7744b",
+        "terminal_screenshot_sha256": "1f98e3cd1e9a988b1a5d6f168b9ecfce4d1f073037fb679b9460f6c0be921ece",
+        "steps": 339,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.7,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 307429,
+        "duration_s": 42.075,
+        "native_inputs_matching": 339,
+        "native_inputs_with_sample": 339,
+        "median_control_ms": 124.457837,
+        "shoot_on": 307,
+        "focus_on": 31,
+        "bomb_on": 7,
+        "moves": [
+          26,
+          41,
+          25,
+          54,
+          84,
+          51,
+          10,
+          37,
+          11
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 216,
+            "power_before": 3.55,
+            "power_after": 2.55,
+            "lives": 0
+          },
+          {
+            "step": 282,
+            "power_before": 2.55,
+            "power_after": 1.55,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.05,
+            "seconds": 14.789,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.15,
+            "seconds": 20.898,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.7,
+            "seconds": 42.075,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          329.38,
+          298.88
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121059,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "da77027015a38dbe526d9b5cadf924e95ec93266f2be9ec1624e54f1b530d6df",
+        "terminal_screenshot_sha256": "350afb1fb7415fd5fc3924f583a00933f257282a0c8114029cbaf3a4daf75b34",
+        "steps": 356,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.0,
+        "power_at_final_life_loss": 1.75,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 173444,
+        "duration_s": 44.281000000000006,
+        "native_inputs_matching": 356,
+        "native_inputs_with_sample": 356,
+        "median_control_ms": 124.5806845,
+        "shoot_on": 321,
+        "focus_on": 58,
+        "bomb_on": 5,
+        "moves": [
+          21,
+          46,
+          15,
+          48,
+          106,
+          50,
+          20,
+          38,
+          12
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 300,
+            "power_before": 2.15,
+            "power_after": 1.15,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.0,
+            "seconds": 18.389,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.45,
+            "seconds": 32.618,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 1.75,
+            "seconds": 44.281,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          321.81,
+          218.49
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121060,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "0876e78c3e5e163eba68ec00b19ec62ecb32647b9bc0627d044d96cc6570b191",
+        "terminal_screenshot_sha256": "fa733661ca003b3b68a9cb99e236a41bda06feff3dd550135a7f542fc2d21d5d",
+        "steps": 321,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.7,
+        "power_at_final_life_loss": 3.9,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 384127,
+        "duration_s": 39.766999999999996,
+        "native_inputs_matching": 321,
+        "native_inputs_with_sample": 321,
+        "median_control_ms": 124.360589,
+        "shoot_on": 279,
+        "focus_on": 39,
+        "bomb_on": 7,
+        "moves": [
+          26,
+          48,
+          17,
+          37,
+          102,
+          32,
+          10,
+          36,
+          13
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 210,
+            "power_before": 4.85,
+            "power_after": 3.85,
+            "lives": 1
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.15,
+            "seconds": 17.269,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.85,
+            "seconds": 33.449,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.9,
+            "seconds": 39.767,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          184.0,
+          400.0
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121061,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "c3e577e1c0ce6a07e9ef3d8f167d20961fc5eb2a94cacde0d9da4a4c66e2b770",
+        "terminal_screenshot_sha256": "c16d3b87625c7fc637d10c1dd65e9ecb2404c71324a8eb900e306453d59e7f49",
+        "steps": 252,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 0.5,
+        "power_at_final_life_loss": 3.7,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 183345,
+        "duration_s": 31.189,
+        "native_inputs_matching": 251,
+        "native_inputs_with_sample": 251,
+        "median_control_ms": 124.4022605,
+        "shoot_on": 209,
+        "focus_on": 24,
+        "bomb_on": 7,
+        "moves": [
+          15,
+          38,
+          17,
+          42,
+          67,
+          40,
+          6,
+          20,
+          7
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 206,
+            "power_before": 1.2,
+            "power_after": 0.2,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.2,
+            "seconds": 15.267,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 4.4,
+            "seconds": 20.818,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 3.7,
+            "seconds": 31.189,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          368.0,
+          396.02
+        ]
+      },
+      {
+        "host": "momentum",
+        "seed": 1121062,
+        "policy_sha256": "2655f475a1203d261c14f437a40dca9ae8a80a80337fdb58b5e253d97ffd255e",
+        "behavior_sha256": "d5ce82be50a425dde2335de21ea00a89e7bec134c8f8d298554b418c1e84ddc7",
+        "terminal_screenshot_sha256": "a0045c5ffc7790ff5951e1ba07c11cf8204d93214ff5550b5d8d8322b91a502c",
+        "steps": 324,
+        "native_outcome": "native_final_life_lost",
+        "stage2_reached": false,
+        "stage2_lives": null,
+        "stage2_power": null,
+        "stage_entries": [
+          {
+            "stage": 1,
+            "step": 0,
+            "lives": 2,
+            "power": 0.0
+          }
+        ],
+        "final_stage": 1,
+        "final_lives": -1,
+        "final_power": 1.25,
+        "power_at_final_life_loss": 4.45,
+        "final_power_source": "settled native inventory at the end screen",
+        "raw_score": 433754,
+        "duration_s": 40.147000000000006,
+        "native_inputs_matching": 324,
+        "native_inputs_with_sample": 324,
+        "median_control_ms": 124.294211,
+        "shoot_on": 286,
+        "focus_on": 43,
+        "bomb_on": 1,
+        "moves": [
+          18,
+          70,
+          17,
+          36,
+          67,
+          34,
+          21,
+          51,
+          10
+        ],
+        "native_bomb_spends": [
+          {
+            "step": 199,
+            "power_before": 4.8,
+            "power_after": 3.8,
+            "lives": 0
+          }
+        ],
+        "loss_events": [
+          {
+            "before_power": 0.2,
+            "seconds": 12.148,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 0.1,
+            "seconds": 19.601,
+            "bomb_in_preceding_half_second": false
+          },
+          {
+            "before_power": 4.45,
+            "seconds": 40.147,
+            "bomb_in_preceding_half_second": false
+          }
+        ],
+        "stage_sensor_validated": true,
+        "first_life_coordinate_span": [
+          184.0,
+          368.0
+        ]
+      }
+    ]
+  },
+  "movement_switches": {
+    "held-sft": {
+      "credits": [
+        {
+          "seed": 1121051,
+          "n": 437,
+          "switches": 256,
+          "rate": 0.585812356979405,
+          "expected_switches": 250.03537027216885,
+          "expected_rate": 0.5721633187006152,
+          "stationary_to_motion": 55,
+          "motion_to_stationary": 54,
+          "turns_between_non_neutral_directions": 147
+        },
+        {
+          "seed": 1121052,
+          "n": 408,
+          "switches": 246,
+          "rate": 0.6029411764705882,
+          "expected_switches": 248.60482257625236,
+          "expected_rate": 0.6093255455300303,
+          "stationary_to_motion": 60,
+          "motion_to_stationary": 59,
+          "turns_between_non_neutral_directions": 127
+        },
+        {
+          "seed": 1121053,
+          "n": 474,
+          "switches": 286,
+          "rate": 0.6033755274261603,
+          "expected_switches": 288.8650106423622,
+          "expected_rate": 0.6094198536758697,
+          "stationary_to_motion": 60,
+          "motion_to_stationary": 60,
+          "turns_between_non_neutral_directions": 166
+        },
+        {
+          "seed": 1121054,
+          "n": 353,
+          "switches": 213,
+          "rate": 0.603399433427762,
+          "expected_switches": 216.43099157391237,
+          "expected_rate": 0.613118956300035,
+          "stationary_to_motion": 51,
+          "motion_to_stationary": 52,
+          "turns_between_non_neutral_directions": 110
+        },
+        {
+          "seed": 1121055,
+          "n": 423,
+          "switches": 273,
+          "rate": 0.6453900709219859,
+          "expected_switches": 267.49568322241436,
+          "expected_rate": 0.6323775017078354,
+          "stationary_to_motion": 45,
+          "motion_to_stationary": 45,
+          "turns_between_non_neutral_directions": 183
+        },
+        {
+          "seed": 1121056,
+          "n": 707,
+          "switches": 458,
+          "rate": 0.6478076379066479,
+          "expected_switches": 438.5023100422992,
+          "expected_rate": 0.620229575731682,
+          "stationary_to_motion": 111,
+          "motion_to_stationary": 112,
+          "turns_between_non_neutral_directions": 235
+        },
+        {
+          "seed": 1121057,
+          "n": 257,
+          "switches": 151,
+          "rate": 0.5875486381322957,
+          "expected_switches": 155.13550204474768,
+          "expected_rate": 0.6036400857772284,
+          "stationary_to_motion": 36,
+          "motion_to_stationary": 36,
+          "turns_between_non_neutral_directions": 79
+        },
+        {
+          "seed": 1121058,
+          "n": 375,
+          "switches": 232,
+          "rate": 0.6186666666666667,
+          "expected_switches": 236.19259092026903,
+          "expected_rate": 0.6298469091207174,
+          "stationary_to_motion": 44,
+          "motion_to_stationary": 44,
+          "turns_between_non_neutral_directions": 144
+        },
+        {
+          "seed": 1121059,
+          "n": 509,
+          "switches": 328,
+          "rate": 0.6444007858546169,
+          "expected_switches": 326.04519192318423,
+          "expected_rate": 0.6405602984738393,
+          "stationary_to_motion": 72,
+          "motion_to_stationary": 72,
+          "turns_between_non_neutral_directions": 184
+        },
+        {
+          "seed": 1121060,
+          "n": 323,
+          "switches": 221,
+          "rate": 0.6842105263157895,
+          "expected_switches": 201.4231373054909,
+          "expected_rate": 0.6236010442894455,
+          "stationary_to_motion": 49,
+          "motion_to_stationary": 48,
+          "turns_between_non_neutral_directions": 124
+        },
+        {
+          "seed": 1121061,
+          "n": 358,
+          "switches": 221,
+          "rate": 0.61731843575419,
+          "expected_switches": 219.59474995513852,
+          "expected_rate": 0.6133931562992696,
+          "stationary_to_motion": 49,
+          "motion_to_stationary": 50,
+          "turns_between_non_neutral_directions": 122
+        },
+        {
+          "seed": 1121062,
+          "n": 325,
+          "switches": 200,
+          "rate": 0.6153846153846154,
+          "expected_switches": 191.76939054401535,
+          "expected_rate": 0.5900596632123549,
+          "stationary_to_motion": 42,
+          "motion_to_stationary": 42,
+          "turns_between_non_neutral_directions": 116
+        }
+      ],
+      "n": 4949,
+      "switches": 3085,
+      "pooled_rate": 0.6233582541927662,
+      "expected_switches": 3040.094751022255,
+      "expected_pooled_rate": 0.6142846536719044
+    },
+    "held-ppo": {
+      "credits": [
+        {
+          "seed": 1121051,
+          "n": 423,
+          "switches": 290,
+          "rate": 0.6855791962174941,
+          "expected_switches": 277.023758059964,
+          "expected_rate": 0.6549025013237919,
+          "stationary_to_motion": 64,
+          "motion_to_stationary": 64,
+          "turns_between_non_neutral_directions": 162
+        },
+        {
+          "seed": 1121052,
+          "n": 485,
+          "switches": 302,
+          "rate": 0.622680412371134,
+          "expected_switches": 294.86693166731925,
+          "expected_rate": 0.6079730549841634,
+          "stationary_to_motion": 75,
+          "motion_to_stationary": 75,
+          "turns_between_non_neutral_directions": 152
+        },
+        {
+          "seed": 1121053,
+          "n": 400,
+          "switches": 230,
+          "rate": 0.575,
+          "expected_switches": 237.71285057010866,
+          "expected_rate": 0.5942821264252717,
+          "stationary_to_motion": 45,
+          "motion_to_stationary": 46,
+          "turns_between_non_neutral_directions": 139
+        },
+        {
+          "seed": 1121054,
+          "n": 357,
+          "switches": 195,
+          "rate": 0.5462184873949579,
+          "expected_switches": 209.5947594911616,
+          "expected_rate": 0.5871001666419092,
+          "stationary_to_motion": 54,
+          "motion_to_stationary": 54,
+          "turns_between_non_neutral_directions": 87
+        },
+        {
+          "seed": 1121055,
+          "n": 520,
+          "switches": 328,
+          "rate": 0.6307692307692307,
+          "expected_switches": 329.2995233493373,
+          "expected_rate": 0.633268314133341,
+          "stationary_to_motion": 59,
+          "motion_to_stationary": 59,
+          "turns_between_non_neutral_directions": 210
+        },
+        {
+          "seed": 1121056,
+          "n": 517,
+          "switches": 329,
+          "rate": 0.6363636363636364,
+          "expected_switches": 321.06457371442013,
+          "expected_rate": 0.6210146493509093,
+          "stationary_to_motion": 73,
+          "motion_to_stationary": 74,
+          "turns_between_non_neutral_directions": 182
+        },
+        {
+          "seed": 1121057,
+          "n": 334,
+          "switches": 213,
+          "rate": 0.6377245508982036,
+          "expected_switches": 204.537012902313,
+          "expected_rate": 0.6123862661745898,
+          "stationary_to_motion": 51,
+          "motion_to_stationary": 51,
+          "turns_between_non_neutral_directions": 111
+        },
+        {
+          "seed": 1121058,
+          "n": 338,
+          "switches": 215,
+          "rate": 0.636094674556213,
+          "expected_switches": 213.28073102476455,
+          "expected_rate": 0.6310080799549247,
+          "stationary_to_motion": 47,
+          "motion_to_stationary": 47,
+          "turns_between_non_neutral_directions": 121
+        },
+        {
+          "seed": 1121059,
+          "n": 355,
+          "switches": 218,
+          "rate": 0.6140845070422535,
+          "expected_switches": 219.71096807344782,
+          "expected_rate": 0.6189041354181629,
+          "stationary_to_motion": 55,
+          "motion_to_stationary": 55,
+          "turns_between_non_neutral_directions": 108
+        },
+        {
+          "seed": 1121060,
+          "n": 320,
+          "switches": 200,
+          "rate": 0.625,
+          "expected_switches": 198.8701046362308,
+          "expected_rate": 0.6214690769882212,
+          "stationary_to_motion": 44,
+          "motion_to_stationary": 43,
+          "turns_between_non_neutral_directions": 113
+        },
+        {
+          "seed": 1121061,
+          "n": 251,
+          "switches": 155,
+          "rate": 0.6175298804780877,
+          "expected_switches": 150.72025218020934,
+          "expected_rate": 0.6004790923514316,
+          "stationary_to_motion": 37,
+          "motion_to_stationary": 37,
+          "turns_between_non_neutral_directions": 81
+        },
+        {
+          "seed": 1121062,
+          "n": 323,
+          "switches": 209,
+          "rate": 0.6470588235294118,
+          "expected_switches": 203.5827481240317,
+          "expected_rate": 0.6302871458948349,
+          "stationary_to_motion": 44,
+          "motion_to_stationary": 44,
+          "turns_between_non_neutral_directions": 121
+        }
+      ],
+      "n": 4623,
+      "switches": 2884,
+      "pooled_rate": 0.6238373350638113,
+      "expected_switches": 2860.264213793308,
+      "expected_pooled_rate": 0.6187030529511807
+    },
+    "paired_mean_candidate_minus_reference": 0.0014872940316582595,
+    "paired_bootstrap_95pct_interval": [
+      -0.021943451341819378,
+      0.026422630258433284
+    ]
+  },
+  "credit_receipts": "qualified-stage-receipts.json"
+}

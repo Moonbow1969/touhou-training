@@ -29,6 +29,8 @@ def one(rows):
         raise ValueError("Action histogram and credited decision count differ")
     return dict(n=len(rows), stage2=len(reached) if complete else None,
                 stage2_verified_n=sum(value is not None for value in stages),
+                stage2_confirmed=len(reached),stage2_unknown=stages.count(None),
+                stage2_rate_observation_bounds=[len(reached)/len(rows),(len(reached)+stages.count(None))/len(rows)],
                 stage2_rate=len(reached)/len(rows) if complete else None,
                 stage2_wilson95=wilson(len(reached), len(rows)) if complete else None,
                 total_confirmed_bombs=sum(row["effective_bombs"] for row in rows),
@@ -47,6 +49,8 @@ def qualified_stage2(row):
     if row['title']==10 and row.get('game_sha256')=='5430fac601d645798ccf794362ec7d4cd753814f09d160247dc628b7c6943fd8':
         if not row.get('stage2_evidence_sha256'):
             return None
+    if row['title']==12 and row.get('game_sha256')=='c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a' and not row.get('stage2_evidence_sha256'):
+        return None
     return row['stage2_reached']
 
 

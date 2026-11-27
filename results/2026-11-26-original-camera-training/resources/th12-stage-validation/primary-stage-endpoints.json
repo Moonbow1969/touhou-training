@@ -1,0 +1,3807 @@
+{
+  "executable_sha256": "c6d15044394a33d6116c09eac44b33fdec814541c78518e29f60d54f49bdbd3a",
+  "difficulty": "Normal",
+  "stage1_rule": "The original highlighted score-ranking row has a Stage 1 digit, Stage word and Score Ranking title. All three Dice similarities >=0.98 against same-build captures.",
+  "absent_rule": "No detected original Stage 2 title is insufficient to certify final stage. A genuine Game Over without an authenticated final rank remains unknown.",
+  "n": 96,
+  "arms": {
+    "v2-online": {
+      "v2-ppo": {
+        "stage1_rank_confirmed": 8,
+        "unknown_final_stage": 4
+      },
+      "v2-sft": {
+        "stage1_rank_confirmed": 10,
+        "unknown_final_stage": 2
+      }
+    },
+    "cross-campaign/g03": {
+      "camera-cross-ppo": {
+        "stage1_rank_confirmed": 7,
+        "unknown_final_stage": 5
+      },
+      "camera-cross-ppo3": {
+        "stage1_rank_confirmed": 8,
+        "unknown_final_stage": 4
+      }
+    },
+    "easy-curriculum": {
+      "curriculum-ppo": {
+        "unknown_final_stage": 4,
+        "stage1_rank_confirmed": 8
+      },
+      "v2-ppo": {
+        "unknown_final_stage": 4,
+        "stage1_rank_confirmed": 8
+      }
+    },
+    "attention-online": {
+      "attention-ppo": {
+        "unknown_final_stage": 2,
+        "stage1_rank_confirmed": 10
+      },
+      "attention-sft": {
+        "stage1_rank_confirmed": 10,
+        "unknown_final_stage": 2
+      }
+    }
+  },
+  "rows": [
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981251-beta",
+      "policy": "v2-ppo",
+      "seed": 981251,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981251-beta/stage-ranking.png",
+          "sha256": "a548302cd94b540824172772f65b1a87814dc72d7f57d442e551ea6116079dea",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981251-beta/terminal-at-control.ppm",
+          "sha256": "4046615bf3a6a15967d29104cb265422b8521ad9025b645276b91bd21258f37a",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981251-beta/endpoint.png",
+          "sha256": "a548302cd94b540824172772f65b1a87814dc72d7f57d442e551ea6116079dea",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "4046615bf3a6a15967d29104cb265422b8521ad9025b645276b91bd21258f37a",
+      "actor_frames": 777,
+      "actor_peak_stage2_title_correlation": 0.5254944562911987,
+      "native_periodic_photos": 71,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981251-alpha",
+      "policy": "v2-sft",
+      "seed": 981251,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981251-alpha/stage-ranking.png",
+          "sha256": "733a98bfa3752052f90f6331811ff21476a92be1061250faebfd24c6ae6a273a",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981251-alpha/terminal-at-control.ppm",
+          "sha256": "f80d1d37f63127117a5e8186f44f8252ffa47f439622fba5b216853b3079d786",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981251-alpha/endpoint.png",
+          "sha256": "733a98bfa3752052f90f6331811ff21476a92be1061250faebfd24c6ae6a273a",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "f80d1d37f63127117a5e8186f44f8252ffa47f439622fba5b216853b3079d786",
+      "actor_frames": 576,
+      "actor_peak_stage2_title_correlation": 0.47888925671577454,
+      "native_periodic_photos": 51,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981252-alpha",
+      "policy": "v2-ppo",
+      "seed": 981252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981252-alpha/stage-ranking.png",
+          "sha256": "e0fd7bf46e53769802e53f2903b0a74d0790aa280ec9cca48f71e78f50fa69ee",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981252-alpha/terminal-at-control.ppm",
+          "sha256": "9dd94f17a2622beeb210ca1479026023a1ab6a6de7e4583319f23b2772fc9750",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981252-alpha/endpoint.png",
+          "sha256": "e0fd7bf46e53769802e53f2903b0a74d0790aa280ec9cca48f71e78f50fa69ee",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "9dd94f17a2622beeb210ca1479026023a1ab6a6de7e4583319f23b2772fc9750",
+      "actor_frames": 460,
+      "actor_peak_stage2_title_correlation": 0.4421672224998474,
+      "native_periodic_photos": 41,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981252-beta",
+      "policy": "v2-sft",
+      "seed": 981252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981252-beta/stage-ranking.png",
+          "sha256": "ee8ea4b29744a304f5916767d433bf2add547d5fc139cb9f4f4abbefd8a5353d",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981252-beta/terminal-at-control.ppm",
+          "sha256": "337c428e5ace0a09e44b996078e88fc2e624c539a0d4ae1bce573428c6af560d",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981252-beta/endpoint.png",
+          "sha256": "ee8ea4b29744a304f5916767d433bf2add547d5fc139cb9f4f4abbefd8a5353d",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "337c428e5ace0a09e44b996078e88fc2e624c539a0d4ae1bce573428c6af560d",
+      "actor_frames": 703,
+      "actor_peak_stage2_title_correlation": 0.512518584728241,
+      "native_periodic_photos": 65,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981253-beta",
+      "policy": "v2-ppo",
+      "seed": 981253,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981253-beta/stage-ranking.png",
+          "sha256": "10e46a618671168d8214af40994f4ffdf0a3cd03095bba68b744f2b16eaff1f6",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981253-beta/terminal-at-control.ppm",
+          "sha256": "6974d8ec01c03beb6b809d880df1b038de750a43d9f0d5373da79c471496a8bd",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981253-beta/endpoint.png",
+          "sha256": "10e46a618671168d8214af40994f4ffdf0a3cd03095bba68b744f2b16eaff1f6",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6974d8ec01c03beb6b809d880df1b038de750a43d9f0d5373da79c471496a8bd",
+      "actor_frames": 458,
+      "actor_peak_stage2_title_correlation": 0.47368186712265015,
+      "native_periodic_photos": 40,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981253-alpha",
+      "policy": "v2-sft",
+      "seed": 981253,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "18bfacc22f87e6681978718c4e2199e6be1420278262fc034a8bb49212bf282e",
+      "actor_frames": 337,
+      "actor_peak_stage2_title_correlation": 0.462443083524704,
+      "native_periodic_photos": 29,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981254-alpha",
+      "policy": "v2-ppo",
+      "seed": 981254,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981254-alpha/stage-ranking.png",
+          "sha256": "8b57095058687e5bacc966ff6737fbda8ddb1fe728f7777daaf63937060cfe24",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981254-alpha/terminal-at-control.ppm",
+          "sha256": "a5a4fe189f779aa6dd77b1c71d03ecbb5c61a9d9ddd0984d7b746e70606c7037",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981254-alpha/endpoint.png",
+          "sha256": "8b57095058687e5bacc966ff6737fbda8ddb1fe728f7777daaf63937060cfe24",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "a5a4fe189f779aa6dd77b1c71d03ecbb5c61a9d9ddd0984d7b746e70606c7037",
+      "actor_frames": 679,
+      "actor_peak_stage2_title_correlation": 0.4640486240386963,
+      "native_periodic_photos": 59,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981254-beta",
+      "policy": "v2-sft",
+      "seed": 981254,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981254-beta/stage-ranking.png",
+          "sha256": "22a586f723997635b9aefa4edb6d0d03af524afa3ee3ae75e623ade0ec8f439d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981254-beta/terminal-at-control.ppm",
+          "sha256": "1115ba59f1a1ee5706b1c62f39f31089f9cd40b7e1da9401a9dbd5df6271dd10",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981254-beta/endpoint.png",
+          "sha256": "22a586f723997635b9aefa4edb6d0d03af524afa3ee3ae75e623ade0ec8f439d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "1115ba59f1a1ee5706b1c62f39f31089f9cd40b7e1da9401a9dbd5df6271dd10",
+      "actor_frames": 326,
+      "actor_peak_stage2_title_correlation": 0.4127466678619385,
+      "native_periodic_photos": 28,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981255-beta",
+      "policy": "v2-ppo",
+      "seed": 981255,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "3a0bafeb0707cbc2db804da56b76f761d1d827e231979d3f9fc67edd571662eb",
+      "actor_frames": 319,
+      "actor_peak_stage2_title_correlation": 0.43336519598960876,
+      "native_periodic_photos": 29,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981255-alpha",
+      "policy": "v2-sft",
+      "seed": 981255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981255-alpha/stage-ranking.png",
+          "sha256": "a68a517f30f38414b2de1044bdeafba07e75f2e22d6fe761a667441118f80806",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981255-alpha/terminal-at-control.ppm",
+          "sha256": "a7e1e7b9accb5b77eb3aa23820e91b8b6f82e7aa4b5fc9f19ec2450868181f4c",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981255-alpha/endpoint.png",
+          "sha256": "a68a517f30f38414b2de1044bdeafba07e75f2e22d6fe761a667441118f80806",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "a7e1e7b9accb5b77eb3aa23820e91b8b6f82e7aa4b5fc9f19ec2450868181f4c",
+      "actor_frames": 711,
+      "actor_peak_stage2_title_correlation": 0.4900130033493042,
+      "native_periodic_photos": 67,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981256-alpha",
+      "policy": "v2-ppo",
+      "seed": 981256,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "fb0c1d953d93d7e7cc668b7d501253998c68a3c0fbbf5d80d409937588cf0ba2",
+      "actor_frames": 487,
+      "actor_peak_stage2_title_correlation": 0.486086905002594,
+      "native_periodic_photos": 43,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981256-beta",
+      "policy": "v2-sft",
+      "seed": 981256,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981256-beta/stage-ranking.png",
+          "sha256": "8c29b72d7edf3b2894a2377ffb3f9f6b5eeb68324d04ce57c8b2e5ecf64f5458",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981256-beta/terminal-at-control.ppm",
+          "sha256": "65d07f6e7f416ededcfc8152f73eec659a15c717e1d574d0def29a7233cffe04",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981256-beta/endpoint.png",
+          "sha256": "8c29b72d7edf3b2894a2377ffb3f9f6b5eeb68324d04ce57c8b2e5ecf64f5458",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "65d07f6e7f416ededcfc8152f73eec659a15c717e1d574d0def29a7233cffe04",
+      "actor_frames": 802,
+      "actor_peak_stage2_title_correlation": 0.4404275119304657,
+      "native_periodic_photos": 73,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981257-beta",
+      "policy": "v2-ppo",
+      "seed": 981257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981257-beta/stage-ranking.png",
+          "sha256": "5858f92aef7a88e09b7058a470eb34e5ddbbddd9fd58661a3515e5cbe835c5b4",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981257-beta/terminal-at-control.ppm",
+          "sha256": "8dc7fb2dac720ef174adc7dfb04bed205f41d16ea105eead5a75bf272b54c9d5",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981257-beta/endpoint.png",
+          "sha256": "5858f92aef7a88e09b7058a470eb34e5ddbbddd9fd58661a3515e5cbe835c5b4",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "8dc7fb2dac720ef174adc7dfb04bed205f41d16ea105eead5a75bf272b54c9d5",
+      "actor_frames": 345,
+      "actor_peak_stage2_title_correlation": 0.42308616638183594,
+      "native_periodic_photos": 30,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981257-alpha",
+      "policy": "v2-sft",
+      "seed": 981257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981257-alpha/stage-ranking.png",
+          "sha256": "67e41251cd3ae1feb0b7d86038000a1983c603f395e97d14f47f5c79fb6531aa",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981257-alpha/terminal-at-control.ppm",
+          "sha256": "08ecc0d837d3fb354af449c42399722bfd82bcea05b418e5c49a2b74ed12fe62",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981257-alpha/endpoint.png",
+          "sha256": "67e41251cd3ae1feb0b7d86038000a1983c603f395e97d14f47f5c79fb6531aa",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "08ecc0d837d3fb354af449c42399722bfd82bcea05b418e5c49a2b74ed12fe62",
+      "actor_frames": 530,
+      "actor_peak_stage2_title_correlation": 0.4853682219982147,
+      "native_periodic_photos": 48,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981258-alpha",
+      "policy": "v2-ppo",
+      "seed": 981258,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "6a4411b983f581adc0c92687ac6d0481bad6fabde9249fdf99252ed9f4d604e4",
+      "actor_frames": 667,
+      "actor_peak_stage2_title_correlation": 0.5220968723297119,
+      "native_periodic_photos": 58,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981258-beta",
+      "policy": "v2-sft",
+      "seed": 981258,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981258-beta/stage-ranking.png",
+          "sha256": "c3561429ab518f1cfda70b133a4057d6fd185403de361ee6d41112d654453619",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981258-beta/terminal-at-control.ppm",
+          "sha256": "b935d0b1e03c0dba28eb743fa64723003adc3fabfc830e999f9e8ed9771d3538",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981258-beta/endpoint.png",
+          "sha256": "c3561429ab518f1cfda70b133a4057d6fd185403de361ee6d41112d654453619",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b935d0b1e03c0dba28eb743fa64723003adc3fabfc830e999f9e8ed9771d3538",
+      "actor_frames": 356,
+      "actor_peak_stage2_title_correlation": 0.4592871069908142,
+      "native_periodic_photos": 31,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981259-beta",
+      "policy": "v2-ppo",
+      "seed": 981259,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981259-beta/stage-ranking.png",
+          "sha256": "f5d78f4429a5cb0b3b66c9ceec38b9a3093a8d1e506c9f9ac4b3302fddce1c0a",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981259-beta/terminal-at-control.ppm",
+          "sha256": "b52e2ee762f503a89efdfdbae63b70c04e3be7d44d1f1a8f00af9352649eecce",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981259-beta/endpoint.png",
+          "sha256": "f5d78f4429a5cb0b3b66c9ceec38b9a3093a8d1e506c9f9ac4b3302fddce1c0a",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b52e2ee762f503a89efdfdbae63b70c04e3be7d44d1f1a8f00af9352649eecce",
+      "actor_frames": 650,
+      "actor_peak_stage2_title_correlation": 0.5045539140701294,
+      "native_periodic_photos": 58,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981259-alpha",
+      "policy": "v2-sft",
+      "seed": 981259,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover_retry",
+      "terminal_camera_sha256": "1024a861717a9f370c2d3a2637bbd97b408b3a161eb017eb4cfbb104034b9a8f",
+      "actor_frames": 579,
+      "actor_peak_stage2_title_correlation": 0.44738948345184326,
+      "native_periodic_photos": 52,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981260-alpha",
+      "policy": "v2-ppo",
+      "seed": 981260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981260-alpha/stage-ranking.png",
+          "sha256": "f5ec53319837462bb066647f902b8fed27a70012ded9dddc67dcc32cf2140c8b",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981260-alpha/terminal-at-control.ppm",
+          "sha256": "665431fb634df334954003cdff28df7c33661887e5380178cc136a23d7874858",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981260-alpha/endpoint.png",
+          "sha256": "f5ec53319837462bb066647f902b8fed27a70012ded9dddc67dcc32cf2140c8b",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "665431fb634df334954003cdff28df7c33661887e5380178cc136a23d7874858",
+      "actor_frames": 449,
+      "actor_peak_stage2_title_correlation": 0.48142391443252563,
+      "native_periodic_photos": 40,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981260-beta",
+      "policy": "v2-sft",
+      "seed": 981260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981260-beta/stage-ranking.png",
+          "sha256": "9a3ed4e9fd3dac7682886c5e5dd2c3e164c6a68a0a163bf2921a7a0eb4dda55a",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981260-beta/terminal-at-control.ppm",
+          "sha256": "1b1f5f328da3ff9d3f82b303a40b722aba23fe7db47c6a5161483e5263f24975",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981260-beta/endpoint.png",
+          "sha256": "9a3ed4e9fd3dac7682886c5e5dd2c3e164c6a68a0a163bf2921a7a0eb4dda55a",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "1b1f5f328da3ff9d3f82b303a40b722aba23fe7db47c6a5161483e5263f24975",
+      "actor_frames": 537,
+      "actor_peak_stage2_title_correlation": 0.4587421715259552,
+      "native_periodic_photos": 48,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981261-beta",
+      "policy": "v2-ppo",
+      "seed": 981261,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "1213ec7561416dfea65eaf1b3c2b917117ed9c24e1068de88709d03ebdee60db",
+      "actor_frames": 441,
+      "actor_peak_stage2_title_correlation": 0.44691112637519836,
+      "native_periodic_photos": 39,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981261-alpha",
+      "policy": "v2-sft",
+      "seed": 981261,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981261-alpha/stage-ranking.png",
+          "sha256": "4d84834868cda20a6f45090a54cdc8146a8d5e31ed62d2a555765b61f1582089",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981261-alpha/terminal-at-control.ppm",
+          "sha256": "fc43778cdbcad745d793f1b26ec3ef223df899948bc71c711174625c010dbc08",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981261-alpha/endpoint.png",
+          "sha256": "4d84834868cda20a6f45090a54cdc8146a8d5e31ed62d2a555765b61f1582089",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "fc43778cdbcad745d793f1b26ec3ef223df899948bc71c711174625c010dbc08",
+      "actor_frames": 450,
+      "actor_peak_stage2_title_correlation": 0.5574403405189514,
+      "native_periodic_photos": 39,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-ppo-981262-alpha",
+      "policy": "v2-ppo",
+      "seed": 981262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981262-alpha/stage-ranking.png",
+          "sha256": "3aba7a6f64bf1c545b21e772d614027960a3f32b0674ff7d9f40381b2fc8b794",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981262-alpha/terminal-at-control.ppm",
+          "sha256": "33ee1133e4ae9babad04e65842e5cdf49beae381b481e4c9546e8c4f174530cf",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-ppo-981262-alpha/endpoint.png",
+          "sha256": "3aba7a6f64bf1c545b21e772d614027960a3f32b0674ff7d9f40381b2fc8b794",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "33ee1133e4ae9babad04e65842e5cdf49beae381b481e4c9546e8c4f174530cf",
+      "actor_frames": 534,
+      "actor_peak_stage2_title_correlation": 0.43158283829689026,
+      "native_periodic_photos": 47,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "v2-online",
+      "episode": "held-v2-sft-981262-beta",
+      "policy": "v2-sft",
+      "seed": 981262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981262-beta/stage-ranking.png",
+          "sha256": "8afc8239dcfedcf75b85951fa984e439d72aa021571719d7eef8c611fcef91c1",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981262-beta/terminal-at-control.ppm",
+          "sha256": "cf54d63ecce8c5339f26c1ab0c082e1bf0534d6d293cdbab4f9c9438655a7745",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "v2-online/native12/raw/held-v2-sft-981262-beta/endpoint.png",
+          "sha256": "8afc8239dcfedcf75b85951fa984e439d72aa021571719d7eef8c611fcef91c1",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "cf54d63ecce8c5339f26c1ab0c082e1bf0534d6d293cdbab4f9c9438655a7745",
+      "actor_frames": 739,
+      "actor_peak_stage2_title_correlation": 0.4716220498085022,
+      "native_periodic_photos": 64,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931251-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931251,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931251-alpha/stage-ranking.png",
+          "sha256": "ab11bb45f8e3f5fab641e1e205e24d63e53eeec8958611c6913b47eb60d80f58",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931251-alpha/terminal-at-control.ppm",
+          "sha256": "086f98464d898f481be043a424894a92f1e0e99c1d06928a9eccb76293ab6ff6",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931251-alpha/endpoint.png",
+          "sha256": "ab11bb45f8e3f5fab641e1e205e24d63e53eeec8958611c6913b47eb60d80f58",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "086f98464d898f481be043a424894a92f1e0e99c1d06928a9eccb76293ab6ff6",
+      "actor_frames": 696,
+      "actor_peak_stage2_title_correlation": 0.47888925671577454,
+      "native_periodic_photos": 66,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931251-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931251,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931251-beta/stage-ranking.png",
+          "sha256": "0a0538e9ea7ce102614122a54fb598786289c0c0fbac304a52d5fe5a9c61ec25",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931251-beta/terminal-at-control.ppm",
+          "sha256": "c8812b659162b24711b7b5b58bdb5ff20219be331b36fb6ec113afbb99c3c7ee",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931251-beta/endpoint.png",
+          "sha256": "0a0538e9ea7ce102614122a54fb598786289c0c0fbac304a52d5fe5a9c61ec25",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "c8812b659162b24711b7b5b58bdb5ff20219be331b36fb6ec113afbb99c3c7ee",
+      "actor_frames": 1026,
+      "actor_peak_stage2_title_correlation": 0.4642602503299713,
+      "native_periodic_photos": 93,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931252-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931252,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "6e3b1ef099344a1ebbd14ffdacf5a1f06c5a7e48aa7c63b180e142e868b5f80c",
+      "actor_frames": 491,
+      "actor_peak_stage2_title_correlation": 0.45871424674987793,
+      "native_periodic_photos": 44,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931252-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931252-alpha/stage-ranking.png",
+          "sha256": "e3b40d7c73a0ec8c6bf4e2b1b10bc653f6848fa0f5a6e2b3ec4833fc22914c75",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931252-alpha/terminal-at-control.ppm",
+          "sha256": "8917c4bbdca12a00e177eb7d031faefafc2e7ea98fcf4fe9dfbe4ce7b7e1101e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931252-alpha/endpoint.png",
+          "sha256": "e3b40d7c73a0ec8c6bf4e2b1b10bc653f6848fa0f5a6e2b3ec4833fc22914c75",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "8917c4bbdca12a00e177eb7d031faefafc2e7ea98fcf4fe9dfbe4ce7b7e1101e",
+      "actor_frames": 745,
+      "actor_peak_stage2_title_correlation": 0.45750606060028076,
+      "native_periodic_photos": 68,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931253-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931253,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931253-alpha/stage-ranking.png",
+          "sha256": "71881475dbad80bc3e63d5baba6996201ccc17498c6af04dc78b93e1f9cd0502",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931253-alpha/terminal-at-control.ppm",
+          "sha256": "b1e2f4d7d16bce520adca76dfbee89eb2892b9061ec381de9a59b23cb9b60eb2",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931253-alpha/endpoint.png",
+          "sha256": "71881475dbad80bc3e63d5baba6996201ccc17498c6af04dc78b93e1f9cd0502",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b1e2f4d7d16bce520adca76dfbee89eb2892b9061ec381de9a59b23cb9b60eb2",
+      "actor_frames": 606,
+      "actor_peak_stage2_title_correlation": 0.46561285853385925,
+      "native_periodic_photos": 53,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931253-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931253,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "593e947ee63d2aa97d6ddf8e7b98cdb25e39172a260e1b8fcad7dec5c10a4690",
+      "actor_frames": 340,
+      "actor_peak_stage2_title_correlation": 0.45307230949401855,
+      "native_periodic_photos": 30,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931254-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931254,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "9518079e30c1c1b1070d2b80ec30167971000f891778036675a21a03aefa2918",
+      "actor_frames": 434,
+      "actor_peak_stage2_title_correlation": 0.445364773273468,
+      "native_periodic_photos": 38,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931254-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931254,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "0a6e60a3c80c68eea3851a88eabe4c96de29b2d91f4901b88e1b5d38c9c304de",
+      "actor_frames": 525,
+      "actor_peak_stage2_title_correlation": 0.4775601029396057,
+      "native_periodic_photos": 46,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931255-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931255-alpha/stage-ranking.png",
+          "sha256": "0160712aac3138c69fd5c0e6d1e6250dba856b51b4f3f96ffdf46ccebfe2e242",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931255-alpha/terminal-at-control.ppm",
+          "sha256": "622ea7e964ada8ce40ca2a41b5eabd451379005298e0851efbd588d3382a832b",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931255-alpha/endpoint.png",
+          "sha256": "0160712aac3138c69fd5c0e6d1e6250dba856b51b4f3f96ffdf46ccebfe2e242",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "622ea7e964ada8ce40ca2a41b5eabd451379005298e0851efbd588d3382a832b",
+      "actor_frames": 894,
+      "actor_peak_stage2_title_correlation": 0.4896479845046997,
+      "native_periodic_photos": 82,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931255-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931255-beta/stage-ranking.png",
+          "sha256": "2d65292a53844007e31e02a187e39b760bf85c6a5de6e2cbea39b504b137333e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931255-beta/terminal-at-control.ppm",
+          "sha256": "c0679de986767e6bf03402e39809484eb733f70d7da0779be1f291eaa018b5b5",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931255-beta/endpoint.png",
+          "sha256": "2d65292a53844007e31e02a187e39b760bf85c6a5de6e2cbea39b504b137333e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "c0679de986767e6bf03402e39809484eb733f70d7da0779be1f291eaa018b5b5",
+      "actor_frames": 766,
+      "actor_peak_stage2_title_correlation": 0.4896479845046997,
+      "native_periodic_photos": 71,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931256-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931256,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "ae10409928a68d44c744dd565ec54dc6749007c2051a7aac4358d7ec685f2176",
+      "actor_frames": 648,
+      "actor_peak_stage2_title_correlation": 0.4896479845046997,
+      "native_periodic_photos": 60,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931256-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931256,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931256-alpha/stage-ranking.png",
+          "sha256": "1924fe92dfd9d1f559183a354c287aa25d46547f91b49ca47a0c0c7ba48f5a82",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931256-alpha/terminal-at-control.ppm",
+          "sha256": "6a5d132012b9cf8748f8e306db47e3e44526390155129f5d12e1443ad3406a48",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931256-alpha/endpoint.png",
+          "sha256": "1924fe92dfd9d1f559183a354c287aa25d46547f91b49ca47a0c0c7ba48f5a82",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6a5d132012b9cf8748f8e306db47e3e44526390155129f5d12e1443ad3406a48",
+      "actor_frames": 409,
+      "actor_peak_stage2_title_correlation": 0.47491082549095154,
+      "native_periodic_photos": 37,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931257-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931257-alpha/stage-ranking.png",
+          "sha256": "67bbb0cdc524ac69a0cf6b644d475143095274d378dba19067c5ca18aba57256",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931257-alpha/terminal-at-control.ppm",
+          "sha256": "a0fd5cb1df185dcf39f65479b8d2c85df483b2df6cc3398dd35e1105e7a04874",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931257-alpha/endpoint.png",
+          "sha256": "67bbb0cdc524ac69a0cf6b644d475143095274d378dba19067c5ca18aba57256",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "a0fd5cb1df185dcf39f65479b8d2c85df483b2df6cc3398dd35e1105e7a04874",
+      "actor_frames": 577,
+      "actor_peak_stage2_title_correlation": 0.5375503897666931,
+      "native_periodic_photos": 51,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931257-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931257-beta/stage-ranking.png",
+          "sha256": "e9728f0ffd8c6eb980a8f152b93ffd4a7e0d4beb112bbb67456a8c0914462988",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931257-beta/terminal-at-control.ppm",
+          "sha256": "ee1781bea40d543d59fec16127bb9b4016fe40ee1905c9995d0ca764bed91310",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931257-beta/endpoint.png",
+          "sha256": "e9728f0ffd8c6eb980a8f152b93ffd4a7e0d4beb112bbb67456a8c0914462988",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "ee1781bea40d543d59fec16127bb9b4016fe40ee1905c9995d0ca764bed91310",
+      "actor_frames": 811,
+      "actor_peak_stage2_title_correlation": 0.4492744207382202,
+      "native_periodic_photos": 71,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931258-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931258,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931258-beta/stage-ranking.png",
+          "sha256": "f4c8f72eef68155e0cc2dc2985e68fb031ddafcb0a3c7c825a63419e5ab8cb95",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931258-beta/terminal-at-control.ppm",
+          "sha256": "ca34aa54b2b24e024c5fce89b5915c63dfbecadc65694cd9e9f7cabcfa928096",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931258-beta/endpoint.png",
+          "sha256": "f4c8f72eef68155e0cc2dc2985e68fb031ddafcb0a3c7c825a63419e5ab8cb95",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "ca34aa54b2b24e024c5fce89b5915c63dfbecadc65694cd9e9f7cabcfa928096",
+      "actor_frames": 411,
+      "actor_peak_stage2_title_correlation": 0.46446192264556885,
+      "native_periodic_photos": 36,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931258-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931258,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "7181505156097d94542da64ee436fbac4b6508e746e580ce75b8c6dc36a8fe0b",
+      "actor_frames": 348,
+      "actor_peak_stage2_title_correlation": 0.445143461227417,
+      "native_periodic_photos": 30,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931259-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931259,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "5eedcc9a41362d8be45e8f3a1c1c3c3244e3c8c01413947ae30c4d3df81a2281",
+      "actor_frames": 474,
+      "actor_peak_stage2_title_correlation": 0.47491082549095154,
+      "native_periodic_photos": 42,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931259-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931259,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931259-beta/stage-ranking.png",
+          "sha256": "1fa94f6a03bc94d5c7b00f111fc6df463e3ad46cd0e31b73ea31332584df1ca4",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931259-beta/terminal-at-control.ppm",
+          "sha256": "f2fe770ffebfa2329b0345d7676e05c408f4196819e54c24be1fd6b4abb92deb",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931259-beta/endpoint.png",
+          "sha256": "1fa94f6a03bc94d5c7b00f111fc6df463e3ad46cd0e31b73ea31332584df1ca4",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "f2fe770ffebfa2329b0345d7676e05c408f4196819e54c24be1fd6b4abb92deb",
+      "actor_frames": 838,
+      "actor_peak_stage2_title_correlation": 0.5165016055107117,
+      "native_periodic_photos": 75,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931260-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931260-beta/stage-ranking.png",
+          "sha256": "95d68dfc62b0e5e98d1d34525cfdea3e012466e67c6216b30eaf04dcab683399",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931260-beta/terminal-at-control.ppm",
+          "sha256": "906cbf6e3d52f5d25f6afc06ac47a4227e94bc065956b5b5ea8fcbd9fe00f6fb",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931260-beta/endpoint.png",
+          "sha256": "95d68dfc62b0e5e98d1d34525cfdea3e012466e67c6216b30eaf04dcab683399",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "906cbf6e3d52f5d25f6afc06ac47a4227e94bc065956b5b5ea8fcbd9fe00f6fb",
+      "actor_frames": 894,
+      "actor_peak_stage2_title_correlation": 0.4896479845046997,
+      "native_periodic_photos": 82,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931260-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931260-alpha/stage-ranking.png",
+          "sha256": "ad6f6478c2edaed472a34b77b9772c6c8db770121feee627aa2116927d224fc0",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931260-alpha/terminal-at-control.ppm",
+          "sha256": "a6d605a7b8d492fc5e46541c5c60aaf8ebf7d26bf543378ef0911c0e934eeef7",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931260-alpha/endpoint.png",
+          "sha256": "ad6f6478c2edaed472a34b77b9772c6c8db770121feee627aa2116927d224fc0",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "a6d605a7b8d492fc5e46541c5c60aaf8ebf7d26bf543378ef0911c0e934eeef7",
+      "actor_frames": 716,
+      "actor_peak_stage2_title_correlation": 0.46043235063552856,
+      "native_periodic_photos": 65,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931261-alpha",
+      "policy": "camera-cross-ppo",
+      "seed": 931261,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "7f425eb719a25f2de0e5d4967275bd7afce78917d61f61646a7f0ecd0478aae6",
+      "actor_frames": 359,
+      "actor_peak_stage2_title_correlation": 0.4623471796512604,
+      "native_periodic_photos": 31,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931261-beta",
+      "policy": "camera-cross-ppo3",
+      "seed": 931261,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "59529470bbe606499de09edcb9bacc215dde3d32438ac91ae2367394c20c499d",
+      "actor_frames": 688,
+      "actor_peak_stage2_title_correlation": 0.46873965859413147,
+      "native_periodic_photos": 62,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo-931262-beta",
+      "policy": "camera-cross-ppo",
+      "seed": 931262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931262-beta/stage-ranking.png",
+          "sha256": "d9a8d4c94e5bf0652c840ac3fa8b79e5a878dd190c01212612232b0a6fffa56d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931262-beta/terminal-at-control.ppm",
+          "sha256": "5a45d06c5be0cc34da0e133cdfdb5bb4a5b4d5acede650723f13a3c3eb7af695",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo-931262-beta/endpoint.png",
+          "sha256": "d9a8d4c94e5bf0652c840ac3fa8b79e5a878dd190c01212612232b0a6fffa56d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "5a45d06c5be0cc34da0e133cdfdb5bb4a5b4d5acede650723f13a3c3eb7af695",
+      "actor_frames": 468,
+      "actor_peak_stage2_title_correlation": 0.5023191571235657,
+      "native_periodic_photos": 41,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "cross-campaign/g03",
+      "episode": "held-camera-cross-ppo3-931262-alpha",
+      "policy": "camera-cross-ppo3",
+      "seed": 931262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931262-alpha/stage-ranking.png",
+          "sha256": "04ed1f3c605cdee1b41890f9a9f12dd3df9141c5f7040c5b0292947933ace181",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931262-alpha/terminal-at-control.ppm",
+          "sha256": "6d5bae08503e02964bf9c63aab384d09357a5b29d0a905339bad12ff059651be",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "cross-campaign/g03/native12/raw/held-camera-cross-ppo3-931262-alpha/endpoint.png",
+          "sha256": "04ed1f3c605cdee1b41890f9a9f12dd3df9141c5f7040c5b0292947933ace181",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6d5bae08503e02964bf9c63aab384d09357a5b29d0a905339bad12ff059651be",
+      "actor_frames": 336,
+      "actor_peak_stage2_title_correlation": 0.4408068358898163,
+      "native_periodic_photos": 29,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101251-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101251,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "a909260c2b21696140d2e776d10d759e759e29753c2658e868157d9d1f47d662",
+      "actor_frames": 408,
+      "actor_peak_stage2_title_correlation": 0.44350525736808777,
+      "native_periodic_photos": 36,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101251-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101251,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "fa7150d53c65ae770165c770de47d7ba0e23b6542386d993ad19615adbe6fe99",
+      "actor_frames": 307,
+      "actor_peak_stage2_title_correlation": 0.4415059983730316,
+      "native_periodic_photos": 28,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101252-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101252-alpha/stage-ranking.png",
+          "sha256": "837567ed5fff41645fa5fc76c66e2faa73c9dbc27fd7bfda1816a2752e0769f4",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101252-alpha/terminal-at-control.ppm",
+          "sha256": "3955bf330f0f434f185de6d712b45480539f6d3ae93aae7c38c4eaaabeaeee04",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101252-alpha/endpoint.png",
+          "sha256": "837567ed5fff41645fa5fc76c66e2faa73c9dbc27fd7bfda1816a2752e0769f4",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "3955bf330f0f434f185de6d712b45480539f6d3ae93aae7c38c4eaaabeaeee04",
+      "actor_frames": 853,
+      "actor_peak_stage2_title_correlation": 0.5073682069778442,
+      "native_periodic_photos": 77,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101252-beta",
+      "policy": "v2-ppo",
+      "seed": 1101252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101252-beta/stage-ranking.png",
+          "sha256": "dc8ef21cc48b0eb4c96e3b6af9662170991bef000e4368ce92cf5c35cfb9bbd8",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101252-beta/terminal-at-control.ppm",
+          "sha256": "37a1058ef27a5bc2c06b8aa176a6667ae76d00925476629c96342af79c812c76",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101252-beta/endpoint.png",
+          "sha256": "dc8ef21cc48b0eb4c96e3b6af9662170991bef000e4368ce92cf5c35cfb9bbd8",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "37a1058ef27a5bc2c06b8aa176a6667ae76d00925476629c96342af79c812c76",
+      "actor_frames": 825,
+      "actor_peak_stage2_title_correlation": 0.47491082549095154,
+      "native_periodic_photos": 74,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101253-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101253,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101253-beta/stage-ranking.png",
+          "sha256": "74472a781f13d68073c2af5a1934145f6967b5e208acfc854c9e10a275ee454e",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101253-beta/terminal-at-control.ppm",
+          "sha256": "493bcc02a1cd6f50fe129bd96a769b90a499e6bb9837aa19450d5885fa69f4ce",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101253-beta/endpoint.png",
+          "sha256": "74472a781f13d68073c2af5a1934145f6967b5e208acfc854c9e10a275ee454e",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "493bcc02a1cd6f50fe129bd96a769b90a499e6bb9837aa19450d5885fa69f4ce",
+      "actor_frames": 473,
+      "actor_peak_stage2_title_correlation": 0.47097110748291016,
+      "native_periodic_photos": 41,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101253-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101253,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101253-alpha/stage-ranking.png",
+          "sha256": "41befd03d4871a3ed7144405d0a229a374c78bebdb5b4826791376aacfb24d5c",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101253-alpha/terminal-at-control.ppm",
+          "sha256": "35f6601cc25c0380392c5e9d586b304baa40cd52d7a839205e2fedf330780820",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101253-alpha/endpoint.png",
+          "sha256": "41befd03d4871a3ed7144405d0a229a374c78bebdb5b4826791376aacfb24d5c",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "35f6601cc25c0380392c5e9d586b304baa40cd52d7a839205e2fedf330780820",
+      "actor_frames": 368,
+      "actor_peak_stage2_title_correlation": 0.43041279911994934,
+      "native_periodic_photos": 33,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101254-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101254,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101254-alpha/stage-ranking.png",
+          "sha256": "b98bab006be0e9eeb296e541f176845ec7ff1ee819d0d0d206f8aaf7de2b3337",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101254-alpha/terminal-at-control.ppm",
+          "sha256": "9da8aa441d7e46cd7e7007d37d7c7bfbf0f132ace70dc3eb38a631219ddb8176",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101254-alpha/endpoint.png",
+          "sha256": "b98bab006be0e9eeb296e541f176845ec7ff1ee819d0d0d206f8aaf7de2b3337",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "9da8aa441d7e46cd7e7007d37d7c7bfbf0f132ace70dc3eb38a631219ddb8176",
+      "actor_frames": 554,
+      "actor_peak_stage2_title_correlation": 0.46369028091430664,
+      "native_periodic_photos": 50,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101254-beta",
+      "policy": "v2-ppo",
+      "seed": 1101254,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "e5c1b5d07a2b7519e7ce16935e0f653b92db32541478c32ca73c5b2df09c4aac",
+      "actor_frames": 334,
+      "actor_peak_stage2_title_correlation": 0.49639204144477844,
+      "native_periodic_photos": 29,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101255-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101255-beta/stage-ranking.png",
+          "sha256": "38b3b8ecabca7811877d90e86e0feb7a3bb61082a37c18ada104c6fe1f26bc7e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101255-beta/terminal-at-control.ppm",
+          "sha256": "62185f9b6653f2e289054956dcf54aec338f61e6b3c572515207b98fbb89c512",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101255-beta/endpoint.png",
+          "sha256": "38b3b8ecabca7811877d90e86e0feb7a3bb61082a37c18ada104c6fe1f26bc7e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "62185f9b6653f2e289054956dcf54aec338f61e6b3c572515207b98fbb89c512",
+      "actor_frames": 833,
+      "actor_peak_stage2_title_correlation": 0.4887312650680542,
+      "native_periodic_photos": 74,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101255-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101255-alpha/stage-ranking.png",
+          "sha256": "c679ed07391d4fa3840d0b2b18e1b7be270d0fde6a1786a4e39b44bd716edb9d",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101255-alpha/terminal-at-control.ppm",
+          "sha256": "9654b6db34cf902e2d12861869c6a74f93bda27e01359312aef10361c14e7c30",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101255-alpha/endpoint.png",
+          "sha256": "c679ed07391d4fa3840d0b2b18e1b7be270d0fde6a1786a4e39b44bd716edb9d",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "9654b6db34cf902e2d12861869c6a74f93bda27e01359312aef10361c14e7c30",
+      "actor_frames": 886,
+      "actor_peak_stage2_title_correlation": 0.48328158259391785,
+      "native_periodic_photos": 81,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101256-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101256,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "1056d7c70e16bd74cb70e28b8c4f86d1f97d1ae334676ce1a682875e726ee65e",
+      "actor_frames": 632,
+      "actor_peak_stage2_title_correlation": 0.4621181786060333,
+      "native_periodic_photos": 58,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101256-beta",
+      "policy": "v2-ppo",
+      "seed": 1101256,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101256-beta/stage-ranking.png",
+          "sha256": "c9564dc7a7f978551bfe274b39f07f33d8864daf5d8c812ec1575d90424d988d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101256-beta/terminal-at-control.ppm",
+          "sha256": "6ddb0e04173b21474ab2528ef278a9fb8d72ceae3504acca47324aa7a4979e81",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101256-beta/endpoint.png",
+          "sha256": "c9564dc7a7f978551bfe274b39f07f33d8864daf5d8c812ec1575d90424d988d",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6ddb0e04173b21474ab2528ef278a9fb8d72ceae3504acca47324aa7a4979e81",
+      "actor_frames": 714,
+      "actor_peak_stage2_title_correlation": 0.4657438397407532,
+      "native_periodic_photos": 64,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101257-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101257,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "274db94d3cbb0890c3ae3f1fded7b0a3013ae6a6e795444f4cd487c18401d514",
+      "actor_frames": 371,
+      "actor_peak_stage2_title_correlation": 0.440938800573349,
+      "native_periodic_photos": 32,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101257-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101257,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "1645159932e9633b63a9673ce2e7a8f2f7493d829d9d9fe8e62be089993af53c",
+      "actor_frames": 251,
+      "actor_peak_stage2_title_correlation": 0.45802515745162964,
+      "native_periodic_photos": 22,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101258-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101258,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "9c6a41cd62e14d273f9f3eb3ea49a78f4794714c0fc5f31aecb076acee7401a3",
+      "actor_frames": 252,
+      "actor_peak_stage2_title_correlation": 0.5079047679901123,
+      "native_periodic_photos": 22,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101258-beta",
+      "policy": "v2-ppo",
+      "seed": 1101258,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "f7d6b11728e4fc4ce1f40e532f2030e827607e0d9c8055dda080992c7d3e04da",
+      "actor_frames": 259,
+      "actor_peak_stage2_title_correlation": 0.44683775305747986,
+      "native_periodic_photos": 23,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101259-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101259,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101259-beta/stage-ranking.png",
+          "sha256": "56464ba1806859cf7cfb5c0e05a8761cc0b042471d0c4f65a99467195802e223",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101259-beta/terminal-at-control.ppm",
+          "sha256": "f6a21c363b4ccc9a9d42c203559416b0ea3ea3258020553d114cde52ab24f27d",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101259-beta/endpoint.png",
+          "sha256": "56464ba1806859cf7cfb5c0e05a8761cc0b042471d0c4f65a99467195802e223",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "f6a21c363b4ccc9a9d42c203559416b0ea3ea3258020553d114cde52ab24f27d",
+      "actor_frames": 867,
+      "actor_peak_stage2_title_correlation": 0.45580509305000305,
+      "native_periodic_photos": 77,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101259-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101259,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101259-alpha/stage-ranking.png",
+          "sha256": "47ed75db28e9a145da6e18ac398b5a941a20dc3982187292be781ab16ccf790f",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101259-alpha/terminal-at-control.ppm",
+          "sha256": "1eff01a4396ef986b8ba6d5af324ad34e11e617270719bd25023458822c9e511",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101259-alpha/endpoint.png",
+          "sha256": "47ed75db28e9a145da6e18ac398b5a941a20dc3982187292be781ab16ccf790f",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "1eff01a4396ef986b8ba6d5af324ad34e11e617270719bd25023458822c9e511",
+      "actor_frames": 788,
+      "actor_peak_stage2_title_correlation": 0.46595823764801025,
+      "native_periodic_photos": 72,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101260-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101260-alpha/stage-ranking.png",
+          "sha256": "ecc367a80ca34f14fc73955b5dc251d2027f62b23da7d4c58783823013881176",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101260-alpha/terminal-at-control.ppm",
+          "sha256": "7ed43afbcd830917aa62a0def11208828287248a5d3435e3ae74376de4310f99",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101260-alpha/endpoint.png",
+          "sha256": "ecc367a80ca34f14fc73955b5dc251d2027f62b23da7d4c58783823013881176",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "7ed43afbcd830917aa62a0def11208828287248a5d3435e3ae74376de4310f99",
+      "actor_frames": 637,
+      "actor_peak_stage2_title_correlation": 0.48328158259391785,
+      "native_periodic_photos": 61,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101260-beta",
+      "policy": "v2-ppo",
+      "seed": 1101260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101260-beta/stage-ranking.png",
+          "sha256": "eabc2a8606b2f6829eae31a153bea9425880e445ea9f77038c549f0d1e50dcc2",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101260-beta/terminal-at-control.ppm",
+          "sha256": "0001eeb553f258dcfb4419204c0ce9b5b012cadc8282a43947ada54197bf6e20",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101260-beta/endpoint.png",
+          "sha256": "eabc2a8606b2f6829eae31a153bea9425880e445ea9f77038c549f0d1e50dcc2",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "0001eeb553f258dcfb4419204c0ce9b5b012cadc8282a43947ada54197bf6e20",
+      "actor_frames": 551,
+      "actor_peak_stage2_title_correlation": 0.47835156321525574,
+      "native_periodic_photos": 49,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101261-beta",
+      "policy": "curriculum-ppo",
+      "seed": 1101261,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101261-beta/stage-ranking.png",
+          "sha256": "331768e9b12b075f1559c8237e7717eea4d13b0916feb7290ab1691392ffd901",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101261-beta/terminal-at-control.ppm",
+          "sha256": "394fa6e0e3c5afc954802f8349d6587d33340f1fb77a7ac8514ae98a8c3d7c8c",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101261-beta/endpoint.png",
+          "sha256": "331768e9b12b075f1559c8237e7717eea4d13b0916feb7290ab1691392ffd901",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "394fa6e0e3c5afc954802f8349d6587d33340f1fb77a7ac8514ae98a8c3d7c8c",
+      "actor_frames": 607,
+      "actor_peak_stage2_title_correlation": 0.4556955099105835,
+      "native_periodic_photos": 53,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101261-alpha",
+      "policy": "v2-ppo",
+      "seed": 1101261,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101261-alpha/stage-ranking.png",
+          "sha256": "877095fbf19ddd877dc72b8d8817686dd1bbc8b3f142fc38ac601242074c96ac",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101261-alpha/terminal-at-control.ppm",
+          "sha256": "0340b6031ac3f69ae4a0b1767d63fdab942349f78e7294a429ff01cfeed989d7",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101261-alpha/endpoint.png",
+          "sha256": "877095fbf19ddd877dc72b8d8817686dd1bbc8b3f142fc38ac601242074c96ac",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "0340b6031ac3f69ae4a0b1767d63fdab942349f78e7294a429ff01cfeed989d7",
+      "actor_frames": 720,
+      "actor_peak_stage2_title_correlation": 0.46176594495773315,
+      "native_periodic_photos": 63,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-curriculum-ppo-1101262-alpha",
+      "policy": "curriculum-ppo",
+      "seed": 1101262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101262-alpha/stage-ranking.png",
+          "sha256": "93575a76fc3ec3ab25d94276e974905a8b502f63f0047b537ade9985fc93257f",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101262-alpha/terminal-at-control.ppm",
+          "sha256": "0909c3ad47a05aa289e25df5c60f5fcb8d2f579a2f4c4cc5f63300047ca50fc6",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-curriculum-ppo-1101262-alpha/endpoint.png",
+          "sha256": "93575a76fc3ec3ab25d94276e974905a8b502f63f0047b537ade9985fc93257f",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "0909c3ad47a05aa289e25df5c60f5fcb8d2f579a2f4c4cc5f63300047ca50fc6",
+      "actor_frames": 711,
+      "actor_peak_stage2_title_correlation": 0.49702054262161255,
+      "native_periodic_photos": 65,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "easy-curriculum",
+      "episode": "held-v2-ppo-1101262-beta",
+      "policy": "v2-ppo",
+      "seed": 1101262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101262-beta/stage-ranking.png",
+          "sha256": "1085fef99be6127a0879e9acb24de7ed62b6dc28f1cb5961d7d1291712b8c91e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101262-beta/terminal-at-control.ppm",
+          "sha256": "6d1b4218b98fef860ceb4225d35e5270a042f47c6b2f5f9e996ff06b0a49be97",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "easy-curriculum/native12/raw/held-v2-ppo-1101262-beta/endpoint.png",
+          "sha256": "1085fef99be6127a0879e9acb24de7ed62b6dc28f1cb5961d7d1291712b8c91e",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6d1b4218b98fef860ceb4225d35e5270a042f47c6b2f5f9e996ff06b0a49be97",
+      "actor_frames": 690,
+      "actor_peak_stage2_title_correlation": 0.45461270213127136,
+      "native_periodic_photos": 63,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121251-beta",
+      "policy": "attention-ppo",
+      "seed": 1121251,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "774bbd781c0ed55bc642a492087e50f6c321e815c998cb50cb42661ddf5b451e",
+      "actor_frames": 310,
+      "actor_peak_stage2_title_correlation": 0.4468367099761963,
+      "native_periodic_photos": 28,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121251-alpha",
+      "policy": "attention-sft",
+      "seed": 1121251,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121251-alpha/stage-ranking.png",
+          "sha256": "2f965d10c0f385eff27d31ddcaf00651f74a28590bd3f5e5cdd0f2bd13777165",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121251-alpha/terminal-at-control.ppm",
+          "sha256": "c4aa2933a2894482542c0266a7b0975e74f64951caf5d1bb1874feec633c5ea1",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121251-alpha/endpoint.png",
+          "sha256": "2f965d10c0f385eff27d31ddcaf00651f74a28590bd3f5e5cdd0f2bd13777165",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "c4aa2933a2894482542c0266a7b0975e74f64951caf5d1bb1874feec633c5ea1",
+      "actor_frames": 398,
+      "actor_peak_stage2_title_correlation": 0.4389210343360901,
+      "native_periodic_photos": 36,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121252-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121252-alpha/stage-ranking.png",
+          "sha256": "1ba207728759e27566929a74ebd1672a8aacd2067017e69dac8a40b37004013b",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121252-alpha/terminal-at-control.ppm",
+          "sha256": "b0761fe70e11fc4aa4f73c355bf4dabce4e34646deef320f25f21419faf33546",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121252-alpha/endpoint.png",
+          "sha256": "1ba207728759e27566929a74ebd1672a8aacd2067017e69dac8a40b37004013b",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b0761fe70e11fc4aa4f73c355bf4dabce4e34646deef320f25f21419faf33546",
+      "actor_frames": 519,
+      "actor_peak_stage2_title_correlation": 0.4676075279712677,
+      "native_periodic_photos": 46,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121252-beta",
+      "policy": "attention-sft",
+      "seed": 1121252,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121252-beta/stage-ranking.png",
+          "sha256": "c8eb77b8957c0998675bd57f311183c1977ce06727a8216a4412a9878f3b5cb1",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121252-beta/terminal-at-control.ppm",
+          "sha256": "3468768b9c687b0d4c8032a70e5246fd57c14fec4b63080fb7064c14c82d7fa5",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121252-beta/endpoint.png",
+          "sha256": "c8eb77b8957c0998675bd57f311183c1977ce06727a8216a4412a9878f3b5cb1",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "3468768b9c687b0d4c8032a70e5246fd57c14fec4b63080fb7064c14c82d7fa5",
+      "actor_frames": 430,
+      "actor_peak_stage2_title_correlation": 0.48328158259391785,
+      "native_periodic_photos": 39,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121253-beta",
+      "policy": "attention-ppo",
+      "seed": 1121253,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121253-beta/stage-ranking.png",
+          "sha256": "b40eff8d61a6d5a3406db6d3c0129933ee710f9908b2406cc08dfbeeb6c81f7f",
+          "stage": 1,
+          "row_y": 174,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121253-beta/terminal-at-control.ppm",
+          "sha256": "1e2943c3d9741b558f9c7485c4e9db6110ca336b5df19bd0d098cbdd2c7f0404",
+          "stage": 1,
+          "row_y": 174,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121253-beta/endpoint.png",
+          "sha256": "b40eff8d61a6d5a3406db6d3c0129933ee710f9908b2406cc08dfbeeb6c81f7f",
+          "stage": 1,
+          "row_y": 174,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "1e2943c3d9741b558f9c7485c4e9db6110ca336b5df19bd0d098cbdd2c7f0404",
+      "actor_frames": 752,
+      "actor_peak_stage2_title_correlation": 0.43691596388816833,
+      "native_periodic_photos": 66,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121253-alpha",
+      "policy": "attention-sft",
+      "seed": 1121253,
+      "host": "entropy",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "ec5c9229bf24ef2fe1438167ee167bb9beb7a46cb8f92830445f133188c443b5",
+      "actor_frames": 231,
+      "actor_peak_stage2_title_correlation": 0.45488986372947693,
+      "native_periodic_photos": 20,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121254-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121254,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121254-alpha/stage-ranking.png",
+          "sha256": "67a3d061f35dfac9b0921ab6550712ee8bb064b8c713e8e19e31942e0d0c5af7",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121254-alpha/terminal-at-control.ppm",
+          "sha256": "fb3028ae2db67e2543f47e5bf69ca8225cd0cede24b772a7d505f7f2ff6b23d6",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121254-alpha/endpoint.png",
+          "sha256": "67a3d061f35dfac9b0921ab6550712ee8bb064b8c713e8e19e31942e0d0c5af7",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "fb3028ae2db67e2543f47e5bf69ca8225cd0cede24b772a7d505f7f2ff6b23d6",
+      "actor_frames": 344,
+      "actor_peak_stage2_title_correlation": 0.4297572672367096,
+      "native_periodic_photos": 30,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121254-beta",
+      "policy": "attention-sft",
+      "seed": 1121254,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121254-beta/stage-ranking.png",
+          "sha256": "d1ec8af22f1ce7cccb13f0bfc5059ae2338cc13da848abf068f1291703a1d373",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121254-beta/terminal-at-control.ppm",
+          "sha256": "360c7efc97bb0ef6124f3775c89278fe595056e8eeacb4a4fa386500a2615fe4",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121254-beta/endpoint.png",
+          "sha256": "d1ec8af22f1ce7cccb13f0bfc5059ae2338cc13da848abf068f1291703a1d373",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "360c7efc97bb0ef6124f3775c89278fe595056e8eeacb4a4fa386500a2615fe4",
+      "actor_frames": 277,
+      "actor_peak_stage2_title_correlation": 0.4353480637073517,
+      "native_periodic_photos": 24,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121255-beta",
+      "policy": "attention-ppo",
+      "seed": 1121255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121255-beta/stage-ranking.png",
+          "sha256": "e19f232f8c47da1117ba27b59feb42a64a73ff5e0a181ececdbf6b56b6df3c89",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121255-beta/terminal-at-control.ppm",
+          "sha256": "06a6f33f3679324a67e651859e9f8e1d716fb9c1d1726113aa69c50e494ab657",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121255-beta/endpoint.png",
+          "sha256": "e19f232f8c47da1117ba27b59feb42a64a73ff5e0a181ececdbf6b56b6df3c89",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "06a6f33f3679324a67e651859e9f8e1d716fb9c1d1726113aa69c50e494ab657",
+      "actor_frames": 784,
+      "actor_peak_stage2_title_correlation": 0.4423179626464844,
+      "native_periodic_photos": 73,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121255-alpha",
+      "policy": "attention-sft",
+      "seed": 1121255,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121255-alpha/stage-ranking.png",
+          "sha256": "d4e83e7dc9b2f0c9597948e8d34f1a958dfa15994621d06d7e1921085ae915c3",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121255-alpha/terminal-at-control.ppm",
+          "sha256": "2d6aae7f68a79cc605d02ebd3ebe5498ed6035aafde078ec8876ec79e65968a0",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121255-alpha/endpoint.png",
+          "sha256": "d4e83e7dc9b2f0c9597948e8d34f1a958dfa15994621d06d7e1921085ae915c3",
+          "stage": 1,
+          "row_y": 264,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "2d6aae7f68a79cc605d02ebd3ebe5498ed6035aafde078ec8876ec79e65968a0",
+      "actor_frames": 620,
+      "actor_peak_stage2_title_correlation": 0.44647645950317383,
+      "native_periodic_photos": 58,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 1
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121256-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121256,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121256-alpha/stage-ranking.png",
+          "sha256": "59df8f2dd979683128df8d7b375be8be5ca1002e38a6606b7bb02e88421a06f9",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121256-alpha/terminal-at-control.ppm",
+          "sha256": "4021220f8885bf9f1e5c5b436694cb47a5fd055a7dfad8f96031d660631970b0",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121256-alpha/endpoint.png",
+          "sha256": "59df8f2dd979683128df8d7b375be8be5ca1002e38a6606b7bb02e88421a06f9",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "4021220f8885bf9f1e5c5b436694cb47a5fd055a7dfad8f96031d660631970b0",
+      "actor_frames": 529,
+      "actor_peak_stage2_title_correlation": 0.4376378059387207,
+      "native_periodic_photos": 47,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121256-beta",
+      "policy": "attention-sft",
+      "seed": 1121256,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121256-beta/stage-ranking.png",
+          "sha256": "2698d4ab92506b131ec41904948f49180351ff9873a47b75ea6b57b8cb0e536e",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121256-beta/terminal-at-control.ppm",
+          "sha256": "e9fe946c4a1c99eebbca3a355edc4545d636993690b1a204f93e30ac8a663785",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121256-beta/endpoint.png",
+          "sha256": "2698d4ab92506b131ec41904948f49180351ff9873a47b75ea6b57b8cb0e536e",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "e9fe946c4a1c99eebbca3a355edc4545d636993690b1a204f93e30ac8a663785",
+      "actor_frames": 563,
+      "actor_peak_stage2_title_correlation": 0.44163259863853455,
+      "native_periodic_photos": 50,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121257-beta",
+      "policy": "attention-ppo",
+      "seed": 1121257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121257-beta/stage-ranking.png",
+          "sha256": "486898ac20f94644cfbdd5e21125647eabbf8c58325e3b8b42038d1788c7f5f5",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121257-beta/terminal-at-control.ppm",
+          "sha256": "1cbd23de0bd4a9f13c6d50ba6c7a4cb73d9cb55ffac370e1bc2e0f133b7861e9",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121257-beta/endpoint.png",
+          "sha256": "486898ac20f94644cfbdd5e21125647eabbf8c58325e3b8b42038d1788c7f5f5",
+          "stage": 1,
+          "row_y": 192,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "1cbd23de0bd4a9f13c6d50ba6c7a4cb73d9cb55ffac370e1bc2e0f133b7861e9",
+      "actor_frames": 697,
+      "actor_peak_stage2_title_correlation": 0.4415059983730316,
+      "native_periodic_photos": 61,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121257-alpha",
+      "policy": "attention-sft",
+      "seed": 1121257,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121257-alpha/stage-ranking.png",
+          "sha256": "3666f3a0b36b1bc20351785fa17670d4df31ad897825074d770cfc8ccfe41dec",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121257-alpha/terminal-at-control.ppm",
+          "sha256": "d7a6161a0222081450cdd4e409b6be23131018ce1614c291999ec36bf8ef651b",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121257-alpha/endpoint.png",
+          "sha256": "3666f3a0b36b1bc20351785fa17670d4df31ad897825074d770cfc8ccfe41dec",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "d7a6161a0222081450cdd4e409b6be23131018ce1614c291999ec36bf8ef651b",
+      "actor_frames": 465,
+      "actor_peak_stage2_title_correlation": 0.4147702753543854,
+      "native_periodic_photos": 41,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121258-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121258,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121258-alpha/stage-ranking.png",
+          "sha256": "aa3f3170045262a1ea7ef16505f420d03b59ac2811c486a7b523740d4b20825d",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121258-alpha/terminal-at-control.ppm",
+          "sha256": "07b2496ad9474eec4c5e0c0b91eaa8c9dc53982f28f0104faf46560f8d2547fd",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121258-alpha/endpoint.png",
+          "sha256": "aa3f3170045262a1ea7ef16505f420d03b59ac2811c486a7b523740d4b20825d",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "07b2496ad9474eec4c5e0c0b91eaa8c9dc53982f28f0104faf46560f8d2547fd",
+      "actor_frames": 455,
+      "actor_peak_stage2_title_correlation": 0.43751490116119385,
+      "native_periodic_photos": 40,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121258-beta",
+      "policy": "attention-sft",
+      "seed": 1121258,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121258-beta/stage-ranking.png",
+          "sha256": "a85ee1c21e95efdeebfca7160f0865e1fbaf4c2a0b84f6a8e8abfa0f16afed57",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121258-beta/terminal-at-control.ppm",
+          "sha256": "6838407fa261c08e7e30a27918d7211ed2b60a910189191dca16e2e9e03fc41c",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121258-beta/endpoint.png",
+          "sha256": "a85ee1c21e95efdeebfca7160f0865e1fbaf4c2a0b84f6a8e8abfa0f16afed57",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "6838407fa261c08e7e30a27918d7211ed2b60a910189191dca16e2e9e03fc41c",
+      "actor_frames": 495,
+      "actor_peak_stage2_title_correlation": 0.4735684096813202,
+      "native_periodic_photos": 45,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121259-beta",
+      "policy": "attention-ppo",
+      "seed": 1121259,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover",
+      "terminal_camera_sha256": "818152722a8e316b65168bdcc4f42766580caec4d3fb21471ac26470c72ccb0b",
+      "actor_frames": 254,
+      "actor_peak_stage2_title_correlation": 0.4480378031730652,
+      "native_periodic_photos": 23,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121259-alpha",
+      "policy": "attention-sft",
+      "seed": 1121259,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121259-alpha/stage-ranking.png",
+          "sha256": "1b9f7ec0f5b16ebe91e60e3c536f7b6932ec9120ef4de5afdda7554757b8ef3f",
+          "stage": 1,
+          "row_y": 102,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121259-alpha/terminal-at-control.ppm",
+          "sha256": "eee0309b0a44456e13634e8cbae18eef8d8ec40e46ab8e2f590aaa395568cb26",
+          "stage": 1,
+          "row_y": 102,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121259-alpha/endpoint.png",
+          "sha256": "1b9f7ec0f5b16ebe91e60e3c536f7b6932ec9120ef4de5afdda7554757b8ef3f",
+          "stage": 1,
+          "row_y": 102,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "eee0309b0a44456e13634e8cbae18eef8d8ec40e46ab8e2f590aaa395568cb26",
+      "actor_frames": 798,
+      "actor_peak_stage2_title_correlation": 0.49702346324920654,
+      "native_periodic_photos": 72,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121260-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121260,
+      "host": "deck",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121260-alpha/stage-ranking.png",
+          "sha256": "36c830d519b1a186a723eb0b202936e7e393b66e0b60737dab7dd4a0660015bd",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121260-alpha/terminal-at-control.ppm",
+          "sha256": "7de3a037ec4ea4ddf63249018a49b145154937a02fafbd18a3527bb6004a86c1",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121260-alpha/endpoint.png",
+          "sha256": "36c830d519b1a186a723eb0b202936e7e393b66e0b60737dab7dd4a0660015bd",
+          "stage": 1,
+          "row_y": 246,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "7de3a037ec4ea4ddf63249018a49b145154937a02fafbd18a3527bb6004a86c1",
+      "actor_frames": 559,
+      "actor_peak_stage2_title_correlation": 0.4284912347793579,
+      "native_periodic_photos": 50,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121260-beta",
+      "policy": "attention-sft",
+      "seed": 1121260,
+      "host": "deck",
+      "status": "unknown_final_stage",
+      "valid_final_rank": null,
+      "positive_evidence": [],
+      "terminal_state": "gameover_retry",
+      "terminal_camera_sha256": "dbd8410422dce3d0d3dfa2bfda56a8c7b9e3361be127421012afc6ea7f4c41d3",
+      "actor_frames": 605,
+      "actor_peak_stage2_title_correlation": 0.49093857407569885,
+      "native_periodic_photos": 54,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121261-beta",
+      "policy": "attention-ppo",
+      "seed": 1121261,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121261-beta/stage-ranking.png",
+          "sha256": "71ab4ed529c39005295fe48b819523682ffce2050ea6c813e3a781ff6b41dc8c",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121261-beta/terminal-at-control.ppm",
+          "sha256": "68600e1bedb6b09dda75c6fe372002c137810cee044dee2e23f3d848f035e20c",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121261-beta/endpoint.png",
+          "sha256": "71ab4ed529c39005295fe48b819523682ffce2050ea6c813e3a781ff6b41dc8c",
+          "stage": 1,
+          "row_y": 210,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "68600e1bedb6b09dda75c6fe372002c137810cee044dee2e23f3d848f035e20c",
+      "actor_frames": 484,
+      "actor_peak_stage2_title_correlation": 0.4415070414543152,
+      "native_periodic_photos": 43,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121261-alpha",
+      "policy": "attention-sft",
+      "seed": 1121261,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121261-alpha/stage-ranking.png",
+          "sha256": "bfcfcf0cad115eb18ec304fcae4676c0561a0b6c84e544874326fabd91723ac9",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121261-alpha/terminal-at-control.ppm",
+          "sha256": "b8a43b344375d21c9f3df28d6996462d899364bfb9f07267b83bb663098d8a20",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121261-alpha/endpoint.png",
+          "sha256": "bfcfcf0cad115eb18ec304fcae4676c0561a0b6c84e544874326fabd91723ac9",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b8a43b344375d21c9f3df28d6996462d899364bfb9f07267b83bb663098d8a20",
+      "actor_frames": 356,
+      "actor_peak_stage2_title_correlation": 0.44204187393188477,
+      "native_periodic_photos": 31,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 0
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-ppo-1121262-alpha",
+      "policy": "attention-ppo",
+      "seed": 1121262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121262-alpha/stage-ranking.png",
+          "sha256": "2ba0367f6d609a1d464d98090521d5909c512477fd0b067c6be5bc45e134693f",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121262-alpha/terminal-at-control.ppm",
+          "sha256": "b5e85739c0e4207b9009130c38210710ab416e77f6377300d6dc8ea7e94c7c59",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-ppo-1121262-alpha/endpoint.png",
+          "sha256": "2ba0367f6d609a1d464d98090521d5909c512477fd0b067c6be5bc45e134693f",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "b5e85739c0e4207b9009130c38210710ab416e77f6377300d6dc8ea7e94c7c59",
+      "actor_frames": 518,
+      "actor_peak_stage2_title_correlation": 0.4490059018135071,
+      "native_periodic_photos": 46,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    },
+    {
+      "branch": "attention-online",
+      "episode": "held-attention-sft-1121262-beta",
+      "policy": "attention-sft",
+      "seed": 1121262,
+      "host": "entropy",
+      "status": "stage1_rank_confirmed",
+      "valid_final_rank": 1,
+      "positive_evidence": [
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121262-beta/stage-ranking.png",
+          "sha256": "c37ee9a5dc5d6c76bb73c01f2475b3c24f6e4619cb654247ac0bccbc513b9d07",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121262-beta/terminal-at-control.ppm",
+          "sha256": "8dec66f2d2fb02ce1486401d73445a38d2cac17be00280de969a9e7516d7dac7",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        },
+        {
+          "path": "attention-online/native12/raw/held-attention-sft-1121262-beta/endpoint.png",
+          "sha256": "c37ee9a5dc5d6c76bb73c01f2475b3c24f6e4619cb654247ac0bccbc513b9d07",
+          "stage": 1,
+          "row_y": 228,
+          "title_dice": 1.0,
+          "word_dice": 1.0,
+          "digit_dice": 1.0
+        }
+      ],
+      "terminal_state": "score_ranking",
+      "terminal_camera_sha256": "8dec66f2d2fb02ce1486401d73445a38d2cac17be00280de969a9e7516d7dac7",
+      "actor_frames": 397,
+      "actor_peak_stage2_title_correlation": 0.43209531903266907,
+      "native_periodic_photos": 35,
+      "color_stage2_title_hits": [],
+      "first_confirmed_stage2_action": null,
+      "final_spares": 0,
+      "final_bombs": 2
+    }
+  ]
+}

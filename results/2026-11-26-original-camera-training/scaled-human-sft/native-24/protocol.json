@@ -1,0 +1,39 @@
+{
+  "title": 13,
+  "game": "original TH13 0.01a trial, stock Normal",
+  "host": "Accelerator",
+  "eval_seeds": {
+    "13": [
+      1141351,
+      1141352,
+      1141353,
+      1141354,
+      1141355,
+      1141356,
+      1141357,
+      1141358,
+      1141359,
+      1141360,
+      1141361,
+      1141362
+    ]
+  },
+  "arms": {
+    "base-cnn": "spatial-policy-study/cnn/policy.ts",
+    "base-attention": "spatial-policy-study/spatial-attention/policy.ts",
+    "new-cnn": "scaled-human-sft/cnn-new-24/policy/policy.ts",
+    "new-attention": "scaled-human-sft/new-24/policy/policy.ts"
+  },
+  "primary": "Final observed Stage 1 native script tick on the behavior trajectory, by matched controller sampling seed within host. Native RNG is independent.",
+  "secondary": [
+    "Original highlighted ranking Stage 2 and spare lives, Bombs at Stage 2 or Game Over",
+    "Confirmed Bombs cast and first native loss"
+  ],
+  "contrasts": [
+    "new-cnn minus base-cnn",
+    "new-attention minus base-attention",
+    "new-attention minus new-cnn"
+  ],
+  "dispatch": "Rotate available arms across controller seeds and isolated instances. Preserve actual dispatch sequence, time and source weight hash. Run each stock credit through its native terminal.",
+  "scope": "Data-plus-training-budget scaling. The new cohorts receive a registered 12 corpus-equivalent presentations, and the 14-pilot controls previously received 12000 optimizer steps."
+}

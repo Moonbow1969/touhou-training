@@ -175,6 +175,13 @@
     "camera-ppo": {
       "n": 12,
       "stage2": 0,
+      "stage2_verified_n": 12,
+      "stage2_confirmed": 0,
+      "stage2_unknown": 0,
+      "stage2_rate_observation_bounds": [
+        0.0,
+        0.0
+      ],
       "stage2_rate": 0.0,
       "stage2_wilson95": [
         0.0,
@@ -207,12 +214,16 @@
     },
     "candidate": {
       "n": 12,
-      "stage2": 0,
-      "stage2_rate": 0.0,
-      "stage2_wilson95": [
+      "stage2": null,
+      "stage2_verified_n": 11,
+      "stage2_confirmed": 0,
+      "stage2_unknown": 1,
+      "stage2_rate_observation_bounds": [
         0.0,
-        0.24249400665524087
+        0.08333333333333333
       ],
+      "stage2_rate": null,
+      "stage2_wilson95": null,
       "total_confirmed_bombs": 50,
       "terminal_game_overs": 12,
       "mean_decisions": 544.3333333333334,
@@ -301,7 +312,7 @@
         "decision_difference": -158,
         "seconds_difference": -20.011272000000005,
         "reference_stage2": false,
-        "candidate_stage2": false
+        "candidate_stage2": null
       },
       {
         "seed": 766009,
@@ -336,10 +347,7 @@
         "candidate_stage2": false
       }
     ],
-    "stage2_discordances": {
-      "reference_only": 0,
-      "candidate_only": 0
-    },
+    "stage2_discordances": null,
     "mean_paired_wall_difference": -2.1331665000000015,
     "mean_paired_wall_difference_bootstrap95": [
       -10.90597367291667,

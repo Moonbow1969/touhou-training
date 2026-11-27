@@ -1,0 +1,142 @@
+{
+  "title": "TH10 official 0.02a trial",
+  "qualified_register": "0x472b40",
+  "cohorts": [
+    {
+      "study": "v2-online-corrected-stage",
+      "label": "14-player CNN \u00b7 Normal",
+      "reference": "SFT",
+      "candidate": "PPO",
+      "n": 12,
+      "stage2": [
+        0,
+        0
+      ],
+      "first_stage2_resources": [
+        [],
+        []
+      ],
+      "zero_spares_terminal": [
+        {
+          "-1": 12
+        },
+        {
+          "-1": 12
+        }
+      ],
+      "time_s": [
+        40.18666666666667,
+        44.670500000000004
+      ],
+      "score": [
+        230226.08333333334,
+        235505.83333333334
+      ],
+      "power": [
+        0.0625,
+        0.15833333333333333
+      ],
+      "confirmed_strikes": [
+        13,
+        8
+      ],
+      "difference_s": 4.483833333333336,
+      "ci": [
+        -1.0696145833333317,
+        10.035189583333336
+      ],
+      "receipts_sha256": "898a1bafaeab69d86be2379ac69bfa80713eb0e72f5bd2faf60760feed82a1e0"
+    },
+    {
+      "study": "attention-online-corrected-stage",
+      "label": "Spatial attention \u00b7 Normal",
+      "reference": "SFT",
+      "candidate": "PPO",
+      "n": 12,
+      "stage2": [
+        0,
+        0
+      ],
+      "first_stage2_resources": [
+        [],
+        []
+      ],
+      "zero_spares_terminal": [
+        {
+          "-1": 12
+        },
+        {
+          "-1": 12
+        }
+      ],
+      "time_s": [
+        51.35233333333334,
+        47.95500000000001
+      ],
+      "score": [
+        363229.5,
+        313679.75
+      ],
+      "power": [
+        0.19166666666666665,
+        0.2833333333333333
+      ],
+      "confirmed_strikes": [
+        28,
+        27
+      ],
+      "difference_s": -3.397333333333331,
+      "ci": [
+        -9.587568749999999,
+        2.593183333333337
+      ],
+      "receipts_sha256": "b35cd653c13b4c7316ecea9057dd2a85aa97af914eb81d4614499c9f5eed02ec"
+    },
+    {
+      "study": "easy-curriculum-corrected-stage",
+      "label": "Difficulty curriculum \u00b7 Easy",
+      "reference": "v2 PPO",
+      "candidate": "curriculum PPO",
+      "n": 12,
+      "stage2": [
+        0,
+        0
+      ],
+      "first_stage2_resources": [
+        [],
+        []
+      ],
+      "zero_spares_terminal": [
+        {
+          "-1": 12
+        },
+        {
+          "-1": 12
+        }
+      ],
+      "time_s": [
+        72.27641666666668,
+        68.95333333333333
+      ],
+      "score": [
+        245130.33333333334,
+        239060.41666666666
+      ],
+      "power": [
+        0.012499999999999999,
+        0.10416666666666667
+      ],
+      "confirmed_strikes": [
+        37,
+        27
+      ],
+      "difference_s": -3.323083333333333,
+      "ci": [
+        -14.334068750000004,
+        7.43180625
+      ],
+      "receipts_sha256": "e214081c41202925f4038cfae741c67ceba2c10179ff860b162e5d09945ce424"
+    }
+  ],
+  "scope": "Each row is an independent original-game assay. Within a row the two arms share controller seeds and physical host. Game RNG is uncontrolled. Spares -1 is the engine value after the last playable life."
+}

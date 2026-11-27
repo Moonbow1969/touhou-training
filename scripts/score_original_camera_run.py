@@ -3,7 +3,9 @@ import argparse
 import collections
 import csv
 import gzip
+import importlib.util
 import json
+from functools import lru_cache
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +13,25 @@ from PIL import Image
 
 from scripts.checkpoint_storage import digest
 from scripts.score_native_full_actions import qualified_stage2, summarize
+
+
+@lru_cache(maxsize=1)
+def th12_stage_reader():
+    path=Path(__file__).resolve().parents[1]/'tools/rollout-worker-probe/th12-full/stage_transition.py'
+    spec=importlib.util.spec_from_file_location('original_th12_stage',path)
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.inspect_credit
+
+
+def verified_th12_stage(raw):
+    result=th12_stage_reader()(raw)
+    value=result['stage2_reached']
+    if value is None:return None,None
+    for name,row in result['rank_evidence'].items():
+        if row['stage'] is not None:
+            return value,digest(raw/name)
+    return value,digest(raw/'evidence'/result['stage2_title_files'][0])
 
 
 def verified_th10_entry(receipt, folder):
@@ -104,7 +125,8 @@ def verify(title, f, r, trace, arm, out):
     stage_evidence=None
     stage_flag=qualified_stage2(dict(title=title,game_sha256=build,stage2_reached=r['stage2_reached']))
     if title==10:stage_flag,stage_evidence,entry=verified_th10_entry(r,f.parent)
-    if stage_flag is None:entry=(None,None,None)
+    if title==12:stage_flag,stage_evidence=verified_th12_stage(raw)
+    if stage_flag is not True:entry=(None,None,None)
     return dict(title=title,arm=arm,seed=r["seed"],host=host,game_sha256=build,policy_sha256=r["policy_sha256"],
                 terminal="game_over" if any(x in outcome for x in ("final_life","game_over","ranking")) else "ending",
                 stage2_reached=stage_flag,stage2_evidence_sha256=stage_evidence,
