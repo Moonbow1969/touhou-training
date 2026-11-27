@@ -1,5 +1,7 @@
 # Human replay cameras and original-game online PPO
 
+[Training coverage by game and difficulty, with unique human windows and fitted online games](training-coverage.md)
+
 TH16 Hard and Lunatic now contribute human demonstrations to a fitted six-title visual policy. Its 86 synchronized stages span TH10, TH11, TH12, TH13, TH16 and TH17, with 289,336 distinct camera windows. Separately, the main high-difficulty PPO series covers 840 distinct original training credits and 409,489 decisions across TH08, TH10, TH11, TH12, TH13 and TH17. The newest learned direction-feedback PPO used 64 fresh TH10 and TH17 credits and 28,717 playable decisions. [Six-title human SFT](six-title-human-camera-th16/README.md) · [High-difficulty PPO ledger](learning-curves/hard-lunatic-training-coverage.json) · [Direction-feedback PPO checkpoint](four-step-feedback-online/README.md)
 
 A six-game PPO comparison completed 192 independent Hard and Lunatic tests from the ordinary Stage 1 opening on official trial builds. Every game contributed eight matched pairs per difficulty. Both actors reached Stage 2 in 0/96, with zero unresolved outcomes and zero spare lives at every endpoint. A separate human SFT and its two-title PPO child each reached Stage 2 in 0/32. [Six-game resources, full results and recordings](six-game-return-horizon/all-six-original-results.md) · [SFT and PPO paired results](later-human-online/evaluation/README.md)
