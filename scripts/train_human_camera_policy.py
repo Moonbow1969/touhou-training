@@ -296,8 +296,12 @@ def main():
             with (args.out/"loss.jsonl").open("a") as f:f.write(json.dumps({"step":step,"loss":loss.item()})+"\n")
     model.eval()
     def predict(raw):
-        return [np.concatenate(part) for part in zip(*[[h.softmax(1).cpu().numpy() for h in model(batch.to(device).float()/255)]
-                  for batch in torch.from_numpy(raw).split(48)])]
+        predictions=[]
+        for start in range(0,len(raw),48):
+            batch=np.require(raw[start:start+48],requirements=['C','W'])
+            inputs=torch.from_numpy(batch).to(device).float()/255
+            predictions.append([head.softmax(1).cpu().numpy() for head in model(inputs)])
+        return [np.concatenate(part) for part in zip(*predictions)]
     report={}
     with torch.inference_mode():
         for row in held:
@@ -309,10 +313,10 @@ def main():
         demo_probs=np.concatenate([np.concatenate(predict(row["raw"]),axis=1) for row in train])
     weights=args.out/"camera-policy.pt";model.cpu()
     torch.save(model.state_dict(),weights)
-    example=torch.from_numpy(held[0]["raw"][:1]).float()/255
+    example=torch.from_numpy(np.require(held[0]["raw"][:1],requirements=['C','W'])).float()/255
     with torch.no_grad():
         compiled=torch.jit.trace(model,example)
-        verification=torch.from_numpy(held[0]["raw"][:4]).float()/255
+        verification=torch.from_numpy(np.require(held[0]["raw"][:4],requirements=['C','W'])).float()/255
         for actual,exported in zip(model(verification),compiled(verification)):
             torch.testing.assert_close(actual,exported)
         compiled.save(str(args.out/"policy.ts"))
