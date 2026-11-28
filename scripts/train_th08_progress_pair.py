@@ -22,17 +22,17 @@ STAGE_TICKS = {1: 15652, 2: 18624}
 KL_CAP = .01
 
 
-def trajectory(manifest, row, model, device):
+def trajectory(manifest, row, model, device, *, actor=EXPECTED_ACTOR, min_exact=.99, require_zero_value=True):
     path = manifest.parent / row["file"]
     evidence_path = manifest.parent / row["receipt"]
-    if (row["role"] != "train" or row["policy_sha256"] != EXPECTED_ACTOR or
+    if (row["role"] != "train" or row["policy_sha256"] != actor or
             row["rank"] != "Normal" or row["team"] != "Ghost" or
             digest(path) != row["sha256"] or digest(evidence_path) != row["receipt_sha256"]):
         raise ValueError(f"Training provenance changed for {row['seed']}")
     receipt = json.loads(evidence_path.read_bytes())
     if (receipt["seed"] != row["seed"] or receipt["game_sha256"] != ORIGINAL_EXE or
-            receipt["policy_sha256"] != EXPECTED_ACTOR or receipt["sha256"] != row["sha256"] or
-            receipt["outcome"] != "game_over" or receipt["exact_four_tick_fraction"] < .99 or
+            receipt["policy_sha256"] != actor or receipt["sha256"] != row["sha256"] or
+            receipt["outcome"] != "game_over" or receipt["exact_four_tick_fraction"] < min_exact or
             receipt["action_masks_with_native_consumption"] != receipt["decisions"] or receipt["continues"] != 0 or
             receipt["normal_rank_samples"] < .97*receipt["decisions"] or receipt["qualified"] is not True):
         raise ValueError(f"Original lifecycle evidence failed for {row['seed']}")
@@ -47,7 +47,8 @@ def trajectory(manifest, row, model, device):
     if (n < 2 or n != receipt["decisions"] or observations.dtype != np.uint8 or observations.shape != (n,112,96) or
             action.shape != (n,4) or np.any((action < 0) | (action >= np.asarray(WIDTHS))) or
             old_logp.shape != (n,4) or not np.isfinite(old_logp).all() or value.shape != (n,) or
-            done.shape != (n,) or done.dtype != np.bool_ or done[:-1].any() or not done[-1] or np.any(value != 0)):
+            done.shape != (n,) or done.dtype != np.bool_ or done[:-1].any() or not done[-1] or
+            not np.isfinite(value).all() or (require_zero_value and np.any(value != 0))):
         raise ValueError(f"Invalid camera, action, critic, or endpoint in {path.name}")
     for prior, later in ((stage, next_stage), (tick, next_tick), (spares, next_spares), (bombs, next_bombs)):
         if prior.shape != (n,) or later.shape != (n,) or not np.array_equal(prior[1:], later[:-1]):
@@ -76,24 +77,25 @@ def trajectory(manifest, row, model, device):
     actions = torch.from_numpy(action)
     *heads, critic = logits_on(model, frames, device)
     error = float((chosen(heads, actions)-torch.from_numpy(old_logp)).abs().max())
-    if error > 8e-4 or critic.count_nonzero():
+    value_error = float((critic[:,0]-torch.from_numpy(value)).abs().max())
+    if error > 8e-4 or value_error > 3e-4:
         raise ValueError(f"New PPO data are not from the frozen behavior actor {path.name}")
-    common = (frames, actions, torch.from_numpy(old_logp.sum(1)), torch.cat(heads, dim=1))
+    common = (frames, actions, torch.from_numpy(old_logp.sum(1)), torch.cat(heads, dim=1), value)
     return common, rewards, dict(seed=row["seed"], decisions=n, last_stage=int(next_stage[-1]),
                                  confirmed_bomb_stock_events=int(np.count_nonzero(casts)), bombs_spent=int(casts.sum()),
                                  confirmed_deaths=int(fatalities.sum()),
                                  exact_four=receipt["exact_four_tick_fraction"],
-                                 max_logp_error=error, summed_r_base=float(rewards[0].reward.sum()),
+                                 max_logp_error=error, max_critic_error=value_error, summed_r_base=float(rewards[0].reward.sum()),
                                  summed_r_shaped=float(rewards[1].reward.sum()))
 
 
 def arm_data(sources, weight):
     rows = []
     for sample, rewards, _ in sources:
-        frames, actions, old, heads = sample
+        frames, actions, old, heads, value = sample
         observed = rewards[weight]
-        adv = calculate_gae(observed.reward.astype(np.float32), np.zeros(len(actions),dtype=np.float32), GAMMA, .985)
-        rows.append((frames, actions, old, torch.from_numpy(adv), torch.from_numpy(adv.copy()), heads))
+        adv = calculate_gae(observed.reward.astype(np.float32), value, GAMMA, .985)
+        rows.append((frames, actions, old, torch.from_numpy(adv), torch.from_numpy(value+adv), heads))
     return tuple(torch.cat(field) for field in zip(*rows))
 
 
