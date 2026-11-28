@@ -1,0 +1,140 @@
+{
+  "original_registration_sha256": "e7e3f405a4766238fd06eacdb38b41416fbbcfb39ed8da989f9aa2c96e3094b5",
+  "frozen_before_any_original_inputs": true,
+  "initial_complete_per_arm": 6,
+  "minimum_qualified_stage1_exposure_ticks": 25000,
+  "max_valid_per_arm": 10,
+  "max_technical_replacements_per_arm": 2,
+  "reserve": [
+    {
+      "wave": 10,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966101,
+      "arm": "uniform"
+    },
+    {
+      "wave": 10,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966102,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 10,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966103,
+      "arm": "awr"
+    },
+    {
+      "wave": 11,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966104,
+      "arm": "uniform"
+    },
+    {
+      "wave": 11,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966105,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 11,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966106,
+      "arm": "awr"
+    },
+    {
+      "wave": 12,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966107,
+      "arm": "uniform"
+    },
+    {
+      "wave": 12,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966108,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 12,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966109,
+      "arm": "awr"
+    },
+    {
+      "wave": 13,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966110,
+      "arm": "uniform"
+    },
+    {
+      "wave": 13,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966111,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 13,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966112,
+      "arm": "awr"
+    },
+    {
+      "wave": 14,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966113,
+      "arm": "uniform"
+    },
+    {
+      "wave": 14,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966114,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 14,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966115,
+      "arm": "awr"
+    },
+    {
+      "wave": 15,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966116,
+      "arm": "uniform"
+    },
+    {
+      "wave": 15,
+      "lane": "A",
+      "host": "Accelerator",
+      "seed": 80966117,
+      "arm": "lambda1"
+    },
+    {
+      "wave": 15,
+      "lane": "B",
+      "host": "Accelerator",
+      "seed": 80966118,
+      "arm": "awr"
+    }
+  ],
+  "selection": "Complete six initial attempts/arm. Then draw the next listed unique original of an eligible arm, one at a time per arm. Stop that arm once it has at least six qualified whole credits with 25,000 Stage 1 ticks, ten valid credits, no reserve, or more than two unresolved technical exclusions. Dispositions and reserve ordering depend only on validity and exposure. Keep every played endpoint.",
+  "primary": "Original Stage 1 death hazard rate ratio, exposure-weighted AWR divided by uniform. A ratio >=1 ends the intervention. Report deaths/exposure, all native Stage 2 results and uncertainty.",
+  "promotion": "AWR/parent <=0.75, AWR deaths holding Bomb <=0.60, and AWR/uniform <=1.0. A ratio >=1 against uniform is a stopping rule. Original latent RNG is uncontrolled; unique seeds across arms.",
+  "guard": "Each strict credit >=99.5% four-tick native windows, all retained masks consumed, no full stale mid-window, normal stock, natural terminal, 0 Continue. No scoring substitution for a missing native endpoint."
+}
