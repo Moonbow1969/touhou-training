@@ -1,0 +1,60 @@
+{
+  "role": "train",
+  "game_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+  "practice_tool_sha256": "42536217464b3b9ddf27ce9d8f13f07c0a09d510831ead24d19d0882825f7315",
+  "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "actor_sha256": "f457e0da52d5bc810eed729a8f447fe3dec6c6af481faa99f5591bb5cf1b1f34",
+  "rank": "Normal",
+  "native_rank": 1,
+  "shot": "Reimu A",
+  "starting_power": 128,
+  "continues": 0,
+  "cap_native_elapsed": 6000,
+  "driver_sha256": {
+    "practice_reset.py": "4038a724be78908d1dc97838ddc5f91fbfa088ed5d17197e2f0796ad51e9efd2",
+    "learned-worker.py": "74063ffa99e5faa12d79f7ea0a046ebf3bfc483d6c4b4bf444ebbcefd304778c",
+    "scenario-glyphs.npz": "8f5672385c04dc94faf3134b80f9f9a01cb668811d996469a7cd103882f1f608",
+    "start.sh": "c17e858bdae9bcc76aba3d1edf456a6cd0b4a15d8e484a53f2f62ba7ad3b997b",
+    "spell-monitor": "f17a30eb14b50b61d4b503e9933d740f1a957e8af9c8a3c0f84c189c4726f55b",
+    "spell-monitor.c": "dba2fd90ddbed7519d7867aaea9e83fefbd598c5650a5e3cc5ea6383c6e5abf8",
+    "run-roster.py": "d16edff5027ca3ae2cab3486eb65b050d6a6c43f4a91e382c90b85f0f235ecfb"
+  },
+  "pinned_lanes": {
+    "private-practice-a": "4,6,8,14",
+    "private-practice-b": "16,18,20,26"
+  },
+  "rows": [
+    {
+      "seed": 21749609,
+      "role": "train",
+      "host": "Gamer",
+      "lane": "private-practice-b",
+      "scenario": "letty-final-2-3",
+      "decision_cap": 1500,
+      "arm": "parent"
+    }
+  ],
+  "objective": {
+    "native_target": "Normal final Letty, spell ID 7 armed in original practice; literal selection Winter Sign Flower Wither Away; beginning 2 spare/3 Bomb, Power128",
+    "section_completion": "Require authentic Stage Clear tally with camera source and native result transition, confirmed target ID7 activity, retry zero; final-zero-spare result ambiguous without affirmative evidence",
+    "spell_capture": "Separate endpoint requires native capture bonus and/or corroborated counter and original reward; timeout may complete section independent of capture",
+    "game_over": "Confirmed native retry, zero stock, three original misses or independently verified exhausted result",
+    "playable_cutoff": "6000 elapsed original stage ticks and actual next camera only",
+    "physics": "Raw physical endpoints retained, separate strict original input clocks; never reroll an outcomes-based lottery",
+    "export": "Postterminal private replay menu only; preserve any real original rpy and original camera+ring input traces",
+    "reports": [
+      "start/final stocks",
+      "original stage ticks",
+      "spare losses",
+      "section clear",
+      "confirmed spell capture if observable",
+      "game over or playable capped endpoint",
+      "input cadence"
+    ]
+  },
+  "qualified_engineering_seed": 21769501,
+  "engineering_visual_sha256": "8f3dd5a1321c6427c3caf663135fbd881dd500813352d68766b345ca266ce38d",
+  "retail_source_audit_sha256": "0b99ee5c054a0124644da30ccef99f61d5bad8fee9bd75e2a07b16693fbdcc11",
+  "first_study_registration_sha256": "ed3cac6f356e770b1a6c9bdb6486c51d1ea21db82e6c4b43665b3842a9fc6c9a",
+  "allocation_extension_registration_sha256": "4e52a520f2e868f4ca464101ec1f64905d5dc0979e756f758efd1247e2104b6c"
+}

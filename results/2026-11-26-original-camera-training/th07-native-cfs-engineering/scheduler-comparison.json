@@ -1,0 +1,155 @@
+{
+  "registration_sha256": "5dd945d005c9630fb8f1f8ef310ff111f3584ba4bb81ff0f87114387bfd4f554",
+  "originals_per_allocation": 1,
+  "role": "engineering",
+  "used_by_optimizer": false,
+  "matched_device_and_actor": true,
+  "different_action_rng_seeds": true,
+  "rows": [
+    {
+      "seed": 21769511,
+      "mode": "capped-two",
+      "cpu_max": "200000 100000",
+      "affinity": "4,6,8,14",
+      "cgroup_before": {
+        "usage_usec": 92761925,
+        "user_usec": 62085174,
+        "system_usec": 30676751,
+        "nice_usec": 4000,
+        "nr_periods": 540,
+        "nr_throttled": 282,
+        "throttled_usec": 4335579,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "cgroup_delta": null,
+      "cgroup_after_status": "unavailable after terminated original container",
+      "native_elapsed_ticks": 2048,
+      "sampled_actions": 511,
+      "native_consumed": 511,
+      "exact_complete": 510,
+      "exact_fraction": 0.9980430528375733,
+      "whole_control_grade": false,
+      "control_issues": [
+        "Nonexact windows exceeded two or occurred outside an observed spare loss"
+      ],
+      "active_native_ticks_per_s": 57.11756195908885,
+      "active_policy_decisions_per_s": 14.251446477072072,
+      "freeze_ms": {
+        "p50": 11.148208,
+        "p95": 12.860525500000001,
+        "p99": 18.368544799999984,
+        "p999": 25.25102870000044,
+        "max": 28.667024
+      },
+      "camera_to_applied_ms": {
+        "p50": 9.119914,
+        "p95": 10.3857045,
+        "p99": 10.644297,
+        "p999": 18.609349740001036,
+        "max": 26.619066
+      },
+      "outcome": "native_tick_cutoff",
+      "boundary_value": null,
+      "native_observer": {
+        "polls": "50226",
+        "rejected": "618",
+        "p999_upper_ns": "90000",
+        "max_ns": "9248106",
+        "max_end_ns": "632903701236585",
+        "max_tick": "510"
+      },
+      "source_sha256": {
+        "cgroup-before.stat": "6c06ff2f1585bba90f2ec92494e753b9c0f4e1d0da5b322b88d3680fdb12e9ce",
+        "cgroup-max.txt": "07eb5019b2babb019fbbfe1cb328ec5b7affac5e07da4b94ebedb5e110dfab69",
+        "cgroup-effective.txt": "7fc0c578c43bc6296ba5c26d9c4bc424b0b054c8d0a41810fa92de533340d5c6",
+        "native-input.csv": "cef2543db87c5a220a3620d2fd59cd356f2d9eafdaf6708849f749c5c1215de5",
+        "applied.csv": "028ecf41615a03e09ff7fa8785562b3ff597641ab3bafa2a71f54991f4d13c8a",
+        "controls.csv": "fcd52d79f1cfd5b45becae023366e6a5cb32d52ed1ff761e2aed23d9253da3eb",
+        "finished-game.json": "fe9ccb81b8d0badae6969324c47faa7f11bc0ab1e002b1eb6686d700f67e349b",
+        "policy-trace.npz": "0e097bc944e6d8adaa2c69d9d9c7641eab2a82cb63486caf1073a176cefafe39",
+        "archive.sealed": "140efbc9400a3f40ab15cab19998af12bfe68489be61dd0927e2244e369a6f14",
+        "native-cutoff.csv": "abc00dd56bca7bb59b106f5cb046c34c2db76cd7556c406e86663dc224f5930d",
+        "boundary-frame.npy": "d3d25f1cc825de8cfbc4fd4324eb8f9849fb5b28220bcecc7c52122ee2e98792",
+        "observer-distribution.csv": "8710bfdce7c7f95af71da5a125ff5746650933ca78c70959b381a368a31cec27"
+      }
+    },
+    {
+      "seed": 21769512,
+      "mode": "unlimited",
+      "cpu_max": "max 100000",
+      "affinity": "4,6,8,14",
+      "cgroup_before": {
+        "usage_usec": 94457826,
+        "user_usec": 62346208,
+        "system_usec": 32111618,
+        "nice_usec": 4000,
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "cgroup_delta": {
+        "usage_usec": 79942214,
+        "user_usec": 65220799,
+        "system_usec": 14721415,
+        "nice_usec": 4000,
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "throttled_usec": 0,
+        "nr_bursts": 0,
+        "burst_usec": 0
+      },
+      "cgroup_after_status": "captured",
+      "native_elapsed_ticks": 2048,
+      "sampled_actions": 512,
+      "native_consumed": 512,
+      "exact_complete": 512,
+      "exact_fraction": 1.0,
+      "whole_control_grade": true,
+      "control_issues": [],
+      "active_native_ticks_per_s": 56.90237281446186,
+      "active_policy_decisions_per_s": 14.225593203615466,
+      "freeze_ms": {
+        "p50": 11.066815,
+        "p95": 12.872553,
+        "p99": 14.61414822999999,
+        "p999": 18.484392857000024,
+        "max": 18.876081
+      },
+      "camera_to_applied_ms": {
+        "p50": 8.980978,
+        "p95": 10.4113087,
+        "p99": 10.82605166,
+        "p999": 11.300293975000026,
+        "max": 11.697737
+      },
+      "outcome": "native_tick_cutoff",
+      "boundary_value": null,
+      "native_observer": {
+        "polls": "52815",
+        "rejected": "762",
+        "p999_upper_ns": "110000",
+        "max_ns": "783682",
+        "max_end_ns": "632999091595768",
+        "max_tick": "368"
+      },
+      "source_sha256": {
+        "cgroup-before.stat": "cff1b6c37dfa8a34046879f4001ead306f18ae039b40ba11217c34c7d88999e9",
+        "cgroup-after.stat": "858221accd33a615f31e3d56f5361a47dbd911f56638b6012641bb1696d73004",
+        "cgroup-max.txt": "04afe0d058a8924a172509ae2f711347aca93cbca3879c64bd8d3d1b2e559ee7",
+        "cgroup-effective.txt": "7fc0c578c43bc6296ba5c26d9c4bc424b0b054c8d0a41810fa92de533340d5c6",
+        "native-input.csv": "ba0fa151dcb80578dd43dc9db3c13682c66c51ad68754c52e02d27b96620c4e5",
+        "applied.csv": "a2b5aa5772b7d33ad361648dd8bd6be62669e4e8eb3d514e6b903bf6e8beb4ed",
+        "controls.csv": "7da84443941a9fc0750e54dcb9271c15bf9ef5c007e45580746fc72b23e8d3b6",
+        "finished-game.json": "8cbf5507c5a8b47fe97d7e38478527ec40f8200db3e45f2cbac1249ea49b1712",
+        "policy-trace.npz": "5bc0530fa48e9afb86d84b71b6448db8c04379d9db6f22f7a1dc90bfc17da3e2",
+        "archive.sealed": "902a9f1d0a8b642fe4d74213eba49a1d85007e2417caa86bcbaffff20d3c25b5",
+        "native-cutoff.csv": "3c7bd89b7857acdef9996b0e33e4f64accf0470475a80eef0bb6fcb6dc37beb0",
+        "boundary-frame.npy": "39858b627d94b7d077978ee25ad1b418a2b065dad9b42eab6d4aa821298c6b29",
+        "observer-distribution.csv": "b21b42fb7db06b0406670d07ddfc1106336d0067a8a59238f0d821e7113d654b"
+      }
+    }
+  ]
+}

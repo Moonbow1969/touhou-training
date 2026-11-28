@@ -1,0 +1,82 @@
+{
+  "role": "engineering",
+  "game_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+  "practice_tool_sha256": "42536217464b3b9ddf27ce9d8f13f07c0a09d510831ead24d19d0882825f7315",
+  "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "actor_sha256": "f457e0da52d5bc810eed729a8f447fe3dec6c6af481faa99f5591bb5cf1b1f34",
+  "rank": "Normal",
+  "native_rank": 1,
+  "shot": "Reimu A",
+  "starting_power": 128,
+  "continues": 0,
+  "cap_native_elapsed": 2048,
+  "driver_sha256": {
+    "practice_reset.py": "c7155a908f9fa556257e1d6e396a3844dfa0c807b012f058b1faac6065ed0bad",
+    "learned-worker.py": "74063ffa99e5faa12d79f7ea0a046ebf3bfc483d6c4b4bf444ebbcefd304778c",
+    "scenario-glyphs.npz": "87ba3c2ce8960f0b886d5e90a0a10bd7f3de2e3b063635045e171e1c5473a5fe",
+    "start.sh": "c17e858bdae9bcc76aba3d1edf456a6cd0b4a15d8e484a53f2f62ba7ad3b997b",
+    "spell-monitor": "df79589aabdd66a179049bbb0c7852511858c0f71bdf67600f010ec2f302bab9",
+    "spell-monitor.c": "0a54efaef3993268f1cdffcade948e8b0248d946d140dec43baf00df32469e47",
+    "run-roster.py": "1f70b258e071ca86ecf440b18b2d15902ec52f896ffb526bb005fece1bed970d"
+  },
+  "pinned_lanes": {
+    "private-practice-a": "4,6,8,14",
+    "private-practice-b": "16,18,20,26"
+  },
+  "rows": [
+    {
+      "seed": 21769511,
+      "role": "engineering",
+      "source_kind": "practice",
+      "host": "Gamer",
+      "lane": "private-practice-a",
+      "scenario": "letty-nonspell2-2-3",
+      "decision_cap": 512,
+      "arm": "parent",
+      "scheduler": "capped-two"
+    },
+    {
+      "seed": 21769512,
+      "role": "engineering",
+      "source_kind": "practice",
+      "host": "Gamer",
+      "lane": "private-practice-a",
+      "scenario": "letty-nonspell2-2-3",
+      "decision_cap": 512,
+      "arm": "parent",
+      "scheduler": "unlimited"
+    }
+  ],
+  "objective": {
+    "engineering_only": true,
+    "optimizer": false,
+    "evaluation": false,
+    "scheduled_native_window": 2048,
+    "decision_target": 512,
+    "gating": "Same private CPU4,6,8,14, single game original per arm, sequential on Gamer after all local frontier TRAIN. No changes to existing original recorders or rewards. Distinct sampled-action PRNG by registered seed. Native Game Over, practice result or live native cutoff with actual boundary.",
+    "primary": "Exact 4-tick windows / comparable, mask consumption; rolling native ticks/s and pause latency, cgroup cpu.stat before/after. One run per allocation and distinct seeds; no causal superiority claim."
+  },
+  "qualified_engineering_seed": 21769502,
+  "engineering_visual_sha256": "cc46e0f48eeb98f2616aca45cff928bac3f3490d53095cb9b20dbdb391b09824",
+  "retail_source_audit_sha256": "0b99ee5c054a0124644da30ccef99f61d5bad8fee9bd75e2a07b16693fbdcc11",
+  "qualified_prior_physical_receipts": 8,
+  "prior_independent_ledger_sha256": "30412bcbe5cd844a93ec45b5fcef8197b5f882e34b69914fa4b7d9fe40e05cf8",
+  "engineering_only_source": "2d53ee444c56cd714b6e2f809905d5d0d3e1fc65d01408631cfdf8e1ff69d7a5",
+  "native_two_phase_engineering": {
+    "sub39_Cb48_eligible_samples": 381,
+    "active7_samples": 1749,
+    "source_sha256": "2ac4988cab39985c2a662e4bd0b161877ed69af3857cb79818a8df5a11bf41df"
+  },
+  "source_kind": "practice",
+  "terminal_conditions": [
+    "authenticated original Stage Clear tally and supervisor6, consumed input and originally selected preceding nonspell entrance",
+    "genuine exhaustion against initial stock and original retry",
+    "10000 native elapsed playable ticks and actual next camera"
+  ],
+  "decision_guard": {
+    "default_2_to_6_physical_clears": "stage is training capable",
+    "default_7_to_8_physical_clears": "move earlier",
+    "default_0_to_1_physical_clears": "step later or qualify higher resources",
+    "exclusions": "Retain every physical endpoint; separately grade native inputs."
+  }
+}

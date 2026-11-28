@@ -1,0 +1,7 @@
+# Additional original TH07 training starts at Letty
+
+Fourteen new original starts completed the 30-source allocation. The first screen contributed eight Boss Nonspell 2 and eight final-card games. The extension contributed eight more full-stock Boss Nonspell 2 games, five Boss Nonspell 2 starts with zero spare lives and one Bomb, and one new full-stock final-card start. All used the same frozen six-game actor. Letty’s final card served as the solved rehearsal section. Two private Gamer instances and one Accelerator instance ran the extension. Normal Reimu A, Power 128 and zero continues were fixed throughout.
+
+Of the 14 new original sources, 8 met the predeclared native-input gate. Across both screens and the extension, 18 of the 30 sources entered PPO. Every original endpoint remains in the physical ledger. Seed 21749713 reached its authentic Stage Clear tally before an endpoint-metadata error, and had an eight-tick action outside a spare-loss interval. Its physical completion is retained. Seed 21749714 kept its original game instance open after the serializer fault. The exported replay matched both native input words on all 4,983 observed rows. Independent control qualification admitted this single original credit. The written repair changed the terminal metadata format after gameplay.
+
+[Resources and outcomes by seed](fresh-physical-stocks.csv) · [Four source archives with SHA-256](raw-source-downloads.json) · [Source allocation](registration.json) · [Endpoint format correction](endpoint-format-amendment.json)
