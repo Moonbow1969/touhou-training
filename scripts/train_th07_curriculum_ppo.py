@@ -26,7 +26,11 @@ FOLDS = 4
 CRITIC_REFITS = 2
 LAMBDA = .985
 KL_CAP = .01
-LATE_SCENES = {"letty_final": "letty-final-2-3", "letty_nonspell2": "letty-nonspell2-2-3"}
+LATE_SCENES = {
+    "letty_final": "letty-final-2-3",
+    "letty_nonspell2": "letty-nonspell2-2-3",
+    "letty_nonspell2_low": "letty-nonspell2-0-1",
+}
 PRACTICE_SCENES = ("letty_full", "letty_low", "cirno", *LATE_SCENES)
 SCENES = ("easy", "normal", *PRACTICE_SCENES)
 
@@ -97,7 +101,7 @@ def load_episode(root, entry, actor):
             raise ValueError(f"Discontinuous original clock or inventory: {path}")
         ledger.append(np.r_[old, new[-1]])
     stages, ticks, spares, bombs = ledger
-    first_stock = (0, 1) if scene == "letty_low" else (2, 3)
+    first_stock = (0, 1) if scene in ("letty_low", "letty_nonspell2_low") else (2, 3)
     if (stages[0] != 1 or tuple((spares[0], bombs[0])) != first_stock
             or np.any(stages[:-1] != 1) or (stages[-1] == 2) != (outcome == "stage2_entry")):
         raise ValueError(f"Original stage or starting inventory mismatch: {path}")
@@ -173,16 +177,18 @@ def fit_value_fold(train, held, kind):
 
 
 def crossfit(episodes):
+    if len(episodes) < 2:
+        raise ValueError("Critic cross-fitting requires at least two independent originals")
     by_scene = defaultdict(list)
     for episode in episodes:
         by_scene[episode["scene"]].append(episode)
     rng = np.random.default_rng(SEED)
     fold_rows = [[] for _ in range(FOLDS)]
-    for scene, rows in sorted(by_scene.items()):
-        if len(rows) < 2:
-            raise ValueError(f"Too few independent originals for held-train comparison in {scene}")
+    offset = 0
+    for _, rows in sorted(by_scene.items()):
         for index, j in enumerate(rng.permutation(len(rows))):
-            fold_rows[index % FOLDS].append(rows[j])
+            fold_rows[(offset + index) % FOLDS].append(rows[j])
+        offset += len(rows)
     metrics = []
     for index, held in enumerate(fold_rows):
         if not held:
@@ -212,18 +218,21 @@ def crossfit(episodes):
                 complete_credits_for_rmse=len(complete), timeout_critic_refits=CRITIC_REFITS)
 
 
-def equal_sources(episodes, mode):
+def sample_sources(episodes, mode):
     layouts = {"easy-normal": ("easy", "normal"), "normal-practice": ("normal", "practice"),
-               "last-spell": ("letty_final",), "second-nonspell": ("letty_nonspell2",)}
+               "last-spell": ("letty_final",), "second-nonspell": ("letty_nonspell2", "letty_final")}
+    grouped_scenes = {scene: "practice" for scene in ("letty_full", "letty_low", "cirno")}
+    grouped_scenes["letty_nonspell2_low"] = "letty_nonspell2"
     sources = defaultdict(list)
     for episode in episodes:
         scene = episode["scene"]
-        group = "practice" if scene in ("letty_full", "letty_low", "cirno") else scene
+        group = grouped_scenes.get(scene, scene)
         sources[group].append(tuple(field[episode["active"]] for field in episode["packed"]))
     if set(sources) != set(layouts[mode]):
         raise ValueError("The inputs must match the registered sources before fitting")
     if mode in ("last-spell", "second-nonspell") and not any(
-            e["audit"]["outcome"] == "practice_stage_clear" for e in episodes):
+            e["audit"]["outcome"] == "practice_stage_clear" and
+            grouped_scenes.get(e["scene"], e["scene"]) == layouts[mode][0] for e in episodes):
         raise ValueError("The late-section fit requires a witnessed completion")
     merged = {key: tuple(torch.cat(part) for part in zip(*rows, strict=True)) for key, rows in sources.items()}
     available = {key: len(value[0]) for key, value in merged.items()}
@@ -231,7 +240,9 @@ def equal_sources(episodes, mode):
     generator = torch.Generator().manual_seed(SEED)
     balanced = []
     for key in layouts[mode]:
-        index = torch.randperm(available[key], generator=generator)[:quota]
+        # The second-nonspell roster fixes proportions by whole original starts.
+        size = available[key] if mode == "second-nonspell" else quota
+        index = torch.randperm(available[key], generator=generator)[:size]
         balanced.append(tuple(field[index] for field in merged[key]))
     return tuple(torch.cat(field) for field in zip(*balanced, strict=True)), available
 
@@ -265,7 +276,7 @@ def main():
         episodes.append(episode)
         print("Admitted original", episode["audit"], flush=True)
     value_review = crossfit(episodes)
-    packed, available = equal_sources(episodes, manifest["mode"])
+    packed, available = sample_sources(episodes, manifest["mode"])
     args.out.mkdir(parents=True, exist_ok=False)
     protocol = args.out / "protocol.json"
     freeze(protocol, dict(manifest_sha256=digest(args.manifest), actor=ACTOR, mode=manifest["mode"],

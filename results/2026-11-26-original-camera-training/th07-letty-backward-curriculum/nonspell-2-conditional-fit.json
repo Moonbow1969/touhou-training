@@ -1,0 +1,11 @@
+{
+  "release": "Start this extension only if two through six of the eight ordinary-stock Boss Nonspell 2 screen originals independently complete the section, including at least one action-qualified completion.",
+  "allocation": [
+    {"scene": "letty_nonspell2", "spares": 2, "bombs": 3, "elapsed_cap_ticks": 10000, "train_seed_ranges": [[21749701,21749716]]},
+    {"scene": "letty_nonspell2_low", "spares": 0, "bombs": 1, "elapsed_cap_ticks": 10000, "train_seed_ranges": [[21749717,21749721]]},
+    {"scene": "letty_final", "spares": 2, "bombs": 3, "elapsed_cap_ticks": 6000, "train_seed_ranges": [[21749601,21749609]]}
+  ],
+  "sampler": "The roster uses 21 frontier and 9 adjacent solved original starts. Include all physically qualified windows from those preassigned starts. Report the resulting decision counts and technical exclusions by original scene.",
+  "optimizer": "Two bounded PPO epochs from the exact shared frozen camera policy, joint KL at most .01. Compare the camera and native-conditioned critics on whole training credits held out by fold. Use genuine clear reward and starting-stock potential, and actual next-camera value at a playable cutoff.",
+  "comparison": {"held_seed_range": [21749801,21749820], "spares": 2, "bombs": 3, "elapsed_cap_ticks": 10000, "promotion_minimum_candidate_clear_rate": 0.50, "minimum_gain_over_parent": 0.20}
+}
