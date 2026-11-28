@@ -8,7 +8,14 @@ from pathlib import Path
 import numpy as np
 
 
-STUDIES = ("letty-nonspell2", "letty-nonspell2-extension", "letty-final", "letty-final-extension")
+STUDIES = {
+    "letty-nonspell2": "th07-letty-nonspell2-train",
+    "letty-nonspell2-extension": "th07-letty-nonspell2-extension",
+    "letty-final": "th07-letty-final-spell-train",
+    "letty-final-extension": "th07-letty-final-spell-extension",
+}
+TIMING_COLUMNS = ("native_ticks", "freeze_to_capture_ms", "capture_to_apply_ms", "apply_to_resume_ms",
+                  "original_running_to_next_freeze_ms")
 
 
 def sha(path):
@@ -51,12 +58,44 @@ def counts(trace, receipt):
     return result, indices
 
 
-def make(root, output):
+def wall_intervals(original, trace, receipt):
+    paths = [original / name for name in ("controls.csv", "applied.csv")]
+    if any(sha(path) != receipt["native_source_sha256"][path.name] for path in paths):
+        raise ValueError(f"Native apply evidence changed for {receipt['seed']}")
+    controls, applied = (np.genfromtxt(path, delimiter=",", names=True, dtype=None, encoding="ascii", ndmin=1)
+                         for path in paths)
+    duration = trace["native_ticks_under_command"]
+    start = receipt["source_start_index"]
+    selected = slice(start, start + len(duration))
+    controls, applied = controls[selected], applied[selected]
+    if not np.array_equal(controls["tick"], trace["native_tick"]):
+        raise ValueError(f"Original apply and camera clocks differ for {receipt['seed']}")
+    freeze = applied["freeze_start_ns"]
+    camera = controls["camera_ns"]
+    apply = applied["apply_ns"]
+    resume = applied["resume_ns"]
+    intervals = np.column_stack((camera[:-1] - freeze[:-1], apply[:-1] - camera[:-1], resume[:-1] - apply[:-1],
+                                 freeze[1:] - resume[:-1])) / 1e6
+    if (intervals < 0).any():
+        raise ValueError(f"Original capture and apply wall clocks went backwards for {receipt['seed']}")
+    return np.column_stack((duration[:-1], intervals))
+
+
+def describe_intervals(groups):
+    return {host: {
+        label: dict(windows=len(values), median=dict(zip(TIMING_COLUMNS, np.median(values, axis=0).tolist(), strict=True)),
+                    p90=dict(zip(TIMING_COLUMNS, np.percentile(values, 90, axis=0).tolist(), strict=True)))
+        for label, values in buckets.items() if values
+    } for host, buckets in groups.items()}
+
+
+def make(root, output, originals=None):
     by_lane = defaultdict(Counter)
     sources = {}
     unknown = []
     mismatches = []
-    for study in STUDIES:
+    timing = defaultdict(lambda: defaultdict(list))
+    for study, output_study in STUDIES.items():
         index = root / study / "intake-index.json"
         study_proof = read(index)
         if not study_proof["complete"]:
@@ -73,6 +112,11 @@ def make(root, output):
             receipt = read(receipt_path)
             with np.load(trace_path, allow_pickle=False) as trace:
                 windows, indices = counts(trace, receipt)
+                if originals is not None:
+                    for values in wall_intervals(originals / output_study / "raw" / str(entry["seed"]), trace, receipt):
+                        kind = "overlong" if values[0] > 4 else "nominal_four" if values[0] == 4 else "short"
+                        for host in (receipt["host"], "pooled"):
+                            timing[host][kind].append(values)
             lane = by_lane[f"{receipt['host']}/{receipt['lane']}"]
             lane["originals_with_normalized_timing"] += 1
             lane.update(windows)
@@ -86,6 +130,10 @@ def make(root, output):
                   scope="Four original TRAIN cohorts. Check native lengths before characterizing control word slips.",
                   pooled=dict(combined), by_lane={lane: dict(count) for lane, count in by_lane.items()},
                   nonexact_windows=mismatches)
+    if originals is not None:
+        report["wall_intervals_ms_by_host"] = describe_intervals(timing)
+        report["wall_interval_scope"] = ("Each nonterminal camera window aligned to the original apply timestamps. "
+                                         "The final structural window has no next freeze and is omitted from these wall intervals.")
     output.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps(report["pooled"]), sha(output))
 
@@ -96,5 +144,6 @@ if __name__ == "__main__":
     cli = argparse.ArgumentParser(description=__doc__)
     cli.add_argument("intake_root", type=Path)
     cli.add_argument("output", type=Path)
+    cli.add_argument("--original-root", type=Path)
     args = cli.parse_args()
-    make(args.intake_root, args.output)
+    make(args.intake_root, args.output, args.original_root)
