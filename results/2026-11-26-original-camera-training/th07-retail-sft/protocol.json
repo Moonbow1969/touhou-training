@@ -1,0 +1,18 @@
+{
+  "study": "TH07 stock retail 1.00b Normal Reimu A four-head visual SFT pilot",
+  "acquisition_protocol_sha256": "2477b7ce207c3a5bfc9541a973ae6a4c67762fae285c7252aa55d4f43ac34315",
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "source_ids": {"train": [1, 2, 3, 9], "held": [4, 6]},
+  "stages": [1, 2],
+  "required_windows_per_player_stage": 2000,
+  "seeds": [71281, 71282, 71283],
+  "epochs": 5,
+  "batch": 32,
+  "examples_per_stratum_per_batch": 4,
+  "lr": 0.00003,
+  "xy_weight": 1.0,
+  "fit": "Adam, inherited four-head camera and 1x1 player-location head; deterministic, independent within-stratum permutation for every epoch. Each minibatch includes all eight training player-stage strata; each real capped window appears exactly once per epoch. Equal action CE per head plus spatial CE on native XY cell. Fixed fifth-epoch final for each seed. No additional covariates, resampling, stopping rule or tuning.",
+  "evaluation": "Freeze all three finals before evaluating either held author. Compare each against the unchanged parent on precisely the predeclared 2000 valid windows per held author and stage. Primary summaries are macro means of each held author's two-stage pooled movement and switch accuracy; localization is median over both authors and stages in original pixels. Average these quantities across the three training seeds. Also report per-author and per-stage metrics, all head accuracies and log losses, stable movements and Bomb events.",
+  "gate": {"mean_delta_move_accuracy_min": 0.015, "mean_delta_switch_move_accuracy_min": -0.005, "mean_seed_median_xy_error_max": 12.0},
+  "exposure": "Four disjoint training source authors, two separately registered held authors. Five repetitions of sixteen thousand distinct windows per seed. This is a bounded first pilot with no native performance claim."
+}
