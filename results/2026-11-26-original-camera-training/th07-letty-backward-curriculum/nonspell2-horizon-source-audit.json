@@ -1,0 +1,44 @@
+{
+  "scope": "Offline operational horizon for an unassisted TH07 retail 1.00b Normal Reimu A Boss Nonspell 2 practice start that continues through Flower Wither Away to the actual practice result.",
+  "source_receipts": ["retail-source-audit.json", "preceding-attack-source-audit.json"],
+  "data": {
+    "file": "msg1.dat",
+    "sha256": "3076fb3b5ec9abb9a8399177b8eb4b8161efba59ed8eb1fe51fa51c46586b356",
+    "entry": 1,
+    "extract_with": "thdat -x7 th07.dat msg1.dat",
+    "decode_with": "thmsg -d7 msg1.dat native-msg.dump",
+    "thmsg_exe_sha256": "4fdf4bada492e8fa4038167eba108e30e5639961f298cf35e05fcd35d857c071",
+    "decoded_sha256": "e2e12d789b26c56a24c05f050ba24c3d27ed981cb8d8b79df8b53618f7e868a3",
+    "ecl_sha256": "c443e28b86cb20eeb7613d786c7ff667c2bd39726bf7ffbb38a3c0e354db1b40",
+    "thprac_tag": "55e6ed1336621e3099e7df1138acc360cf0500fa"
+  },
+  "source_clock_components": {
+    "practice_lead_in_script_ticks": 60,
+    "nonspell2_boss_callback_ticks": 2400,
+    "final_spell_boss_callback_ticks": 3000,
+    "terminal_boss_despawn_script_ticks": 60,
+    "message_script_tick_of_stage_clear": 120,
+    "message_script_tick_of_next_level": 180,
+    "postfight_dialogue_pause_arguments": [300, 900],
+    "stage_tally_pause_argument": 1200,
+    "upper_gui_updates_to_stage_clear": 1320,
+    "upper_gui_updates_to_practice_result_command": 1680
+  },
+  "derivation": [
+    "The pinned thprac BOSS3 warp replaces the Sub38 call operand at 0x4c2c, which fires at elapsed sub-time 60, with Sub39. Sub39 sets a fresh 2400 threshold, and Sub48 starts the Normal final spell with fresh 3000. The two regular boss clocks are in series.",
+    "At the end of the final spell Sub51 contains a six-iteration, ten-tick death effect, then ends the spell and removes the boss registration. The 3000-tick instruction timestamp after this removal is not a 3000-tick wait for the Stage 1 timeline. Timeline command 12 waits for a registered active boss; after it clears, 8(1) dispatches message index 1+10*character. Reimu has character 0.",
+    "In message entry 1 the game emits two dialogue lines at local time 60. Each dialogue resets framesElapsedDuringPause. The first pause allows up to 300 blocked updates; the second allows up to 900. The tally appears at script time 120, giving up to 1320 updates from message entry. Holding shoot continuously does not create press edges.",
+    "The final pause at local time 180 has duration 1200. There is no dialogue/reset between pause 900 and pause 1200, so time accumulated in the former counts toward the latter. These last two waits add at most 1200 blocked updates together, or fewer with a shoot transition/skip. Up to 180+300+1200=1680 GUI updates after the boss message starts takes the script through NEXT_LEVEL (plus discrete scheduler boundaries). Merely summing all three waits independently gives a looser envelope of 2580.",
+    "Working envelope, before unmeasured clock differences, is 60+2400+3000+60+1680=7200 through real practice results (6840 through first tally). Ten percent gives 7920 (7524 to first tally). 6400 and 6600 can both cut a legitimate timed-out nonspell plus final spell and a slow postboss dialogue.",
+    "Recommend 9600 original recorded ticks / 2400 four-tick decisions, equal in every arm, as a prospective safety cutoff. More than 10% margin remains for roughly 1527 additional pre-margin ticks relative to the 7200 estimate. Actual natural stage results and genuine Game Over take priority. A still-live case at the cutoff is censored. Keep combat progress and zero-continue disposition distinct."
+  ],
+  "uncertainty": "The message bounds count original GUI updates, the callbacks count boss-clock ticks, and the controller counts changes in native replay index. They do not all have a proven one-for-one relationship through every death, game-speed or time-stop event. The native enemy timer pauses during isTimeStopped. Menu/setup wall latency is not a playable time budget. No universal maximum in observer wall time or recorded ticks is claimed; 9600 is a prospective conservative operational cap. This audit used no new run or outcome.",
+  "links": {
+    "warp": "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1050-L1061",
+    "timeline_bosswait_and_message": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L399-L427",
+    "boss_removal": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.cpp#L1511-L1532",
+    "clock_pause": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L1159-L1165",
+    "dialogue_pause_and_rising_edge": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L897-L938",
+    "stage_tally_and_practice_terminal": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L991-L1034"
+  }
+}
