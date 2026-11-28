@@ -24,16 +24,22 @@ def paired_cameras(manifest, row, device):
     if digest(source) != row["highres_sha256"]:
         raise ValueError(f"Changed high-resolution camera source {row['seed']}")
     indices = np.asarray(row["original_observation_indices"])
-    high = np.load(source, allow_pickle=False)["gray"]
+    with np.load(source, allow_pickle=False) as archive:
+        high = archive["gray"]
     if (high.dtype != np.uint8 or high.ndim != 3 or high.shape[1:] != (224,192)
             or indices.dtype.kind not in "iu" or indices.shape != credit.tick.shape
             or indices[0] < 0 or indices[-1] >= len(high) or np.any(np.diff(indices) <= 0)):
         raise ValueError(f"Invalid exact decision-to-image index for {row['seed']}")
     high = high[indices]
-    # Each modality is sampled from the same raw XGetImage. Area averaging two
-    # consecutive resampling stages can change integer luminance by at most one.
+    # The capture's low and high images independently round horizontal and
+    # vertical box averages. A second resize may differ by two gray levels.
     low_from_high = (high.reshape(-1,112,2,96,2).sum((2,4), dtype=np.int32)+2)//4
-    if np.abs(low_from_high - credit.visual.numpy()).max() > 1:
+    error = np.abs(low_from_high - credit.visual.numpy())
+    qualification = manifest.parent / row["qualification"]
+    if digest(qualification) != row["qualification_sha256"]:
+        raise ValueError(f"Changed registration witness for {row['seed']}")
+    certified_bound = read(qualification)["max_luminance_error"]
+    if error.max() > min(certified_bound, 2):
         raise ValueError(f"Different low- and high-resolution original cameras for {row['seed']}")
     history = restrict_to_history(credit)
     return credit, torch.from_numpy(high[history])
@@ -105,6 +111,7 @@ def main():
            comparisons="Factorial 96x112/192x224 crossed with learned/true-coordinate grid center. All four arms share samples, original ticks, target labels, splits, optimizer budget and 16-native-pixel crop lattice. True-coordinate arms are diagnostic only.",
            gate="Four held folds must pass AP >=1.5x the privileged logistic baseline, >=50% early event coverage and ECE <=.02. Learned branch also needs median locator error <=12 pixels and 80% of oracle AP gain in those folds for a proposed BC warm-start.",
            threshold="5% negative alarms on separate calibration credits. Early warning means at least 20 native ticks ahead of a stock-confirmed hit.",
+           camera_binding="Verify the qualified raw image mapping and bind its signed witness. Independent integer box resizing may differ by <=2 gray levels.",
            secondary="A stronger single diagnostic arm motivates a controlled follow-up. Forecast skill here does not certify gameplay improvement.",
            updates=UPDATES, batch=BATCH, window=list(WINDOW)))
     expiry = time.monotonic() + args.wait_seconds
