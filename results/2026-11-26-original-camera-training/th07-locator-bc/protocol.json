@@ -1,0 +1,15 @@
+{
+  "study": "TH07 0.11 Normal Reimu A Stage 1 matched four-head behavior cloning with native-position auxiliary",
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "sources": {"train":"219b2a89be16720447df65fd035618f5926af53d7e8337d5f61e07842ba3fb94","held":"9da50f8af1d33d3db5cfdb2f80c9d16143d9538ec0be3ceab33f223c31a5a64f"},
+  "source_audit_sha256": {"train":"097bf805c842089b17534bf681e7349bf752d7555b68c40993608c49ee6406c2","held":"b3671a6c09f49c6ccc4bb061b4c3c162e070b4d7e362c7c9649058368807cc53"},
+  "roles": "Optimize only the first floor(0.8*n) chronological usable Boredperson rows, purged where training [t-4,t+4] touches any sanity [t-4,t+4]. Sanity is the full final contiguous 20 percent. All frozen finals evaluated together once on zylo, a previously used diagnostic author.",
+  "seeds": [71281, 71282, 71283],
+  "fixed_epochs": 8, "batch": 32, "lr": 0.00003,
+  "optimizer": "Adam, constant learning rate, default betas, complete permutation per epoch, final weights only",
+  "arms": {"action":0.0,"action-xy":1.0},
+  "objectives": "Sum of four uniform mean action CE plus arm weight times one spatial CE on the inherited 1x1 player logits over the common visual trunk. Position target is floor([native x,y]/8) in the 48x56 output grid. Decoded position is cell center, native pixel units.",
+  "initialization": "No new weights. The inherited player convolution is recovered from TorchScript parameters. The deployed actor only consumes camera pixels. Both arms have identical graphs, optimizer, batches and heads. Eval-mode layers throughout.",
+  "gate": {"mean_delta_move_accuracy":0.015,"positive_move_seed_pairs_min":2,"mean_delta_changed_expert_direction_accuracy_min":-0.005,"locator_max_native_px":12,"locator_summary":"mean of three held per-seed medians; also report each and the pooled median"},
+  "scope": "One original replay per author. No independent-population or gameplay claim. No gradient, sample filtering, checkpoint selection or threshold fitting on held."
+}
