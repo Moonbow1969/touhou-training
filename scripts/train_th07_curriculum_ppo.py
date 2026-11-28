@@ -10,6 +10,7 @@ import torch
 
 from scripts.check_five_title_critic_returns import ridge
 from scripts.checkpoint_storage import digest
+from scripts.th07_native_duration import actor_eligible, duration_gae, native_discount, shape_progress
 from scripts.th08_camera_history import frame_pair, reconstruct
 from scripts.th08_progress_reward import GAMMA, progress_reward
 from scripts.train_five_original_games import freeze
@@ -45,8 +46,42 @@ def frozen_features(model, frames):
     return latent, heads, value
 
 
-def returns(reward, bootstrap):
-    return calculate_gae(reward, np.zeros(len(reward), dtype=np.float32), GAMMA, 1., bootstrap=bootstrap)
+def trajectory_gae(reward, values, bootstrap, lam, discounts):
+    if discounts is None:
+        return calculate_gae(reward, values, GAMMA, lam, bootstrap=bootstrap)
+    return duration_gae(reward, values, discounts, lam, bootstrap=bootstrap).astype(np.float32)
+
+
+def returns(reward, bootstrap, discounts=None):
+    return trajectory_gae(reward, np.zeros(len(reward), dtype=np.float32), bootstrap, 1., discounts)
+
+
+def verified_durations(root, entry, actions, stages, ticks):
+    path, report_path = (root / entry[key] for key in ("duration_sidecar", "duration_receipt"))
+    if digest(path) != entry["duration_sha256"] or digest(report_path) != entry["duration_receipt_sha256"]:
+        raise ValueError(f"Signed native-duration source changed: {path}")
+    report = json.loads(report_path.read_bytes())
+    if (report["role"] != "train" or report["seed"] != entry["seed"]
+            or report["trace_sha256"] != entry["sha256"] or report["prior_receipt_sha256"] != entry["receipt_sha256"]
+            or report["compressed_index_sha256"] != entry["duration_sha256"] or report["missing_native_word_slots"] != 0
+            or report["decision_windows"] != len(actions)):
+        raise ValueError(f"Signed duration index does not bind this original trajectory: {path}")
+    with np.load(path, allow_pickle=False) as data:
+        duration = data["duration_native_ticks"]
+        requested, executed = data["requested_key_mask"], data["observed_key_mask"]
+        move, focus, shoot, bomb = actions.T
+        masks = (np.array([16, 0, 32])[move // 3] | np.array([64, 0, 128])[move % 3]
+                 | 4 * focus | shoot | 2 * bomb)
+        if (np.any(stages != 1) or not np.array_equal(duration, np.diff(ticks))
+                or not np.array_equal(data["offsets"], np.r_[0, duration.cumsum()])
+                or not np.array_equal(data["tick"], np.arange(ticks[0] + 1, ticks[-1] + 1))
+                or np.any(data["stage"] != 1) or not np.all(data["every_native_word_observed"])
+                or not np.array_equal(masks, requested)):
+            raise ValueError(f"The original actions and all native slots must align: {path}")
+        pure = actor_eligible(requested, executed, duration)
+        if not np.array_equal(pure, data["smdp_actor_eligible"]) or int(pure.sum()) != report["all_native_words_equal_requested"]:
+            raise ValueError(f"Duration actor mask disagrees with the native input ledger: {path}")
+    return duration, pure
 
 
 def load_episode(root, entry, actor):
@@ -57,9 +92,10 @@ def load_episode(root, entry, actor):
     receipt = json.loads(receipt_path.read_bytes())
     scene = entry["scene"]
     outcome = receipt["outcome"]
+    time_aware = "duration_sidecar" in entry
     practice = scene in PRACTICE_SCENES
     source_kind = "practice" if practice else "game_start"
-    if (entry["role"] != "train" or receipt["role"] != "train" or receipt["qualified"] is not True
+    if (entry["role"] != "train" or receipt["role"] != "train" or (receipt["qualified"] is not True and not time_aware)
             or receipt["policy_sha256"] != ACTOR or receipt["game_sha256"] != ORIGINAL
             or receipt["seed"] != entry["seed"] or receipt["continues"] != 0
             or receipt["sha256"] != entry["sha256"] or scene not in SCENES
@@ -135,11 +171,23 @@ def load_episode(root, entry, actor):
         boundaries={int(k): tuple(v) for k, v in receipt["native_stage_boundaries"].items()},
         base_bootstrap=bootstrap)
     shaped = reward.reward.astype(np.float32)
-    if outcome == "practice_stage_clear":
-        shaped[-1] += 1.
-    if success:
-        shaped[-1] += GAMMA * (int(spares[-1]) + 1)
-    target = returns(shaped, reward.bootstrap)
+    discounts = None
+    if time_aware:
+        duration, eligible = verified_durations(root, entry, actions, stages, ticks)
+        discounts = native_discount(duration, GAMMA)
+        # Integrate discounted progress in native time, normalized to the original four-tick unit.
+        base_reward = 4 * (1 - discounts) / ((1 - GAMMA) * STAGE_LENGTH[1])
+        potential = reward.potential.copy()
+        if success:
+            base_reward[-1] += GAMMA ** (max(0, int(duration[-1]) - 4) / 4)
+            potential[-1] = int(spares[-1]) + 1
+        shaped = shape_progress(base_reward, potential, discounts).astype(np.float32)
+    else:
+        if outcome == "practice_stage_clear":
+            shaped[-1] += 1.
+        if success:
+            shaped[-1] += GAMMA * (int(spares[-1]) + 1)
+    target = returns(shaped, reward.bootstrap, discounts)
     scene_bits = np.eye(len(SCENES))[SCENES.index(scene)]
     privileged = np.tile(scene_bits, (n, 1))
     vision = latent.numpy().astype(np.float64)
@@ -149,10 +197,11 @@ def load_episode(root, entry, actor):
                                                 [ticks[-1] / STAGE_LENGTH[1]]))
         boundary = dict(vision=boundary, conditioned=conditioned_boundary)
     return dict(seed=entry["seed"], scene=scene, vision=vision, conditioned=conditioned, y=target,
-        reward=shaped, boundary=boundary, active=torch.from_numpy(eligible),
+        reward=shaped, boundary=boundary, active=torch.from_numpy(eligible), discounts=discounts,
         tensors=(frames, act, torch.from_numpy(old_logp.sum(1)), torch.cat(heads, dim=1)),
         audit=dict(seed=entry["seed"], scene=scene, outcome=outcome, decisions=n,
-                   eligible=int(eligible.sum()), lp_error=lp_error, value_error=value_error,
+                   eligible=int(eligible.sum()), critic_only=int(n-eligible.sum()) if time_aware else 0,
+                   lp_error=lp_error, value_error=value_error,
                    initial_critic_bootstrap=reward.bootstrap, native_stage_final=int(stages[-1]),
                    final_spares=int(spares[-1]), final_bombs=int(bombs[-1]),
                    reward_sum=float(shaped.sum())))
@@ -166,7 +215,7 @@ def fit_value_fold(train, held, kind):
         boundaries = [row["boundary"] for row in censored]
         for _ in range(CRITIC_REFITS):
             for row, prediction in zip(censored, ridge(train, kind, boundaries), strict=True):
-                row["y"] = returns(row["reward"], float(prediction.item()))
+                row["y"] = returns(row["reward"], float(prediction.item()), row["discounts"])
     censored_held = [row for row in held if row["boundary"] is not None]
     predictions = ridge(train, kind, held + [row["boundary"] for row in censored_held])
     for row, value in zip(held, predictions[:len(held)], strict=True):
@@ -201,7 +250,8 @@ def crossfit(episodes):
     scene_rmse = {scene: {} for scene in by_scene}
     complete = [r for r in episodes if r["boundary"] is None]
     for kind in ("vision", "conditioned"):
-        errors = [(r[kind + "_value"] - r["y"])[r["active"].numpy()] for r in complete]
+        errors = [(r[kind + "_value"] - r["y"])[r["active"].numpy() if r["discounts"] is None else slice(None)]
+                  for r in complete]
         rmse[kind] = float(np.sqrt(np.mean(np.concatenate(errors) ** 2)))
         for scene in by_scene:
             grouped = [error for row, error in zip(complete, errors, strict=True) if row["scene"] == scene]
@@ -210,7 +260,7 @@ def crossfit(episodes):
     for episode in episodes:
         value = episode[selected + "_value"]
         bootstrap = episode[selected + "_bootstrap"]
-        advantage = calculate_gae(episode["reward"], value, GAMMA, LAMBDA, bootstrap=bootstrap)
+        advantage = trajectory_gae(episode["reward"], value, bootstrap, LAMBDA, episode["discounts"])
         episode["audit"]["ppo_bootstrap"] = bootstrap
         obs, action, old, heads = episode["tensors"]
         episode["packed"] = (obs, action, old, torch.from_numpy(advantage), torch.from_numpy(value + advantage), heads)
@@ -218,7 +268,7 @@ def crossfit(episodes):
                 complete_credits_for_rmse=len(complete), timeout_critic_refits=CRITIC_REFITS)
 
 
-def sample_sources(episodes, mode):
+def sample_sources(episodes, mode, *, time_aware=False):
     layouts = {"easy-normal": ("easy", "normal"), "normal-practice": ("normal", "practice"),
                "last-spell": ("letty_final",), "second-nonspell": ("letty_nonspell2", "letty_final")}
     grouped_scenes = {scene: "practice" for scene in ("letty_full", "letty_low", "cirno")}
@@ -227,7 +277,12 @@ def sample_sources(episodes, mode):
     for episode in episodes:
         scene = episode["scene"]
         group = grouped_scenes.get(scene, scene)
-        sources[group].append(tuple(field[episode["active"]] for field in episode["packed"]))
+        fields = episode["packed"]
+        if time_aware:
+            fields = (*fields, episode["active"])
+        else:
+            fields = tuple(field[episode["active"]] for field in fields)
+        sources[group].append(fields)
     if set(sources) != set(layouts[mode]):
         raise ValueError("The inputs must match the registered sources before fitting")
     if mode in ("last-spell", "second-nonspell") and not any(
@@ -244,7 +299,8 @@ def sample_sources(episodes, mode):
         size = available[key] if mode == "second-nonspell" else quota
         index = torch.randperm(available[key], generator=generator)[:size]
         balanced.append(tuple(field[index] for field in merged[key]))
-    return tuple(torch.cat(field) for field in zip(*balanced, strict=True)), available
+    packed = tuple(torch.cat(field) for field in zip(*balanced, strict=True))
+    return (packed[:-1], available, packed[-1]) if time_aware else (packed, available, None)
 
 
 def main():
@@ -267,6 +323,11 @@ def main():
             raise ValueError("Learner model differs from its archived actor")
     manifest = json.loads(args.manifest.read_bytes())
     rows = sorted(manifest["rows"], key=lambda entry: entry["seed"])
+    duration_model = manifest.get("duration_model")
+    time_aware = duration_model == "native-smdp" and manifest["mode"] == "second-nonspell"
+    if (duration_model is not None and not time_aware
+            or any(("duration_sidecar" in row) != time_aware for row in rows)):
+        raise ValueError("Native-duration inputs require a separate signed training manifest")
     if (len({r["seed"] for r in rows}) != len(rows)
             or any(r["seed"] in manifest["held_seeds"] for r in rows)):
         raise ValueError("Duplicated or reserved original seeds in optimizer input")
@@ -276,15 +337,16 @@ def main():
         episodes.append(episode)
         print("Admitted original", episode["audit"], flush=True)
     value_review = crossfit(episodes)
-    packed, available = sample_sources(episodes, manifest["mode"])
+    packed, available, mask = sample_sources(episodes, manifest["mode"], time_aware=time_aware)
     args.out.mkdir(parents=True, exist_ok=False)
     protocol = args.out / "protocol.json"
     freeze(protocol, dict(manifest_sha256=digest(args.manifest), actor=ACTOR, mode=manifest["mode"],
+        duration_model=duration_model, actor_eligible_decisions=len(packed[0]) if mask is None else int(mask.sum()),
         learner_sha256=digest(Path(__file__)), seed=SEED, stage_ticks=STAGE_LENGTH, gamma=GAMMA,
         lambda_gae=LAMBDA, joint_kl_cap=KL_CAP, value_diagnostic=value_review,
         available_decisions=available, used_decisions=len(packed[0]), credits=[e["audit"] for e in episodes]))
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    epochs = optimize(actor.to(device), packed, device, kl_cap=KL_CAP)
+    epochs = optimize(actor.to(device), packed, device, kl_cap=KL_CAP, actor_mask=mask)
     *fitted_logits, _ = logits_on(actor, packed[0], device)
     action_diagnostic = {}
     for label, width, old, new in zip(("move", "focus", "shoot", "bomb"), WIDTHS,

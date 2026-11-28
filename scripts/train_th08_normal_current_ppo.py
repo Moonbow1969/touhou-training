@@ -66,9 +66,13 @@ def source_rows(manifest, expected_parent):
         yield row, receipt
 
 
-def optimize(model, packed, device, *, kl_cap=KL_CAP):
+def optimize(model, packed, device, *, kl_cap=KL_CAP, actor_mask=None):
     observations, actions, old_logp, advantages, returns, old_heads = packed
-    advantages = (advantages - advantages.mean()) / (advantages.std(unbiased=False) + 1e-7)
+    if actor_mask is not None and (actor_mask.shape != advantages.shape or actor_mask.dtype != torch.bool
+                                   or not actor_mask.any()):
+        raise ValueError("Actor eligibility must identify sampled decisions with verified original controls")
+    actor_advantages = advantages if actor_mask is None else advantages[actor_mask]
+    advantages = (advantages - actor_advantages.mean()) / (actor_advantages.std(unbiased=False) + 1e-7)
     optimizer = torch.optim.Adam(model.parameters(), lr=RATE, eps=1e-5)
     epochs = []
     for epoch in range(1, EPOCHS + 1):
@@ -78,15 +82,25 @@ def optimize(model, packed, device, *, kl_cap=KL_CAP):
         for ids in permutation.split(BATCH):
             optimizer.zero_grad(set_to_none=True)
             mean_loss = 0.
+            actor_count = len(ids) if actor_mask is None else max(1, int(actor_mask[ids].sum()))
             for chunk in ids.split(MICROBATCH):
                 *heads, value = model(observations[chunk].to(device).float() / 255)
                 action = actions[chunk].to(device)
-                ratio = (chosen(heads, action).sum(1) - old_logp[chunk].to(device)).exp()
+                log_ratio = chosen(heads, action).sum(1) - old_logp[chunk].to(device)
                 adv = advantages[chunk].to(device)
-                actor = -torch.minimum(ratio * adv, ratio.clamp(.9, 1.1) * adv).mean()
+                if actor_mask is not None:
+                    valid = actor_mask[chunk].to(device)
+                    log_ratio, adv = log_ratio[valid], adv[valid]
+                ratio = log_ratio.exp()
+                policy_terms = torch.minimum(ratio * adv, ratio.clamp(.9, 1.1) * adv)
                 critic = F.smooth_l1_loss(value[:, 0], returns[chunk].to(device))
-                entropy = sum((head.softmax(1) * head.log_softmax(1)).sum(1).mean() for head in heads)
-                objective = (actor + .25 * critic + .002 * entropy) * (len(chunk) / len(ids))
+                if actor_mask is None:
+                    entropy = sum((head.softmax(1) * head.log_softmax(1)).sum(1).mean() for head in heads)
+                    objective = (-policy_terms.mean() + .25 * critic + .002 * entropy) * (len(chunk) / len(ids))
+                else:
+                    entropy = sum((head.softmax(1) * head.log_softmax(1)).sum(1)[valid].sum() for head in heads)
+                    actor = (-policy_terms.sum() + .002 * entropy) / actor_count
+                    objective = actor + .25 * critic * (len(chunk) / len(ids))
                 objective.backward()
                 mean_loss += float(objective.detach())
             torch.nn.utils.clip_grad_norm_(model.parameters(), .5)
