@@ -1,5 +1,11 @@
 # 261123 Moonbow Toho ML | Target Training Recipe
 
+## 每轮训练结束后的战略复核
+
+完成一轮主要的策略更新、奖励调整或架构改动后，把冻结的实验记录交给 Claude Opus 复核。每份记录包括训练和原作测试的独立分母、原作版本、到达二面和通关数字、剩余生命与 Bomb、采样和训练时间，以及失败或未核实的记录。请 Claude 先评估当前瓶颈，再指定下一轮的单一优先实验、预算、晋升门槛和停止条件。模型容量和奖励设计有新变更时，要求它给出具体结构、奖励公式以及可以验证的对照，必要时让它起草实现。
+
+执行者核对原作事件和数据是否支持建议，保存采用的方案和理由，再实现、运行、归档。每轮公开实验日志记录审阅模型、审阅日期、关键结论和接下来的实验登记。已经登记的采样和验证可以在等待复核时继续进行。
+
 六作共享策略已经完成一次全动作 PPO。TH08、TH10、TH11、TH12、TH13、TH17 分别收集 Hard 和 Lunatic 各 16 个正常库存训练整局，共 192 局、96,728 次有效决策。TH08 有 17,988 次。冻结五作 G3 对照六作模型，在新增 TH08 检验习得，在 TH10 和 TH17 检验遗忘，每作每档各 8 对。另一个五作对照复用完全相同的 160 局，仅改变 actor 的优势估计。上线策略的观测仍是当前原作画面和上一帧的差分。[六作权重和实际优化数据](../results/2026-11-26-original-camera-training/six-game-online/README.md) · [五作优势估计对照](../results/2026-11-26-original-camera-training/five-game-crossfit-advantages/README.md)
 
 第三代从同一份五作 PPO 的 actor 和 critic 继续，按作品和难度各收集 16 个新训练整局，并安排每格 8 对独立种子评估。TH08 单独完成 48 份 Hard 和 Lunatic 人类通关录像的动作预训练。实际转向预测在 16 名留出玩家上为 10.61%，冻结旧四作模型并取已学元数据嵌入均值时为 10.83%。[五作采样协议](../results/2026-11-26-original-camera-training/five-game-generation3/README.md) · [TH08 逐玩家对照](../results/2026-11-26-original-camera-training/th08-human-actions/README.md)
