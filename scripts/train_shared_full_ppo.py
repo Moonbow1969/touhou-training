@@ -19,10 +19,10 @@ def likelihood(model,x,action):
     return torch.stack(lp,1),values,entropy
 
 
-def calculate_gae(rewards,values,gamma,lam):
-    # Genuine full-credit terminals have zero bootstrap. Respawns retain continuity.
+def calculate_gae(rewards,values,gamma,lam,*,bootstrap=0.):
+    # Genuine terminals default to zero. Playable cutoffs carry a boundary value.
     advantage=np.zeros(len(rewards),np.float32)
-    next_value=0.;running=0.
+    next_value=bootstrap;running=0.
     for k in reversed(range(len(rewards))):
         running=rewards[k]+gamma*next_value-values[k]+gamma*lam*running
         advantage[k]=running;next_value=values[k]
