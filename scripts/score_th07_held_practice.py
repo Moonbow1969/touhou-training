@@ -10,9 +10,10 @@ import time
 import numpy as np
 import torch
 
+from scripts.intake_th07_letty_starts import PRECEDING, exact_target
 from scripts.th07_retail_fragment_intake import (
     DATA, GAME, OBSERVER, PARENT, game_over_boundary, intake_fragment, native_boundary_row,
-    practice_result_boundary, require, sha, slot_words, table,
+    playable_boundary, practice_result_outcome, require, sha, slot_words, table,
 )
 
 
@@ -34,7 +35,14 @@ def load(path):
 def save(path, data):
     pending = path.with_suffix(".pending")
     pending.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    pending.replace(path)
+    for attempt in range(20):
+        try:
+            pending.replace(path)
+            return
+        except PermissionError:
+            if attempt == 19:
+                raise
+            time.sleep(.05)
 
 
 def event_rows(states, field):
@@ -88,7 +96,7 @@ def truncated_control_followup(exposure, slots, controls, original):
         end_stock=[int(state[k]) for k in ("lives", "bombs")])
 
 
-def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3)):
+def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3), verify_scene=False):
     """Verify original outcomes/resources independently of actor-forward and action quality."""
     proof = run_path(str(OBSERVER / "record_proof.py"))["verify_archive"](folder)
     build = dict(row.split()[::-1] for row in (folder / "build.sha256").read_text().splitlines())
@@ -121,11 +129,11 @@ def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3)):
         outcome = "game_over"
         endpoint = game_over_boundary(native, spec, start, start + horizon)
     elif outcome == "native_tick_cutoff":
-        endpoint = native_boundary_row(native, spec)
+        endpoint = playable_boundary(folder, native, spec)[0] if verify_scene else native_boundary_row(native, spec)
         require(spec["boundary_stage"] == 1 and int(endpoint["tick"]) - start == horizon,
                 "A real native cutoff must reach exactly the registered playable horizon")
     elif outcome == "practice_stage_clear":
-        endpoint, _ = practice_result_boundary(folder, native, spec)
+        outcome, endpoint, _ = practice_result_outcome(folder, native, spec)
     else:
         raise ValueError(f"Unregistered held original endpoint: {outcome}")
     end = int(endpoint["tick"])
@@ -150,6 +158,15 @@ def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3)):
         original_bomb_word_ticks=sum(bool(word & 2) for word in observed_ticks),
         end_stock=[int(endpoint[key]) for key in ("lives", "bombs")],
     )
+    if verify_scene:
+        require(spec["scenario"] == PRECEDING, "Held source differs from registered Normal Boss Nonspell 2")
+        phase = exact_target(folder, PRECEDING, require_active_spell=outcome == "practice_stage_clear")
+        if outcome == "practice_stage_clear":
+            visual = load(folder / "practice-result-visual.json")
+            require(visual["native_phase"]["phase_sha256"] == phase["phase_sha256"]
+                    and 2 in phase["native_finished_stage_observations"],
+                    "Held Stage Clear did not bind original Boss Nonspell 2 → Normal spell ID7 → Stage Clear")
+        result.update(verified_phase=phase, verified_section_complete=outcome == "practice_stage_clear")
     result["first_nonexact_window"] = first_nonexact_window(controls, applied, slots[1], end, outcome)
     if result["first_nonexact_window"] is not None:
         result["censor_at_first_nonexact"] = truncated_control_followup(exposure, slots[1], controls, result)
@@ -192,9 +209,9 @@ def describe(rows):
     )
 
 
-def paired_comparison(rows):
+def paired_comparison(rows, *, registered_seeds=SEEDS, bootstrap_seed=BOOTSTRAP_SEED):
     lookup = {(row["seed"], row["arm"]): row for row in rows}
-    seeds = [seed for seed in SEEDS if all((seed, arm) in lookup for arm in ARMS)]
+    seeds = [seed for seed in registered_seeds if all((seed, arm) in lookup for arm in ARMS)]
     groups = [[lookup[seed, arm] for seed in seeds] for arm in ARMS]
     result = dict(matched_pairs=len(seeds), seeds=seeds, arms={arm: describe(group) for arm, group in zip(ARMS, groups)})
     if not seeds:
@@ -202,7 +219,7 @@ def paired_comparison(rows):
     deaths = np.asarray([[r["actual_deaths"] for r in group] for group in groups], dtype=np.int64)
     ticks = np.asarray([[r["playable_native_ticks"] for r in group] for group in groups], dtype=np.int64)
     original_rate = deaths.sum(axis=1) / ticks.sum(axis=1)
-    draw = np.random.default_rng(BOOTSTRAP_SEED).integers(0, len(seeds), (BOOTSTRAP_ITERATIONS, len(seeds)))
+    draw = np.random.default_rng(bootstrap_seed).integers(0, len(seeds), (BOOTSTRAP_ITERATIONS, len(seeds)))
     # Each sampled seed contributes its two arms to the same draw.
     sample_rate = deaths[:, draw].sum(axis=2) / ticks[:, draw].sum(axis=2)
     defined = sample_rate[0] > 0
@@ -210,11 +227,14 @@ def paired_comparison(rows):
     return dict(result, death_rate_ratio_candidate_parent=float(original_rate[1] / original_rate[0]) if original_rate[0] else None,
                 paired_bootstrap_percentile_95=np.quantile(ratios, [.025, .975]).tolist() if len(ratios) else None,
                 valid_bootstrap_draws=int(defined.sum()), requested_bootstrap_draws=BOOTSTRAP_ITERATIONS,
-                bootstrap_seed=BOOTSTRAP_SEED)
+                bootstrap_seed=bootstrap_seed)
 
 
-def evaluate(folder, actor, arm, enrollment, binding, arm_digest):
+def evaluate(folder, actor, arm, enrollment, binding, arm_digest, *, horizon=HORIZON, expected_stock=(2, 3),
+             verify_scene=False):
     identity = dict(seed=enrollment["seed"], arm=arm, role="held", lane=enrollment["lane"])
+    if verify_scene:
+        identity.update(host=enrollment["host"], scenario=enrollment["scenario"])
     fault = folder / "attempt-failed.json"
     if fault.is_file():
         data = load(fault)
@@ -231,13 +251,13 @@ def evaluate(folder, actor, arm, enrollment, binding, arm_digest):
             and spec["policy_sha256"] == spec["sha256"] == binding["policies"][arm],
             "Held original seat, controller or policy differs from its registered arm")
     try:
-        measured = observed_practice(folder, spec)
+        measured = observed_practice(folder, spec, horizon=horizon, expected_stock=expected_stock, verify_scene=verify_scene)
     except (OSError, ValueError, KeyError, AssertionError) as exc:
         return dict(identity, qualified=False, physical_endpoint_verified=False,
                     possible_in_game_exposure=True, physical_validation_error=str(exc),
                     source_endpoint_sha256=sha(finish))
     try:
-        verification = intake_fragment(folder, actor, None, expected_policy_sha=binding["policies"][arm])
+        verification = intake_fragment(folder, actor, None, horizon=horizon, expected_policy_sha=binding["policies"][arm])
     except (OSError, ValueError, KeyError, AssertionError) as exc:
         return dict(identity, **measured, qualified=False, technical_failure=str(exc))
     require(verification["outcome"] == measured["outcome"]
@@ -246,16 +266,17 @@ def evaluate(folder, actor, arm, enrollment, binding, arm_digest):
     return dict(identity, **measured, qualified=verification["qualified"], strict_source_receipt=verification)
 
 
-def bindings(study, models):
+def bindings(study, models, *, registration_sha256=REGISTRATION_SHA, release_sha256=RELEASE_SHA,
+             seeds=SEEDS, horizon=HORIZON):
     path = study / "paired-registration.json"
     registration = load(path)
     release = study / "released-binding.json"
     binding = load(release)
-    require(sha(release) == RELEASE_SHA and binding["released"] is True
-            and sha(path) == binding["paired_registration_sha256"] == REGISTRATION_SHA
+    require(sha(release) == release_sha256 and binding["released"] is True
+            and sha(path) == binding["paired_registration_sha256"] == registration_sha256
             and registration["role"] == "held" and tuple(registration["arms"]) == ARMS
-            and tuple(row["seed"] for row in registration["rows"]) == SEEDS
-            and registration["max_native_elapsed_ticks"] == HORIZON
+            and tuple(row["seed"] for row in registration["rows"]) == seeds
+            and registration["max_native_elapsed_ticks"] == horizon
             and registration["parent_policy_sha256"] == PARENT
             and binding["policies"] == {arm: sha(models[arm]) for arm in ARMS}
             and binding["policies"]["parent"] != binding["policies"]["practice-ppo"],
@@ -265,7 +286,7 @@ def bindings(study, models):
         source = load(path)
         require(sha(path) == binding["registered_arm_sha256"][arm] and source["arm"] == arm
                 and source["policy_sha256"] == binding["policies"][arm]
-                and tuple(row["seed"] for row in source["rows"]) == SEEDS,
+                and tuple(row["seed"] for row in source["rows"]) == seeds,
                 "A physical held arm differs from its issued registry")
         fields = ("seed", "role", "host", "lane", "lane_pair", "scenario", "decision_cap", "order")
         require(all(all(row[k] == enrolled[k] for k in fields)

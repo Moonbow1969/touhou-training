@@ -192,9 +192,21 @@ def verify_stage_clear_tally(folder, visual, row):
 
 
 def practice_result_boundary(folder, native, endpoint):
-    row, source, visual = practice_native_result(folder, native, endpoint)
-    verify_stage_clear_tally(folder, visual, row)
+    outcome, row, source = practice_result_outcome(folder, native, endpoint)
+    require(outcome == "practice_stage_clear", "Original practice result is a stock exhaustion")
     return row, source
+
+
+def practice_result_outcome(folder, native, endpoint):
+    row, source, visual = practice_native_result(folder, native, endpoint)
+    if visual.get("exhaustion_verified") is True:
+        initial = native[(native["stage"] == 1) & ((native["flags"] & 4) != 0)][0]
+        require(visual.get("stage_clear_verified") is False and row["lives"] == 0
+                and row["misses"] >= initial["misses"] + initial["lives"] + 1,
+                "Practice exhaustion requires distinct result evidence and the original last-stock loss")
+        return "game_over", row, source
+    verify_stage_clear_tally(folder, visual, row)
+    return "practice_stage_clear", row, source
 
 
 def game_over_boundary(native, spec, first_tick, target):
@@ -229,18 +241,9 @@ def select_endpoint(folder, native, trace, camera, spec, start, horizon):
         return len(camera), spec["outcome"], row, frame, value, source
     if spec.get("outcome") == "practice_stage_clear":
         require(spec.get("source_kind") == "practice", "A Stage 1 practice result cannot close Game Start")
-        row, source, visual = practice_native_result(folder, native, spec)
+        outcome, row, source = practice_result_outcome(folder, native, spec)
         require(row["tick"] > first_tick and (target is None or row["tick"] <= target),
                 "Practice result arrived after the registered playable timeout")
-        outcome = "practice_stage_clear"
-        if visual.get("exhaustion_verified") is True:
-            initial = native[(native["stage"] == 1) & ((native["flags"] & 4) != 0)][0]
-            require(visual.get("stage_clear_verified") is False and row["lives"] == 0
-                    and row["misses"] >= initial["misses"] + initial["lives"] + 1,
-                    "Practice exhaustion requires distinct result evidence and the original last-stock loss")
-            outcome = "game_over"
-        else:
-            verify_stage_clear_tally(folder, visual, row)
         return len(camera), outcome, row, np.zeros(FRAME, dtype=np.uint8), 0., source
     require(spec.get("outcome") in ("game-over", "game_over"), "Missing a true Game Over or playable next boundary")
     row = game_over_boundary(native, spec, first_tick, target)
