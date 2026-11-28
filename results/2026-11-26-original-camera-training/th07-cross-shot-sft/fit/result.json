@@ -1,0 +1,1943 @@
+{
+  "protocol_sha256": "0afa1be726e7ebbef1a86f71ec92371ad77207f40efc5537e0a3585945df348e",
+  "trainer_sha256": "774769481dd2385e5e82f0512a46421974c89f5a01084da0d5d1bf67b054006b",
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "torch": "2.15.0+cu132",
+  "splits": {
+    "boredperson-reimua-s1": {
+      "train": 2129,
+      "sanity": 533,
+      "purged": 0,
+      "train_last_tick": 8836,
+      "sanity_first_tick": 8848
+    },
+    "boredperson-reimua-s2": {
+      "train": 3222,
+      "sanity": 806,
+      "purged": 2,
+      "train_last_tick": 13344,
+      "sanity_first_tick": 13356
+    },
+    "pykrete-marisaa-s1": {
+      "train": 1885,
+      "sanity": 472,
+      "purged": 2,
+      "train_last_tick": 7644,
+      "sanity_first_tick": 7656
+    },
+    "pykrete-marisaa-s2": {
+      "train": 2690,
+      "sanity": 673,
+      "purged": 2,
+      "train_last_tick": 10864,
+      "sanity_first_tick": 10876
+    },
+    "pykrete-reimub-s1": {
+      "train": 2002,
+      "sanity": 501,
+      "purged": 2,
+      "train_last_tick": 8508,
+      "sanity_first_tick": 8520
+    },
+    "pykrete-reimub-s2": {
+      "train": 3146,
+      "sanity": 788,
+      "purged": 2,
+      "train_last_tick": 12892,
+      "sanity_first_tick": 12904
+    },
+    "xiongataosenai-sakuyaa-s1": {
+      "train": 1922,
+      "sanity": 482,
+      "purged": 2,
+      "train_last_tick": 8192,
+      "sanity_first_tick": 8204
+    },
+    "xiongataosenai-sakuyaa-s2": {
+      "train": 2998,
+      "sanity": 750,
+      "purged": 2,
+      "train_last_tick": 12812,
+      "sanity_first_tick": 12824
+    }
+  },
+  "source_offsets": {
+    "boredperson-reimua-s1": 0,
+    "boredperson-reimua-s2": 2662,
+    "pykrete-marisaa-s1": 6692,
+    "pykrete-marisaa-s2": 9051,
+    "pykrete-reimub-s1": 12416,
+    "pykrete-reimub-s2": 14921,
+    "xiongataosenai-sakuyaa-s1": 18857,
+    "xiongataosenai-sakuyaa-s2": 21263
+  },
+  "pid": 9286,
+  "results": {
+    "71281": {
+      "reimua": {
+        "policy_sha256": "6477c91d66d4d02c358909076456c65e24e77ee00b1adc7cb39aebe46c0a8cc9",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6381352543830872,
+              0.9610240459442139,
+              0.9854795336723328,
+              1.0
+            ],
+            "nll": [
+              1.1242115497589111,
+              0.10458718240261078,
+              0.04652044177055359,
+              0.005829715169966221
+            ],
+            "joint_nll": 1.281148910522461,
+            "switch_move_acc": 0.2054794579744339,
+            "stable_move_acc": 0.7431148886680603,
+            "switch_move_nll": 2.48919415473938,
+            "stable_move_nll": 0.7930119633674622,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005810674745589495,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1327,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.047587394714355
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6159301400184631,
+              0.9258046746253967,
+              0.9830878376960754,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.1422544717788696,
+              0.22621308267116547,
+              0.061520010232925415,
+              0.00864705815911293
+            ],
+            "joint_nll": 1.4386343955993652,
+            "switch_move_acc": 0.27177175879478455,
+            "stable_move_acc": 0.6923333406448364,
+            "switch_move_nll": 2.286661386489868,
+            "stable_move_nll": 0.8881959915161133,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005794299766421318,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1635,
+            "locator_median_native_px": 5.714902877807617,
+            "locator_p90_native_px": 18.394107818603516
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7617260813713074,
+              0.9849905967712402,
+              0.9549718499183655,
+              1.0
+            ],
+            "nll": [
+              0.7445341348648071,
+              0.07087485492229462,
+              0.12137703597545624,
+              0.005632414016872644
+            ],
+            "joint_nll": 0.9424183964729309,
+            "switch_move_acc": 0.4054054021835327,
+            "stable_move_acc": 0.8191720843315125,
+            "switch_move_nll": 2.142423152923584,
+            "stable_move_nll": 0.5191664099693298,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005614716559648514,
+            "focus_positive": 484,
+            "predicted_focus_positive": 480,
+            "locator_median_native_px": 5.3284101486206055,
+            "locator_p90_native_px": 213.52835083007812
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6662530899047852,
+              0.9751861095428467,
+              0.9540942907333374,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.005312442779541,
+              0.08033977448940277,
+              0.13373439013957977,
+              0.012439318001270294
+            ],
+            "joint_nll": 1.2318257093429565,
+            "switch_move_acc": 0.3742331266403198,
+            "stable_move_acc": 0.7402799129486084,
+            "switch_move_nll": 1.9861981868743896,
+            "stable_move_nll": 0.7566586136817932,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006169518921524286,
+            "focus_positive": 721,
+            "predicted_focus_positive": 723,
+            "locator_median_native_px": 4.734964370727539,
+            "locator_p90_native_px": 8.800494194030762
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9088982939720154,
+              0.9131355881690979,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.3768712282180786,
+              0.18291345238685608,
+              0.5241208672523499,
+              0.005357832182198763
+            ],
+            "joint_nll": 1.0892634391784668,
+            "switch_move_acc": 0.39024388790130615,
+            "stable_move_acc": 0.9582366347312927,
+            "switch_move_nll": 2.1809475421905518,
+            "stable_move_nll": 0.20525377988815308,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00534193916246295,
+            "focus_positive": 376,
+            "predicted_focus_positive": 335,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.6879643201828003,
+              0.9361069798469543,
+              0.8974739909172058,
+              1.0
+            ],
+            "nll": [
+              1.0170094966888428,
+              0.227008655667305,
+              0.2944319546222687,
+              0.006284310016781092
+            ],
+            "joint_nll": 1.5447343587875366,
+            "switch_move_acc": 0.37593984603881836,
+            "stable_move_acc": 0.7648147940635681,
+            "switch_move_nll": 2.1585657596588135,
+            "stable_move_nll": 0.7358484864234924,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006260296795517206,
+            "focus_positive": 419,
+            "predicted_focus_positive": 434,
+            "locator_median_native_px": 10.256004333496094,
+            "locator_p90_native_px": 142.81483459472656
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.910179615020752,
+              0.9201596975326538,
+              0.8822355270385742,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.34636154770851135,
+              0.2883595824241638,
+              0.20148564875125885,
+              0.016137436032295227
+            ],
+            "joint_nll": 0.852344274520874,
+            "switch_move_acc": 0.4722222089767456,
+            "stable_move_acc": 0.9440860152244568,
+            "switch_move_nll": 1.9510557651519775,
+            "stable_move_nll": 0.22212718427181244,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006220005452632904,
+            "focus_positive": 389,
+            "predicted_focus_positive": 375,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 192.18707275390625
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7715736031532288,
+              0.9060913920402527,
+              0.9441624283790588,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.786248505115509,
+              0.2726020812988281,
+              0.12500308454036713,
+              0.012537005357444286
+            ],
+            "joint_nll": 1.1963906288146973,
+            "switch_move_acc": 0.3815789520740509,
+            "stable_move_acc": 0.8647798895835876,
+            "switch_move_nll": 2.145724296569824,
+            "stable_move_nll": 0.4613424837589264,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005790669471025467,
+            "focus_positive": 491,
+            "predicted_focus_positive": 537,
+            "locator_median_native_px": 4.538015365600586,
+            "locator_p90_native_px": 14.1885986328125
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8443983197212219,
+              0.9170124530792236,
+              0.9315352439880371,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5818324685096741,
+              0.23778565227985382,
+              0.1435471475124359,
+              0.01723630726337433
+            ],
+            "joint_nll": 0.9804015755653381,
+            "switch_move_acc": 0.37735849618911743,
+            "stable_move_acc": 0.9020978808403015,
+            "switch_move_nll": 2.228482246398926,
+            "stable_move_nll": 0.37840011715888977,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0061150058172643185,
+            "focus_positive": 450,
+            "predicted_focus_positive": 410,
+            "locator_median_native_px": 5.109075546264648,
+            "locator_p90_native_px": 13.197848320007324
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7773333191871643,
+              0.8933333158493042,
+              0.9386666417121887,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.6671150922775269,
+              0.27671271562576294,
+              0.15888841450214386,
+              0.01975192315876484
+            ],
+            "joint_nll": 1.1224682331085205,
+            "switch_move_acc": 0.3137255012989044,
+            "stable_move_acc": 0.8503086566925049,
+            "switch_move_nll": 2.115039348602295,
+            "stable_move_nll": 0.43920108675956726,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006060950458049774,
+            "focus_positive": 622,
+            "predicted_focus_positive": 572,
+            "locator_median_native_px": 5.06061315536499,
+            "locator_p90_native_px": 16.99720573425293
+          }
+        }
+      },
+      "mixed": {
+        "policy_sha256": "090ceb744bf8ebcff839c0124603678c7d686a6b18983af6323d5d660e1955e2",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6289644837379456,
+              0.9598777294158936,
+              0.9873901605606079,
+              1.0
+            ],
+            "nll": [
+              1.1231907606124878,
+              0.11593660712242126,
+              0.040594153106212616,
+              0.005972652230411768
+            ],
+            "joint_nll": 1.2856942415237427,
+            "switch_move_acc": 0.21135029196739197,
+            "stable_move_acc": 0.730294406414032,
+            "switch_move_nll": 2.4230687618255615,
+            "stable_move_nll": 0.8077883124351501,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005953055806457996,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1348,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.636979103088379
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6123840808868408,
+              0.9274413585662842,
+              0.9860883951187134,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.1262322664260864,
+              0.20150244235992432,
+              0.05273020267486572,
+              0.00873521063476801
+            ],
+            "joint_nll": 1.3892000913619995,
+            "switch_move_acc": 0.2867867946624756,
+            "stable_move_acc": 0.6846666932106018,
+            "switch_move_nll": 2.262439489364624,
+            "stable_move_nll": 0.8739942908287048,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005845801904797554,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1715,
+            "locator_median_native_px": 5.929811954498291,
+            "locator_p90_native_px": 20.59737777709961
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7598499059677124,
+              0.9887429475784302,
+              0.9530956745147705,
+              1.0
+            ],
+            "nll": [
+              0.7590242028236389,
+              0.0647994875907898,
+              0.09863060712814331,
+              0.005644738208502531
+            ],
+            "joint_nll": 0.9280990362167358,
+            "switch_move_acc": 0.4189189076423645,
+            "stable_move_acc": 0.8148148059844971,
+            "switch_move_nll": 2.176095485687256,
+            "stable_move_nll": 0.5305638313293457,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005627457518130541,
+            "focus_positive": 484,
+            "predicted_focus_positive": 482,
+            "locator_median_native_px": 6.093533515930176,
+            "locator_p90_native_px": 218.45278930664062
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6650124192237854,
+              0.977667510509491,
+              0.9689826369285583,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.0244214534759521,
+              0.07993324100971222,
+              0.08778699487447739,
+              0.012236975133419037
+            ],
+            "joint_nll": 1.204378604888916,
+            "switch_move_acc": 0.3742331266403198,
+            "stable_move_acc": 0.7387247085571289,
+            "switch_move_nll": 2.032226324081421,
+            "stable_move_nll": 0.7689434885978699,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0058688391000032425,
+            "focus_positive": 721,
+            "predicted_focus_positive": 721,
+            "locator_median_native_px": 5.039881706237793,
+            "locator_p90_native_px": 9.083171844482422
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9152542352676392,
+              0.9957627058029175,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.399588406085968,
+              0.02993033081293106,
+              0.40005651116371155,
+              0.005486869718879461
+            ],
+            "joint_nll": 0.8350620865821838,
+            "switch_move_acc": 0.4146341383457184,
+            "stable_move_acc": 0.9628770351409912,
+            "switch_move_nll": 2.167789936065674,
+            "stable_move_nll": 0.23138362169265747,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00547098508104682,
+            "focus_positive": 376,
+            "predicted_focus_positive": 374,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.710252583026886,
+              0.9301634430885315,
+              0.9004457592964172,
+              1.0
+            ],
+            "nll": [
+              0.9976752400398254,
+              0.22685915231704712,
+              0.21367551386356354,
+              0.006083980668336153
+            ],
+            "joint_nll": 1.4442938566207886,
+            "switch_move_acc": 0.3684210479259491,
+            "stable_move_acc": 0.7944444417953491,
+            "switch_move_nll": 2.1684505939483643,
+            "stable_move_nll": 0.7093175053596497,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006062413565814495,
+            "focus_positive": 419,
+            "predicted_focus_positive": 446,
+            "locator_median_native_px": 9.012062072753906,
+            "locator_p90_native_px": 88.07881164550781
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.9221556782722473,
+              0.9421157836914062,
+              0.9441117644309998,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.36565443873405457,
+              0.1785578429698944,
+              0.1363394558429718,
+              0.016174063086509705
+            ],
+            "joint_nll": 0.6967258453369141,
+            "switch_move_acc": 0.4722222089767456,
+            "stable_move_acc": 0.9569892287254333,
+            "switch_move_nll": 1.9900656938552856,
+            "stable_move_nll": 0.2398935854434967,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006330047268420458,
+            "focus_positive": 389,
+            "predicted_focus_positive": 402,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 180.1305389404297
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7715736031532288,
+              0.9048223495483398,
+              0.9619289636611938,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.7964135408401489,
+              0.2716449499130249,
+              0.09744677692651749,
+              0.012584666721522808
+            ],
+            "joint_nll": 1.1780898571014404,
+            "switch_move_acc": 0.3947368562221527,
+            "stable_move_acc": 0.8616352081298828,
+            "switch_move_nll": 2.1328704357147217,
+            "stable_move_nll": 0.4770086109638214,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005876774899661541,
+            "focus_positive": 491,
+            "predicted_focus_positive": 548,
+            "locator_median_native_px": 4.538022518157959,
+            "locator_p90_native_px": 14.610722541809082
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8506224155426025,
+              0.9751037359237671,
+              0.9502074718475342,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5755107402801514,
+              0.08803059905767441,
+              0.10894069075584412,
+              0.016827238723635674
+            ],
+            "joint_nll": 0.7893093824386597,
+            "switch_move_acc": 0.4150943458080292,
+            "stable_move_acc": 0.9044288992881775,
+            "switch_move_nll": 2.1564249992370605,
+            "stable_move_nll": 0.38019970059394836,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005774442572146654,
+            "focus_positive": 450,
+            "predicted_focus_positive": 438,
+            "locator_median_native_px": 4.452609539031982,
+            "locator_p90_native_px": 11.497732162475586
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7866666913032532,
+              0.9426666498184204,
+              0.937333345413208,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.6617144346237183,
+              0.17349620163440704,
+              0.1142757460474968,
+              0.01966301165521145
+            ],
+            "joint_nll": 0.9691494107246399,
+            "switch_move_acc": 0.3235294222831726,
+            "stable_move_acc": 0.8595678806304932,
+            "switch_move_nll": 2.11367130279541,
+            "stable_move_nll": 0.43316569924354553,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005643792450428009,
+            "focus_positive": 622,
+            "predicted_focus_positive": 623,
+            "locator_median_native_px": 4.727550029754639,
+            "locator_p90_native_px": 13.49856948852539
+          }
+        }
+      }
+    },
+    "71282": {
+      "reimua": {
+        "policy_sha256": "295f90a41cded1964c2d8f4eba4784c4dc797ef7cda5a2231a71332094acd7aa",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6385173797607422,
+              0.9591134786605835,
+              0.9847153425216675,
+              1.0
+            ],
+            "nll": [
+              1.122222900390625,
+              0.10948590189218521,
+              0.046525999903678894,
+              0.005961444228887558
+            ],
+            "joint_nll": 1.284196138381958,
+            "switch_move_acc": 0.2054794579744339,
+            "stable_move_acc": 0.7435897588729858,
+            "switch_move_nll": 2.4956088066101074,
+            "stable_move_nll": 0.7889843583106995,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005941453855484724,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1336,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.126725196838379
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6175668239593506,
+              0.9255319237709045,
+              0.9833605885505676,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.1303519010543823,
+              0.22234080731868744,
+              0.060878265649080276,
+              0.008712412789463997
+            ],
+            "joint_nll": 1.422283411026001,
+            "switch_move_acc": 0.2702702581882477,
+            "stable_move_acc": 0.6946666836738586,
+            "switch_move_nll": 2.2851052284240723,
+            "stable_move_nll": 0.8739966750144958,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005893480032682419,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1666,
+            "locator_median_native_px": 5.71469259262085,
+            "locator_p90_native_px": 17.611736297607422
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7560975551605225,
+              0.9868667721748352,
+              0.9530956745147705,
+              1.0
+            ],
+            "nll": [
+              0.7408255934715271,
+              0.0677647590637207,
+              0.13064821064472198,
+              0.005985890980809927
+            ],
+            "joint_nll": 0.9452244639396667,
+            "switch_move_acc": 0.3918918967247009,
+            "stable_move_acc": 0.8148148059844971,
+            "switch_move_nll": 2.143202304840088,
+            "stable_move_nll": 0.5147343873977661,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0059657590463757515,
+            "focus_positive": 484,
+            "predicted_focus_positive": 481,
+            "locator_median_native_px": 5.050398349761963,
+            "locator_p90_native_px": 207.3037109375
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6575682163238525,
+              0.9764267802238464,
+              0.9553349614143372,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.005812406539917,
+              0.07605219632387161,
+              0.12275770306587219,
+              0.012828108854591846
+            ],
+            "joint_nll": 1.217450499534607,
+            "switch_move_acc": 0.3251533806324005,
+            "stable_move_acc": 0.7418351769447327,
+            "switch_move_nll": 2.0039243698120117,
+            "stable_move_nll": 0.7527917623519897,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0064650485292077065,
+            "focus_positive": 721,
+            "predicted_focus_positive": 724,
+            "locator_median_native_px": 4.734964370727539,
+            "locator_p90_native_px": 8.771221160888672
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9088982939720154,
+              0.9258474707603455,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.3942205011844635,
+              0.157931387424469,
+              0.5180686116218567,
+              0.00560313044115901
+            ],
+            "joint_nll": 1.0758235454559326,
+            "switch_move_acc": 0.39024388790130615,
+            "stable_move_acc": 0.9582366347312927,
+            "switch_move_nll": 2.2082154750823975,
+            "stable_move_nll": 0.22165949642658234,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00558585487306118,
+            "focus_positive": 376,
+            "predicted_focus_positive": 341,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.6939078569412231,
+              0.9301634430885315,
+              0.8974739909172058,
+              1.0
+            ],
+            "nll": [
+              1.0139780044555664,
+              0.2322237193584442,
+              0.29697874188423157,
+              0.0064010173082351685
+            ],
+            "joint_nll": 1.549581527709961,
+            "switch_move_acc": 0.3684210479259491,
+            "stable_move_acc": 0.7740740776062012,
+            "switch_move_nll": 2.1608128547668457,
+            "stable_move_nll": 0.73151695728302,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006376761011779308,
+            "focus_positive": 419,
+            "predicted_focus_positive": 438,
+            "locator_median_native_px": 10.256004333496094,
+            "locator_p90_native_px": 134.19500732421875
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.910179615020752,
+              0.9241517186164856,
+              0.8822355270385742,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.3612154424190521,
+              0.2635098993778229,
+              0.19860321283340454,
+              0.0166159737855196
+            ],
+            "joint_nll": 0.83994460105896,
+            "switch_move_acc": 0.4722222089767456,
+            "stable_move_acc": 0.9440860152244568,
+            "switch_move_nll": 1.9486849308013916,
+            "stable_move_nll": 0.23831458389759064,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006828097626566887,
+            "focus_positive": 389,
+            "predicted_focus_positive": 377,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 220.04922485351562
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7664974331855774,
+              0.903553307056427,
+              0.9441624283790588,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.7934321761131287,
+              0.29328909516334534,
+              0.12984232604503632,
+              0.012723944149911404
+            ],
+            "joint_nll": 1.2292875051498413,
+            "switch_move_acc": 0.375,
+            "stable_move_acc": 0.8600628972053528,
+            "switch_move_nll": 2.1477363109588623,
+            "stable_move_nll": 0.4697618782520294,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006175783462822437,
+            "focus_positive": 491,
+            "predicted_focus_positive": 545,
+            "locator_median_native_px": 4.538022518157959,
+            "locator_p90_native_px": 14.1885986328125
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8485476970672607,
+              0.9356846213340759,
+              0.9419087171554565,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5946528911590576,
+              0.1914886087179184,
+              0.10820096731185913,
+              0.017340492457151413
+            ],
+            "joint_nll": 0.9116829633712769,
+            "switch_move_acc": 0.35849055647850037,
+            "stable_move_acc": 0.9090909361839294,
+            "switch_move_nll": 2.2311978340148926,
+            "stable_move_nll": 0.3924689292907715,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006549302022904158,
+            "focus_positive": 450,
+            "predicted_focus_positive": 419,
+            "locator_median_native_px": 5.109075546264648,
+            "locator_p90_native_px": 13.338775634765625
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7786666750907898,
+              0.9079999923706055,
+              0.9399999976158142,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.6777013540267944,
+              0.23917049169540405,
+              0.13734130561351776,
+              0.020075207576155663
+            ],
+            "joint_nll": 1.074288249015808,
+            "switch_move_acc": 0.30392158031463623,
+            "stable_move_acc": 0.8533950448036194,
+            "switch_move_nll": 2.1441872119903564,
+            "stable_move_nll": 0.44686558842658997,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006394720636308193,
+            "focus_positive": 622,
+            "predicted_focus_positive": 583,
+            "locator_median_native_px": 5.0729146003723145,
+            "locator_p90_native_px": 16.99720573425293
+          }
+        }
+      },
+      "mixed": {
+        "policy_sha256": "0e0aa9e1c960c947db6fe63de17258079033299ee43f58e486380d5e26de1f1b",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6358425617218018,
+              0.9510890245437622,
+              0.9873901605606079,
+              1.0
+            ],
+            "nll": [
+              1.1142100095748901,
+              0.12955103814601898,
+              0.04070388525724411,
+              0.005766398273408413
+            ],
+            "joint_nll": 1.2902311086654663,
+            "switch_move_acc": 0.20156556367874146,
+            "stable_move_acc": 0.7412155866622925,
+            "switch_move_nll": 2.4491772651672363,
+            "stable_move_nll": 0.7902933955192566,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00574807683005929,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1375,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.502032279968262
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6208401322364807,
+              0.9219858050346375,
+              0.9860883951187134,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.1255180835723877,
+              0.21519692242145538,
+              0.052133958786726,
+              0.00857301615178585
+            ],
+            "joint_nll": 1.4014219045639038,
+            "switch_move_acc": 0.27627629041671753,
+            "stable_move_acc": 0.6973333358764648,
+            "switch_move_nll": 2.2927229404449463,
+            "stable_move_nll": 0.8663985729217529,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0056616938672959805,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1765,
+            "locator_median_native_px": 5.952404022216797,
+            "locator_p90_native_px": 20.58429718017578
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7523452043533325,
+              0.9868667721748352,
+              0.9530956745147705,
+              1.0
+            ],
+            "nll": [
+              0.753049373626709,
+              0.05921041592955589,
+              0.1057196781039238,
+              0.0057529425248503685
+            ],
+            "joint_nll": 0.9237323999404907,
+            "switch_move_acc": 0.3918918967247009,
+            "stable_move_acc": 0.8104575276374817,
+            "switch_move_nll": 2.2109487056732178,
+            "stable_move_nll": 0.5180068016052246,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005734555423259735,
+            "focus_positive": 484,
+            "predicted_focus_positive": 483,
+            "locator_median_native_px": 6.093533515930176,
+            "locator_p90_native_px": 224.798828125
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6575682163238525,
+              0.9789081811904907,
+              0.9677419066429138,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.0258073806762695,
+              0.0778408795595169,
+              0.09149854630231857,
+              0.012373234145343304
+            ],
+            "joint_nll": 1.2075201272964478,
+            "switch_move_acc": 0.349693238735199,
+            "stable_move_acc": 0.7356142997741699,
+            "switch_move_nll": 2.058405876159668,
+            "stable_move_nll": 0.7640445828437805,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00595798809081316,
+            "focus_positive": 721,
+            "predicted_focus_positive": 724,
+            "locator_median_native_px": 5.039881706237793,
+            "locator_p90_native_px": 9.083076477050781
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9088982939720154,
+              0.9957627058029175,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.4055357575416565,
+              0.022155744954943657,
+              0.41539546847343445,
+              0.005488203838467598
+            ],
+            "joint_nll": 0.8485751152038574,
+            "switch_move_acc": 0.39024388790130615,
+            "stable_move_acc": 0.9582366347312927,
+            "switch_move_nll": 2.22872257232666,
+            "stable_move_nll": 0.23210033774375916,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0054720607586205006,
+            "focus_positive": 376,
+            "predicted_focus_positive": 374,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.7072808146476746,
+              0.9227340221405029,
+              0.8989598751068115,
+              1.0
+            ],
+            "nll": [
+              1.0070414543151855,
+              0.2426982969045639,
+              0.2258492410182953,
+              0.0060828495770692825
+            ],
+            "joint_nll": 1.4816718101501465,
+            "switch_move_acc": 0.3684210479259491,
+            "stable_move_acc": 0.7907407283782959,
+            "switch_move_nll": 2.1903252601623535,
+            "stable_move_nll": 0.7156029343605042,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00606124522164464,
+            "focus_positive": 419,
+            "predicted_focus_positive": 453,
+            "locator_median_native_px": 9.012062072753906,
+            "locator_p90_native_px": 88.07881164550781
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.9121756553649902,
+              0.9421157836914062,
+              0.8822355270385742,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.3694515824317932,
+              0.18978002667427063,
+              0.15258918702602386,
+              0.016400039196014404
+            ],
+            "joint_nll": 0.7282209396362305,
+            "switch_move_acc": 0.4444444477558136,
+            "stable_move_acc": 0.948387086391449,
+            "switch_move_nll": 1.988295078277588,
+            "stable_move_nll": 0.2441217601299286,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.0065409340895712376,
+            "focus_positive": 389,
+            "predicted_focus_positive": 410,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 180.1305389404297
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7664974331855774,
+              0.8845177888870239,
+              0.9543147087097168,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.8055158257484436,
+              0.3210940957069397,
+              0.1102430671453476,
+              0.012626384384930134
+            ],
+            "joint_nll": 1.2494794130325317,
+            "switch_move_acc": 0.3815789520740509,
+            "stable_move_acc": 0.8584905862808228,
+            "switch_move_nll": 2.1522982120513916,
+            "stable_move_nll": 0.4836433529853821,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005927047226577997,
+            "focus_positive": 491,
+            "predicted_focus_positive": 566,
+            "locator_median_native_px": 4.538022518157959,
+            "locator_p90_native_px": 15.441652297973633
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8506224155426025,
+              0.9875518679618835,
+              0.9605808854103088,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5868121385574341,
+              0.059651318937540054,
+              0.10144772380590439,
+              0.016961337998509407
+            ],
+            "joint_nll": 0.7648724317550659,
+            "switch_move_acc": 0.3962264060974121,
+            "stable_move_acc": 0.9067599177360535,
+            "switch_move_nll": 2.214665174484253,
+            "stable_move_nll": 0.3857020437717438,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006002390757203102,
+            "focus_positive": 450,
+            "predicted_focus_positive": 444,
+            "locator_median_native_px": 4.452609539031982,
+            "locator_p90_native_px": 10.562861442565918
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7853333353996277,
+              0.9399999976158142,
+              0.9453333616256714,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.66788250207901,
+              0.16609995067119598,
+              0.11756274104118347,
+              0.01994413323700428
+            ],
+            "joint_nll": 0.971489429473877,
+            "switch_move_acc": 0.29411765933036804,
+            "stable_move_acc": 0.8626543283462524,
+            "switch_move_nll": 2.154031276702881,
+            "stable_move_nll": 0.4339517652988434,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005764536093920469,
+            "focus_positive": 622,
+            "predicted_focus_positive": 629,
+            "locator_median_native_px": 4.727582931518555,
+            "locator_p90_native_px": 12.097715377807617
+          }
+        }
+      }
+    },
+    "71283": {
+      "reimua": {
+        "policy_sha256": "21aec7b80f71ea7ed38215e48fb464c4b2d9ead72f0bfc6f44ee9fe90c589834",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6369889378547668,
+              0.9583492279052734,
+              0.9847153425216675,
+              1.0
+            ],
+            "nll": [
+              1.1228991746902466,
+              0.10974179208278656,
+              0.04508219286799431,
+              0.005752058699727058
+            ],
+            "joint_nll": 1.2834752798080444,
+            "switch_move_acc": 0.2152641862630844,
+            "stable_move_acc": 0.7393162250518799,
+            "switch_move_nll": 2.480973482131958,
+            "stable_move_nll": 0.7933759689331055,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005733515601605177,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1328,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.08484935760498
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6159301400184631,
+              0.9247136116027832,
+              0.9841789603233337,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.137407898902893,
+              0.2277408093214035,
+              0.06134685501456261,
+              0.008567435666918755
+            ],
+            "joint_nll": 1.4350630044937134,
+            "switch_move_acc": 0.27177175879478455,
+            "stable_move_acc": 0.6923333406448364,
+            "switch_move_nll": 2.2745485305786133,
+            "stable_move_nll": 0.8849627375602722,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00574016897007823,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1653,
+            "locator_median_native_px": 5.727863788604736,
+            "locator_p90_native_px": 18.15625762939453
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7560975551605225,
+              0.9868667721748352,
+              0.9549718499183655,
+              1.0
+            ],
+            "nll": [
+              0.7429535984992981,
+              0.0685279443860054,
+              0.11641871929168701,
+              0.005822194740176201
+            ],
+            "joint_nll": 0.9337224364280701,
+            "switch_move_acc": 0.3918918967247009,
+            "stable_move_acc": 0.8148148059844971,
+            "switch_move_nll": 2.136493682861328,
+            "stable_move_nll": 0.518286943435669,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005803253967314959,
+            "focus_positive": 484,
+            "predicted_focus_positive": 481,
+            "locator_median_native_px": 5.9393792152404785,
+            "locator_p90_native_px": 215.2941436767578
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6625310182571411,
+              0.977667510509491,
+              0.9553349614143372,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.0112261772155762,
+              0.07919511944055557,
+              0.12416371703147888,
+              0.012748966924846172
+            ],
+            "joint_nll": 1.2273340225219727,
+            "switch_move_acc": 0.3619631826877594,
+            "stable_move_acc": 0.7387247085571289,
+            "switch_move_nll": 1.9856042861938477,
+            "stable_move_nll": 0.7642219662666321,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006384466774761677,
+            "focus_positive": 721,
+            "predicted_focus_positive": 725,
+            "locator_median_native_px": 4.713140964508057,
+            "locator_p90_native_px": 8.805977821350098
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9088982939720154,
+              0.9131355881690979,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.39421534538269043,
+              0.18936729431152344,
+              0.49368247389793396,
+              0.005549267865717411
+            ],
+            "joint_nll": 1.0828142166137695,
+            "switch_move_acc": 0.39024388790130615,
+            "stable_move_acc": 0.9582366347312927,
+            "switch_move_nll": 2.190643310546875,
+            "stable_move_nll": 0.2233254462480545,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005532305687665939,
+            "focus_positive": 376,
+            "predicted_focus_positive": 335,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.6924219727516174,
+              0.9301634430885315,
+              0.8989598751068115,
+              1.0
+            ],
+            "nll": [
+              1.0168278217315674,
+              0.2366361767053604,
+              0.2709386944770813,
+              0.006359763443470001
+            ],
+            "joint_nll": 1.5307624340057373,
+            "switch_move_acc": 0.36090224981307983,
+            "stable_move_acc": 0.7740740776062012,
+            "switch_move_nll": 2.1623690128326416,
+            "stable_move_nll": 0.7346852421760559,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.00633569061756134,
+            "focus_positive": 419,
+            "predicted_focus_positive": 438,
+            "locator_median_native_px": 10.02970027923584,
+            "locator_p90_native_px": 90.78729248046875
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.9081836342811584,
+              0.9221556782722473,
+              0.8822355270385742,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.3676641583442688,
+              0.29509639739990234,
+              0.20358435809612274,
+              0.016385886818170547
+            ],
+            "joint_nll": 0.8827309012413025,
+            "switch_move_acc": 0.4722222089767456,
+            "stable_move_acc": 0.9419354796409607,
+            "switch_move_nll": 1.9683072566986084,
+            "stable_move_nll": 0.24374337494373322,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006587441544979811,
+            "focus_positive": 389,
+            "predicted_focus_positive": 376,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 201.2677764892578
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7652284502983093,
+              0.8959391117095947,
+              0.9441624283790588,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.7977691292762756,
+              0.291652649641037,
+              0.12222623080015182,
+              0.012635060586035252
+            ],
+            "joint_nll": 1.2242830991744995,
+            "switch_move_acc": 0.3815789520740509,
+            "stable_move_acc": 0.856918215751648,
+            "switch_move_nll": 2.1480801105499268,
+            "stable_move_nll": 0.47505322098731995,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006070088595151901,
+            "focus_positive": 491,
+            "predicted_focus_positive": 549,
+            "locator_median_native_px": 4.538022518157959,
+            "locator_p90_native_px": 13.1356782913208
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8443983197212219,
+              0.9315352439880371,
+              0.9439833760261536,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5891327261924744,
+              0.21175646781921387,
+              0.11090457439422607,
+              0.01713860221207142
+            ],
+            "joint_nll": 0.9289323687553406,
+            "switch_move_acc": 0.37735849618911743,
+            "stable_move_acc": 0.9020978808403015,
+            "switch_move_nll": 2.2219278812408447,
+            "stable_move_nll": 0.3874121308326721,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006271591875702143,
+            "focus_positive": 450,
+            "predicted_focus_positive": 417,
+            "locator_median_native_px": 5.109075546264648,
+            "locator_p90_native_px": 12.60673999786377
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7799999713897705,
+              0.9053333401679993,
+              0.9386666417121887,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.6788942813873291,
+              0.24433711171150208,
+              0.13866585493087769,
+              0.019824840128421783
+            ],
+            "joint_nll": 1.0817221403121948,
+            "switch_move_acc": 0.3235294222831726,
+            "stable_move_acc": 0.8518518805503845,
+            "switch_move_nll": 2.115640163421631,
+            "stable_move_nll": 0.45273980498313904,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006243098992854357,
+            "focus_positive": 622,
+            "predicted_focus_positive": 581,
+            "locator_median_native_px": 5.0728020668029785,
+            "locator_p90_native_px": 16.99720573425293
+          }
+        }
+      },
+      "mixed": {
+        "policy_sha256": "7853a5ca444aff968c75520623f30bae0c690d629f00a6f9e04d823276847e8a",
+        "held": {
+          "zylo-reimua-s1": {
+            "n": 2617,
+            "switches": 511,
+            "accuracy": [
+              0.6408100724220276,
+              0.9514711499214172,
+              0.9881543517112732,
+              1.0
+            ],
+            "nll": [
+              1.1132949590682983,
+              0.12887002527713776,
+              0.04089169576764107,
+              0.005740711931139231
+            ],
+            "joint_nll": 1.288797378540039,
+            "switch_move_acc": 0.2133072465658188,
+            "stable_move_acc": 0.7445394396781921,
+            "switch_move_nll": 2.4709484577178955,
+            "stable_move_nll": 0.7838737368583679,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005722551140934229,
+            "focus_positive": 1285,
+            "predicted_focus_positive": 1374,
+            "locator_median_native_px": 5.656854152679443,
+            "locator_p90_native_px": 15.448851585388184
+          },
+          "zylo-reimua-s2": {
+            "n": 3666,
+            "switches": 666,
+            "accuracy": [
+              0.6175668239593506,
+              0.9247136116027832,
+              0.9858155846595764,
+              0.9994544386863708
+            ],
+            "nll": [
+              1.1226669549942017,
+              0.21396028995513916,
+              0.05349455028772354,
+              0.00839386135339737
+            ],
+            "joint_nll": 1.3985158205032349,
+            "switch_move_acc": 0.28828829526901245,
+            "stable_move_acc": 0.690666675567627,
+            "switch_move_nll": 2.27070951461792,
+            "stable_move_nll": 0.8678016662597656,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005450221709907055,
+            "focus_positive": 1671,
+            "predicted_focus_positive": 1779,
+            "locator_median_native_px": 5.921802043914795,
+            "locator_p90_native_px": 20.39607810974121
+          }
+        },
+        "sanity": {
+          "boredperson-reimua-s1": {
+            "n": 533,
+            "switches": 74,
+            "accuracy": [
+              0.7523452043533325,
+              0.9868667721748352,
+              0.9530956745147705,
+              1.0
+            ],
+            "nll": [
+              0.7488275766372681,
+              0.05931127071380615,
+              0.09562788903713226,
+              0.0055130054242908955
+            ],
+            "joint_nll": 0.9092797636985779,
+            "switch_move_acc": 0.3918918967247009,
+            "stable_move_acc": 0.8104575276374817,
+            "switch_move_nll": 2.1723647117614746,
+            "stable_move_nll": 0.5193248987197876,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005496313329786062,
+            "focus_positive": 484,
+            "predicted_focus_positive": 485,
+            "locator_median_native_px": 6.093478202819824,
+            "locator_p90_native_px": 224.798828125
+          },
+          "boredperson-reimua-s2": {
+            "n": 806,
+            "switches": 163,
+            "accuracy": [
+              0.6612903475761414,
+              0.9789081811904907,
+              0.9677419066429138,
+              0.9987593293190002
+            ],
+            "nll": [
+              1.024608850479126,
+              0.0767468810081482,
+              0.08981791883707047,
+              0.012169950641691685
+            ],
+            "joint_nll": 1.2033436298370361,
+            "switch_move_acc": 0.3619631826877594,
+            "stable_move_acc": 0.7371695041656494,
+            "switch_move_nll": 2.0271670818328857,
+            "stable_move_nll": 0.7704610824584961,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005682768300175667,
+            "focus_positive": 721,
+            "predicted_focus_positive": 724,
+            "locator_median_native_px": 5.02717399597168,
+            "locator_p90_native_px": 9.083158493041992
+          },
+          "pykrete-marisaa-s1": {
+            "n": 472,
+            "switches": 41,
+            "accuracy": [
+              0.9152542352676392,
+              0.9957627058029175,
+              0.7966101765632629,
+              1.0
+            ],
+            "nll": [
+              0.41740095615386963,
+              0.022041693329811096,
+              0.38586995005607605,
+              0.005359389819204807
+            ],
+            "joint_nll": 0.830672025680542,
+            "switch_move_acc": 0.4146341383457184,
+            "stable_move_acc": 0.9628770351409912,
+            "switch_move_nll": 2.1931092739105225,
+            "stable_move_nll": 0.24848200380802155,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005344100762158632,
+            "focus_positive": 376,
+            "predicted_focus_positive": 374,
+            "locator_median_native_px": 5.1968255043029785,
+            "locator_p90_native_px": 80.77384185791016
+          },
+          "pykrete-marisaa-s2": {
+            "n": 673,
+            "switches": 133,
+            "accuracy": [
+              0.7028231620788574,
+              0.9182763695716858,
+              0.9004457592964172,
+              1.0
+            ],
+            "nll": [
+              1.0092835426330566,
+              0.2567289471626282,
+              0.20389433205127716,
+              0.0058900113217532635
+            ],
+            "joint_nll": 1.4757966995239258,
+            "switch_move_acc": 0.35338345170021057,
+            "stable_move_acc": 0.7888888716697693,
+            "switch_move_nll": 2.1833550930023193,
+            "stable_move_nll": 0.7201139330863953,
+            "bomb_positive": 0,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005869784392416477,
+            "focus_positive": 419,
+            "predicted_focus_positive": 456,
+            "locator_median_native_px": 8.98516845703125,
+            "locator_p90_native_px": 88.07881164550781
+          },
+          "pykrete-reimub-s1": {
+            "n": 501,
+            "switches": 36,
+            "accuracy": [
+              0.9181636571884155,
+              0.9361277222633362,
+              0.9421157836914062,
+              0.9980040192604065
+            ],
+            "nll": [
+              0.3764614164829254,
+              0.19297181069850922,
+              0.14907358586788177,
+              0.016235193237662315
+            ],
+            "joint_nll": 0.7347420454025269,
+            "switch_move_acc": 0.4444444477558136,
+            "stable_move_acc": 0.9548386931419373,
+            "switch_move_nll": 1.9932844638824463,
+            "stable_move_nll": 0.2512880265712738,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.006319134961813688,
+            "focus_positive": 389,
+            "predicted_focus_positive": 409,
+            "locator_median_native_px": 3.439993381500244,
+            "locator_p90_native_px": 180.1305389404297
+          },
+          "pykrete-reimub-s2": {
+            "n": 788,
+            "switches": 152,
+            "accuracy": [
+              0.7690355181694031,
+              0.8832487463951111,
+              0.9619289636611938,
+              0.9987309575080872
+            ],
+            "nll": [
+              0.7998833060264587,
+              0.3144998252391815,
+              0.09868540614843369,
+              0.012429666705429554
+            ],
+            "joint_nll": 1.2254981994628906,
+            "switch_move_acc": 0.3947368562221527,
+            "stable_move_acc": 0.8584905862808228,
+            "switch_move_nll": 2.1291983127593994,
+            "stable_move_nll": 0.482185423374176,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005729547701776028,
+            "focus_positive": 491,
+            "predicted_focus_positive": 567,
+            "locator_median_native_px": 4.538022518157959,
+            "locator_p90_native_px": 14.610722541809082
+          },
+          "xiongataosenai-sakuyaa-s1": {
+            "n": 482,
+            "switches": 53,
+            "accuracy": [
+              0.8547717928886414,
+              0.9834024906158447,
+              0.95643150806427,
+              0.9979252815246582
+            ],
+            "nll": [
+              0.5828629732131958,
+              0.062215566635131836,
+              0.10028386116027832,
+              0.01670171320438385
+            ],
+            "joint_nll": 0.7620641589164734,
+            "switch_move_acc": 0.3962264060974121,
+            "stable_move_acc": 0.9114218950271606,
+            "switch_move_nll": 2.168079376220703,
+            "stable_move_nll": 0.38702037930488586,
+            "bomb_positive": 1,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005620712414383888,
+            "focus_positive": 450,
+            "predicted_focus_positive": 442,
+            "locator_median_native_px": 4.452609539031982,
+            "locator_p90_native_px": 12.000081062316895
+          },
+          "xiongataosenai-sakuyaa-s2": {
+            "n": 750,
+            "switches": 102,
+            "accuracy": [
+              0.7893333435058594,
+              0.9426666498184204,
+              0.9413333535194397,
+              0.9973333477973938
+            ],
+            "nll": [
+              0.6665215492248535,
+              0.16197770833969116,
+              0.10251464694738388,
+              0.019626647233963013
+            ],
+            "joint_nll": 0.9506406188011169,
+            "switch_move_acc": 0.3235294222831726,
+            "stable_move_acc": 0.8626543283462524,
+            "switch_move_nll": 2.121006488800049,
+            "stable_move_nll": 0.4375748932361603,
+            "bomb_positive": 2,
+            "predicted_bomb_positive": 0,
+            "bomb_true_positive": 0,
+            "mean_bomb_probability": 0.005487374495714903,
+            "focus_positive": 622,
+            "predicted_focus_positive": 629,
+            "locator_median_native_px": 4.7276153564453125,
+            "locator_p90_native_px": 12.226201057434082
+          }
+        }
+      }
+    }
+  },
+  "stages": {
+    "zylo-reimua-s1": {
+      "paired": [
+        {
+          "seed": 71281,
+          "move": -0.009170770645141602,
+          "switch": 0.005870833992958069,
+          "stable": -0.01282048225402832,
+          "nll": -0.0010207891464233398,
+          "locator": 5.656854152679443
+        },
+        {
+          "seed": 71282,
+          "move": -0.0026748180389404297,
+          "switch": -0.003913894295692444,
+          "stable": -0.0023741722106933594,
+          "nll": -0.008012890815734863,
+          "locator": 5.656854152679443
+        },
+        {
+          "seed": 71283,
+          "move": 0.003821134567260742,
+          "switch": -0.001956939697265625,
+          "stable": 0.005223214626312256,
+          "nll": -0.009604215621948242,
+          "locator": 5.656854152679443
+        }
+      ],
+      "mean": {
+        "move": -0.0026748180389404297,
+        "switch": 0.0,
+        "stable": -0.003323813279469808,
+        "nll": -0.006212631861368815,
+        "locator": 5.656854152679443
+      },
+      "positive_seeds": 1
+    },
+    "zylo-reimua-s2": {
+      "paired": [
+        {
+          "seed": 71281,
+          "move": -0.0035460591316223145,
+          "switch": 0.01501503586769104,
+          "stable": -0.007666647434234619,
+          "nll": -0.016022205352783203,
+          "locator": 5.929811954498291
+        },
+        {
+          "seed": 71282,
+          "move": 0.003273308277130127,
+          "switch": 0.006006032228469849,
+          "stable": 0.002666652202606201,
+          "nll": -0.004833817481994629,
+          "locator": 5.952404022216797
+        },
+        {
+          "seed": 71283,
+          "move": 0.0016366839408874512,
+          "switch": 0.016516536474227905,
+          "stable": -0.0016666650772094727,
+          "nll": -0.014740943908691406,
+          "locator": 5.921802043914795
+        }
+      ],
+      "mean": {
+        "move": 0.0004546443621317546,
+        "switch": 0.012512534856796265,
+        "stable": -0.0022222201029459634,
+        "nll": -0.011865655581156412,
+        "locator": 5.934672673543294
+      },
+      "positive_seeds": 2
+    }
+  },
+  "passed": false,
+  "pooled_primary_locator_median": 5.656854152679443,
+  "gpu_peak_allocated_mb": 121.901056
+}

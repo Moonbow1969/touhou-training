@@ -1,0 +1,111 @@
+{
+  "title": "TH07 0.11 Normal matched cross-shot visual policy SFT",
+  "sources": {
+    "boredperson-reimua-s1": {
+      "audit_sha256": "097bf805c842089b17534bf681e7349bf752d7555b68c40993608c49ee6406c2",
+      "source_sha256": "219b2a89be16720447df65fd035618f5926af53d7e8337d5f61e07842ba3fb94",
+      "role": "train",
+      "stage": 1,
+      "shot": 0,
+      "path": "xy-261128/train"
+    },
+    "zylo-reimua-s1": {
+      "audit_sha256": "b3671a6c09f49c6ccc4bb061b4c3c162e070b4d7e362c7c9649058368807cc53",
+      "source_sha256": "9da50f8af1d33d3db5cfdb2f80c9d16143d9538ec0be3ceab33f223c31a5a64f",
+      "role": "held",
+      "stage": 1,
+      "shot": 0,
+      "path": "xy-261128/held"
+    },
+    "boredperson-reimua-s2": {
+      "audit_sha256": "7ac028d6fa32cae70db6f65f2ce8d185587572c16e775f0fd49f58562a3738cd",
+      "source_sha256": "219b2a89be16720447df65fd035618f5926af53d7e8337d5f61e07842ba3fb94",
+      "role": "train",
+      "stage": 2,
+      "shot": 0,
+      "path": "human-02-expansion-v3/train"
+    },
+    "pykrete-marisaa-s1": {
+      "audit_sha256": "06f33690e951767cc5781e288c191984197cbd67318ea38c3e01d2e8623ac6e0",
+      "source_sha256": "f21779ba786b01d73bcb88562a377461cf91e862b45528e98d57a38caebf5c10",
+      "role": "train",
+      "stage": 1,
+      "shot": 2,
+      "path": "human-normal-shots/pykrete-marisaa/s1"
+    },
+    "pykrete-marisaa-s2": {
+      "audit_sha256": "86895c68f98da43518fe342a8a4ac2020eec1090c8175c41d00da17b8f0ead5d",
+      "source_sha256": "f21779ba786b01d73bcb88562a377461cf91e862b45528e98d57a38caebf5c10",
+      "role": "train",
+      "stage": 2,
+      "shot": 2,
+      "path": "human-normal-shots/pykrete-marisaa/s2"
+    },
+    "pykrete-reimub-s1": {
+      "audit_sha256": "17794924aff7fb09080921014d5d61f622c7b38ad80c6c8f1e5fcdff503289f4",
+      "source_sha256": "f5f1fa3f37b221c87fa85cc27341d34336a7b630a50eac267f7e57f342dd32b5",
+      "role": "train",
+      "stage": 1,
+      "shot": 1,
+      "path": "human-normal-shots/pykrete-reimub/s1"
+    },
+    "pykrete-reimub-s2": {
+      "audit_sha256": "d049105f73273dea96c6053138db42387677a155447e4942ab56a4439e13b383",
+      "source_sha256": "f5f1fa3f37b221c87fa85cc27341d34336a7b630a50eac267f7e57f342dd32b5",
+      "role": "train",
+      "stage": 2,
+      "shot": 1,
+      "path": "human-normal-shots/pykrete-reimub/s2"
+    },
+    "xiongataosenai-sakuyaa-s1": {
+      "audit_sha256": "f5c8cdd54605048161795c196f9dd318a07c9e60730ff089859135cca43e4bf7",
+      "source_sha256": "118a47e75690fcc765373ebb03cebec787755720051ec17eb194cfbedd6fb98c",
+      "role": "train",
+      "stage": 1,
+      "shot": 4,
+      "path": "human-normal-shots/xiongataosenai-sakuyaa/s1"
+    },
+    "xiongataosenai-sakuyaa-s2": {
+      "audit_sha256": "9a604485332a449ebbc6c10fbccb8ee7fd858faf5d9b241b99420758d6489e57",
+      "source_sha256": "118a47e75690fcc765373ebb03cebec787755720051ec17eb194cfbedd6fb98c",
+      "role": "train",
+      "stage": 2,
+      "shot": 4,
+      "path": "human-normal-shots/xiongataosenai-sakuyaa/s2"
+    },
+    "zylo-reimua-s2": {
+      "audit_sha256": "fd6ce3984675d16eefa886fa118a200406af27fe746c74eb976e87136db52d77",
+      "source_sha256": "9da50f8af1d33d3db5cfdb2f80c9d16143d9538ec0be3ceab33f223c31a5a64f",
+      "role": "held",
+      "stage": 2,
+      "shot": 0,
+      "path": "human-02-expansion-v3/held"
+    }
+  },
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "seeds": [
+    71281,
+    71282,
+    71283
+  ],
+  "arms": [
+    "reimua",
+    "mixed"
+  ],
+  "steps": 536,
+  "batch": 32,
+  "lr": 3e-05,
+  "xy_weight": 1.0,
+  "embedding": "Common zero-initialized trainable 6 x 24 table broadcast over the inherited 56 x 48 spatial features. Native deployment fixes ID 0 (Reimu A).",
+  "split": "For each TRAIN source and stage independently use chronological first floor(.8*n) rows. Remove every optimizer window whose [t-4,t+4] touches the last 20 percent. Reserve that final contiguous 20 percent as sanity. Fit all six frozen finals before opening either zylo stage.",
+  "batches": "Each step has exactly 16 windows from each stage. In each stage the reference uses 16 Boredperson Reimu A rows. The candidate shares the first 8 of those 16 and adds 2 Pykrete Reimu B, 2 Pykrete Marisa A, 4 XionGaTaosenai Sakuya A. Uniform rows without replacement inside each source-stage batch. Both arms use matching stage and optimizer budgets.",
+  "training": "Same eval-mode warm base, constant Adam defaults, sum of four action-head CE plus unit-weight native 48 x 56 location CE. No changes to action frequency or class weights. Final checkpoints after exactly 536 steps, no development selection.",
+  "gate": {
+    "mean_delta_move_accuracy": 0.015,
+    "positive_move_seed_pairs_min": 2,
+    "mean_delta_changed_expert_direction_accuracy_min": -0.005,
+    "locator_max_native_px": 12,
+    "locator_summary": "mean of three held per-seed medians; also report each and the pooled median"
+  },
+  "primary": "All approved zylo S1 rows, past assessed author, fixed cross-author diagnostic. Secondary zylo S2 excluded from gate. Native enrollment requires separate review."
+}
