@@ -1,0 +1,86 @@
+{
+  "source_receipt": "b315c14ecd39f58543bafad5a96f7511c7df12a00750a72c2eaa38ae2c4ceb62",
+  "clock_sha256": "b2e09593086b658ee4bd57ad29dbf30bdd8a323ddef00b2a3e52570f51f6334b",
+  "sample_rows": 38597,
+  "predicted_dump_rows": 98,
+  "oldest_to_newest_checkpoint_candidate_ticks_near_stall": [
+    257,
+    289,
+    321,
+    353,
+    450,
+    482
+  ],
+  "largest_live_rtts": [
+    {
+      "row": 5194,
+      "tick": 353,
+      "rtt_ms": 1630.113412,
+      "predicted_persistence": true
+    },
+    {
+      "row": 5195,
+      "tick": 450,
+      "rtt_ms": 218.555888,
+      "predicted_persistence": true
+    },
+    {
+      "row": 3259,
+      "tick": 193,
+      "rtt_ms": 118.120021,
+      "predicted_persistence": true
+    },
+    {
+      "row": 3083,
+      "tick": 177,
+      "rtt_ms": 15.735536,
+      "predicted_persistence": false
+    },
+    {
+      "row": 24132,
+      "tick": 1977,
+      "rtt_ms": 12.776672,
+      "predicted_persistence": false
+    },
+    {
+      "row": 31167,
+      "tick": 2551,
+      "rtt_ms": 12.202458,
+      "predicted_persistence": false
+    },
+    {
+      "row": 5369,
+      "tick": 482,
+      "rtt_ms": 11.198277,
+      "predicted_persistence": true
+    },
+    {
+      "row": 35610,
+      "tick": 2914,
+      "rtt_ms": 11.138643,
+      "predicted_persistence": true
+    },
+    {
+      "row": 13393,
+      "tick": 1128,
+      "rtt_ms": 10.761552,
+      "predicted_persistence": false
+    },
+    {
+      "row": 16964,
+      "tick": 1415,
+      "rtt_ms": 10.674473,
+      "predicted_persistence": false
+    }
+  ],
+  "eligible_rtt_median_p95_ms": [
+    0.4258915,
+    8.22735559999997
+  ],
+  "other_active_rtt_median_p95_ms": [
+    0.129614,
+    1.1630139999999984
+  ],
+  "method": "Recompute reader.c's tick advancement condition using each logged stable mode, flag, cursor and stage. Assumes a pending qualifying snapshot succeeds; individual file moves are not separately timestamped.",
+  "interpretation": "The three largest active reader round trips are eligible for the synchronous full-buffer read and file replacement. This association cannot by itself distinguish file I/O, Wine scheduling and memory read time."
+}

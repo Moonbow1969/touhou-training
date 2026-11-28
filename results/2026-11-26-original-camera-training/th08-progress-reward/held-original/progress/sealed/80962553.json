@@ -1,0 +1,105 @@
+{
+  "seed": 80962553,
+  "role": "held",
+  "policy_sha256": "44d7ca214423d57184293c1c681aef6628bd5af3a2732985d6ebec0965a8e14a",
+  "source_receipt_sha256": "3e91454da6db9b2eaea08612a9060cbd8546c07646c4efc502843e81e27bc5c4",
+  "file": "th08-80962553.npz",
+  "sha256": "3fbed225e844da05a05b733f6fa0523cd3ff9624eca1f55b1a1fe7187655b826",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "b0a18f7ee7f8b8d2294386f042928e8aa55b20113c9ff7216b8a00ca647fac8b",
+  "timing_sha256": "33b8b8e5b12ad53fd604a10184d2d03aa63e0eb24aef2c6cd260bc78b7c8aa09",
+  "input_gates_sha256": "74eaf086692974821afbcf62c349cd19be6eff50e6e07d3d0b2ded2efe0ff1ee",
+  "stock_trace_sha256": "a3510ef1c0821755c19fe5fb61efa0df45017d54ed0f244da47c824820c5b2f0",
+  "terminal_photo_sha256": "db87e30e0d5782a4167925b708b2b1b2ff4585319071b5bea72908c7b54d3a7c",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 797,
+  "physical_sampled_requests": 797,
+  "all_physical_requests_reforwarded": 797,
+  "excluded_terminal_proposal": null,
+  "raw_behavior_sha256": "ab80de0ddd4b013eec33b38d328e857109292bd582cc7ffb2875a5861c706453",
+  "action_masks_with_native_consumption": 797,
+  "exact_complete_intervals": 793,
+  "native_intervals": 796,
+  "exact_four_tick_fraction": 0.9962311557788944,
+  "exact_x11_gates": 796,
+  "native_edges_verifiable": 551,
+  "exactly_observed_native_edges": 548,
+  "no_input_transition_frames_after_final_decision": 6,
+  "first_tick": 79,
+  "first_stage": 1,
+  "terminal_tick": 3324,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 3325,
+  "active_native_ticks_in_last_action": 2,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    0
+  ],
+  "terminal_stock": [
+    0,
+    0
+  ],
+  "life_events": [
+    {
+      "decision": 277,
+      "stage": 1,
+      "native_tick": 1245,
+      "next_tick": 1249,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 2,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 355,
+      "stage": 1,
+      "native_tick": 1557,
+      "next_tick": 1561,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 796,
+      "stage": 1,
+      "native_tick": 3323,
+      "next_tick": 3324,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 0,
+      "next_bombs": 0,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 3.5762786865234375e-06,
+  "max_critic_error": 6.51925802230835e-09,
+  "normal_rank_samples": 797,
+  "physical_normal_rank_samples": 797,
+  "terminal_glyph": 0.9996232390403748,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.005047278303092257,
+    "progress_terminal": 0.2123690263225147,
+    "paid_progress": 0.2073217480194224,
+    "positive_same_life_bomb_uses": 4,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.000000000000027,
+    "lambda_life_1_undiscounted_delta": -4.428000000000031,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "Uncontrolled or clock-unavailable interval inside the policy trajectory",
+    "Unique native stopped-stage tick missing for the original terminal"
+  ]
+}

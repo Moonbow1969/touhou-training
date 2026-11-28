@@ -41,9 +41,32 @@ def terminal_stage_evidence(raw,receipt):
         rank_photos_sha256={o["file"]:sha(raw/o["file"]) for o in rank["observations"]},clock_sha256=sha(raw/"clock.tsv"))
 
 
-def summarize(raw,packed,receipt):
+def postprompt_stage1_tick(raw,receipt):
+    """Qualify a frozen original tick in the compulsory no-menu-input interval after Game Over."""
+    timing=[json.loads(s) for s in (raw/"timing.jsonl").read_text().splitlines()]
+    if timing[-1]["phase"]!="terminal" or sha(raw/"terminal.png")!=receipt["terminal_photo_sha256"]:
+        raise ValueError("Terminal source unavailable")
+    end=timing[-1]["monotonic_ns"]
+    trace=np.genfromtxt(raw/"clock.tsv",names=True,dtype=None,encoding="ascii",ndmin=1)
+    replay=read_records(raw)[1]
+    selected=trace[(trace["before_ns"]>=end)&(trace["after_ns"]<=end+1_500_000_000)
+        &(trace["mode"]==0)&(trace["stable"]==1)&(trace["stage_index"]==0)&(trace["origin"]!=0)
+        &(trace["cursor"]==trace["origin"]+36+2*trace["tick"])
+        &(trace["buffer_read"]==1)&(trace["saved_current"]==trace["word"])]
+    ticks=np.unique(selected["tick"])
+    ok=(len(ticks)==1 and len(selected)>=2 and (selected["flags"]==0).all() and
+        int(ticks[0])+1==len(replay) and (selected["word"]==replay[-1]).all())
+    return dict(verified=bool(ok),first_native_stopped_tick=int(ticks[0]) if ok else None,
+        stopped_rows=int(len(selected)),candidate_ticks=[int(i) for i in ticks],
+        earliest_lower_bound_after_prompt_seconds=(int(selected["before_ns"].min())-end)/1e9 if len(selected) else None,
+        latest_upper_bound_after_prompt_seconds=(int(selected["after_ns"].max())-end)/1e9 if len(selected) else None,
+        original_words=int(len(replay)),terminal_photo_sha256=receipt["terminal_photo_sha256"],clock_sha256=sha(raw/"clock.tsv"),
+        protocol="Same deployed postcredit-ranking.sh releases all controls and waits at least 1.7 s after the original prompt before first menu input. Only stable matching native rows up to +1.5 s are used.")
+
+
+def summarize(raw,packed,receipt,*,require_strict=True):
     r=json.loads(receipt.read_bytes())
-    if not r["qualified"]:raise ValueError("Strict stock metrics require a qualified original")
+    if require_strict and not r["qualified"]:raise ValueError("Strict stock metrics require a qualified original")
     if sha(packed)!=r["sha256"] or sha(raw/"gates.tsv")!=r["input_gates_sha256"]:
         raise ValueError("Credit data do not match signed receipt")
     with np.load(packed,allow_pickle=False) as z:
@@ -79,6 +102,7 @@ def summarize(raw,packed,receipt):
     first_loss=events[0] if events else None
     first_loss_controlled=int(exposure[:first_loss["decision"]].sum()) if first_loss else None
     return dict(seed=r["seed"],phase=r["role"],native_inputs=int(exposure.sum()),stage_spans=spans,
+        **({"control_qualified":False,"technical_issues":r["issues"]} if not r["qualified"] else {}),
         native_ticks_matching_requested_mask=matching,native_ticks_stale_or_different=int(exposure.sum())-matching,
         native_record_sha256={p.name:sha(p) for p in sorted(raw.glob("native-record*.bin"))},
         terminal_photo_sha256=r["terminal_photo_sha256"],receipt_sha256=sha(receipt),packed_sha256=sha(packed),

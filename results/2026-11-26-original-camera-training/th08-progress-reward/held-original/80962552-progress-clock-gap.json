@@ -1,0 +1,86 @@
+{
+  "seed": 80962552,
+  "lane": "B",
+  "arm": "progress",
+  "stage": 1,
+  "source_clock_sha256": "b2e09593086b658ee4bd57ad29dbf30bdd8a323ddef00b2a3e52570f51f6334b",
+  "source_gates_sha256": "a8ceda0c803a3cf359fd87d49b2169adfbbdbaf05012c34a8e0d532951987a1f",
+  "source_timing_sha256": "cd292ff184c3de9aa99992b19ac1600fafa5b44a0668e0fceeb41802ae4b483e",
+  "original_endpoint": "game_over",
+  "strict_control_qualified": false,
+  "interrupted_action_index": 67,
+  "next_action_index": 68,
+  "X11_gates": [
+    349,
+    464
+  ],
+  "native_target_interval_ticks": 115,
+  "original_probe_rows_within_interval": 46,
+  "missed_observer_frames": 9,
+  "movie": {
+    "encoded_frames": 777,
+    "peak_queue_depth": 1,
+    "bound_frames": 16,
+    "backpressure_ns": 0,
+    "cpu": 18
+  },
+  "slowest_observer_interval_ms": 1631.032043,
+  "neighboring_native_witness": [
+    {
+      "row": 5193,
+      "tick": 352,
+      "before_ns": 9121970174921,
+      "after_ns": 9121970441695,
+      "stable": 1,
+      "flags": 4,
+      "mode": 0,
+      "raw": 1,
+      "word": 1,
+      "read_round_trip_ms": 0.266774,
+      "until_next_poll_ms": 0.905419
+    },
+    {
+      "row": 5194,
+      "tick": 353,
+      "before_ns": 9121971347114,
+      "after_ns": 9123601460526,
+      "stable": 1,
+      "flags": 4,
+      "mode": 0,
+      "raw": 1,
+      "word": 1,
+      "read_round_trip_ms": 1630.113412,
+      "until_next_poll_ms": 0.918631
+    },
+    {
+      "row": 5195,
+      "tick": 450,
+      "before_ns": 9123602379157,
+      "after_ns": 9123820935045,
+      "stable": 1,
+      "flags": 4,
+      "mode": 0,
+      "raw": 0,
+      "word": 0,
+      "read_round_trip_ms": 218.555888,
+      "until_next_poll_ms": 0.920985
+    },
+    {
+      "row": 5196,
+      "tick": 464,
+      "before_ns": 9123821856030,
+      "after_ns": 9123822030656,
+      "stable": 1,
+      "flags": 4,
+      "mode": 0,
+      "raw": 0,
+      "word": 0,
+      "read_round_trip_ms": 0.174626,
+      "until_next_poll_ms": 0.910406
+    }
+  ],
+  "distinct_unavailable_stocks": [
+    "2 spares, 3 bombs"
+  ],
+  "interpretation": "The blocked time was inside the round-trip containing the native reader IPC. Four timestamps distinguish it from time between polls, including the TSV flush. These traces do not separate Wine reads, scheduling, or underlying storage stalls inside the invocation."
+}

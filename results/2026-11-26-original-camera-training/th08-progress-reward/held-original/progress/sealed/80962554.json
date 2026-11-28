@@ -1,0 +1,140 @@
+{
+  "seed": 80962554,
+  "role": "held",
+  "policy_sha256": "44d7ca214423d57184293c1c681aef6628bd5af3a2732985d6ebec0965a8e14a",
+  "source_receipt_sha256": "fef43c0b3348972cfec2c069789e724ed830088f2f1cc24897147e683c41c408",
+  "file": "th08-80962554.npz",
+  "sha256": "2dcff77ba62d02eb9f64efcb03b3d5be87b09bbbd00c8bbbd293d6cccf966281",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "7c6f073ef02be009c6ef1bb8eaf92d3de2ba38e997b990b43a819687b35b8c0f",
+  "timing_sha256": "5755022ce391f2631f0d9b06ff9d1eae99dd1109b44bc3d89b89486462f6796d",
+  "input_gates_sha256": "8de9d156d5ed73e8b9738d0d0f6a189ab365f423c734c0ba26ed6ddc97639f07",
+  "stock_trace_sha256": "da76cc4eb7350de133dbdf913eb34b2879d1309d6ef00ee16897ac9091177937",
+  "terminal_photo_sha256": "78c0de3876c30d7997a04312c07c44942f9221cc87b3b10ec127fc1ced6695c0",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 870,
+  "physical_sampled_requests": 871,
+  "all_physical_requests_reforwarded": 871,
+  "excluded_terminal_proposal": {
+    "raw_index": 870,
+    "actual_x11_mask": 33,
+    "requested_game_word": 65,
+    "x11_ack_ns": 9646875792183,
+    "native_application_tick": 3912,
+    "nominal_first_consumption_tick": 3913,
+    "earliest_after_application": 3913,
+    "terminal_tick": 3912,
+    "native_exposure": 0,
+    "preceding_index": 869,
+    "preceding_word": 145,
+    "preceding_native_slots": [
+      145,
+      145,
+      145,
+      145
+    ],
+    "source_raw_only_samples": 176,
+    "preserved_policy_action": [
+      3,
+      0,
+      1,
+      0
+    ],
+    "preserved_logp": [
+      -2.494475841522217,
+      -0.015246867202222347,
+      -0.01787259615957737,
+      -0.00597393698990345
+    ],
+    "preserved_value": 0.009094404987990856,
+    "raw_behavior_sha256": "e3c9fd20c4d7454ea7fcc0f789313773fa165f0eb8a28b153cd2cad524eb488e"
+  },
+  "raw_behavior_sha256": "e3c9fd20c4d7454ea7fcc0f789313773fa165f0eb8a28b153cd2cad524eb488e",
+  "action_masks_with_native_consumption": 831,
+  "exact_complete_intervals": 816,
+  "native_intervals": 869,
+  "exact_four_tick_fraction": 0.9390103567318757,
+  "exact_x11_gates": 805,
+  "native_edges_verifiable": 576,
+  "exactly_observed_native_edges": 539,
+  "no_input_transition_frames_after_final_decision": 2,
+  "first_tick": 81,
+  "first_stage": 1,
+  "terminal_tick": 3912,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 3913,
+  "active_native_ticks_in_last_action": 4,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    1
+  ],
+  "terminal_stock": [
+    0,
+    1
+  ],
+  "life_events": [
+    {
+      "decision": 260,
+      "stage": 1,
+      "native_tick": 1418,
+      "next_tick": 1422,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 640,
+      "stage": 1,
+      "native_tick": 2993,
+      "next_tick": 2997,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 1,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 869,
+      "stage": 1,
+      "native_tick": 3909,
+      "next_tick": 3912,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 1,
+      "next_bombs": 1,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 4.76837158203125e-06,
+  "max_critic_error": 5.587935447692871e-09,
+  "normal_rank_samples": 870,
+  "physical_normal_rank_samples": 871,
+  "terminal_glyph": 0.996244490146637,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.005175057500638896,
+    "progress_terminal": 0.24993611040122668,
+    "paid_progress": 0.2447610529005878,
+    "positive_same_life_bomb_uses": 4,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.000000000000025,
+    "lambda_life_1_undiscounted_delta": -4.76900000000003,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "Uncontrolled or clock-unavailable interval inside the policy trajectory",
+    "Fewer than 99% of intra-credit native four-tick intervals match throughout",
+    "At least one sampled action has no native consumption in its assigned interval",
+    "Fewer than 99% of X11 gates were observed on the scheduled tick"
+  ]
+}
