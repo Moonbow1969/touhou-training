@@ -30,3 +30,14 @@ At native tick 1,200, the original 640×480 image and the archived 96×112 input
 The held Reimu A player's two stages also isolate one-step action errors on the same recorded images and native inputs. An ideal four-tick hold using the human's first direction differs from the full human sequence on 9.36% of Stage 1 ticks. When the specialist chooses its most probable direction, that figure is 40.96%. With stochastic sampling, the expected mismatch is 51.45%. These errors measure imitation on recorded states and can include legitimate alternative movements. They establish the size of the action-selection problem alongside the cadence cost. [All three checkpoint comparisons](held-policy-vs-bandwidth.json)
 
 A single CPU thread processed 300 predecoded original frames through the specialist's resize, difference, policy and Softmax in 10.69 ms median (11.61 ms p95). The benchmark excludes capture and input. [Processing profiles](post-capture-cpu-cost.json)
+
+## Frozen Normal SFT at two and four ticks
+
+Both arms use the same original 96×112 grayscale frames and the difference from exactly four native ticks earlier. The two-tick arm resamples the same frozen policy twice as often. All credits start with two spare lives and use zero Continue. Original in-game randomness is uncontrolled. 6 of 8 planned credits produced verified endpoints. Remaining credits are recorded as technical failures.
+
+| Action interval | Stage 2 | Mean first loss tick | Mean last Stage 1 tick | Exact action intervals |
+|---|---:|---:|---:|---:|
+| 2 native ticks | 0/3 | 1029.7 | 2681.0 | 4,015/4,015 |
+| 4 native ticks | 0/3 | 1441.3 | 4446.7 | 3,332/3,332 |
+
+[Original per-seed data](retail-cadence-summary.json) · [Frozen roster](retail-cadence-protocol.json) · [Original input traces and endpoint screenshots](https://github.com/Moonbow1969/touhou-training/releases/download/camera-training-2026-11-26/th10-retail-normal-cadence-native-records.zip)
