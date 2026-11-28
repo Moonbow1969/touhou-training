@@ -1,0 +1,20 @@
+{
+  "registered_seed_range": [
+    80964001,
+    80964032
+  ],
+  "collection_policy_sha256": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "collection_registration_sha256": "fc621d17b20e7b1ffde9abe0855fb16ae21f2bbf7ccbf346bad3aae7b43f489a",
+  "admission": "All qualified independent Stage 1 original credits from the final collection manifest. Retain Stage 2 progress as a policy outcome; this analysis models Stage 1. Minimum 24 qualified Stage 1 credits.",
+  "grouping": "Five whole-credit hash folds, with one test and one distinct calibration fold per fit.",
+  "comparisons": "Factorial 96x112/192x224 crossed with learned/true-coordinate grid center. All four arms share samples, original ticks, target labels, splits, optimizer budget and 16-native-pixel crop lattice. True-coordinate arms are diagnostic only.",
+  "gate": "Four held folds must pass AP >=1.5x the privileged logistic baseline, >=50% early event coverage and ECE <=.02. Learned branch also needs median locator error <=12 pixels and 80% of oracle AP gain in those folds for a proposed BC warm-start.",
+  "threshold": "5% negative alarms on separate calibration credits. Early warning means at least 20 native ticks ahead of a stock-confirmed hit.",
+  "secondary": "A stronger single diagnostic arm motivates a controlled follow-up. Forecast skill here does not certify gameplay improvement.",
+  "updates": 540,
+  "batch": 40,
+  "window": [
+    8,
+    32
+  ]
+}
