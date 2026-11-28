@@ -1,0 +1,18 @@
+{
+  "prior": "a75ce901423c76bb2db1d58a46cda7a06d0c2474d0c234eef41093e00140c1b5",
+  "train": "c066e647508681556e366a3cb3a50b05047cbcf024f175d79fa2d7f35683a8fd",
+  "held": "2ae099d26bb8418808339ba287367184aa04ac01cbdab3494a200595078aecaf",
+  "unique_train": 58696,
+  "unique_held": 15558,
+  "epochs": 5,
+  "seeds": [
+    280801,
+    280802,
+    280803
+  ],
+  "batch": 128,
+  "location_weight": 0.2,
+  "common_input": "Aligned 4-step image history, frozen original trunk through strided conv, shared 14x12 cache",
+  "matching": "Fresh pooled and spatial readouts and action heads, shared training rows each epoch, inherited Focus via same teacher logits",
+  "gate": "Spatial readout <=20px position at every seed, >=1.5pp busy gain and >=5/6 stages per seed, and overall direction accuracy within 0.5pp"
+}

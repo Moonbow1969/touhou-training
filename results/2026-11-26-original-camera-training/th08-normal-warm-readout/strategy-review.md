@@ -1,0 +1,9 @@
+# Claude Opus 5.5 follow-up after the short architecture screen
+
+The short screen trained from scratch and sampled about one fifth of the available original windows at each seed. No candidate crossed the improvement gate, and the pooled reference reached about 41% movement accuracy on the reused held pilots. The trained SFT policy had previously reached about 49% on the same development population. Claude requested a stronger matched test before drawing a conclusion about the spatial readout.
+
+The pooled and spatial readouts now share the frozen, previously trained TH08 trunk. Both initialize new action and location heads, use the same teacher distribution for Focus, and train for five complete replay passes at each of the same three seeds. The exact same shuffled windows reach both arms. The pooled arm averages the common 14×12 map to 7×6 while the spatial arm retains that map and learns keypoint readouts. The shared feature cache resides in memory. The deployed actor takes four ordered image states.
+
+Claude's offline gate requires spatial median position error at most 20 original pixels, a gain of at least 1.5 percentage points on busy frames, gains on at least five of six held stages and overall direction accuracy within 0.5 points of the pooled arm. Those requirements apply at all three seeds. A median error above 40 pixels stops work on this form of spatial readout. A gain below 0.5 points despite reaching the position criterion likewise moves effort to the progress and Bomb study.
+
+The reward experiment remains contingent on fresh original trace evidence with native time, stage, stocks and committed input. The exact-four engineering gate is a separate measurement. [Earlier capacity results](../th08-normal-capacity/README.md) · [Progress reward implementation](../th08-progress-reward/README.md)
