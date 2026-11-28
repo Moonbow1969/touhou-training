@@ -1,0 +1,14 @@
+{
+  "study": "TH07 retail 1.00b default stock Normal Reimu A, confirmed original recording, independent prospective SFT comparison",
+  "prerequisite": "Two independent qualified Game Start engineering credits 2170701 and 2170702, sealed saved retail original RPY + native/Docker observer + terminal. Observational read max <100ms, at least 99.5% exact decision windows, no lost whole nonterminal input, zero Continues, verified stock and clocks. No engineering credit in this evaluation.",
+  "host": "Momentum only, two isolated CPU Wine/Xvfb slots, default game speed and the same version/build/display",
+  "models": {"parent":"a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e","sft-71281":"6d24c7a8076a806f05bb0197f266a0f71a28f79f1f985af5e3a29c3ae5a0e134"},
+  "mask": "Four independent full action heads (nine directions, focus, fire, Bomb) sampled from raw logits. The frozen original four-tick pause/consume harness applies the sampled physical keys.",
+  "primary_seeds": [2170751,2170752,2170753,2170754,2170755,2170756],
+  "extension_seeds": [2170757,2170758,2170759,2170760,2170761,2170762],
+  "technical_reserves": [2170771,2170772],
+  "assignment": "Primary (then extensions): ordinal i=seed-2170751; slot=i%2; order parent-first when i%4 is 0 or 3, SFT first otherwise. Reserve 2170771 slot 0 SFT first, 2170772 slot 1 parent first. A matched pair shares one physical host and slot; the game's fresh stage RNG remains uncontrolled.",
+  "stopping": "Start six pairs. Replace technically invalid entire pairs using at most two reserves total and at most two technical-invalid credits per arm. Then add exactly the listed whole fresh pairs sequentially (up to twelve valid pairs) solely until each arm has >=30000 true accumulated Stage 1 native ticks. If exposure or engineering validity fails, report as unqualified.",
+  "endpoints": "Ordinary full original no-Continue Game Start until true Game Over or ending; Stage 1 original deaths per 10000 native ticks, average last Stage 1 progress, Stage 2 entry, stocks at entry/terminal, actual Bomb spends and Bomb-positive deaths. Independent RNG makes between-arm comparison descriptive.",
+  "promotion": "Aggregate death rate ratio SFT/parent <=0.75, candidate mean Stage 1 progress at least the parent, and exposure criterion met. Ratio >=1.0 stops the intervention."
+}
