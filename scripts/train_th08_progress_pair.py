@@ -16,7 +16,7 @@ from scripts.train_shared_full_ppo import calculate_gae
 from scripts.train_th08_normal_current_ppo import CurrentActorCritic, WIDTHS, ORIGINAL_EXE, optimize
 
 
-PAIR_SEEDS = tuple(range(80962001, 80962017))
+PAIR_SEEDS = (*range(80962002, 80962017), 80962901)
 EXPECTED_ACTOR = "ef5f34532a1c986f10088ee202ada14a9a8d2083499648772233d0218cca42a9"
 STAGE_TICKS = {1: 15652, 2: 18624}
 KL_CAP = .01
@@ -130,14 +130,22 @@ def main():
     if tuple(row["seed"] for row in by_seed) != PAIR_SEEDS:
         raise ValueError("Expected all 16 preassigned independent native TRAIN seeds")
     state = torch.load(args.state, map_location="cpu", weights_only=True)
-    model = CurrentActorCritic().to(device).eval()
+    model = CurrentActorCritic().eval()
     model.load_state_dict(state)
-    anchor = torch.jit.load(str(args.behavior), map_location=device).eval()
-    test = torch.rand(2,2,112,96,device=device)
+    anchor = torch.jit.load(str(args.behavior), map_location="cpu").eval()
+    test = torch.rand(2,2,112,96,generator=torch.Generator().manual_seed(809620))
+    anchor_state = anchor.state_dict()
+    if anchor_state.keys() != state.keys() or any(not torch.equal(value, anchor_state[key]) for key, value in state.items()):
+        raise ValueError("Actor and critic parameters differ from the native deployment")
     with torch.no_grad():
         if not all(torch.equal(a,b) for a,b in zip(model(test),anchor(test))):
             raise ValueError("Actor state and original behavior TorchScript differ")
-    sources = [trajectory(args.manifest, row, model, device) for row in by_seed]
+    # Original behavior was sampled on CPU. Verify it on the same backend before GPU optimization.
+    sources = []
+    for row in by_seed:
+        entry = trajectory(args.manifest, row, model, "cpu")
+        sources.append(entry)
+        print("Verified", entry[2], flush=True)
     del model, anchor
     args.out.mkdir(parents=True,exist_ok=False)
     freeze(args.out / "protocol.json", dict(source=digest(args.manifest), parent=EXPECTED_ACTOR,

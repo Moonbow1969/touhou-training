@@ -1,0 +1,82 @@
+{
+  "prior_credits": 12,
+  "train_credits": 4,
+  "held_credits": 8,
+  "observed_losses": 36,
+  "stage1_by_native_ranking": 36,
+  "source_boss_or_attack_ids": 0,
+  "enemy_bar_appearance": 25,
+  "min_independent_HUD_field_matches_of_three": 2,
+  "raw_graphics_classes": {
+    "wave": 11,
+    "bar0": 9,
+    "bar1": 13,
+    "spell": 3
+  },
+  "graphics_class_meanings": {
+    "wave": "Visible stage fairies or fairy waves with no Enemy bar",
+    "bar0": "Enemy 0 HP bar and stage backdrop, with multiple projectile configurations",
+    "bar1": "Enemy 1 HP bar, standard stage backdrop and no upper spell banner; includes several projectile configurations",
+    "spell": "Enemy 1 HP bar, brown spell backdrop, upper right banner and paired cyan/violet spiral streams"
+  },
+  "pre_loss_bombs": {
+    "1": 4,
+    "0": 31,
+    "2": 1
+  },
+  "distinct_brown_spiral_spell_examples": 3,
+  "largest_coarse_enemy_class": 13,
+  "design": "Checks all loss events in the four registered TRAIN and eight HELD credits. No additional credit, gradient update, or game launch. The original rankings establish Stage 1 independently. Reviewers looked at original color captures approximately 10, 8, 6, 4, 2 and 1 seconds before each decremented stock or final Continue prompt, retaining actual timestamps. Native Bomb stars were unchanged at 4, 2 and 1 seconds and in the last preceding recorded stock. Numeric Enemy HUD cross-check uses only a fixed screen crop; this digit is not a native encounter identifier.",
+  "phase_id_limit": "No game-memory boss or attack ID exists in the archived trace. timing.phase 4 marks completion of the menu sequence. Enemy 0/1 are original on-screen HUD glyphs. Boss name, individual nonspell phases and canonical spell names are unresolved. The three brown-banner attacks share an observable pre-impact visual pattern; their exact native spell name/ID is unverified.",
+  "preregistered_reentry_gate": {
+    "min_native_boss_labels": 30,
+    "met": false,
+    "observed_native_boss_labels": 0,
+    "minimum_single_phase_fraction": 0.6,
+    "minimum_losses_in_one_phase": 22,
+    "visually_compatible_largest_coarse_enemy_bin": 13,
+    "biggest_coarse_bin_fraction": 0.3611111111111111,
+    "open": false
+  },
+  "groups": {
+    "train_sft": {
+      "losses": 12,
+      "raw_graphics_classes": {
+        "wave": 4,
+        "bar0": 3,
+        "bar1": 3,
+        "spell": 2
+      },
+      "pre_loss_bombs": {
+        "1": 2,
+        "0": 10
+      }
+    },
+    "held_sft": {
+      "losses": 12,
+      "raw_graphics_classes": {
+        "wave": 4,
+        "bar1": 5,
+        "bar0": 3
+      },
+      "pre_loss_bombs": {
+        "0": 10,
+        "2": 1,
+        "1": 1
+      }
+    },
+    "held_ppo": {
+      "losses": 12,
+      "raw_graphics_classes": {
+        "wave": 3,
+        "bar1": 5,
+        "bar0": 3,
+        "spell": 1
+      },
+      "pre_loss_bombs": {
+        "0": 11,
+        "1": 1
+      }
+    }
+  }
+}
