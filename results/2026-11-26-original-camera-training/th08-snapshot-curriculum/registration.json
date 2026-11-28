@@ -1,0 +1,39 @@
+{
+  "game": "Official TH08 0.02 trial, Normal, Ghost",
+  "game_executable_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "initial_policy_sha256": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "question": "Can a whole-VM snapshot resume native TH08 at a known playable state with the same four-tick input semantics as the verified host worker? Use a successful reset to train on parts of Stage 1 reached too rarely from Game Start.",
+  "working_budget": {
+    "host": "Momentum",
+    "preflight_guests": 1,
+    "preflight_virtual_cpu": 2,
+    "preflight_ram_gib": 2,
+    "max_total_incremental_disk_gb": 6,
+    "max_future_archive_gb": 4,
+    "minimum_headroom_for_overlay_gb": 2,
+    "unqualified_external_cloud_workers": 0
+  },
+  "qualification": {
+    "host_boot": "Use hardware KVM and a verified official Ubuntu image; privately prove whole-memory restoration and measure elapsed save/restore and allocated disk.",
+    "original_controls": "Run the stock Windows original inside the guest. Admit original policy decisions only when native input demonstrates every retained command was used, exact four-tick cadence is at least 99.5%, and there is no wholly stale decision window.",
+    "single_snapshot": "Freeze at a known stationary original decision boundary and store one playfield-state snapshot during engineering. Stock, stage tick and player coordinates at the restored boundary must match the source observer. Save the same-binary capture and observer hashes.",
+    "repeat": "Precommit one 600-decision action sequence. Restore the same original game state twice and capture each trace. Record tick, stage, resources, player coordinates, original input words and confirmed applied commands. Require at least 99% matching state tuples, including XY within 0.02 native pixel, to classify the bridge as deterministic. Separately label a repeatable-start but stochastic continuation. If an early original terminal prevents 600 decisions, report the shorter engineering run before admitting a separately preregistered proof.",
+    "post_restore": "Restore wall time at most 10 seconds. Record resynchronization wall time separately. Validate the first 60 resumed decisions against original time and X11 input. Exclude unqualified warmup decisions from training.",
+    "host_equivalence": "Collect four ordinary Game Start credits with the same frozen policy in the VM before using the guest for training. Compare measured within-stage exposure and observed losses with the known host measurements, retaining uncertainty and origin records. Final evaluation takes place on the already qualified host worker from ordinary Game Start. It does not mount or read snapshot state."
+  },
+  "first_training_iteration_after_qualification": {
+    "archive": "Store a bounded set of observed original states grouped by Stage 1 tick bucket (1000 ticks) and spare lives. Prefer infrequently visited buckets. Measure allocated bytes per snapshot and apply the working cap.",
+    "planned_fragments": 120,
+    "planned_decisions_approximate": 40000,
+    "half_natural_start_half_snapshot": true,
+    "maximum_native_ticks_after_reset": 3000,
+    "objective": "Same verified native progress and spare potential reward. True Game Over has zero bootstrap. An artificial fragment cutoff, including a loss boundary with lives remaining, preserves critic bootstrap.",
+    "continuation_gate": "Compare held choices of restored starts at unchanged cadence and matching source buckets. Continue only when the restored-start fatality-rate ratio versus frozen parent is at most 0.9.",
+    "promotion_gate": "Six independent held pairs from ordinary Game Start, no restores. Require Stage 1 death-rate ratio <=0.75 and greater measured Stage 1 progress. Report Stage 2 reach and resource metrics."
+  },
+  "references": [
+    "https://www.nature.com/articles/s41586-020-03157-9",
+    "https://www.qemu.org/docs/master/system/images",
+    "https://www.qemu.org/docs/master/system/monitor.html"
+  ]
+}
