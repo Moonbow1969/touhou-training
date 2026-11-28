@@ -1,0 +1,23 @@
+--- a/record/tool/pairs.py
++++ b/record/tool/pairs.py
+@@ -41,7 +41,7 @@
+         if not (folder/'finished-game.json').exists():
+             with (folder/'execution.log').open('a') as log:
+                 cpus=','.join(map(str,plan['assignment_rows'][str(seed)]['physical_cpu_ids']))
+-                subprocess.run(['taskset','-c',cpus,sys.executable,'-u',str(tool/'play_record.py'),str(seed),arm],
++                subprocess.run([sys.executable,'-u',str(tool/'monitored_policy.py'),str(folder),cpus,str(seed),arm],
+                                env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1'),stdout=log,
+                                stderr=subprocess.STDOUT,check=True,timeout=2700)
+         # Endings show the original event/credits and have their own navigation
+@@ -86,9 +86,10 @@
+     return result
+ 
+ def main():
++    assert digest(tool/"record_actor")==plan["observer_binary_sha256"]
+     reports=[]
+     for identity in plan['qualification_sha256']:
+-        path=root.parent/'phase-engineering/record'/identity/'verified.json'
++        path=root.parent/'observer-v2/record'/identity/'verified.json'
+         assert digest(path)==plan['qualification_sha256'][identity]
+         q=json.loads(path.read_bytes())
+         assert q['passed'] and not q['stale'] and q['terminal_visually_confirmed'] and q['terminal_continues']==0
