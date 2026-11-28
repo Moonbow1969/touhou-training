@@ -35,6 +35,7 @@ def reward_at_boundary(*, stages, ticks, spares, terminated, shaped_boundary_val
 
 
 def as_optimizer_input(frames, action, old, heads, values, reward):
+    values = torch.as_tensor(values)
     advantage = calculate_gae(reward.reward.astype(np.float32),values.numpy(),GAMMA,LAMBDA,bootstrap=reward.bootstrap)
     result = torch.from_numpy(advantage)
     return frames,action,old,result,values+result,heads
