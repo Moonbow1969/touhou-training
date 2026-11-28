@@ -1,0 +1,16 @@
+{
+  "title": "TH07 official trial 0.11, Normal Reimu A, physical Momentum, default opening 2 spare and 3 Bombs",
+  "models": {"action":"38911bceb1c397ef446d12789242c02f1904c9ffe8949d9aa24acef05f8a4796","action-xy":"dcf69511e8638459bc07ffb13fb3bff9be85c5e83d653873377b93d906a92ebe"},
+  "fit_seed":71281, "selection":"Fixed lowest optimizer seed; both actors identical ancestor and draws except effect of positional loss",
+  "install":{"input/youmu/th07.exe":"2ca6b41ce2b07fb2b8a119f9683fc497dd724edcbc130b5076f8d86323b9091f","input/youmu/th07tr.dat":"45bedfe287f5a577000146b3d8c0b57ceb213f342b2c08348afb50aa46a19099","input/launch.sh":"5513579c998d611fdff17004f08e6d0220c50a8af58709b1fcfc89aed6a2a8ff"},
+  "docker_id":"sha256:299861299bf1090b56d2b3f198ef227644d89319520fb1f28cb5db344e77929d",
+  "qualification_seeds":[2130701,2130702], "first_held_seed":2130751,
+  "seed_lane":{"2130751":0,"2130752":1,"2130753":0,"2130754":1,"2130755":0,"2130756":1,"2130757":0,"2130758":1,"2130759":0,"2130760":1,"2130761":0,"2130762":1,"2130771":0,"2130772":1},
+  "first_arm_sequence":["action-xy","action","action","action-xy","action-xy","action","action","action-xy","action-xy","action","action","action-xy"],
+  "reserve_seeds":[2130771,2130772],
+  "acquisition":"6 pairs minimum, expand one paired seed at a time in frozen order until each arm reaches 30000 actual Stage 1 native ticks; cap 12 valid pairs. Two technical replacements per arm max. Keep all rejected data, including trace and reason. Base arm first for second lane on first seed, alternate within lane.",
+  "clock":"All decision observations on exact native ticks divisible by 4; t+1..t+4 planned consumed action; check saved original .rpy keys and live key/tick samples. Initial difference zero; subsequent image difference previous observed tick. Exact 4-tick interval in >=99.5% windows per credit, no completely stale middle decision. Report all missing and mismatches including boundaries; tag unplayed terminal residue.",
+  "endpoint":"Genuine original terminal only, independently verify official stage slots, scorecard, three stock losses where applicable, zero Continue; retain early rows and terminal stock; counts of actual Bomb activations independently read from final original result. Capture full video for both arms on first held seed.",
+  "primary":"Sum native Stage 1 deaths / sum Stage 1 native ticks and individually reported first-stage progress. Promotion RR<=0.75 and progress no worse; RR>=1.0 stop this intervention. Controller RNG matched within pair; original in-game RNG uncontrolled. Descriptive interpretation.",
+  "secondary":"Stage2 reaching, deaths with pre-hit Bombs >0, actual successful Bombs, native spares/Bombs at entry/exit including any unreadable stock and first-miss tick, original score."
+}
