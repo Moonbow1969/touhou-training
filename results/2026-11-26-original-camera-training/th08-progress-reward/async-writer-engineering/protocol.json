@@ -1,0 +1,26 @@
+{
+  "role": "engineering-zero-shot-original",
+  "source_policy_sha256": "69c44e2ec484e5c5a915722fb1259a174da67b375cd1d4e786c54bf2589d3089",
+  "seeds": {
+    "A": 80974011,
+    "B": 80974012
+  },
+  "schema": "TH08 0.02 original Normal Ghost; ordinary 2 spare lives and 3 Bombs, four sampled physical actions, no continue.",
+  "isolation": "Two simultaneous original stocks on previously qualified Accelerator A and B separated cpusets. Unchanged async movie queue, local actor and source movie. No PPO update or candidate capability test.",
+  "admission": {
+    "exact_four_native_tick_fraction_min": 0.998,
+    "all_retained_masks_consumed": true,
+    "observer_rtt_p999_ms_strictly_less_than": 30,
+    "observer_rtt_max_ms_at_most": 100,
+    "interval": "All complete q calls overlapping first physical action to authenticated Game Over, including slow or invalid reads. Also publish whole process and first q.",
+    "native_record": "Require exact semantic frozen native tick plus one, per-stage native record hashes, explicit physical terminal, reader writes and re-reads the files, sends SEALED, bracket waits for successful child exit before first ranking key.",
+    "movie": "Every timing row encoded, no queue backpressure, full movie archived and actual decoded count + SHA checked."
+  },
+  "source_sha256": {
+    "scripts/prepare_th08_async_writer.py": "b2f8f7279c11e8989b4f5b4e6e0605ff63e3c32b545bb7b9e36d04f0f9f8ebcd",
+    "tools/rollout-worker-probe/th08-trial002/tick4/archive_writer.h": "d5943ed2e0964fa2732e8e20c91ec9fe39ac1797967bc444f1425de15b7149db",
+    "tools/rollout-worker-probe/th08-trial002/tick4/reader_async.c": "39cd0854d330522dd875e27875ee64580895b18eb788d5eca6469656ca5617f6",
+    "tools/rollout-worker-probe/th08-trial002/tick4/archive_seal.h": "18e1f5e6b1587f54594cb7fcd9e967f237a11c79859f450d00f1039ba579706a",
+    "tools/rollout-worker-probe/th08-trial002/tick4/bracket.c": "30b8e5b97479c9220ca914a4646629e3d5cb9de75932ccbd0727114c810a22c4"
+  }
+}

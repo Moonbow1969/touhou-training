@@ -13,6 +13,9 @@ static int64_t stamp(void) {
 #include <fcntl.h>
 #include <stdatomic.h>
 #include <sys/mman.h>
+#ifdef TH08_EXPLICIT_ARCHIVE_SEAL
+#include "archive_seal.h"
+#endif
 typedef struct { _Atomic unsigned serial,stage,tick; _Atomic int64_t upper_ns; } TickShared;
 int main(void) {
     int fd=open("/capture/current.tick",O_RDWR|O_CREAT|O_EXCL,0644);
@@ -35,15 +38,19 @@ int main(void) {
     if(!from || !out)return 4;
     fprintf(out,"before_ns after_ns pid base object stage_index tick mode flags raw word previous info origin cursor saved_prior saved_current player focus x y buffer_read stable\n");
     const int64_t begin=stamp(); char line[512];
+#ifdef TH08_EXPLICIT_ARCHIVE_SEAL
+    unsigned active_counts[3]={0},stopped_counts[3]={0};
+#endif
     while(stamp()-begin<INT64_C(1800000000000)) {
         int64_t before=stamp();
         if(write(requests[1],"q",1)!=1 || !fgets(line,sizeof(line),from))break;
         int64_t after=stamp();
         unsigned pid,base,obj,stage,tick,mode,flags,raw,word,prev,info,origin,cursor,prior,current,player,focus,valid_buffer,stable;
         float x,y;
-        if(sscanf(line,"%u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %f %f %u %u",
+        int fields=sscanf(line,"%u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %f %f %u %u",
                 &pid,&base,&obj,&stage,&tick,&mode,&flags,&raw,&word,&prev,&info,&origin,&cursor,&prior,&current,
-                &player,&focus,&x,&y,&valid_buffer,&stable)==21 && obj && stage<3 && mode==0 && flags==4 && tick &&
+                &player,&focus,&x,&y,&valid_buffer,&stable);
+        if(fields==21 && obj && stage<3 && mode==0 && flags==4 && tick &&
                 stable && valid_buffer && origin && cursor==origin+36+2*tick && current==word){
             int changed=shared->stage!=stage+1 || shared->tick!=tick;
             atomic_fetch_add(&shared->serial,1);shared->stage=stage+1;shared->tick=tick;
@@ -51,9 +58,27 @@ int main(void) {
             atomic_fetch_add(&shared->serial,1);
         }
         fprintf(out,"%" PRId64 " %" PRId64 " %s",before,after,line);fflush(out);
+#ifdef TH08_EXPLICIT_ARCHIVE_SEAL
+        if(fields==21 && obj && stage<3 && mode==0 && stable && valid_buffer && origin &&
+           tick<65534 && tick && cursor==origin+36+2*tick && current==word){
+            if(flags==4 && tick>active_counts[stage])active_counts[stage]=tick;
+            if(flags==0 && active_counts[stage] && tick+1>=active_counts[stage]){
+                stopped_counts[stage]=tick+1;
+                if(access("/capture/native-archive-request",F_OK)==0){
+                    for(unsigned j=0;j<=stage;j++)if(!stopped_counts[j] || stopped_counts[j]<active_counts[j])return 7;
+                    fclose(out);
+                    return finish_archive(requests[1],from,child,stopped_counts);
+                }
+            }
+        }
+#endif
         struct timespec nap={0,850000};
         nanosleep(&nap,NULL);
     }
     close(requests[1]); fclose(out);fclose(from);
+#ifdef TH08_EXPLICIT_ARCHIVE_SEAL
+    return 8; /* Unrequested shutdown has no terminal seal. */
+#else
     return 0;
+#endif
 }
