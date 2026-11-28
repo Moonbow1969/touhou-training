@@ -1,0 +1,16 @@
+# TH08 synchronous native control with observer quiescence
+
+Both independent engineering stocks reached a genuine original Stage 1 Game Over. The 1,825 complete interior four-tick action windows matched all four game-consumed input words. All 1,827 retained learned actions were consumed. The original rank, starting stock (two spares, three Bombs), zero continues, original Game Over, learned inputs and sampled camera were verified for each stock. Both ended at zero spare lives and zero Bombs. These credits remain outside training and held policy comparisons.
+
+| Seed | Lane | Original decisions | Exact interior windows | Actual native ticks per wall second | Freeze median / P99 | Pre-capture latch retries |
+|---|---|---:|---:|---:|---:|---:|
+| 80965011 | A | 1,110 | 1,109 / 1,109 | 59.65 | 10.26 / 16.17 ms | 50 |
+| 80965012 | B | 717 | 716 / 716 | 59.48 | 10.38 / 17.30 ms | 32 |
+
+Each original ran in its own Wine/Xvfb game namespace on one physical host. A `pidfd` binds SIGSTOP and SIGCONT to that one game. The controller verified the native stage and tick after Linux confirmed the stop. The independent observer explicitly acknowledged when all Wine memory reads were idle. The camera, four learned action heads and X11 key acknowledgement were bracketed within the stop. A second fresh native read then reconfirmed the same stage and tick and a new idle acknowledgement before resumption. The continuous source remains available from the prior 32-credit collection. The private new engineering directories only changed the clock broker and original operator. In the 82 pre-capture retries, no retained learned action or native four-tick interval was lost.
+
+The 32 preceding continuous-time originals on the same two host allocations had a median 59.58 native ticks/second, with 27 eligible full stocks. Counting only qualified native ticks while charging all physically active policy-to-terminal seconds gave 50.92 qualified ticks/active lane-second in that cohort. The present two engineering credits measured 59.58 qualified ticks/active lane-second. They were completed in 114.29 seconds of shared wall time including setup and source close. Their sample size and independent controller seeds limit inference about long-run reliability and throughput.
+
+To reproduce on a Linux host with a previously qualified, local TH08 0.02 deployment, use the [engineering preparation script](../../../tools/rollout-worker-probe/th08-trial002/tick4/prepare_quiescent_operator.sh) with the path of the continuous study and a new destination. This creates a private clone and prints the deployed binary and policy SHA256s. Within the clone, `bash app/credit-tick4.sh SEED Normal Ghost engineering-zero-shot-original` runs a stock on its designated CPU allocation. Check the `frozen.tsv`, `quiet-clock.tsv` and `gates.tsv` row identities; confirm pre/post reads, the complete native applied-key words and original terminal before scoring. The public witnesses link the byte-verified originals and decision data.
+
+[Clock, actuator, terminal and original source links](results.json) · [Independent throughput accounting](admission-throughput.json) · [Original engineering registration](protocol.json) · [Earlier failed proof and reader diagnosis](../th08-synchronous-engineering)

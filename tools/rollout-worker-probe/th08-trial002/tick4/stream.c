@@ -37,6 +37,7 @@ int main(void) {
 #ifdef TH08_SYNCHRONOUS_ENGINEERING
         int latched=camera_tick>0 && freeze_at(camera_stage,camera_tick);
         if(camera_tick>0&&!latched){
+            report_quiet_failure(32,camera_stage,camera_tick);
             if(++failed_stops==1)fprintf(stderr,"Native freeze awaiting live heartbeat at stage %u tick %d\n",camera_stage,camera_tick);
             if(failed_stops>=8)return 32;
             continue;
@@ -56,7 +57,7 @@ int main(void) {
         char input[40];
 #ifdef TH08_SYNCHRONOUS_ENGINEERING
         if(latched){struct pollfd command={.fd=STDIN_FILENO,.events=POLLIN};
-            if(poll(&command,1,500)!=1){sync_resume();return 33;}}
+            if(poll(&command,1,500)!=1){report_quiet_failure(33,camera_stage,camera_tick);sync_resume();return 33;}}
 #endif
         if(!fgets(input,sizeof(input),stdin))break;
         int64_t received_ns=now_ns();
@@ -78,7 +79,7 @@ int main(void) {
         int apply_target=anchor<0?-1:anchor+4*stage_index;
 #ifdef TH08_SYNCHRONOUS_ENGINEERING
         int apply_tick=-1;
-        if(is_policy&&(!latched||!frozen_matches(camera_stage,camera_tick))){sync_resume();return 34;}
+        if(is_policy&&(!latched||!frozen_matches(camera_stage,camera_tick))){report_quiet_failure(34,camera_stage,camera_tick);sync_resume();return 34;}
         if(is_policy){apply_tick=camera_tick;apply_target=camera_tick;}
 #else
         int apply_tick=is_policy?(apply_target<0?poll_tick():wait_tick(apply_target)):-1;
@@ -97,10 +98,10 @@ int main(void) {
             int64_t ack_ns=now_ns();
 #ifdef TH08_QUIET_READS
             quiet_release();
-            if(!quiet_tick_proof(camera_stage,camera_tick,&post_read_serial)){sync_resume();return 36;}
+            if(!quiet_tick_proof(camera_stage,camera_tick,&post_read_serial)){report_quiet_failure(36,camera_stage,camera_tick);sync_resume();return 36;}
             if(is_policy){fprintf(quiet_log,"%d %u %d %u %u %lld\n",index,camera_stage,camera_tick,frozen_proven_serial,post_read_serial,(long long)last_quiet_acquired_ns);fflush(quiet_log);}
 #endif
-            if(!frozen_matches(camera_stage,camera_tick)){sync_resume();return 35;}
+            if(!frozen_matches(camera_stage,camera_tick)){report_quiet_failure(35,camera_stage,camera_tick);sync_resume();return 35;}
             sync_resume();int64_t resumed=now_ns();
             if(is_policy){
                 fprintf(freeze_receipt,"%d %d %u %d %lld %lld %lld %lld %lld %lld %lld %u %u\n",index,(int)sync_pid,camera_stage,camera_tick,

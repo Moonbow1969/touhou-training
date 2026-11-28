@@ -12,6 +12,7 @@
 #ifdef TH08_QUIET_READS
 #include "quiet_reads.h"
 static FILE *quiet_log;
+static FILE *quiet_diagnostic;
 static unsigned post_read_serial;
 static int64_t last_quiet_acquired_ns;
 #endif
@@ -117,3 +118,13 @@ static int freeze_at(unsigned stage,int tick){
 static int frozen_matches(unsigned stage,int tick){
     return stopped()&&tick_source->stage==stage&&(int)tick_source->tick==tick;
 }
+#ifdef TH08_QUIET_READS
+static void report_quiet_failure(int reason,unsigned stage,int tick){
+    if(!quiet_diagnostic){quiet_diagnostic=fopen("/capture/quiet-failure.tsv","a");if(!quiet_diagnostic)return;}
+    char name[80],state[160]="unknown";snprintf(name,sizeof(name),"/proc/%d/status",sync_pid);FILE *f=fopen(name,"r");
+    if(f){while(fgets(state,sizeof(state),f))if(!strncmp(state,"State:",6))break;fclose(f);}
+    fprintf(quiet_diagnostic,"reason=%d expected=%u/%d actual=%u/%u serial=%u request=%u idle=%u ns=%lld %s",reason,stage,tick,tick_source->stage,tick_source->tick,tick_source->serial,quiet_bus->request,quiet_bus->idle,(long long)now_ns(),state);fflush(quiet_diagnostic);
+}
+#else
+#define report_quiet_failure(reason,stage,tick) ((void)0)
+#endif
