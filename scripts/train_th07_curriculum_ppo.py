@@ -26,7 +26,8 @@ FOLDS = 4
 CRITIC_REFITS = 2
 LAMBDA = .985
 KL_CAP = .01
-SCENES = ("easy", "normal", "letty_full", "letty_low", "cirno")
+PRACTICE_SCENES = ("letty_full", "letty_low", "cirno", "letty_final")
+SCENES = ("easy", "normal", *PRACTICE_SCENES)
 
 
 def frozen_features(model, frames):
@@ -51,7 +52,7 @@ def load_episode(root, entry, actor):
     receipt = json.loads(receipt_path.read_bytes())
     scene = entry["scene"]
     outcome = receipt["outcome"]
-    practice = scene in ("letty_full", "letty_low", "cirno")
+    practice = scene in PRACTICE_SCENES
     source_kind = "practice" if practice else "game_start"
     if (entry["role"] != "train" or receipt["role"] != "train" or receipt["qualified"] is not True
             or receipt["policy_sha256"] != ACTOR or receipt["game_sha256"] != ORIGINAL
@@ -62,6 +63,8 @@ def load_episode(root, entry, actor):
     endpoints = ("game_over", "practice_stage_clear", "native_tick_cutoff") if practice else ("game_over", "stage2_entry")
     if outcome not in endpoints:
         raise ValueError(f"Unregistered original endpoint: {path}")
+    if scene == "letty_final" and receipt.get("scenario") != "letty-final-2-3":
+        raise ValueError(f"Late practice window lacks the qualified final-spell entrance: {path}")
     native_terminal = outcome in ("game_over", "practice_stage_clear")
     success = outcome in ("stage2_entry", "practice_stage_clear")
     timeout = outcome == "native_tick_cutoff"
@@ -209,14 +212,17 @@ def crossfit(episodes):
 
 
 def equal_sources(episodes, mode):
-    layouts = {"easy-normal": ("easy", "normal"), "normal-practice": ("normal", "practice")}
+    layouts = {"easy-normal": ("easy", "normal"), "normal-practice": ("normal", "practice"),
+               "last-spell": ("letty_final",)}
     sources = defaultdict(list)
     for episode in episodes:
         scene = episode["scene"]
         group = "practice" if scene in ("letty_full", "letty_low", "cirno") else scene
         sources[group].append(tuple(field[episode["active"]] for field in episode["packed"]))
     if set(sources) != set(layouts[mode]):
-        raise ValueError("Both registered sources must be present before fitting")
+        raise ValueError("The inputs must match the registered sources before fitting")
+    if mode == "last-spell" and not any(e["audit"]["outcome"] == "practice_stage_clear" for e in episodes):
+        raise ValueError("The final-spell fit requires a witnessed section completion")
     merged = {key: tuple(torch.cat(part) for part in zip(*rows, strict=True)) for key, rows in sources.items()}
     available = {key: len(value[0]) for key, value in merged.items()}
     quota = min(available.values())
