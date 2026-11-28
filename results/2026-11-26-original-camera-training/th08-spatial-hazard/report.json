@@ -1,0 +1,1444 @@
+{
+  "protocol_sha256": "c53498cff73df82493bf3e41fd9565e351b0bc9957ea81c2a2e7b56df36c3aec",
+  "credits": 45,
+  "device": "cuda",
+  "primary_folds_passed": 0,
+  "gate_passed": false,
+  "folds": [
+    {
+      "fold": 0,
+      "guard": 8,
+      "horizon": 32,
+      "training": [
+        80962006,
+        80962007,
+        80962014,
+        80963008,
+        80963011,
+        80963012,
+        80963014,
+        80963015,
+        80963025,
+        80962002,
+        80962012,
+        80962015,
+        80963004,
+        80963007,
+        80963013,
+        80963016,
+        80963028,
+        80963030,
+        80962003,
+        80962004,
+        80962011,
+        80963002,
+        80963003,
+        80963018,
+        80963020,
+        80963024
+      ],
+      "calibration": [
+        80962009,
+        80962013,
+        80962016,
+        80962901,
+        80963005,
+        80963009,
+        80963010,
+        80963019,
+        80963026,
+        80963032
+      ],
+      "held": [
+        80962005,
+        80962008,
+        80962010,
+        80963001,
+        80963006,
+        80963017,
+        80963027,
+        80963029,
+        80963031
+      ],
+      "ap_ratio": 0.78606797973782,
+      "gate_passed": false,
+      "clocks": {
+        "average_precision": 0.0861680656867247,
+        "positive_rate": 0.040629470672389124,
+        "held_false_positive_rate": 0.03966597077244259,
+        "early_events": 2,
+        "total_events": 27,
+        "event_coverage": 0.07407407407407407,
+        "ece_10": 0.00892398201467628,
+        "brier": 0.0401800462524175,
+        "cutoff": 0.09090665686308114,
+        "by_credit": [
+          {
+            "seed": 80962005,
+            "observations": 609,
+            "positives": 19,
+            "ap": 0.07931820135933906,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962008,
+            "observations": 389,
+            "positives": 14,
+            "ap": 0.22980272395787196,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962010,
+            "observations": 273,
+            "positives": 19,
+            "ap": 0.1306778882615868,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963001,
+            "observations": 346,
+            "positives": 18,
+            "ap": 0.07494996092394085,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963006,
+            "observations": 363,
+            "positives": 18,
+            "ap": 0.4983627238025381,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963017,
+            "observations": 324,
+            "positives": 6,
+            "ap": 0.08479021985567348,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963027,
+            "observations": 158,
+            "positives": 20,
+            "ap": 0.5732796179315078,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963029,
+            "observations": 775,
+            "positives": 12,
+            "ap": 0.04065429413941746,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963031,
+            "observations": 258,
+            "positives": 16,
+            "ap": 0.2731347182355034,
+            "detected": 0,
+            "events": 3
+          }
+        ],
+        "optimizer": [
+          {
+            "update": 1,
+            "weighted_bce": 0.8932889699935913
+          },
+          {
+            "update": 60,
+            "weighted_bce": 0.834287166595459
+          },
+          {
+            "update": 120,
+            "weighted_bce": 0.7524983882904053
+          },
+          {
+            "update": 180,
+            "weighted_bce": 0.7457894086837769
+          },
+          {
+            "update": 240,
+            "weighted_bce": 0.7231016159057617
+          }
+        ],
+        "weights_sha256": "1232b26beb7a22cb64809cca42d9f6899b1bb0fa62d2ca31ba7fb99316f67baa"
+      },
+      "visual": {
+        "average_precision": 0.06773395731227946,
+        "positive_rate": 0.040629470672389124,
+        "held_false_positive_rate": 0.05905159558604235,
+        "early_events": 3,
+        "total_events": 27,
+        "event_coverage": 0.1111111111111111,
+        "ece_10": 0.01277672393209712,
+        "brier": 0.039414208122014356,
+        "cutoff": 0.12228623214181099,
+        "by_credit": [
+          {
+            "seed": 80962005,
+            "observations": 609,
+            "positives": 19,
+            "ap": 0.06933552371775997,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80962008,
+            "observations": 389,
+            "positives": 14,
+            "ap": 0.12994104770353565,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962010,
+            "observations": 273,
+            "positives": 19,
+            "ap": 0.13403463534613347,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963001,
+            "observations": 346,
+            "positives": 18,
+            "ap": 0.061637323624616394,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963006,
+            "observations": 363,
+            "positives": 18,
+            "ap": 0.04927736383260447,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963017,
+            "observations": 324,
+            "positives": 6,
+            "ap": 0.047473332189107174,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963027,
+            "observations": 158,
+            "positives": 20,
+            "ap": 0.5978155416638667,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963029,
+            "observations": 775,
+            "positives": 12,
+            "ap": 0.048712006945722995,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963031,
+            "observations": 258,
+            "positives": 16,
+            "ap": 0.29445692270115575,
+            "detected": 1,
+            "events": 3
+          }
+        ],
+        "locator_error_native_pixels": {
+          "mean": 58.666236877441406,
+          "p50_p90": [
+            41.317630767822266,
+            129.07123413085935
+          ],
+          "within_16_pixels": 0.2082975679542203
+        },
+        "optimizer": [
+          {
+            "update": 1,
+            "risk_bce": 0.7654699087142944,
+            "location_ce": 6.698085308074951
+          },
+          {
+            "update": 60,
+            "risk_bce": 0.6746658682823181,
+            "location_ce": 4.710862636566162
+          },
+          {
+            "update": 180,
+            "risk_bce": 0.34605059027671814,
+            "location_ce": 3.721683979034424
+          },
+          {
+            "update": 360,
+            "risk_bce": 0.3484109044075012,
+            "location_ce": 3.2431602478027344
+          },
+          {
+            "update": 540,
+            "risk_bce": 0.2681663930416107,
+            "location_ce": 3.092808485031128
+          }
+        ],
+        "weights_sha256": "0ca1411b133e762a4ed5df83d1c2417359bcdba80699d43a057300afc492cbaf"
+      }
+    },
+    {
+      "fold": 1,
+      "guard": 8,
+      "horizon": 32,
+      "training": [
+        80962005,
+        80962008,
+        80962010,
+        80963001,
+        80963006,
+        80963017,
+        80963027,
+        80963029,
+        80963031,
+        80962002,
+        80962012,
+        80962015,
+        80963004,
+        80963007,
+        80963013,
+        80963016,
+        80963028,
+        80963030,
+        80962003,
+        80962004,
+        80962011,
+        80963002,
+        80963003,
+        80963018,
+        80963020,
+        80963024
+      ],
+      "calibration": [
+        80962006,
+        80962007,
+        80962014,
+        80963008,
+        80963011,
+        80963012,
+        80963014,
+        80963015,
+        80963025
+      ],
+      "held": [
+        80962009,
+        80962013,
+        80962016,
+        80962901,
+        80963005,
+        80963009,
+        80963010,
+        80963019,
+        80963026,
+        80963032
+      ],
+      "ap_ratio": 1.7763651540667793,
+      "gate_passed": false,
+      "clocks": {
+        "average_precision": 0.08429000103897301,
+        "positive_rate": 0.040716212901643366,
+        "held_false_positive_rate": 0.03733060598312452,
+        "early_events": 3,
+        "total_events": 30,
+        "event_coverage": 0.1,
+        "ece_10": 0.003231980873863291,
+        "brier": 0.03833369170240894,
+        "cutoff": 0.10802889040858044,
+        "by_credit": [
+          {
+            "seed": 80962009,
+            "observations": 301,
+            "positives": 12,
+            "ap": 0.05699688347338383,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962013,
+            "observations": 643,
+            "positives": 19,
+            "ap": 0.05399925226739215,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962016,
+            "observations": 561,
+            "positives": 18,
+            "ap": 0.06667197370104443,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962901,
+            "observations": 474,
+            "positives": 18,
+            "ap": 0.09486582321572712,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963005,
+            "observations": 174,
+            "positives": 13,
+            "ap": 0.9076350999427922,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963009,
+            "observations": 457,
+            "positives": 18,
+            "ap": 0.12874495654092385,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963010,
+            "observations": 494,
+            "positives": 18,
+            "ap": 0.0843434528477901,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963019,
+            "observations": 475,
+            "positives": 18,
+            "ap": 0.0554684761656516,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963026,
+            "observations": 219,
+            "positives": 14,
+            "ap": 0.14084987821239217,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963032,
+            "observations": 279,
+            "positives": 18,
+            "ap": 0.2846592854739662,
+            "detected": 1,
+            "events": 3
+          }
+        ],
+        "optimizer": [
+          {
+            "update": 1,
+            "weighted_bce": 0.8242717981338501
+          },
+          {
+            "update": 60,
+            "weighted_bce": 0.7414140701293945
+          },
+          {
+            "update": 120,
+            "weighted_bce": 0.6805580854415894
+          },
+          {
+            "update": 180,
+            "weighted_bce": 0.6684197783470154
+          },
+          {
+            "update": 240,
+            "weighted_bce": 0.6424946784973145
+          }
+        ],
+        "weights_sha256": "dc2850da23558a5f326aec87bfea156b38f63b65b8c8fbc5111d28bd51f18715"
+      },
+      "visual": {
+        "average_precision": 0.14972982068188428,
+        "positive_rate": 0.040716212901643366,
+        "held_false_positive_rate": 0.03528509332651496,
+        "early_events": 10,
+        "total_events": 30,
+        "event_coverage": 0.3333333333333333,
+        "ece_10": 0.00834232038194313,
+        "brier": 0.03713553334843016,
+        "cutoff": 0.12960318912997415,
+        "by_credit": [
+          {
+            "seed": 80962009,
+            "observations": 301,
+            "positives": 12,
+            "ap": 0.11090775612487118,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962013,
+            "observations": 643,
+            "positives": 19,
+            "ap": 0.26299952093806767,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80962016,
+            "observations": 561,
+            "positives": 18,
+            "ap": 0.2304135876402532,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80962901,
+            "observations": 474,
+            "positives": 18,
+            "ap": 0.3006663672198772,
+            "detected": 3,
+            "events": 3
+          },
+          {
+            "seed": 80963005,
+            "observations": 174,
+            "positives": 13,
+            "ap": 0.32473005059076276,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963009,
+            "observations": 457,
+            "positives": 18,
+            "ap": 0.08319660903143102,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963010,
+            "observations": 494,
+            "positives": 18,
+            "ap": 0.19325229917213774,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963019,
+            "observations": 475,
+            "positives": 18,
+            "ap": 0.30185068781309576,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963026,
+            "observations": 219,
+            "positives": 14,
+            "ap": 0.1251931581581344,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963032,
+            "observations": 279,
+            "positives": 18,
+            "ap": 0.38894773587627995,
+            "detected": 1,
+            "events": 3
+          }
+        ],
+        "locator_error_native_pixels": {
+          "mean": 50.878875732421875,
+          "p50_p90": [
+            31.028886795043945,
+            129.53719482421874
+          ],
+          "within_16_pixels": 0.3357861172430709
+        },
+        "optimizer": [
+          {
+            "update": 1,
+            "risk_bce": 0.8934797644615173,
+            "location_ce": 6.540940761566162
+          },
+          {
+            "update": 60,
+            "risk_bce": 0.38923004269599915,
+            "location_ce": 4.6379594802856445
+          },
+          {
+            "update": 180,
+            "risk_bce": 0.31912824511528015,
+            "location_ce": 3.5354347229003906
+          },
+          {
+            "update": 360,
+            "risk_bce": 0.4374154508113861,
+            "location_ce": 3.1992027759552
+          },
+          {
+            "update": 540,
+            "risk_bce": 0.10796263068914413,
+            "location_ce": 3.207296848297119
+          }
+        ],
+        "weights_sha256": "514e308be0c59d583879a1ff42666c7f4ce4cfbfa4ab57cf21afec47bf6afc18"
+      }
+    },
+    {
+      "fold": 2,
+      "guard": 8,
+      "horizon": 32,
+      "training": [
+        80962005,
+        80962008,
+        80962010,
+        80963001,
+        80963006,
+        80963017,
+        80963027,
+        80963029,
+        80963031,
+        80962009,
+        80962013,
+        80962016,
+        80962901,
+        80963005,
+        80963009,
+        80963010,
+        80963019,
+        80963026,
+        80963032,
+        80962003,
+        80962004,
+        80962011,
+        80963002,
+        80963003,
+        80963018,
+        80963020,
+        80963024
+      ],
+      "calibration": [
+        80962002,
+        80962012,
+        80962015,
+        80963004,
+        80963007,
+        80963013,
+        80963016,
+        80963028,
+        80963030
+      ],
+      "held": [
+        80962006,
+        80962007,
+        80962014,
+        80963008,
+        80963011,
+        80963012,
+        80963014,
+        80963015,
+        80963025
+      ],
+      "ap_ratio": 0.8300525767920284,
+      "gate_passed": false,
+      "clocks": {
+        "average_precision": 0.15519212831728077,
+        "positive_rate": 0.04665140240412135,
+        "held_false_positive_rate": 0.01591113779645752,
+        "early_events": 4,
+        "total_events": 27,
+        "event_coverage": 0.14814814814814814,
+        "ece_10": 0.005181715188453043,
+        "brier": 0.04271900530091218,
+        "cutoff": 0.13673264662923554,
+        "by_credit": [
+          {
+            "seed": 80962006,
+            "observations": 297,
+            "positives": 12,
+            "ap": 0.950057295645531,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962007,
+            "observations": 353,
+            "positives": 18,
+            "ap": 0.05197144452862185,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962014,
+            "observations": 443,
+            "positives": 20,
+            "ap": 0.37243166912817494,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963008,
+            "observations": 273,
+            "positives": 19,
+            "ap": 0.08530965874356633,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963011,
+            "observations": 466,
+            "positives": 20,
+            "ap": 0.08520454052309664,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963012,
+            "observations": 438,
+            "positives": 19,
+            "ap": 0.038413266197472914,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963014,
+            "observations": 467,
+            "positives": 19,
+            "ap": 0.34200627224201385,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963015,
+            "observations": 362,
+            "positives": 18,
+            "ap": 0.3717457354640064,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963025,
+            "observations": 395,
+            "positives": 18,
+            "ap": 0.4558183291241175,
+            "detected": 1,
+            "events": 3
+          }
+        ],
+        "optimizer": [
+          {
+            "update": 1,
+            "weighted_bce": 0.8130225539207458
+          },
+          {
+            "update": 60,
+            "weighted_bce": 0.740821123123169
+          },
+          {
+            "update": 120,
+            "weighted_bce": 0.7461284399032593
+          },
+          {
+            "update": 180,
+            "weighted_bce": 0.7096236944198608
+          },
+          {
+            "update": 240,
+            "weighted_bce": 0.702591061592102
+          }
+        ],
+        "weights_sha256": "369a063e872c7b51bc1b6fe189884a2d937db02ad55d4029112dfa416500c7a6"
+      },
+      "visual": {
+        "average_precision": 0.12881762600759802,
+        "positive_rate": 0.04665140240412135,
+        "held_false_positive_rate": 0.036625637946562595,
+        "early_events": 9,
+        "total_events": 27,
+        "event_coverage": 0.3333333333333333,
+        "ece_10": 0.009230622947019032,
+        "brier": 0.04277736587877987,
+        "cutoff": 0.11959249543462035,
+        "by_credit": [
+          {
+            "seed": 80962006,
+            "observations": 297,
+            "positives": 12,
+            "ap": 0.062245596026932394,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962007,
+            "observations": 353,
+            "positives": 18,
+            "ap": 0.10393135854638887,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962014,
+            "observations": 443,
+            "positives": 20,
+            "ap": 0.12706722730409137,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80963008,
+            "observations": 273,
+            "positives": 19,
+            "ap": 0.13590290017104356,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963011,
+            "observations": 466,
+            "positives": 20,
+            "ap": 0.2770051574197735,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963012,
+            "observations": 438,
+            "positives": 19,
+            "ap": 0.0683918597769543,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963014,
+            "observations": 467,
+            "positives": 19,
+            "ap": 0.17523660612988448,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963015,
+            "observations": 362,
+            "positives": 18,
+            "ap": 0.18645504543301444,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963025,
+            "observations": 395,
+            "positives": 18,
+            "ap": 0.29370139852985816,
+            "detected": 3,
+            "events": 3
+          }
+        ],
+        "locator_error_native_pixels": {
+          "mean": 47.31541442871094,
+          "p50_p90": [
+            32.94637870788574,
+            107.30975036621096
+          ],
+          "within_16_pixels": 0.3022323983972524
+        },
+        "optimizer": [
+          {
+            "update": 1,
+            "risk_bce": 0.7557967901229858,
+            "location_ce": 6.498536109924316
+          },
+          {
+            "update": 60,
+            "risk_bce": 0.2354946881532669,
+            "location_ce": 4.2711992263793945
+          },
+          {
+            "update": 180,
+            "risk_bce": 0.44073209166526794,
+            "location_ce": 3.4469525814056396
+          },
+          {
+            "update": 360,
+            "risk_bce": 0.5328457951545715,
+            "location_ce": 3.0995917320251465
+          },
+          {
+            "update": 540,
+            "risk_bce": 0.14065639674663544,
+            "location_ce": 3.4369606971740723
+          }
+        ],
+        "weights_sha256": "2f3dabdfd2de1a5f25dd0140b86aca4877db8972aab34844e1d0fe1e4838d67d"
+      }
+    },
+    {
+      "fold": 3,
+      "guard": 8,
+      "horizon": 32,
+      "training": [
+        80962005,
+        80962008,
+        80962010,
+        80963001,
+        80963006,
+        80963017,
+        80963027,
+        80963029,
+        80963031,
+        80962009,
+        80962013,
+        80962016,
+        80962901,
+        80963005,
+        80963009,
+        80963010,
+        80963019,
+        80963026,
+        80963032,
+        80962006,
+        80962007,
+        80962014,
+        80963008,
+        80963011,
+        80963012,
+        80963014,
+        80963015,
+        80963025
+      ],
+      "calibration": [
+        80962003,
+        80962004,
+        80962011,
+        80963002,
+        80963003,
+        80963018,
+        80963020,
+        80963024
+      ],
+      "held": [
+        80962002,
+        80962012,
+        80962015,
+        80963004,
+        80963007,
+        80963013,
+        80963016,
+        80963028,
+        80963030
+      ],
+      "ap_ratio": 1.1684721533717697,
+      "gate_passed": false,
+      "clocks": {
+        "average_precision": 0.11336399262013995,
+        "positive_rate": 0.047237331806470086,
+        "held_false_positive_rate": 0.10787259615384616,
+        "early_events": 5,
+        "total_events": 27,
+        "event_coverage": 0.18518518518518517,
+        "ece_10": 0.014956734985182846,
+        "brier": 0.04562453436683416,
+        "cutoff": 0.1197828087674537,
+        "by_credit": [
+          {
+            "seed": 80962002,
+            "observations": 710,
+            "positives": 19,
+            "ap": 0.2793741322027784,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80962012,
+            "observations": 325,
+            "positives": 19,
+            "ap": 0.10043865655052296,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962015,
+            "observations": 144,
+            "positives": 19,
+            "ap": 0.502315352180075,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963004,
+            "observations": 585,
+            "positives": 19,
+            "ap": 0.03740175200892372,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963007,
+            "observations": 292,
+            "positives": 19,
+            "ap": 0.15604981779714341,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963013,
+            "observations": 360,
+            "positives": 13,
+            "ap": 0.13114620019563333,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963016,
+            "observations": 305,
+            "positives": 19,
+            "ap": 0.16200360645532827,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963028,
+            "observations": 382,
+            "positives": 19,
+            "ap": 0.4928720304342442,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80963030,
+            "observations": 390,
+            "positives": 19,
+            "ap": 0.07313636508838121,
+            "detected": 0,
+            "events": 3
+          }
+        ],
+        "optimizer": [
+          {
+            "update": 1,
+            "weighted_bce": 0.823598325252533
+          },
+          {
+            "update": 60,
+            "weighted_bce": 0.744115948677063
+          },
+          {
+            "update": 120,
+            "weighted_bce": 0.7493348121643066
+          },
+          {
+            "update": 180,
+            "weighted_bce": 0.6956974267959595
+          },
+          {
+            "update": 240,
+            "weighted_bce": 0.6953893899917603
+          }
+        ],
+        "weights_sha256": "1b354d39971f2dac1211532e4d61fb58345374347446c0da51b43f6462c2e1c8"
+      },
+      "visual": {
+        "average_precision": 0.13246266857167632,
+        "positive_rate": 0.047237331806470086,
+        "held_false_positive_rate": 0.07872596153846154,
+        "early_events": 17,
+        "total_events": 27,
+        "event_coverage": 0.6296296296296297,
+        "ece_10": 0.016434798005361927,
+        "brier": 0.04314872658157163,
+        "cutoff": 0.15830188819635535,
+        "by_credit": [
+          {
+            "seed": 80962002,
+            "observations": 710,
+            "positives": 19,
+            "ap": 0.04803542026098751,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80962012,
+            "observations": 325,
+            "positives": 19,
+            "ap": 0.4002174647968682,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80962015,
+            "observations": 144,
+            "positives": 19,
+            "ap": 0.2861284766622122,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963004,
+            "observations": 585,
+            "positives": 19,
+            "ap": 0.09119232864890868,
+            "detected": 3,
+            "events": 3
+          },
+          {
+            "seed": 80963007,
+            "observations": 292,
+            "positives": 19,
+            "ap": 0.3347757050110356,
+            "detected": 3,
+            "events": 3
+          },
+          {
+            "seed": 80963013,
+            "observations": 360,
+            "positives": 13,
+            "ap": 0.12032976087648163,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963016,
+            "observations": 305,
+            "positives": 19,
+            "ap": 0.32379786753810436,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963028,
+            "observations": 382,
+            "positives": 19,
+            "ap": 0.15436004414006688,
+            "detected": 2,
+            "events": 3
+          },
+          {
+            "seed": 80963030,
+            "observations": 390,
+            "positives": 19,
+            "ap": 0.1295789545902878,
+            "detected": 2,
+            "events": 3
+          }
+        ],
+        "locator_error_native_pixels": {
+          "mean": 56.660579681396484,
+          "p50_p90": [
+            29.340436935424805,
+            151.98952941894535
+          ],
+          "within_16_pixels": 0.3501288290867449
+        },
+        "optimizer": [
+          {
+            "update": 1,
+            "risk_bce": 0.7102383971214294,
+            "location_ce": 6.49600076675415
+          },
+          {
+            "update": 60,
+            "risk_bce": 0.44961562752723694,
+            "location_ce": 4.742138385772705
+          },
+          {
+            "update": 180,
+            "risk_bce": 0.5804473757743835,
+            "location_ce": 3.886411428451538
+          },
+          {
+            "update": 360,
+            "risk_bce": 0.3060665428638458,
+            "location_ce": 3.4411461353302
+          },
+          {
+            "update": 540,
+            "risk_bce": 0.13180242478847504,
+            "location_ce": 2.98286509513855
+          }
+        ],
+        "weights_sha256": "c8af033cbd5832773c5b0dc93c6686396ebd13062b001de6f0de89dcfad63082"
+      }
+    },
+    {
+      "fold": 4,
+      "guard": 8,
+      "horizon": 32,
+      "training": [
+        80962009,
+        80962013,
+        80962016,
+        80962901,
+        80963005,
+        80963009,
+        80963010,
+        80963019,
+        80963026,
+        80963032,
+        80962006,
+        80962007,
+        80962014,
+        80963008,
+        80963011,
+        80963012,
+        80963014,
+        80963015,
+        80963025,
+        80962002,
+        80962012,
+        80962015,
+        80963004,
+        80963007,
+        80963013,
+        80963016,
+        80963028,
+        80963030
+      ],
+      "calibration": [
+        80962005,
+        80962008,
+        80962010,
+        80963001,
+        80963006,
+        80963017,
+        80963027,
+        80963029,
+        80963031
+      ],
+      "held": [
+        80962003,
+        80962004,
+        80962011,
+        80963002,
+        80963003,
+        80963018,
+        80963020,
+        80963024
+      ],
+      "ap_ratio": 1.0336630204841808,
+      "gate_passed": false,
+      "clocks": {
+        "average_precision": 0.14813167061518837,
+        "positive_rate": 0.05263157894736842,
+        "held_false_positive_rate": 0.015151515151515152,
+        "early_events": 3,
+        "total_events": 24,
+        "event_coverage": 0.125,
+        "ece_10": 0.01807950874914187,
+        "brier": 0.04860058498411524,
+        "cutoff": 0.09669810017439054,
+        "by_credit": [
+          {
+            "seed": 80962003,
+            "observations": 177,
+            "positives": 18,
+            "ap": 0.6602693185738221,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962004,
+            "observations": 241,
+            "positives": 18,
+            "ap": 0.06756563898321707,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80962011,
+            "observations": 284,
+            "positives": 12,
+            "ap": 0.22142472562648505,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963002,
+            "observations": 465,
+            "positives": 17,
+            "ap": 0.41699551262783857,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963003,
+            "observations": 432,
+            "positives": 18,
+            "ap": 0.14683171370540035,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80963018,
+            "observations": 249,
+            "positives": 12,
+            "ap": 0.2235227075493582,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963020,
+            "observations": 253,
+            "positives": 19,
+            "ap": 0.1432151442195796,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963024,
+            "observations": 407,
+            "positives": 18,
+            "ap": 0.6030321032388576,
+            "detected": 1,
+            "events": 3
+          }
+        ],
+        "optimizer": [
+          {
+            "update": 1,
+            "weighted_bce": 0.8496686220169067
+          },
+          {
+            "update": 60,
+            "weighted_bce": 0.7394239902496338
+          },
+          {
+            "update": 120,
+            "weighted_bce": 0.787972092628479
+          },
+          {
+            "update": 180,
+            "weighted_bce": 0.7725197672843933
+          },
+          {
+            "update": 240,
+            "weighted_bce": 0.7337239980697632
+          }
+        ],
+        "weights_sha256": "25bbd417376605cfd6231e44f8e1c627e62726a12db99547f043ee7fed61c768"
+      },
+      "visual": {
+        "average_precision": 0.15311823007746336,
+        "positive_rate": 0.05263157894736842,
+        "held_false_positive_rate": 0.0361952861952862,
+        "early_events": 2,
+        "total_events": 24,
+        "event_coverage": 0.08333333333333333,
+        "ece_10": 0.017620542212922186,
+        "brier": 0.048021299150486564,
+        "cutoff": 0.11635520054648639,
+        "by_credit": [
+          {
+            "seed": 80962003,
+            "observations": 177,
+            "positives": 18,
+            "ap": 0.3108947486616636,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80962004,
+            "observations": 241,
+            "positives": 18,
+            "ap": 0.17196992036505301,
+            "detected": 1,
+            "events": 3
+          },
+          {
+            "seed": 80962011,
+            "observations": 284,
+            "positives": 12,
+            "ap": 0.22944697103592113,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963002,
+            "observations": 465,
+            "positives": 17,
+            "ap": 0.092469332003579,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963003,
+            "observations": 432,
+            "positives": 18,
+            "ap": 0.28366108526703065,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963018,
+            "observations": 249,
+            "positives": 12,
+            "ap": 0.1593125804693947,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963020,
+            "observations": 253,
+            "positives": 19,
+            "ap": 0.3146228568676116,
+            "detected": 0,
+            "events": 3
+          },
+          {
+            "seed": 80963024,
+            "observations": 407,
+            "positives": 18,
+            "ap": 0.07020651227890147,
+            "detected": 0,
+            "events": 3
+          }
+        ],
+        "locator_error_native_pixels": {
+          "mean": 55.948089599609375,
+          "p50_p90": [
+            39.37447929382324,
+            136.4017684936524
+          ],
+          "within_16_pixels": 0.2874800637958533
+        },
+        "optimizer": [
+          {
+            "update": 1,
+            "risk_bce": 0.7169966101646423,
+            "location_ce": 6.661065578460693
+          },
+          {
+            "update": 60,
+            "risk_bce": 0.5810746550559998,
+            "location_ce": 4.585900783538818
+          },
+          {
+            "update": 180,
+            "risk_bce": 0.8157232403755188,
+            "location_ce": 3.5830495357513428
+          },
+          {
+            "update": 360,
+            "risk_bce": 0.4523824155330658,
+            "location_ce": 3.2320568561553955
+          },
+          {
+            "update": 540,
+            "risk_bce": 0.0783984586596489,
+            "location_ce": 3.003753662109375
+          }
+        ],
+        "weights_sha256": "f36d5fad65c401a432ec97cb230f8ff3f3c6c948e2f4c417ddae98216ac9d5f8"
+      }
+    }
+  ]
+}
