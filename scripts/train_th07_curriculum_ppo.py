@@ -121,7 +121,7 @@ def load_episode(root, entry, actor):
         if timeout:
             bootstrap = float(native_value.item())
             boundary = next_latent.numpy().astype(np.float64)
-    state = np.full(n + 1, "play", dtype="U16")
+    state = np.full(n + 1, "play", dtype="U20")
     if not timeout:
         state[-1] = "objective_terminal" if success else "game_over"
     reward = progress_reward(stage=stages, tick=ticks, spares=spares,

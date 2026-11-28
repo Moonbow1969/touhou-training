@@ -1,0 +1,37 @@
+{
+  "scope": "Offline lookup of Normal Reimu A preceding Letty attack. Engineering candidates for a later study; no enrollment or gameplay result.",
+  "original_source_receipt": "retail-source-audit.json",
+  "stage_script_sha256": "c443e28b86cb20eeb7613d786c7ff667c2bd39726bf7ffbb38a3c0e354db1b40",
+  "section": "TH07_ST1_BOSS3",
+  "labels": ["Boss Nonspell 2", "关底二非", "ボス 通常2"],
+  "stage_script": {
+    "sub": 39,
+    "entry_life": 15000,
+    "life_callback_threshold_0": 2000,
+    "timer_callback_threshold": 2400,
+    "normal_life_callback_sub": 48,
+    "normal_timer_callback_sub": 48,
+    "spell_start_opcodes_in_sub39": 0,
+    "following_normal_spell": {"sub": 48, "native_id": 7, "timer_threshold": 3000}
+  },
+  "entry_evidence": "Read back exact section selection and Normal/Reimu A stock HUD. Then on at least two aligned playable frames verify boss0 nonnull, spell_active==0, native callback timer threshold==2400, timer sub==48 and life threshold[0]==2000. Where available preserve current subId==39 at least once; the executing context can temporarily be a nested helper. A zero active bit or the absence of a banner alone cannot distinguish another nonspell. A spell ID can remain stale after its preceding card ends.",
+  "static_integer_fields": {
+    "boss0_pointer": "u32(0x12fe098)",
+    "spell_active": "u32(0x12fe0c8)",
+    "spell_id": "u32(0x12fe0d8), interpret only while active",
+    "life_threshold_0": "i32(boss0+0x2ebc)",
+    "timer_threshold": "i32(boss0+0x2edc)",
+    "timer_callback_sub": "i32(boss0+0x2ee0)",
+    "executing_sub_id": "i16(boss0+0x8f8); original 0x420090 passes boss+0x6e4 to 0x40e530; 0x40e5a1 stores signed sub ID at context+0x214"
+  },
+  "natural_continuation": "BOSS3 and BOSS4 use the same boss-entry adjustments, but only BOSS4 zeroes the relevant ECL time at 0x4f44. Selecting BOSS3 once allows its regular HP or timer callback to reach Sub48. Verify native activity change to spell_active==1, spell ID 7, timer threshold 3000, and cross-check original Winter Sign card name; the actual Stage Clear tally is the later success witness. Preserve uninterrupted controls/stocks and time to transition. The two timer thresholds are bounds on those individual callbacks, not a whole-credit timeout. Fields have source and PE support; the proposed nonspell live guard requires its own positive.",
+  "sources": [
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_games_def.json#L758-L761",
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_games_def.json#L1796-L1815",
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1050-L1061",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.hpp#L207-L217",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.cpp#L105-L111",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L440-L465",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L500-L546"
+  ]
+}
