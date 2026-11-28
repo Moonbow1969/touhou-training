@@ -13,7 +13,7 @@ static int poll_tick(void) {
         unsigned t=tick_source->tick;
         int64_t ns=tick_source->upper_ns;
         unsigned b=atomic_load_explicit(&tick_source->serial,memory_order_acquire);
-        if(a==b && a && !(a&1) && now_ns()-ns<25000000 && t>0){
+        if(a==b && a && !(a&1) && now_ns()-ns<150000000 && t>0){
             observed_stage=stage;
             return (int)t;
         }

@@ -174,6 +174,8 @@ def run(args):
                     if began and not ready:row['phase']='native_clock_unavailable'
                 if ready:
                     camera=area_camera(rgb)
+                    if native_tick4:
+                        previous_history,previous_frame=history.history.copy(),history.previous
                     if prev is None:
                         Image.fromarray(rgb).save(root/'first-policy-frame.png')
                         prev=camera
@@ -188,6 +190,14 @@ def run(args):
                 wire=key+(256 if native_tick4 and ready else 0)
                 proc.stdin.write(f'{wire}\n'.encode());proc.stdin.flush()
                 ack=proc.stdout.readline().split()
+                if native_tick4 and ready and len(ack)==3 and ack[0]==b'SKIP' and int(ack[1])==0:
+                    for saved_list in (frames,actions,prob,values):saved_list.pop()
+                    history.history,history.previous=previous_history,previous_frame
+                    prev=previous_frame
+                    row.update(phase='native_clock_unavailable',sampled_but_unapplied_mask=key,
+                               mask=0,x_applied_ns=int(ack[2]))
+                    logs.append(row)
+                    continue
                 if len(ack)!=3 or ack[0]!=b'KEY' or int(ack[1])!=key:
                     raise ValueError(f'Physical keyboard differed from the policy {ack}')
                 row.update(mask=key,x_applied_ns=int(ack[2]));logs.append(row)

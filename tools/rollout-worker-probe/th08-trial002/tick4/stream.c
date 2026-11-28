@@ -46,14 +46,15 @@ int main(void) {
         next &= 127;
         int apply_target=anchor<0?-1:anchor+4*stage_index;
         int apply_tick=is_policy?(apply_target<0?poll_tick():wait_tick(apply_target)):-1;
-        if(is_policy && (apply_tick<0 || camera_stage!=observed_stage))return 14;
+        int skipped=is_policy && (apply_tick<0 || camera_stage!=observed_stage);
+        if(skipped){is_policy=0;next=0;anchor=-1;stage_index=0;}
         if(is_policy && anchor<0){anchor=apply_tick;apply_target=anchor;anchor_stage=observed_stage;}
         for(int k=0;k<7;k++)if(((next^current)>>k)&1u)XTestFakeKeyEvent(d,keys[k],(next>>k)&1u,0);
         XSync(d,0);
         char keymap[32];XQueryKeymap(d,keymap);
         unsigned observed=0;
         for(int k=0;k<7;k++)if(((unsigned char)keymap[keys[k]/8]>>(keys[k]%8))&1u)observed|=1u<<k;
-        printf("KEY %u %lld\n",observed,(long long)now_ns());fflush(stdout);
+        printf("%s %u %lld\n",skipped?"SKIP":"KEY",observed,(long long)now_ns());fflush(stdout);
         if(observed!=next)return 5;
         current=next;
         if(is_policy){

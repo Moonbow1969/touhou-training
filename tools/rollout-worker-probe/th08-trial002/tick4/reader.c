@@ -45,16 +45,18 @@ int main(void) {
         copy_read(game,base+0x13ccac4,xy,8);
         valid = valid && copy_read(game,obj,&end,4) && tick == end;
         static unsigned saved_tick[3];
-        if(valid && mode==0 && flags==4 && stage<3 && tick>=saved_tick[stage]+8 && tick<65535 &&
+        unsigned count=tick+(flags==0);
+        if(valid && mode==0 && stage<3 && ((flags==4 && count>=saved_tick[stage]+8) ||
+           (flags==0 && count>saved_tick[stage])) && count<65535 &&
            cursor==origin+36+2*tick && origin) {
             static uint16_t payload[65535];
-            if(copy_read(game,origin+36,payload,2*tick)){
+            if(copy_read(game,origin+36,payload,2*count)){
                 char filename[96];
                 snprintf(filename,sizeof(filename),"Z:/capture/native-record-stage-%u.bin",stage+1);
                 FILE *dump=fopen("Z:/capture/native-record.tmp","wb");
-                if(dump){fwrite(&tick,4,1,dump);fwrite(payload,2,tick,dump);fclose(dump);
+                if(dump){fwrite(&count,4,1,dump);fwrite(payload,2,count,dump);fclose(dump);
                     if(MoveFileExA("Z:/capture/native-record.tmp",filename,MOVEFILE_REPLACE_EXISTING))
-                        saved_tick[stage]=tick;
+                        saved_tick[stage]=count;
                 }
             }
         }
