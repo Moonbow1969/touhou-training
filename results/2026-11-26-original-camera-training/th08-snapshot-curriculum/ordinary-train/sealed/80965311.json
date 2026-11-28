@@ -1,0 +1,105 @@
+{
+  "seed": 80965311,
+  "role": "train",
+  "policy_sha256": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "source_receipt_sha256": "e5ae281b847428035afcf15b44a096ac108fab4eccd2cf0e5c8dfa992b61cda5",
+  "file": "th08-80965311.npz",
+  "sha256": "0f3d4b7f3bfb23d5e298bf45c54667d376825eb8bc179fb0bf85febbcad68006",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "a9b70fe38fe3499ac8ac3cea074d2d230bbde5bd58dc913e5c0e4bda3fc26a18",
+  "timing_sha256": "75c34dfa2395d963d28eb1b46c227bdf748c148ae41472ca26fc39974ec335f5",
+  "input_gates_sha256": "21018fdb1a6003bea66deb71b0d5d0c8319cc5a99877262c7715260f456c1a62",
+  "stock_trace_sha256": "918db59e73cde949512535d44bdd6afb5148b219bedfb6a38dbdb62a9c7d3d87",
+  "terminal_photo_sha256": "aba48df9d6fd31aada014984b8bb12b410b842360d78761bf9ca6522e6f15ae9",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 816,
+  "physical_sampled_requests": 816,
+  "all_physical_requests_reforwarded": 816,
+  "excluded_terminal_proposal": null,
+  "raw_behavior_sha256": "fa0ac7e5834ec9fcf7623d56ba9b3b31d2ef9ee85f68c3155010a0013839073b",
+  "action_masks_with_native_consumption": 815,
+  "exact_complete_intervals": 813,
+  "native_intervals": 815,
+  "exact_four_tick_fraction": 0.9975460122699387,
+  "exact_x11_gates": 816,
+  "native_edges_verifiable": 529,
+  "exactly_observed_native_edges": 529,
+  "no_input_transition_frames_after_final_decision": 1,
+  "first_tick": 78,
+  "first_stage": 1,
+  "terminal_tick": 3337,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 3338,
+  "active_native_ticks_in_last_action": 0,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    1
+  ],
+  "terminal_stock": [
+    0,
+    1
+  ],
+  "life_events": [
+    {
+      "decision": 456,
+      "stage": 1,
+      "native_tick": 1902,
+      "next_tick": 1906,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 1,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 545,
+      "stage": 1,
+      "native_tick": 2258,
+      "next_tick": 2262,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 815,
+      "stage": 1,
+      "native_tick": 3338,
+      "next_tick": 3337,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 1,
+      "next_bombs": 1,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 3.5762786865234375e-06,
+  "max_critic_error": 2.086162567138672e-07,
+  "normal_rank_samples": 816,
+  "physical_normal_rank_samples": 816,
+  "terminal_glyph": 0.9989059567451477,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.0049833887043189366,
+    "progress_terminal": 0.21319959110656786,
+    "paid_progress": 0.2082162024022489,
+    "positive_same_life_bomb_uses": 4,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.00000000000004,
+    "lambda_life_1_undiscounted_delta": -4.816000000000051,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "Post-terminal proposal cannot be attributed unambiguously to the preceding consumed action",
+    "At least one sampled action has no native consumption in its assigned interval"
+  ]
+}
