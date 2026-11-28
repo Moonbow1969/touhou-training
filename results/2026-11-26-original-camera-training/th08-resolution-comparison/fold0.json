@@ -1,0 +1,467 @@
+{
+  "fold": 0,
+  "held": [
+    80964002,
+    80964013,
+    80964017,
+    80964020,
+    80964023,
+    80964031
+  ],
+  "clocks": {
+    "average_precision": 0.07178816857470068,
+    "positive_rate": 0.04164997997597117,
+    "held_false_positive_rate": 0.020476389469285417,
+    "early_events": 1,
+    "total_events": 18,
+    "event_coverage": 0.05555555555555555,
+    "ece_10": 0.009723565667451655,
+    "brier": 0.03963471612484783,
+    "cutoff": 0.06893621186336743,
+    "by_credit": [
+      {
+        "seed": 80964002,
+        "observations": 464,
+        "positives": 19,
+        "ap": 0.05599511375597869,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964013,
+        "observations": 513,
+        "positives": 18,
+        "ap": 0.08081231492484256,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964017,
+        "observations": 292,
+        "positives": 12,
+        "ap": 0.5337269836539702,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964020,
+        "observations": 503,
+        "positives": 18,
+        "ap": 0.11913789870480167,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80964023,
+        "observations": 396,
+        "positives": 19,
+        "ap": 0.04864684175688003,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964031,
+        "observations": 329,
+        "positives": 18,
+        "ap": 0.46233454790374306,
+        "detected": 0,
+        "events": 3
+      }
+    ],
+    "optimizer": [
+      {
+        "update": 1,
+        "weighted_bce": 0.8970129489898682
+      },
+      {
+        "update": 60,
+        "weighted_bce": 0.8208717107772827
+      },
+      {
+        "update": 120,
+        "weighted_bce": 0.7625159025192261
+      },
+      {
+        "update": 180,
+        "weighted_bce": 0.7657204866409302
+      },
+      {
+        "update": 240,
+        "weighted_bce": 0.7222386598587036
+      }
+    ],
+    "weights_sha256": "79529eef66c05b10eab228873b2a4aa4b351c9eac96ac22be944e5a3f81ab7a7"
+  },
+  "arms": {
+    "96-learned": {
+      "average_precision": 0.11642040041368151,
+      "positive_rate": 0.04164997997597117,
+      "held_false_positive_rate": 0.027580442958629336,
+      "early_events": 4,
+      "total_events": 18,
+      "event_coverage": 0.2222222222222222,
+      "ece_10": 0.012882578073193218,
+      "brier": 0.03865359359982654,
+      "cutoff": 0.09304594550557198,
+      "by_credit": [
+        {
+          "seed": 80964002,
+          "observations": 464,
+          "positives": 19,
+          "ap": 0.13026625777884182,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964013,
+          "observations": 513,
+          "positives": 18,
+          "ap": 0.10887955275518034,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964017,
+          "observations": 292,
+          "positives": 12,
+          "ap": 0.2516190319004575,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964020,
+          "observations": 503,
+          "positives": 18,
+          "ap": 0.11404112649984416,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964023,
+          "observations": 396,
+          "positives": 19,
+          "ap": 0.17110447513689186,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964031,
+          "observations": 329,
+          "positives": 18,
+          "ap": 0.09960992025392053,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        52.79923629760742,
+        166.5895477294922
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.8203107118606567,
+          "location_ce": 6.702548503875732
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.32866331934928894,
+          "location_ce": 4.3361945152282715
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.2842479646205902,
+          "location_ce": 3.673786163330078
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.42114001512527466,
+          "location_ce": 3.3735158443450928
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.3072899281978607,
+          "location_ce": 3.3453691005706787
+        }
+      ],
+      "weights_sha256": "e23289d6d03e547f905e771ec10d4f89d946d022f7a138ca113b596c939545e5",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "96-coordinates": {
+      "average_precision": 0.0763485724034138,
+      "positive_rate": 0.04164997997597117,
+      "held_false_positive_rate": 0.08483075637275386,
+      "early_events": 5,
+      "total_events": 18,
+      "event_coverage": 0.2777777777777778,
+      "ece_10": 0.008240068238460112,
+      "brier": 0.03962504808510373,
+      "cutoff": 0.09037229768761997,
+      "by_credit": [
+        {
+          "seed": 80964002,
+          "observations": 464,
+          "positives": 19,
+          "ap": 0.04782413591100362,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964013,
+          "observations": 513,
+          "positives": 18,
+          "ap": 0.14076881275181657,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964017,
+          "observations": 292,
+          "positives": 12,
+          "ap": 0.1454390489391804,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964020,
+          "observations": 503,
+          "positives": 18,
+          "ap": 0.053131162744444425,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964023,
+          "observations": 396,
+          "positives": 19,
+          "ap": 0.09668616364709007,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964031,
+          "observations": 329,
+          "positives": 18,
+          "ap": 0.12725912214887639,
+          "detected": 2,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.8082057237625122,
+          "location_ce": 6.702548503875732
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.37520506978034973,
+          "location_ce": 4.081592082977295
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.20336978137493134,
+          "location_ce": 3.131115436553955
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.25338947772979736,
+          "location_ce": 3.1797966957092285
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.05482291057705879,
+          "location_ce": 2.9890761375427246
+        }
+      ],
+      "weights_sha256": "aa7c277ff11f2b883d4823317cbc1962f7029c883390628b7712af8f13bf3138",
+      "gate_passed": false
+    },
+    "192-learned": {
+      "average_precision": 0.10623149080335985,
+      "positive_rate": 0.04164997997597117,
+      "held_false_positive_rate": 0.012954450480568324,
+      "early_events": 3,
+      "total_events": 18,
+      "event_coverage": 0.16666666666666666,
+      "ece_10": 0.010511895855111277,
+      "brier": 0.03926009248475034,
+      "cutoff": 0.07844344113902223,
+      "by_credit": [
+        {
+          "seed": 80964002,
+          "observations": 464,
+          "positives": 19,
+          "ap": 0.07373892781752323,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964013,
+          "observations": 513,
+          "positives": 18,
+          "ap": 0.041612780522077654,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964017,
+          "observations": 292,
+          "positives": 12,
+          "ap": 0.07150779480006163,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964020,
+          "observations": 503,
+          "positives": 18,
+          "ap": 0.30185834831814845,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964023,
+          "observations": 396,
+          "positives": 19,
+          "ap": 0.31677773684848415,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964031,
+          "observations": 329,
+          "positives": 18,
+          "ap": 0.08751970956255985,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        63.51931381225586,
+        150.95274658203127
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.8243231177330017,
+          "location_ce": 8.132988929748535
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.38036471605300903,
+          "location_ce": 5.9459075927734375
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.48782047629356384,
+          "location_ce": 5.3972086906433105
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.6882969737052917,
+          "location_ce": 5.108127593994141
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.21058788895606995,
+          "location_ce": 5.121547698974609
+        }
+      ],
+      "weights_sha256": "a64bc6c7eb52cd5a58ee85a79c97f0e091815e3df1a2a274d9dc1e543e5d178b",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "192-coordinates": {
+      "average_precision": 0.09753720590403815,
+      "positive_rate": 0.04164997997597117,
+      "held_false_positive_rate": 0.08023401587964897,
+      "early_events": 6,
+      "total_events": 18,
+      "event_coverage": 0.3333333333333333,
+      "ece_10": 0.013127974051097007,
+      "brier": 0.03916678283581905,
+      "cutoff": 0.10146408536767883,
+      "by_credit": [
+        {
+          "seed": 80964002,
+          "observations": 464,
+          "positives": 19,
+          "ap": 0.050660581412107546,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964013,
+          "observations": 513,
+          "positives": 18,
+          "ap": 0.0749742016096879,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964017,
+          "observations": 292,
+          "positives": 12,
+          "ap": 0.15158409327447406,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964020,
+          "observations": 503,
+          "positives": 18,
+          "ap": 0.11458292793446469,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964023,
+          "observations": 396,
+          "positives": 19,
+          "ap": 0.26452956964648133,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964031,
+          "observations": 329,
+          "positives": 18,
+          "ap": 0.1448191225511792,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.831110954284668,
+          "location_ce": 8.132988929748535
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.5707014799118042,
+          "location_ce": 5.634685039520264
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.3675417900085449,
+          "location_ce": 5.085849761962891
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.35909390449523926,
+          "location_ce": 5.060452461242676
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.07774082571268082,
+          "location_ce": 4.77980899810791
+        }
+      ],
+      "weights_sha256": "08eba35b712e762a203660a2e2f9ae1f8871614aea9ea2e84b95ab58d9bc2853",
+      "gate_passed": false
+    }
+  }
+}

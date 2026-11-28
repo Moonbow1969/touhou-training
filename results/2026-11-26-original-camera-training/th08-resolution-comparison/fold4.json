@@ -1,0 +1,426 @@
+{
+  "fold": 4,
+  "held": [
+    80964006,
+    80964022,
+    80964025,
+    80964026,
+    80964029
+  ],
+  "clocks": {
+    "average_precision": 0.13164203629431168,
+    "positive_rate": 0.05088622069754145,
+    "held_false_positive_rate": 0.016867469879518072,
+    "early_events": 2,
+    "total_events": 15,
+    "event_coverage": 0.13333333333333333,
+    "ece_10": 0.010010397349176164,
+    "brier": 0.0467924190143871,
+    "cutoff": 0.09347641389783333,
+    "by_credit": [
+      {
+        "seed": 80964006,
+        "observations": 440,
+        "positives": 20,
+        "ap": 0.0663366507236582,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964022,
+        "observations": 358,
+        "positives": 12,
+        "ap": 0.1371198968253077,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80964025,
+        "observations": 251,
+        "positives": 18,
+        "ap": 0.6936567275797159,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964026,
+        "observations": 382,
+        "positives": 20,
+        "ap": 0.4652791158588038,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80964029,
+        "observations": 318,
+        "positives": 19,
+        "ap": 0.11459018018513599,
+        "detected": 0,
+        "events": 3
+      }
+    ],
+    "optimizer": [
+      {
+        "update": 1,
+        "weighted_bce": 0.9029580950737
+      },
+      {
+        "update": 60,
+        "weighted_bce": 0.790534496307373
+      },
+      {
+        "update": 120,
+        "weighted_bce": 0.7766176462173462
+      },
+      {
+        "update": 180,
+        "weighted_bce": 0.70920729637146
+      },
+      {
+        "update": 240,
+        "weighted_bce": 0.7230966687202454
+      }
+    ],
+    "weights_sha256": "29bc1e592db3c38132fd9cca0f32633fb172cbd0fce88a31898af96c5ef010a6"
+  },
+  "arms": {
+    "96-learned": {
+      "average_precision": 0.10368370706872318,
+      "positive_rate": 0.05088622069754145,
+      "held_false_positive_rate": 0.04156626506024096,
+      "early_events": 2,
+      "total_events": 15,
+      "event_coverage": 0.13333333333333333,
+      "ece_10": 0.012143037001916438,
+      "brier": 0.04739415632721151,
+      "cutoff": 0.10665810201130949,
+      "by_credit": [
+        {
+          "seed": 80964006,
+          "observations": 440,
+          "positives": 20,
+          "ap": 0.19075988145146366,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964022,
+          "observations": 358,
+          "positives": 12,
+          "ap": 0.10587182646674757,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964025,
+          "observations": 251,
+          "positives": 18,
+          "ap": 0.13025286812669642,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964026,
+          "observations": 382,
+          "positives": 20,
+          "ap": 0.12296587183046699,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964029,
+          "observations": 318,
+          "positives": 19,
+          "ap": 0.09542062760230363,
+          "detected": 1,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        46.168914794921875,
+        123.58411102294923
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.7953939437866211,
+          "location_ce": 6.700280666351318
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.44950976967811584,
+          "location_ce": 4.813014030456543
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.13272233307361603,
+          "location_ce": 3.6211204528808594
+        },
+        {
+          "update": 360,
+          "risk_bce": 1.1636193990707397,
+          "location_ce": 3.659381151199341
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.2844345271587372,
+          "location_ce": 3.287827253341675
+        }
+      ],
+      "weights_sha256": "52762f3926e61d6addfa38688bafdd4917afbe5446ea9f2e114363719d353516",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "96-coordinates": {
+      "average_precision": 0.11900901044016002,
+      "positive_rate": 0.05088622069754145,
+      "held_false_positive_rate": 0.06385542168674699,
+      "early_events": 3,
+      "total_events": 15,
+      "event_coverage": 0.2,
+      "ece_10": 0.02182733747675087,
+      "brier": 0.04757468687590666,
+      "cutoff": 0.12523535734937657,
+      "by_credit": [
+        {
+          "seed": 80964006,
+          "observations": 440,
+          "positives": 20,
+          "ap": 0.16931145159521588,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964022,
+          "observations": 358,
+          "positives": 12,
+          "ap": 0.05900387059769363,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964025,
+          "observations": 251,
+          "positives": 18,
+          "ap": 0.19075122478397236,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964026,
+          "observations": 382,
+          "positives": 20,
+          "ap": 0.11272164855084617,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964029,
+          "observations": 318,
+          "positives": 19,
+          "ap": 0.31949120873006326,
+          "detected": 1,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.818210780620575,
+          "location_ce": 6.700280666351318
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.4294602572917938,
+          "location_ce": 4.514396667480469
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.13902145624160767,
+          "location_ce": 3.4398674964904785
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.5110840201377869,
+          "location_ce": 3.269577741622925
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.10479670763015747,
+          "location_ce": 3.071216583251953
+        }
+      ],
+      "weights_sha256": "22eff43901c1c1eb21cb0047c60e870f223970db2f2e5c3ebcb613609e6acc36",
+      "gate_passed": false
+    },
+    "192-learned": {
+      "average_precision": 0.09590219864195289,
+      "positive_rate": 0.05088622069754145,
+      "held_false_positive_rate": 0.056626506024096385,
+      "early_events": 4,
+      "total_events": 15,
+      "event_coverage": 0.26666666666666666,
+      "ece_10": 0.010800507825327101,
+      "brier": 0.047371938467423984,
+      "cutoff": 0.11629809239906147,
+      "by_credit": [
+        {
+          "seed": 80964006,
+          "observations": 440,
+          "positives": 20,
+          "ap": 0.12850481573442418,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964022,
+          "observations": 358,
+          "positives": 12,
+          "ap": 0.18838219507121087,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964025,
+          "observations": 251,
+          "positives": 18,
+          "ap": 0.06171874908593206,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964026,
+          "observations": 382,
+          "positives": 20,
+          "ap": 0.12339862903216885,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964029,
+          "observations": 318,
+          "positives": 19,
+          "ap": 0.06953702416695517,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        66.5938491821289,
+        143.39042053222659
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.7992995381355286,
+          "location_ce": 7.989372253417969
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.4670989215373993,
+          "location_ce": 6.160575866699219
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.18050046265125275,
+          "location_ce": 5.510624885559082
+        },
+        {
+          "update": 360,
+          "risk_bce": 1.639298439025879,
+          "location_ce": 5.338687419891357
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.21863146126270294,
+          "location_ce": 4.9327874183654785
+        }
+      ],
+      "weights_sha256": "20934957448914e72bed582e29539a9800962c2e3bc08074c58838cbac5fa767",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "192-coordinates": {
+      "average_precision": 0.14011001854553842,
+      "positive_rate": 0.05088622069754145,
+      "held_false_positive_rate": 0.07168674698795181,
+      "early_events": 4,
+      "total_events": 15,
+      "event_coverage": 0.26666666666666666,
+      "ece_10": 0.017086643698556666,
+      "brier": 0.04718263921111518,
+      "cutoff": 0.14701075129847924,
+      "by_credit": [
+        {
+          "seed": 80964006,
+          "observations": 440,
+          "positives": 20,
+          "ap": 0.12319245041113495,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964022,
+          "observations": 358,
+          "positives": 12,
+          "ap": 0.09320380685982738,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964025,
+          "observations": 251,
+          "positives": 18,
+          "ap": 0.22805741100688218,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964026,
+          "observations": 382,
+          "positives": 20,
+          "ap": 0.1359156312387107,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964029,
+          "observations": 318,
+          "positives": 19,
+          "ap": 0.28780181567152335,
+          "detected": 1,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.8128895163536072,
+          "location_ce": 7.989372253417969
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.37479162216186523,
+          "location_ce": 5.992000102996826
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.1745455265045166,
+          "location_ce": 5.2593231201171875
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.4805181622505188,
+          "location_ce": 5.086514472961426
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.16305121779441833,
+          "location_ce": 4.851068019866943
+        }
+      ],
+      "weights_sha256": "0711272227aee0d5b0d749248f71ca8bba1461631857a730c3478695e2b09888",
+      "gate_passed": false
+    }
+  }
+}

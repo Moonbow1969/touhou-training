@@ -1,0 +1,467 @@
+{
+  "fold": 1,
+  "held": [
+    80964007,
+    80964008,
+    80964011,
+    80964016,
+    80964018,
+    80964019
+  ],
+  "clocks": {
+    "average_precision": 0.053505356097554906,
+    "positive_rate": 0.030311695739205034,
+    "held_false_positive_rate": 0.09820112061338838,
+    "early_events": 2,
+    "total_events": 18,
+    "event_coverage": 0.1111111111111111,
+    "ece_10": 0.01981634643452906,
+    "brier": 0.029983109821826354,
+    "cutoff": 0.10593928889925912,
+    "by_credit": [
+      {
+        "seed": 80964007,
+        "observations": 402,
+        "positives": 18,
+        "ap": 0.05920622462325298,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964008,
+        "observations": 577,
+        "positives": 19,
+        "ap": 0.44526961996160036,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964011,
+        "observations": 929,
+        "positives": 19,
+        "ap": 0.030672913362028754,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80964016,
+        "observations": 295,
+        "positives": 13,
+        "ap": 0.05458843908802548,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964018,
+        "observations": 340,
+        "positives": 19,
+        "ap": 0.07765983381313027,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80964019,
+        "observations": 954,
+        "positives": 18,
+        "ap": 0.09702249206266547,
+        "detected": 1,
+        "events": 3
+      }
+    ],
+    "optimizer": [
+      {
+        "update": 1,
+        "weighted_bce": 0.79862380027771
+      },
+      {
+        "update": 60,
+        "weighted_bce": 0.7570713758468628
+      },
+      {
+        "update": 120,
+        "weighted_bce": 0.7357337474822998
+      },
+      {
+        "update": 180,
+        "weighted_bce": 0.6945839524269104
+      },
+      {
+        "update": 240,
+        "weighted_bce": 0.7100907564163208
+      }
+    ],
+    "weights_sha256": "309f7e27b20c28ef0916d01f8a0230155221867a5bd25041e24c892d13711742"
+  },
+  "arms": {
+    "96-learned": {
+      "average_precision": 0.04441115892929093,
+      "positive_rate": 0.030311695739205034,
+      "held_false_positive_rate": 0.0843409023886759,
+      "early_events": 8,
+      "total_events": 18,
+      "event_coverage": 0.4444444444444444,
+      "ece_10": 0.0175247880471882,
+      "brier": 0.029811824496261206,
+      "cutoff": 0.09958212310930867,
+      "by_credit": [
+        {
+          "seed": 80964007,
+          "observations": 402,
+          "positives": 18,
+          "ap": 0.05667524540355632,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964008,
+          "observations": 577,
+          "positives": 19,
+          "ap": 0.10008417934880656,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964011,
+          "observations": 929,
+          "positives": 19,
+          "ap": 0.02902106566760892,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964016,
+          "observations": 295,
+          "positives": 13,
+          "ap": 0.23768784494275996,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964018,
+          "observations": 340,
+          "positives": 19,
+          "ap": 0.10550045284972538,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964019,
+          "observations": 954,
+          "positives": 18,
+          "ap": 0.03471165196203896,
+          "detected": 2,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        47.0336799621582,
+        165.42114562988283
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.9908429980278015,
+          "location_ce": 6.535382270812988
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.18983589112758636,
+          "location_ce": 4.644079685211182
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.5896603465080261,
+          "location_ce": 3.883057117462158
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.14121460914611816,
+          "location_ce": 3.2441658973693848
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.5409191250801086,
+          "location_ce": 3.060673236846924
+        }
+      ],
+      "weights_sha256": "ae4d387f5e4a6160ec8ca5ded71bb91cf96b788bd9956afc3b3acf8d1e5872c4",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "96-coordinates": {
+      "average_precision": 0.0523981665233092,
+      "positive_rate": 0.030311695739205034,
+      "held_false_positive_rate": 0.02890002948982601,
+      "early_events": 1,
+      "total_events": 18,
+      "event_coverage": 0.05555555555555555,
+      "ece_10": 0.014838451098417867,
+      "brier": 0.029523408393284087,
+      "cutoff": 0.11821279784879403,
+      "by_credit": [
+        {
+          "seed": 80964007,
+          "observations": 402,
+          "positives": 18,
+          "ap": 0.05863081165395953,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964008,
+          "observations": 577,
+          "positives": 19,
+          "ap": 0.05888432692514036,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964011,
+          "observations": 929,
+          "positives": 19,
+          "ap": 0.06817564267481094,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964016,
+          "observations": 295,
+          "positives": 13,
+          "ap": 0.11014615893243035,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964018,
+          "observations": 340,
+          "positives": 19,
+          "ap": 0.1706388504335748,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964019,
+          "observations": 954,
+          "positives": 18,
+          "ap": 0.026971804952494544,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.9675621390342712,
+          "location_ce": 6.535382270812988
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.2041446715593338,
+          "location_ce": 4.082650661468506
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.3259620666503906,
+          "location_ce": 3.550772190093994
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.08526881039142609,
+          "location_ce": 3.0319979190826416
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.3423120081424713,
+          "location_ce": 2.8038740158081055
+        }
+      ],
+      "weights_sha256": "3e25d4397bbe37c974d46ced410459d3b0d4e822ffe871ccf2ec86c262011229",
+      "gate_passed": false
+    },
+    "192-learned": {
+      "average_precision": 0.04591420049994353,
+      "positive_rate": 0.030311695739205034,
+      "held_false_positive_rate": 0.11707460925980537,
+      "early_events": 6,
+      "total_events": 18,
+      "event_coverage": 0.3333333333333333,
+      "ece_10": 0.02512510898111321,
+      "brier": 0.0325405111332046,
+      "cutoff": 0.12850042100711956,
+      "by_credit": [
+        {
+          "seed": 80964007,
+          "observations": 402,
+          "positives": 18,
+          "ap": 0.07308208240535623,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964008,
+          "observations": 577,
+          "positives": 19,
+          "ap": 0.11228907787983976,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964011,
+          "observations": 929,
+          "positives": 19,
+          "ap": 0.03209677944620804,
+          "detected": 2,
+          "events": 3
+        },
+        {
+          "seed": 80964016,
+          "observations": 295,
+          "positives": 13,
+          "ap": 0.20276699325717915,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964018,
+          "observations": 340,
+          "positives": 19,
+          "ap": 0.09187046950037554,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964019,
+          "observations": 954,
+          "positives": 18,
+          "ap": 0.025106217301694798,
+          "detected": 1,
+          "events": 3
+        }
+      ],
+      "locator_native_pixels_p50_p90": [
+        76.30726623535156,
+        178.1167419433594
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.9857816100120544,
+          "location_ce": 7.934842109680176
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.3060726225376129,
+          "location_ce": 6.231015205383301
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.7598158121109009,
+          "location_ce": 6.023708820343018
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.13646188378334045,
+          "location_ce": 5.333598613739014
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.6524354219436646,
+          "location_ce": 4.92340612411499
+        }
+      ],
+      "weights_sha256": "01b6df8a0eefea35fb1d52cf09a12142af546f3b9f63aaa8c172b54a32f3934f",
+      "gate_passed": false,
+      "bc_eligibility_gate_passed": false
+    },
+    "192-coordinates": {
+      "average_precision": 0.07247762796525355,
+      "positive_rate": 0.030311695739205034,
+      "held_false_positive_rate": 0.023296962547920966,
+      "early_events": 2,
+      "total_events": 18,
+      "event_coverage": 0.1111111111111111,
+      "ece_10": 0.010836860935863753,
+      "brier": 0.02919975896927097,
+      "cutoff": 0.12282845414132915,
+      "by_credit": [
+        {
+          "seed": 80964007,
+          "observations": 402,
+          "positives": 18,
+          "ap": 0.09729355061451689,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964008,
+          "observations": 577,
+          "positives": 19,
+          "ap": 0.11639856267488104,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964011,
+          "observations": 929,
+          "positives": 19,
+          "ap": 0.1313473526454255,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964016,
+          "observations": 295,
+          "positives": 13,
+          "ap": 0.09839586051615981,
+          "detected": 1,
+          "events": 3
+        },
+        {
+          "seed": 80964018,
+          "observations": 340,
+          "positives": 19,
+          "ap": 0.08573546809152903,
+          "detected": 0,
+          "events": 3
+        },
+        {
+          "seed": 80964019,
+          "observations": 954,
+          "positives": 18,
+          "ap": 0.031720610808805914,
+          "detected": 0,
+          "events": 3
+        }
+      ],
+      "optimizer": [
+        {
+          "update": 1,
+          "risk_bce": 0.9884349703788757,
+          "location_ce": 7.934842109680176
+        },
+        {
+          "update": 60,
+          "risk_bce": 0.1922309845685959,
+          "location_ce": 5.708220958709717
+        },
+        {
+          "update": 180,
+          "risk_bce": 0.3692122995853424,
+          "location_ce": 5.44455099105835
+        },
+        {
+          "update": 360,
+          "risk_bce": 0.13342197239398956,
+          "location_ce": 4.840286731719971
+        },
+        {
+          "update": 540,
+          "risk_bce": 0.4785597026348114,
+          "location_ce": 4.703601360321045
+        }
+      ],
+      "weights_sha256": "62701a9b31561d157dada29b887e0253c1e926eb66620ffdaa66f271712a04b1",
+      "gate_passed": false
+    }
+  }
+}
