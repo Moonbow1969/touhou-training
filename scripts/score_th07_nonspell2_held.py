@@ -1,6 +1,7 @@
 """Independently verify and score the registered TH07 Normal Letty Nonspell 2 holdout."""
 
 import argparse
+from collections import Counter, defaultdict
 import math
 from pathlib import Path
 import time
@@ -56,9 +57,10 @@ def arm_clear(success, denominator):
                 exact_binomial_95=exact_binomial(success, denominator))
 
 
-def matched_clear(rows, *, assign_unverified_as_no_evidence=False):
+def matched_clear(rows, *, assign_unverified_as_no_evidence=False, registered_seeds=SEEDS, bootstrap_seed=BOOTSTRAP_SEED):
     lookup = {(row["seed"], row["arm"]): row for row in rows}
-    seeds = [seed for seed in SEEDS if assign_unverified_as_no_evidence or all((seed, arm) in lookup for arm in ARMS)]
+    seeds = [seed for seed in registered_seeds
+             if assign_unverified_as_no_evidence or all((seed, arm) in lookup for arm in ARMS)]
     groups = np.asarray([[true_clear(lookup.get((seed, arm))) for seed in seeds] for arm in ARMS], dtype=bool)
     result = dict(matched_pairs=len(seeds), seeds=seeds,
                   arms={arm: arm_clear(int(group.sum()), len(seeds)) for arm, group in zip(ARMS, groups, strict=True)})
@@ -70,7 +72,7 @@ def matched_clear(rows, *, assign_unverified_as_no_evidence=False):
     favours_parent = int((parent & ~candidate).sum())
     discordant = favours_candidate + favours_parent
     differences = candidate.astype(np.int8) - parent.astype(np.int8)
-    rng = np.random.default_rng(BOOTSTRAP_SEED)
+    rng = np.random.default_rng(bootstrap_seed)
     draw = rng.integers(0, len(seeds), (BOOTSTRAP_ITERATIONS, len(seeds)))
     resampled = differences[draw].mean(axis=1)
     # Simultaneous exact limits on the two discordant probabilities.
@@ -83,7 +85,7 @@ def matched_clear(rows, *, assign_unverified_as_no_evidence=False):
         candidate_only_clears=favours_candidate, parent_only_clears=favours_parent, both_clear=int((parent & candidate).sum()),
         neither_has_verified_clear=int((~parent & ~candidate).sum()),
         paired_bootstrap_percentile_95=np.quantile(resampled, [.025, .975]).tolist(),
-        paired_bootstrap_draws=BOOTSTRAP_ITERATIONS, paired_bootstrap_seed=BOOTSTRAP_SEED,
+        paired_bootstrap_draws=BOOTSTRAP_ITERATIONS, paired_bootstrap_seed=bootstrap_seed,
         conservative_exact_difference_95=conservative, exact_discordant_two_sided_p=exact_p,
     )
 
@@ -151,37 +153,56 @@ def exclusion_diagnostics(rows):
                                 "Eligibility occurs after assignment and may depend on length or game outcome."))
 
 
-def final_results(rows, registration_sha256, release_sha256, index_sha256):
+def phase_purity(rows):
+    result = {}
+    for arm in ARMS:
+        complete = [row["native_duration_purity"] for row in rows if row["arm"] == arm and "native_duration_purity" in row]
+        by_phase = defaultdict(Counter)
+        for record in complete:
+            for phase, counts in record["by_decision_start_phase"].items():
+                by_phase[phase].update(counts)
+        pooled = sum(by_phase.values(), Counter())
+        result[arm] = dict(physical_originals=len(complete), native_windows=dict(pooled),
+                           fully_pure_originals=sum(record["first_nonpure_native_window"] is None for record in complete),
+                           by_decision_start_phase={name: dict(counts) for name, counts in by_phase.items()})
+    return dict(arms=result, interpretation=("A window is pure when its captured decision clock and every available original "
+                                             "native word agree with the sampled request across its full positive duration. "
+                                             "Missing slots never qualify, and transitions are grouped by their decision-start phase. "
+                                             "The registered four-tick gate remains in force."))
+
+
+def final_results(rows, registration_sha256, release_sha256, index_sha256, *, seeds=SEEDS, phase_duration_purity=False):
     physical = [r for r in rows if r["physical_endpoint_verified"]]
     strict = [r for r in physical if r["qualified"]]
     partial, before_error, zero_time = timing_sensitivity(physical)
-    strict_estimate = matched_clear(strict)
-    physical_estimate = matched_clear(physical)
-    bounds = missing_bounds(physical)
+    sample = dict(registered_seeds=seeds, bootstrap_seed=seeds[0] - 1)
+    strict_estimate = matched_clear(strict, **sample)
+    physical_estimate = matched_clear(physical, **sample)
+    bounds = missing_bounds(physical, registered=len(seeds))
     candidate_floor = bounds["arms"][ARMS[1]]["objective_rate_bounds"][0]
     difference_floor = bounds["candidate_minus_parent_bounds"][0]
     reverse = [name for name, item in (("strict_pairs", strict_estimate), ("known_physical_pairs", physical_estimate))
                if item["candidate_minus_parent_rate"] is not None and item["candidate_minus_parent_rate"] < 0.]
-    return dict(
+    result = dict(
         role="held", scenario=PRECEDING, original_stock=list(STOCK), max_playable_native_elapsed_ticks=HORIZON,
-        registered_pairs=len(SEEDS), dispositions=len(rows), registration_sha256=registration_sha256,
+        registered_pairs=len(seeds), dispositions=len(rows), registration_sha256=registration_sha256,
         release_sha256=release_sha256, intake_index_sha256=index_sha256,
-        primary_all_assigned=matched_clear(physical, assign_unverified_as_no_evidence=True),
+        primary_all_assigned=matched_clear(physical, assign_unverified_as_no_evidence=True, **sample),
         missing_endpoint_sensitivity=bounds,
         exploratory_informative_exclusion=exclusion_diagnostics(rows),
         strict_matching_sensitivity=strict_estimate,
         known_physical_pairs_sensitivity=physical_estimate,
         known_physical_arms_descriptive={arm: arm_clear(sum(true_clear(r) for r in physical if r["arm"] == arm),
                                                        sum(r["arm"] == arm for r in physical)) for arm in ARMS},
-        stage_clear_censor_at_first_nonexact=matched_clear(before_error),
-        stage_clear_censor_at_first_nonexact_bounds=missing_bounds(before_error),
+        stage_clear_censor_at_first_nonexact=matched_clear(before_error, **sample),
+        stage_clear_censor_at_first_nonexact_bounds=missing_bounds(before_error, registered=len(seeds)),
         advancement_gate=dict(required_candidate_rate=.50, required_rate_gain=.20, candidate_conservative_rate=candidate_floor,
                               conservative_rate_gain=difference_floor,
                               thresholds_met=candidate_floor >= .50 and difference_floor >= .20 - 1e-12,
                               companion_direction_reversals=reverse,
                               manual_review_required_for_discordance=bool(reverse)),
         native_mortality_and_resources={
-            key: paired_comparison(items, registered_seeds=SEEDS, bootstrap_seed=BOOTSTRAP_SEED)
+            key: paired_comparison(items, **sample)
             for key, items in (("strict_matched", strict), ("known_physical_matched", physical), ("censor_first_nonexact", partial))
         },
         all_physical_arms_native_resources={
@@ -201,11 +222,14 @@ def final_results(rows, registration_sha256, release_sha256, index_sha256):
                   "only earlier miss and Bomb events enter."),
         censoring="First-loss survival censors a no-loss original at a verified clear or exact live playable-time cap.",
     )
+    if phase_duration_purity:
+        result["exploratory_native_duration_purity"] = phase_purity(physical)
+    return result
 
 
-def watch(study, models, registration_sha256, release_sha256):
+def watch(study, models, registration_sha256, release_sha256, *, seeds=SEEDS, phase_duration_purity=False):
     registration, bound = bindings(study, models, registration_sha256=registration_sha256,
-                                   release_sha256=release_sha256, seeds=SEEDS, horizon=HORIZON)
+                                   release_sha256=release_sha256, seeds=seeds, horizon=HORIZON)
     official_sha = registration.get("original_sha256", registration.get("game_sha256"))
     require(official_sha == GAME and registration["scene"] == PRECEDING and registration["native_rank"] == 1
             and (registration["starting_spares"], registration["starting_bombs"]) == STOCK
@@ -215,7 +239,7 @@ def watch(study, models, registration_sha256, release_sha256):
     require(all(row["role"] == "held" and row["scenario"] == PRECEDING and 4 * row["decision_cap"] == HORIZON
                 and set(row["order"]) == set(ARMS) and len(row["order"]) == len(ARMS) for row in enrollment.values()),
             "Prospective assignment changed registered scope or paired order")
-    expected = [(seed, arm) for seed in SEEDS for arm in enrollment[seed]["order"]]
+    expected = [(seed, arm) for seed in seeds for arm in enrollment[seed]["order"]]
     store = study / "intake"
     store.mkdir(parents=True, exist_ok=True)
     records = {}
@@ -240,7 +264,7 @@ def watch(study, models, registration_sha256, release_sha256):
                         continue
                     record = evaluate(folder, models[arm], arm, enrollment[seed], bound,
                                       bound["registered_arm_sha256"][arm], horizon=HORIZON,
-                                      expected_stock=STOCK, verify_scene=True)
+                                      expected_stock=STOCK, verify_scene=True, phase_duration_purity=phase_duration_purity)
                 except (OSError, ValueError, KeyError, AssertionError) as error:
                     record = dict(seed=seed, arm=arm, role="held", qualified=False, physical_endpoint_verified=False,
                                   possible_in_game_exposure=(folder / "native-input.csv").is_file(),
@@ -266,7 +290,8 @@ def watch(study, models, registration_sha256, release_sha256):
                                    for r in rows]))
             if not missing:
                 save(study / "independent-held-results.json",
-                     final_results(rows, registration_sha256, release_sha256, sha(index)))
+                     final_results(rows, registration_sha256, release_sha256, sha(index), seeds=seeds,
+                                   phase_duration_purity=phase_duration_purity))
                 return
             published_count = len(records)
         time.sleep(8)
@@ -280,7 +305,11 @@ if __name__ == "__main__":
     cli.add_argument("candidate", type=Path)
     cli.add_argument("registration_sha256")
     cli.add_argument("release_sha256")
+    cli.add_argument("--first-seed", type=int, default=SEEDS[0])
+    cli.add_argument("--phase-duration-purity", action="store_true")
     args = cli.parse_args()
     torch.set_num_threads(1)
     watch(args.study, dict(zip(ARMS, (args.parent, args.candidate), strict=True)),
-          args.registration_sha256, args.release_sha256)
+          args.registration_sha256, args.release_sha256,
+          seeds=tuple(range(args.first_seed, args.first_seed + len(SEEDS))),
+          phase_duration_purity=args.phase_duration_purity)

@@ -73,6 +73,43 @@ def first_nonexact_window(controls, applied, words, end, outcome):
     return None
 
 
+def native_phase_duration_purity(controls, applied, words, end, phase):
+    by_phase = {}
+    first_impure = None
+    ticks = controls["tick"]
+    for i, (start, stop) in enumerate(zip(ticks, np.r_[ticks[1:], end], strict=True)):
+        start, stop = int(start), int(stop)
+        if start < phase["first_preceding_tick"]:
+            label = "before_nonspell2"
+        elif start <= phase["last_preceding_tick"]:
+            label = "nonspell2"
+        elif phase["first_active_native_tick"] is None or start < phase["first_active_native_tick"]:
+            label = "after_nonspell2_before_observed_final_spell"
+        elif start <= phase["last_active_native_tick"]:
+            label = "final_spell"
+        else:
+            label = "after_final_spell"
+        bucket = by_phase.setdefault(label, Counter())
+        actual = [words.get(tick, -1) for tick in range(start + 1, stop + 1)]
+        requested = int(controls[i]["requested"])
+        known = bool(actual) and -1 not in actual
+        control_bound = (all(applied[i][field] == start for field in ("camera_tick", "applied_tick", "frozen_tick"))
+                         and applied[i]["sequence"] == controls[i]["seq"] == i and applied[i]["requested_word"] == requested)
+        pure = known and control_bound and all(word == requested for word in actual)
+        variable = len(actual) != 4
+        bucket["windows"] += 1
+        bucket["pure"] += int(pure)
+        bucket["missing_slot"] += int(not known)
+        bucket["command_mismatch"] += int(not control_bound or (known and not pure))
+        bucket["variable_duration"] += int(variable)
+        bucket["pure_variable_duration"] += int(variable and pure)
+        bucket["native_ticks"] += len(actual)
+        if not pure and first_impure is None:
+            first_impure = dict(action_index=i, start_tick=start, next_tick=stop,
+                                actual_native_words=actual, requested_native_word=requested)
+    return dict(by_decision_start_phase=by_phase, first_nonpure_native_window=first_impure)
+
+
 def truncated_control_followup(exposure, slots, controls, original):
     issue = original["first_nonexact_window"]
     stop = issue["camera_native_tick"]
@@ -96,7 +133,7 @@ def truncated_control_followup(exposure, slots, controls, original):
         end_stock=[int(state[k]) for k in ("lives", "bombs")])
 
 
-def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3), verify_scene=False):
+def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3), verify_scene=False, phase_duration_purity=False):
     """Verify original outcomes/resources independently of actor-forward and action quality."""
     proof = run_path(str(OBSERVER / "record_proof.py"))["verify_archive"](folder)
     build = dict(row.split()[::-1] for row in (folder / "build.sha256").read_text().splitlines())
@@ -167,6 +204,8 @@ def observed_practice(folder, spec, *, horizon=HORIZON, expected_stock=(2, 3), v
                     and 2 in phase["native_finished_stage_observations"],
                     "Held Stage Clear did not bind original Boss Nonspell 2 → Normal spell ID7 → Stage Clear")
         result.update(verified_phase=phase, verified_section_complete=outcome == "practice_stage_clear")
+        if phase_duration_purity:
+            result["native_duration_purity"] = native_phase_duration_purity(controls, applied, slots[1], end, phase)
     result["first_nonexact_window"] = first_nonexact_window(controls, applied, slots[1], end, outcome)
     if result["first_nonexact_window"] is not None:
         result["censor_at_first_nonexact"] = truncated_control_followup(exposure, slots[1], controls, result)
@@ -231,7 +270,7 @@ def paired_comparison(rows, *, registered_seeds=SEEDS, bootstrap_seed=BOOTSTRAP_
 
 
 def evaluate(folder, actor, arm, enrollment, binding, arm_digest, *, horizon=HORIZON, expected_stock=(2, 3),
-             verify_scene=False):
+             verify_scene=False, phase_duration_purity=False):
     identity = dict(seed=enrollment["seed"], arm=arm, role="held", lane=enrollment["lane"])
     if verify_scene:
         identity.update(host=enrollment["host"], scenario=enrollment["scenario"])
@@ -251,7 +290,8 @@ def evaluate(folder, actor, arm, enrollment, binding, arm_digest, *, horizon=HOR
             and spec["policy_sha256"] == spec["sha256"] == binding["policies"][arm],
             "Held original seat, controller or policy differs from its registered arm")
     try:
-        measured = observed_practice(folder, spec, horizon=horizon, expected_stock=expected_stock, verify_scene=verify_scene)
+        measured = observed_practice(folder, spec, horizon=horizon, expected_stock=expected_stock, verify_scene=verify_scene,
+                                     phase_duration_purity=phase_duration_purity)
     except (OSError, ValueError, KeyError, AssertionError) as exc:
         return dict(identity, qualified=False, physical_endpoint_verified=False,
                     possible_in_game_exposure=True, physical_validation_error=str(exc),
