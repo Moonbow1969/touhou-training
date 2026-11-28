@@ -94,6 +94,35 @@ def seal(raw,model,rank_template,out):
     final_tick=int(terminal_ticks[0]) if len(terminal_ticks)==1 else int(np.max(trace["tick"][known]))
     end_tick=min(final_tick+1,len(words[end_stage]))
     if end_tick!=final_tick+1:notes.append("Native recording lacks the through-terminal key")
+    physical_requests=n
+    terminal_proposal=None
+    # A command can reach X11 while the game has already consumed the final tick.
+    # Preserve the entire physical recording and every proposal's re-forward above.
+    # Only the unique last command can be removed from the optimizer view.
+    if n>1 and int(target[-1])>final_tick and len(terminal_ticks)==1:
+        last,previous=gates[-1],gates[-2]
+        prior_word=game_word(int(physical[-2]));proposed_word=game_word(int(physical[-1]))
+        raw_received=terminal_rows & (trace["before_ns"]>=last["x_ack_ns"]) & (trace["raw"]==proposed_word) & (trace["word"]==prior_word)
+        prior_slots=words[end_stage][int(target[-2]):end_tick]
+        earlier_live=valid & (trace["tick"]==final_tick) & (trace["word"]==prior_word)
+        eligible_after=int(last["apply_observed"])+1
+        proven=(stages[-1]==stages[-2] and prior_word!=proposed_word and eligible_after>final_tick
+                and end_tick==final_tick+1 and len(prior_slots)>0 and np.all(prior_slots==prior_word)
+                and np.any(raw_received) and np.any(earlier_live))
+        if proven:
+            terminal_proposal=dict(raw_index=n-1,actual_x11_mask=int(physical[-1]),requested_game_word=proposed_word,
+                x11_ack_ns=int(last["x_ack_ns"]),native_application_tick=int(last["apply_observed"]),
+                nominal_first_consumption_tick=int(target[-1]),earliest_after_application=eligible_after,
+                terminal_tick=final_tick,native_exposure=0,preceding_index=n-2,preceding_word=prior_word,
+                preceding_native_slots=list(map(int,prior_slots)),source_raw_only_samples=int(raw_received.sum()),
+                preserved_policy_action=arrays["action"][-1].tolist(),preserved_logp=arrays["logp"][-1].tolist(),
+                preserved_value=float(arrays["value"][-1]),raw_behavior_sha256=digest(raw/"behavior.npz"))
+            arrays={k:v[:-1] for k,v in arrays.items()}
+            n-=1;idx=idx[:-1];play=play[:-1];gates=gates[:-1];stages=stages[:-1];target=target[:-1]
+            physical=physical[:-1];spares=spares[:-1];bombs=bombs[:-1]
+            next_spares=np.r_[spares[1:],np.int16(times[-1]["spares"])]
+            next_bombs=np.r_[bombs[1:],np.int16(times[-1]["bombs"])]
+        else:notes.append("Post-terminal proposal cannot be attributed unambiguously to the preceding consumed action")
     dest_tick=np.r_[target[1:],np.int32(final_tick)]
     dest_stage=np.r_[stages[1:],np.int16(end_stage)]
     if len(set(stages))!=1:notes.append("Cross-stage progress trace requires independent boundary qualification")
@@ -150,7 +179,9 @@ def seal(raw,model,rank_template,out):
         file=output.name,sha256=digest(output),game_sha256=(raw/"build.sha256").read_text().split()[0],
         stage_clock_trace_sha256=digest(raw/"clock.tsv"),timing_sha256=digest(raw/"timing.jsonl"),input_gates_sha256=digest(raw/"gates.tsv"),
         stock_trace_sha256=digest(raw/"native-observers.npz"),terminal_photo_sha256=digest(raw/"terminal.png"),outcome="game_over",continues=0,
-        decisions=n,action_masks_with_native_consumption=int(any_match.sum()),exact_complete_intervals=int(intervals_exact.sum()),
+        decisions=n,physical_sampled_requests=physical_requests,all_physical_requests_reforwarded=physical_requests,
+        excluded_terminal_proposal=terminal_proposal,raw_behavior_sha256=digest(raw/"behavior.npz"),
+        action_masks_with_native_consumption=int(any_match.sum()),exact_complete_intervals=int(intervals_exact.sum()),
         native_intervals=n-1,exact_four_tick_fraction=exact_fraction,exact_x11_gates=int(nominal_gates.sum()),native_edges_verifiable=int(diff.sum()),
         exactly_observed_native_edges=int(proven_edge.sum()),no_input_transition_frames_after_final_decision=len(times)-2-idx[-1].item(),
         first_tick=int(target[0]),first_stage=int(stages[0]),terminal_tick=final_tick,terminal_stage=end_stage,terminal_record_exclusive=end_tick,
@@ -159,7 +190,8 @@ def seal(raw,model,rank_template,out):
         life_events=[dict(decision=int(i),stage=int(stages[i]),native_tick=int(target[i]),next_tick=int(dest_tick[i]),
             spares=int(spares[i]),next_spares=int(next_spares[i]),bombs=int(bombs[i]),next_bombs=int(next_bombs[i]),
             event="original_game_over" if i==n-1 else "spare_lost") for i in np.flatnonzero(loss)],
-        max_logp_error=logp_error,max_critic_error=critic_error,normal_rank_samples=int(sum(normal>.70)),terminal_glyph=correlation,
+        max_logp_error=logp_error,max_critic_error=critic_error,normal_rank_samples=int(sum(normal[:n]>.70)),
+        physical_normal_rank_samples=int(sum(normal>.70)),terminal_glyph=correlation,
         reward_audit=dict(stage1_denominator=15652,progress_start=float(target[0]/15652),progress_terminal=final_tick/15652.,
             paid_progress=float(progress.sum()),positive_same_life_bomb_uses=int(bomb_spent.sum()),
             gamma=.999,lambda_life_0_discounted_delta=0.,lambda_life_1_discounted_delta=telescope,

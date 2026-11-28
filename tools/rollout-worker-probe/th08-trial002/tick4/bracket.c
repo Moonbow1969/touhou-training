@@ -44,7 +44,7 @@ int main(void) {
         if(sscanf(line,"%u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %u %f %f %u %u",
                 &pid,&base,&obj,&stage,&tick,&mode,&flags,&raw,&word,&prev,&info,&origin,&cursor,&prior,&current,
                 &player,&focus,&x,&y,&valid_buffer,&stable)==21 && obj && stage<3 && mode==0 && flags==4 && tick &&
-                after-before<5000000 && stable && valid_buffer && origin && cursor==origin+36+2*tick && current==word){
+                stable && valid_buffer && origin && cursor==origin+36+2*tick && current==word){
             int changed=shared->stage!=stage+1 || shared->tick!=tick;
             atomic_fetch_add(&shared->serial,1);shared->stage=stage+1;shared->tick=tick;
             if(changed)shared->upper_ns=after;

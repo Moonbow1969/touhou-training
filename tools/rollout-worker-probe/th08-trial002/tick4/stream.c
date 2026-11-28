@@ -16,7 +16,7 @@ int main(void) {
     tick_source=mmap(NULL,sizeof(*tick_source),PROT_READ,MAP_SHARED,fd,0);
     if(tick_source==MAP_FAILED)return 12;
     gate_log=fopen("/capture/gates.tsv","wx"); if(!gate_log)return 12;
-    fprintf(gate_log,"index stage camera_target camera_observed camera_ns apply_target apply_observed x_ack_ns x11_mask\n");
+    fprintf(gate_log,"index stage camera_target camera_observed camera_ns apply_target apply_observed x_ack_ns x11_mask command_received_ns gate_ready_ns\n");
     int index=0,anchor=-1,stage_index=0;
     unsigned anchor_stage=0;
     for(;;) {
@@ -36,6 +36,7 @@ int main(void) {
         unsigned next;
         char input[40];
         if(!fgets(input,sizeof(input),stdin))break;
+        int64_t received_ns=now_ns();
         next=(unsigned)atoi(input);
         if(next==128 || next==129){
             /* A capped engineering stop can hold its last scheduled action to completion. */
@@ -49,6 +50,7 @@ int main(void) {
         int skipped=is_policy && (apply_tick<0 || camera_stage!=observed_stage);
         if(skipped){is_policy=0;next=0;anchor=-1;stage_index=0;}
         if(is_policy && anchor<0){anchor=apply_tick;apply_target=anchor;anchor_stage=observed_stage;}
+        int64_t gate_ready_ns=now_ns();
         for(int k=0;k<7;k++)if(((next^current)>>k)&1u)XTestFakeKeyEvent(d,keys[k],(next>>k)&1u,0);
         XSync(d,0);
         char keymap[32];XQueryKeymap(d,keymap);
@@ -58,8 +60,9 @@ int main(void) {
         if(observed!=next)return 5;
         current=next;
         if(is_policy){
-            fprintf(gate_log,"%d %u %d %d %lld %d %d %lld %u\n",index,observed_stage,camera_target,camera_tick,(long long)time,
-                    apply_target,apply_tick,(long long)now_ns(),observed);fflush(gate_log);index++;stage_index++;
+            fprintf(gate_log,"%d %u %d %d %lld %d %d %lld %u %lld %lld\n",index,observed_stage,camera_target,camera_tick,(long long)time,
+                    apply_target,apply_tick,(long long)now_ns(),observed,(long long)received_ns,(long long)gate_ready_ns);
+            fflush(gate_log);index++;stage_index++;
         } else hold_ms(60);
     }
     for(int k=0;k<7;k++)XTestFakeKeyEvent(d,keys[k],0,0);

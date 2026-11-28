@@ -3,6 +3,8 @@ import argparse
 import json
 from pathlib import Path
 import subprocess
+import time
+import os
 
 import cv2
 import numpy as np
@@ -73,6 +75,13 @@ def run(args):
     for name in ('th08tr.exe','th08tr.dat','th08.cfg'):
         if digest(game/name)!=src['trial_files'][name]:
             raise ValueError('Original demo files changed')
+    async_core=getattr(args,'movie_core',None)
+    infer_core=getattr(args,'inference_core',None)
+    if async_core is not None:
+        if not getattr(args,'native_tick4',False) or infer_core is None or infer_core==async_core:
+            raise ValueError('The asynchronous native video stream needs separate inference and recording CPUs')
+        os.sched_setaffinity(0,{infer_core})
+        cv2.setNumThreads(1)
     torch.set_num_threads(1)
     torch.manual_seed(args.seed)
     actor=torch.jit.load(str(args.policy),map_location='cpu').eval()
@@ -114,9 +123,13 @@ def run(args):
     logs=[]
     hud_evidence=[];prompt_evidence=[]
     frames=[];actions=[];prob=[];values=[]
-    movie=cv2.VideoWriter(str(root/'original-observations.mp4'),cv2.VideoWriter_fourcc(*'mp4v'),8.,(640,480))
-    if not movie.isOpened():
-        raise RuntimeError('Movie encoder unavailable')
+    queued_movie=None
+    if async_core is None:
+        movie=cv2.VideoWriter(str(root/'original-observations.mp4'),cv2.VideoWriter_fourcc(*'mp4v'),8.,(640,480))
+        if not movie.isOpened():raise RuntimeError('Movie encoder unavailable')
+    else:
+        from scripts.th08_movie_queue import MovieQueue
+        queued_movie=MovieQueue(root/'original-observations.mp4',async_core)
     out='unverified';prev=None;first_ns=None;began=False
     lost_since=None
     with (root/'container.stderr').open('wb') as err, subprocess.Popen(cmd,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=err) as proc:
@@ -130,6 +143,7 @@ def run(args):
                 stage,native_tick=(int(header[2]),int(header[3])) if native_tick4 else (None,None)
                 if first_ns is None:first_ns=when
                 rgb=np.frombuffer(read_exact(proc.stdout,640*480*3),np.uint8).reshape(480,640,3)
+                read_ns=time.monotonic_ns()
                 mono=cv2.cvtColor(rgb,cv2.COLOR_RGB2GRAY)
                 hud_evidence.append(rgb[22:226,430:636].copy())
                 prompt_evidence.append(mono[170:210,108:326].copy())
@@ -138,9 +152,11 @@ def run(args):
                 structure=text_structure(mono,edge,edge_mask)
                 lives,bombs=stocks(rgb)
                 began=began or hud_fraction>=.95
-                movie.write(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
+                if queued_movie is None:movie.write(cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
+                hud_ns=time.monotonic_ns()
                 prompt=began and lives==0 and terminal_fraction>=.85 and structure>=.78
                 if prompt and (args.verified_menu or hud_fraction>=.95):
+                    if queued_movie is not None:queued_movie.submit(rgb)
                     out='original_continue_prompt'
                     Image.fromarray(rgb).save(root/'terminal.png')
                     logs.append(dict(frame=len(logs),monotonic_ns=when,hud=hud_fraction,continue_text=terminal_fraction,continue_structure=structure,spares=lives,bombs=bombs,phase='terminal'))
@@ -151,6 +167,7 @@ def run(args):
                     else:
                         lost_since=None
                     if lost_since is not None and when-lost_since>6_000_000_000:
+                        if queued_movie is not None:queued_movie.submit(rgb)
                         out='technical_lost_game_hud'
                         Image.fromarray(rgb).save(root/'technical-stop.png')
                         logs.append(dict(frame=len(logs),monotonic_ns=when,hud=hud_fraction,
@@ -158,10 +175,12 @@ def run(args):
                                          spares=lives,bombs=bombs,phase='technical'))
                         break
                 if (when-first_ns)*1e-9>plan['timeout_seconds']:
+                    if queued_movie is not None:queued_movie.submit(rgb)
                     out='unverified_timeout'
                     Image.fromarray(rgb).save(root/'timeout.png')
                     break
                 if cap and began and actions and (lives==1 or len(actions)>=cap):
+                    if queued_movie is not None:queued_movie.submit(rgb)
                     out='engineering_first_spare_loss_or_decision_cap'
                     Image.fromarray(rgb).save(root/'engineering-last-camera.png')
                     break
@@ -180,15 +199,20 @@ def run(args):
                         Image.fromarray(rgb).save(root/'first-policy-frame.png')
                         prev=camera
                     inputs=history.append(camera)
+                    infer_start_ns=time.monotonic_ns()
                     with torch.inference_mode():
                         heads,critic=policy_heads(actor(torch.from_numpy(inputs).float()/255.),1)
                         act=[int(torch.multinomial(logits.softmax(1),1)) for logits in heads]
                         lp=[float(logits.log_softmax(1)[0,a]) for logits,a in zip(heads,act)]
                     key=mask_for(act)
+                    if native_tick4:row.update(camera_read_ns=read_ns,hud_ready_ns=hud_ns,
+                        inference_start_ns=infer_start_ns,inference_end_ns=time.monotonic_ns())
                     frames.append(camera);actions.append(act);prob.append(lp);values.append(float(critic.flatten()[0]));prev=camera
                     if len(actions)%120==0:print(args.rank,len(actions),'policy observations',flush=True)
                 wire=key+(256 if native_tick4 and ready else 0)
                 proc.stdin.write(f'{wire}\n'.encode());proc.stdin.flush()
+                if native_tick4:row['fifo_flushed_ns']=time.monotonic_ns()
+                if queued_movie is not None:queued_movie.submit(rgb)
                 ack=proc.stdout.readline().split()
                 if native_tick4 and ready and len(ack)==3 and ack[0]==b'SKIP' and int(ack[1])==0:
                     for saved_list in (frames,actions,prob,values):saved_list.pop()
@@ -207,7 +231,9 @@ def run(args):
                 proc.stdin.write(stop);proc.stdin.flush();proc.stdin.close()
             except (OSError,ValueError):
                 pass
-            movie.release()
+            if queued_movie is not None:
+                (root/'movie-pipeline.json').write_text(json.dumps(queued_movie.close(),indent=2)+'\n')
+            else:movie.release()
             if proc.wait(timeout=25)!=0:
                 print('Worker exited',proc.returncode,flush=True)
     np.savez_compressed(root/'native-observers.npz',hud=np.asarray(hud_evidence),prompt=np.asarray(prompt_evidence))
@@ -234,5 +260,7 @@ if __name__=='__main__':
     p.add_argument('--history-states',choices=(1,4),type=int,default=1)
     p.add_argument('--native-tick4',action='store_true')
     p.add_argument('--engineering-decisions',type=int)
+    p.add_argument('--movie-core',type=int)
+    p.add_argument('--inference-core',type=int)
     p.add_argument('--seed',type=int,required=True)
     run(p.parse_args())

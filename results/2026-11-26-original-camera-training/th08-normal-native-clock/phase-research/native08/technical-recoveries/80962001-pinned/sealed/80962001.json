@@ -1,0 +1,101 @@
+{
+  "seed": 80962001,
+  "role": "train",
+  "policy_sha256": "ef5f34532a1c986f10088ee202ada14a9a8d2083499648772233d0218cca42a9",
+  "source_receipt_sha256": "2ac8f81f0ae77787ae50537fc806bf2c5c96b43bcfe57293a554d4853773e337",
+  "file": "th08-80962001.npz",
+  "sha256": "81b54ebf1b9bb3d892919b60745d3e5ef94bdc5028d73ec32a80f51494a9af6f",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "115951927592f86f2a3de236137ad3721269f1026b06f5cb6476cfba409662f1",
+  "timing_sha256": "8e1a81c31419351b369233929a442d5c2c987488aefe84fce774edec24eed79d",
+  "input_gates_sha256": "8a099e6bb878877cc1b3da603af6ce84fabeaf5311901743299c786a0e57d2b5",
+  "stock_trace_sha256": "4bdc2a98a219c66b7669ba51d24369d4c0682b050010430effea982cb6f3ab6f",
+  "terminal_photo_sha256": "8381c1472775e1e47792babdc3d5359d0654f77feedb1b988343e3b2a7a2b06f",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 436,
+  "action_masks_with_native_consumption": 435,
+  "exact_complete_intervals": 430,
+  "native_intervals": 435,
+  "exact_four_tick_fraction": 0.9885057471264368,
+  "exact_x11_gates": 431,
+  "native_edges_verifiable": 270,
+  "exactly_observed_native_edges": 265,
+  "no_input_transition_frames_after_final_decision": 1,
+  "first_tick": 79,
+  "first_stage": 1,
+  "terminal_tick": 1820,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 1821,
+  "active_native_ticks_in_last_action": 2,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    3
+  ],
+  "terminal_stock": [
+    0,
+    3
+  ],
+  "life_events": [
+    {
+      "decision": 171,
+      "stage": 1,
+      "native_tick": 763,
+      "next_tick": 767,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 306,
+      "stage": 1,
+      "native_tick": 1303,
+      "next_tick": 1307,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 435,
+      "stage": 1,
+      "native_tick": 1819,
+      "next_tick": 1820,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 2.384185791015625e-06,
+  "max_critic_error": 0.0,
+  "normal_rank_samples": 436,
+  "terminal_glyph": 0.9993286728858948,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.005047278303092257,
+    "progress_terminal": 0.11627906976744186,
+    "paid_progress": 0.1112317914643496,
+    "positive_same_life_bomb_uses": 0,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.0000000000000173,
+    "lambda_life_1_undiscounted_delta": -3.9120000000000195,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "Fewer than 99% of intra-credit native four-tick intervals match throughout",
+    "At least one sampled action has no native consumption in its assigned interval",
+    "Fewer than 99% of X11 gates were observed on the scheduled tick"
+  ]
+}

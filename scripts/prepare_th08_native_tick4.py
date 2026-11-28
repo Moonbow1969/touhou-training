@@ -16,7 +16,7 @@ def replace_once(text,old,new):
     return text.replace(old,new)
 
 
-def install(origin,dest,wine_image,policy,history):
+def install(origin,dest,wine_image,policy,history,game_cpus=None,inference_cpu=None,movie_cpu=None):
     if hashlib.sha256((origin/"app/assets/game/th08tr.exe").read_bytes()).hexdigest()!=EXE:
         raise ValueError("Expected stock TH08 trial 0.02")
     if not (origin/"app/title-reference.png").is_file() or not (origin/"deps").is_dir():
@@ -49,6 +49,7 @@ def install(origin,dest,wine_image,policy,history):
     runner=runner[:a]+'''    cmd=['sh','-c','cat /capture/frames.fifo & child=$!; cat > /capture/actions.fifo; wait "$child"']
 '''+runner[b:]
     (app/"scripts/run_th08_trial_camera.py").write_text(runner)
+    shutil.copyfile(ROOT/"scripts/th08_movie_queue.py",app/"scripts/th08_movie_queue.py")
     driver=app/"credit-v2.sh";text=driver.read_text()
     text=replace_once(text,'-v "$out:/capture" --entrypoint sh '+wine_image,'-v "$app/tick4:/clock:ro" -v "$out:/capture" --entrypoint sh '+wine_image)
     if "--history-states" in text:
@@ -57,6 +58,17 @@ def install(origin,dest,wine_image,policy,history):
         if n!=1:raise ValueError("Ambiguous original camera history length")
     text=replace_once(text,'--role "$role" --verified-menu',
         '--role "$role" --verified-menu --native-tick4 --history-states '+str(history)+' "${extra[@]}"')
+    if game_cpus is not None or inference_cpu is not None or movie_cpu is not None:
+        if not game_cpus or inference_cpu is None or movie_cpu is None:
+            raise ValueError("Supply game CPUs, inference CPU and movie CPU together")
+        cpus=[int(x) for x in game_cpus.split(",")]
+        all_cpus=cpus+[inference_cpu,movie_cpu]
+        if min(all_cpus)<0 or len(set(all_cpus))!=len(all_cpus):
+            raise ValueError("Use unique nonnegative CPU identifiers for each role")
+        text=replace_once(text,"--cpus=1.70","--cpuset-cpus="+",".join(map(str,cpus)))
+        text=replace_once(text,"--cpus=1.00",f"--cpuset-cpus={inference_cpu},{movie_cpu}")
+        text=replace_once(text,"--native-tick4 --history",
+            f"--native-tick4 --inference-core {inference_cpu} --movie-core {movie_cpu} --history")
     text=replace_once(text,'out="$study/games/$seed"','''extra=()
 if [[ -n "${5:-}" ]]; then
   [[ "$role" == engineering-zero-shot-original && "$5" =~ ^[1-9][0-9]*$ ]]
@@ -66,7 +78,8 @@ out="$study/games/$seed"''')
     # The Bash wrapper carries optional CLI elements without shell word splitting.
     (app/"credit-tick4.sh").write_text(text.replace("#!/bin/sh","#!/bin/bash",1))
     (app/"credit-tick4.sh").chmod(0o755)
-    paths=[*sorted(native.iterdir()),entry,post,app/"scripts/run_th08_trial_camera.py",app/"credit-tick4.sh",app/"policy.ts",app/"assets/game/th08tr.exe"]
+    paths=[*sorted(native.iterdir()),entry,post,app/"scripts/run_th08_trial_camera.py",app/"scripts/th08_movie_queue.py",
+           app/"credit-tick4.sh",app/"policy.ts",app/"assets/game/th08tr.exe"]
     (app/"tick4-deployment.sha256").write_text("".join(
         f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(app)}\n" for p in paths))
 
@@ -77,4 +90,7 @@ if __name__=="__main__":
     p.add_argument("--destination",type=Path,required=True)
     p.add_argument("--wine-image",required=True);p.add_argument("--policy",type=Path)
     p.add_argument("--history-states",choices=(1,4),type=int,default=1)
-    a=p.parse_args();install(a.source_study.resolve(),a.destination.resolve(),a.wine_image,a.policy,a.history_states)
+    p.add_argument("--game-cpus",help="Comma-separated original game CPUs, disjoint from inference and video")
+    p.add_argument("--inference-cpu",type=int);p.add_argument("--movie-cpu",type=int)
+    a=p.parse_args();install(a.source_study.resolve(),a.destination.resolve(),a.wine_image,a.policy,a.history_states,
+                            a.game_cpus,a.inference_cpu,a.movie_cpu)

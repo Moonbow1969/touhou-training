@@ -1,0 +1,69 @@
+{
+  "decisions": 888,
+  "source_clock": "Single Linux CLOCK_MONOTONIC on the original-game host",
+  "pipeline": {
+    "capture_to_rgb_read": {
+      "p50_ms": 1.336862,
+      "p95_ms": 6.4332275999999995,
+      "p99_ms": 8.565739309999998,
+      "max_ms": 11.545407
+    },
+    "read_to_hud": {
+      "p50_ms": 0.676159,
+      "p95_ms": 0.8688933999999999,
+      "p99_ms": 0.97215842,
+      "max_ms": 1.314199
+    },
+    "hud_to_network": {
+      "p50_ms": 1.2253125,
+      "p95_ms": 1.5593886,
+      "p99_ms": 1.6482467200000002,
+      "max_ms": 31.811896
+    },
+    "network_and_sampling": {
+      "p50_ms": 2.418235,
+      "p95_ms": 2.64235985,
+      "p99_ms": 2.8997573099999996,
+      "max_ms": 6.489819
+    },
+    "sample_to_linux_input_receive": {
+      "p50_ms": 0.0222565,
+      "p95_ms": 0.04126199999999999,
+      "p99_ms": 0.7389958699999994,
+      "max_ms": 2.718652
+    },
+    "capture_to_linux_input_receive": {
+      "p50_ms": 6.1696065,
+      "p95_ms": 10.96150875,
+      "p99_ms": 14.18831176,
+      "max_ms": 36.669733
+    },
+    "wait_for_scheduled_tick": {
+      "p50_ms": 24.855885,
+      "p95_ms": 30.84527625,
+      "p99_ms": 33.486512579999996,
+      "max_ms": 37.951794
+    },
+    "physical_x_apply": {
+      "p50_ms": 0.047699,
+      "p95_ms": 3.2252734999999997,
+      "p99_ms": 4.01531204,
+      "max_ms": 6.648611
+    },
+    "capture_to_x_ack": {
+      "p50_ms": 32.323985,
+      "p95_ms": 37.4871167,
+      "p99_ms": 39.52694608,
+      "max_ms": 43.718264
+    }
+  },
+  "missed": [],
+  "movie": {
+    "encoded_frames": 901,
+    "peak_queue_depth": 1,
+    "bound_frames": 16,
+    "backpressure_ns": 0,
+    "cpu": 17
+  },
+  "logged_original_frames": 901
+}
