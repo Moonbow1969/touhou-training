@@ -19,3 +19,11 @@ The original `th08tr.exe` SHA-256 is `3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d
 ## Checks
 
 From the repository root, run `python -m unittest -v scripts.test_th08_progress_reward` and `python -m py_compile scripts/th08_progress_reward.py scripts/test_th08_progress_reward.py`. The focused checks cover telescoping and TD residual preservation, sparse positive stage reward, physical clock rollback, verified spare loss/gain and life exhaustion, a continuing Stage 2 truncation and an absorbing Stage 2 objective. The toy trajectories are arithmetic fixtures.
+
+## Claude's next round
+
+After the full warm-start readout results, Claude Opus 5.5 selected the Progress/Bomb pilot and the existing trained pooled SFT actor. A post-training check on 2,364 previously registered TRAIN decisions measured a mean Bomb probability of 0.0723%. The common initial policy shifts only the learned Bomb log-odds by +2.66049, equal to 1.0% across those recorded training views, with a zero critic. Both arms share this parent. The calibration inputs came from the previous historical cadence, so the new original-rollout log must report the actual sampled and consumed Bombs. The optional calibration described above has been enabled only for the new parent artifact.
+
+The full original lifecycle engineering gate requires at least 99% consecutive four-tick decisions, 100% repeatable consumption of each applied mask, a complete stage and stock trace, and a real no-Continue endpoint. The first PPO update uses 16 fresh complete credits from the common behavior policy. Subsequent rounds require on-policy credits specific to each actor. Both arms use the same progress durations and the same initial policy, with λ equal to 0 or 1. The pilot caps each registered training epoch at 0.01 joint KL and the full study at three rounds. The held screening target is a life-loss rate ratio at most 0.75 and at most 60% of deaths while holding Bombs. A life-loss rate ratio at or above 1 is a stop. The experiment also records Bomb attempts and actual consumption per active life.
+
+[Phase duration provenance](stage-duration.md) · [Bomb prior calibration](bomb-prior-diagnostic.json) · [Common behavior checkpoint](common-parent/policy.ts)

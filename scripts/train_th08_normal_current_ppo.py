@@ -66,7 +66,7 @@ def source_rows(manifest, expected_parent):
         yield row, receipt
 
 
-def optimize(model, packed, device):
+def optimize(model, packed, device, *, kl_cap=KL_CAP):
     observations, actions, old_logp, advantages, returns, old_heads = packed
     advantages = (advantages - advantages.mean()) / (advantages.std(unbiased=False) + 1e-7)
     optimizer = torch.optim.Adam(model.parameters(), lr=RATE, eps=1e-5)
@@ -95,7 +95,7 @@ def optimize(model, packed, device):
         *current, predicted_values = logits_on(model, observations, device)
         kl = sum(float(F.kl_div(new.log_softmax(1), old.softmax(1), reduction="batchmean"))
                  for new, old in zip(current, old_heads.split(WIDTHS, 1)))
-        accepted = -1e-7 <= kl <= KL_CAP
+        accepted = -1e-7 <= kl <= kl_cap
         row = dict(epoch=epoch, joint_kl=kl, optimizer_steps=len(stats), accepted=accepted,
                    mean_loss=sum(stats) / len(stats), critic_rmse=float((predicted_values[:, 0] - returns).square().mean().sqrt()))
         epochs.append(row)
