@@ -1,0 +1,61 @@
+{
+  "schema": "TH08 0.02 asynchronous native archive candidate v1",
+  "deployed_by_this_test": false,
+  "original_reader_sha256": "c7aa6ed26a916352e3376af37750ea3ce0997a5d2e17ca8387da3873ebad414d",
+  "files": {
+    "reader_async.c": "39cd0854d330522dd875e27875ee64580895b18eb788d5eca6469656ca5617f6",
+    "archive_writer.h": "d5943ed2e0964fa2732e8e20c91ec9fe39ac1797967bc444f1425de15b7149db",
+    "archive_writer_fixture.c": "b9944c856f19686ebc3d11008f08027704cff35b591d1e567c2d4bda7eebf430",
+    "build_archive_candidate.sh": "392a2e53c438dcf09cd198d1dbfdc1aef3d95cbcc86f7e09b047a55f55556f22"
+  },
+  "binaries": {
+    "clock.exe": "e44967b0c464633077f04aca4959b12cba87987a9d72e99a24b12db8d5c3a58a",
+    "archive-fixture.exe": "e1e3410785730fa69370e8011af86ce73f6767baed61fde6b6adfbd075ad3ff3"
+  },
+  "verification": [
+    {
+      "original_engineering_fixture": "pipeline-engineering",
+      "mode": "ok",
+      "source_sha256": "23c6877810ed55190c727a699747a15fa315a3f3961d12924571467a995e2aff",
+      "stdout": "fixture=ok words=3628 coalesced=112 writes=5 spoolbytes=7536 offered_while_blocked_us=50.2 sealed=1",
+      "exit": 0,
+      "sealed": true,
+      "final_sha256": "23c6877810ed55190c727a699747a15fa315a3f3961d12924571467a995e2aff",
+      "receipt": "stage1\tstage2\tstage3\twrites\tcoalesced\tspool_write_bytes\n3628\t65\t1\t5\t112\t7536\n"
+    },
+    {
+      "original_engineering_fixture": "second-pipeline-engineering",
+      "mode": "ok",
+      "source_sha256": "117fe5bdb048c769cd32264694c6d992d8311cd22a3fbfcbe8d9d85e29834b7f",
+      "stdout": "fixture=ok words=2290 coalesced=70 writes=5 spoolbytes=4860 offered_while_blocked_us=34.8 sealed=1",
+      "exit": 0,
+      "sealed": true,
+      "final_sha256": "117fe5bdb048c769cd32264694c6d992d8311cd22a3fbfcbe8d9d85e29834b7f",
+      "receipt": "stage1\tstage2\tstage3\twrites\tcoalesced\tspool_write_bytes\n2290\t65\t1\t5\t70\t4860\n"
+    },
+    {
+      "original_engineering_fixture": "pipeline-engineering",
+      "mode": "short",
+      "source_sha256": "23c6877810ed55190c727a699747a15fa315a3f3961d12924571467a995e2aff",
+      "stdout": "fixture=short words=3628 coalesced=112 writes=5 spoolbytes=7536 offered_while_blocked_us=51.3 sealed=0",
+      "exit": 0,
+      "sealed": false
+    },
+    {
+      "original_engineering_fixture": "pipeline-engineering",
+      "mode": "eof",
+      "source_sha256": "23c6877810ed55190c727a699747a15fa315a3f3961d12924571467a995e2aff",
+      "stdout": "fixture=eof words=3628 coalesced=112 writes=5 spoolbytes=7536 offered_while_blocked_us=51.6 sealed=0",
+      "exit": 0,
+      "sealed": false
+    },
+    {
+      "original_engineering_fixture": "pipeline-engineering",
+      "mode": "error",
+      "source_sha256": "23c6877810ed55190c727a699747a15fa315a3f3961d12924571467a995e2aff",
+      "stdout": "fixture=error words=3628 coalesced=112 writes=0 spoolbytes=0 offered_while_blocked_us=52.6 sealed=0",
+      "exit": 0,
+      "sealed": false
+    }
+  ]
+}
