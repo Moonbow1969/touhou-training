@@ -15,3 +15,7 @@ We then trained two policies with the same learned spatial-attention route, froz
 The spatial route improved localization under matched supervision, with effectively unchanged direction accuracy. The policy checkpoints have no original-game results. The next visual diagnostic requires verified projectile labels or an isolated rendered-pixel intervention. A player localization win is insufficient justification for a larger training budget.
 
 [Frozen feature probe](../th08-normal-player-probe/report.json) · [Probe weights](../th08-normal-player-probe/probes.pt) · [Matched policy protocol](protocol.json) · [Per-stage results and update log](report.json) · [Imitation actor](imitation.ts) · [Location-supervised actor](imitation-plus-location.ts)
+
+## Recovery distribution check on the original
+
+Across the eight subsequently verified Stage 1 credits, the camera embedding moved farther from held human play near **13 of 16** nonterminal life losses with the grayscale and difference pair. With the difference channel zeroed, that held for **6 of 16**. Median change in human reference percentile was +5.8 with both channels and −8.1 with grayscale alone. Human replay input had a four-native-tick interval, while original policy decisions averaged about 100 ms. Since the shift is sensitive to that channel and capture regimes differ, this check leaves the cause of the deaths unresolved. [Per-credit measurements](recovery-probe-eight-credits.json)
