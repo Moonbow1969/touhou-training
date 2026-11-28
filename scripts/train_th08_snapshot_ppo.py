@@ -10,6 +10,7 @@ import torch
 
 from scripts.checkpoint_storage import digest
 from scripts.th08_camera_history import frame_pair, reconstruct
+from scripts.th08_fragment_controls import control_evidence
 from scripts.th08_progress_reward import GAMMA, progress_reward
 from scripts.train_five_original_games import freeze
 from scripts.train_full_resolution_camera_ppo import chosen, logits_on
@@ -47,7 +48,7 @@ def original_fragment(manifest, row, actor):
     receipt = json.loads(receipt_path.read_bytes())
     if (receipt["seed"] != row["seed"] or receipt["game_sha256"] != ORIGINAL_EXE or receipt["sha256"] != row["sha256"]
             or receipt["policy_sha256"] != ENCODER or receipt["qualified"] is not True or receipt["continues"] != 0
-            or receipt["exact_four_tick_fraction"] < .995 or receipt["wholly_stale_windows"] != 0):
+            or receipt["wholly_stale_windows"] != 0):
         raise ValueError(f"Fragment was not physically qualified: {row['seed']}")
     if receipt["outcome"] not in ("game_over","life_loss_cutoff","native_tick_cutoff"):
         raise ValueError(f"Unregistered fragment endpoint: {receipt['outcome']}")
@@ -62,6 +63,8 @@ def original_fragment(manifest, row, actor):
         reserves = trace["spares"]
         bombs = trace["bombs"]
         native_terminal = trace["terminated"]
+        native_slots = trace["native_word_slots"]
+        native_duration = trace["native_ticks_under_command"]
         later = (trace["native_next_stage"],trace["native_next_tick"],trace["next_spares"],trace["next_bombs"])
         boundary_image = None if receipt["outcome"] == "game_over" else trace["boundary_frame"]
     n = len(action)
@@ -79,6 +82,12 @@ def original_fragment(manifest, row, actor):
         if before.shape != (n,) or after.shape != (n,) or not np.array_equal(before[1:],after[:-1]):
             raise ValueError(f"Disconnected original fragment states for {row['seed']}")
         complete_state.append(np.r_[before,after[-1]])
+    gaps = later[1]-ticks
+    if np.array_equal(stages,later[0]) and not np.array_equal(native_duration,gaps):
+        raise ValueError(f"Native command window does not match the accepted camera clock for fragment {row['seed']}")
+    control = control_evidence(action,native_slots,native_duration,true_end)
+    if not control["qualified"] or abs(control["fraction"]-receipt["exact_four_tick_fraction"]) > 1e-8:
+        raise ValueError(f"Original clock or native inputs failed independent recheck for fragment {row['seed']}")
     images = reconstruct(frames,0,n,1)
     images[0] = frame_pair(frames[0],previous)
     images = torch.from_numpy(images)
@@ -102,7 +111,8 @@ def original_fragment(manifest, row, actor):
         boundaries={int(k):tuple(v) for k,v in receipt.get("native_stage_boundaries",{}).items()})
     original = as_optimizer_input(images,taken,torch.from_numpy(old_logp.sum(1)),torch.cat(heads,1),old_values,reward)
     return original,dict(seed=row["seed"],decisions=n,first_tick=int(ticks[0]),final_tick=int(later[1][-1]),
-        outcome=receipt["outcome"],bootstrap=reward.bootstrap,max_logp_error=lp_difference,max_critic_error=critic_difference)
+        outcome=receipt["outcome"],bootstrap=reward.bootstrap,max_logp_error=lp_difference,max_critic_error=critic_difference,
+        control=control)
 
 
 def fit_data(manifest, actor):
@@ -127,6 +137,12 @@ def fit_data(manifest, actor):
         print("Verified PPO source",verified[-1],flush=True)
     if not all(grouped.values()):
         raise ValueError("Both ordinary and restored original-game sources are required")
+    n_anchor = len(grouped["anchor"])
+    attempted = data["anchor_attempt_count"]
+    controls = [r["control"] for r in verified if r["source_kind"]=="anchor"]
+    exact_share = sum(c["exact"]for c in controls)/sum(c["windows"]for c in controls)
+    if not n_anchor <= attempted <= 60 or n_anchor / attempted < .90 or exact_share < .995:
+        raise ValueError("Restored original cohort failed aggregate admission")
     fields = {kind: tuple(torch.cat(items) for items in zip(*rows)) for kind,rows in grouped.items()}
     sizes = {kind: len(items[0]) for kind,items in fields.items()}
     quota = min(sizes.values())
@@ -136,7 +152,8 @@ def fit_data(manifest, actor):
         indices = torch.randperm(sizes[kind],generator=generator)[:quota]
         balanced.append(tuple(t[indices] for t in items))
     packed = tuple(torch.cat(parts) for parts in zip(*balanced))
-    return packed,dict(sizes=sizes,sampled_per_source=quota,credits=verified,anchor_sha256=data["anchor_sha256"])
+    return packed,dict(sizes=sizes,sampled_per_source=quota,credits=verified,anchor_sha256=data["anchor_sha256"],
+        anchor_attempt_count=attempted,anchor_qualified=n_anchor,anchor_combined_exact_fraction=exact_share)
 
 
 def main():
