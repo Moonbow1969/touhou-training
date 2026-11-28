@@ -1,0 +1,116 @@
+{
+  "seed_order": [
+    808401,
+    808402,
+    808403
+  ],
+  "parent": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "optimizer_steps": 2000,
+  "batch": [
+    64,
+    64
+  ],
+  "actor_lr": 3e-05,
+  "native_manifests": {
+    "qualified-train.json": "a56b2340b66b5ec34b240e741d89937035a387c3458d0d9cf6de863efd13df81",
+    "qualification-diagnostic.json": "3dbdb0f435cb47e83f93fc7661cca090439dd910312efe47baea94f54024ce56"
+  },
+  "native_fit_folds": [
+    [
+      80962015,
+      80962003,
+      80962005,
+      80963031,
+      80963015,
+      80963029,
+      80963008,
+      80963024,
+      80964001,
+      80964025,
+      80964030,
+      80964021,
+      80964011
+    ],
+    [
+      80962010,
+      80962009,
+      80962004,
+      80963012,
+      80963019,
+      80963004,
+      80963009,
+      80963032,
+      80963003,
+      80964007,
+      80964029,
+      80964026,
+      80964023
+    ],
+    [
+      80962014,
+      80962901,
+      80962002,
+      80963011,
+      80963007,
+      80963027,
+      80963017,
+      80963010,
+      80964016,
+      80964022,
+      80964003,
+      80964017,
+      80964006
+    ],
+    [
+      80962013,
+      80962007,
+      80963028,
+      80963006,
+      80963013,
+      80963020,
+      80963026,
+      80964013,
+      80964005,
+      80964008,
+      80964019,
+      80964024
+    ],
+    [
+      80962008,
+      80962006,
+      80963030,
+      80963025,
+      80963018,
+      80963005,
+      80963001,
+      80964002,
+      80964031,
+      80964004,
+      80964027,
+      80964015
+    ]
+  ],
+  "native_behavior_diagnostic": [
+    80962016,
+    80962011,
+    80962012,
+    80963016,
+    80963002,
+    80963014,
+    80964020,
+    80964014,
+    80964018
+  ],
+  "native_holdout_caveat": "Nine credits excluded from this fit. The parent encoder has past exposure to some of this population. Use entirely new original credits for any live comparison.",
+  "human": "Five signed original Ghost Normal players with distinct train and held roles. Final held development check has known prior experiment exposure.",
+  "objective": "50% human plain four-head CE and 50% original own-policy four-head CE. Matched initialization and batches. The only arm difference is exp(A/beta) capped at 20 and normalized to mean one.",
+  "critic": "Fresh readout per fold fits terminal Monte Carlo progress-plus-spare returns on the other four whole-credit folds. Held predictions supply GAE(lambda) advantages.",
+  "critic_steps": 800,
+  "gamma": 0.999,
+  "lambda_return": 0.985,
+  "ess_target": 0.3,
+  "min_ess": 0.2,
+  "deployment": "Camera-only grayscale with previous camera difference. Frozen shared encoder; both learned action modules are optimized. All four categorical heads sampled. No privileged input.",
+  "evaluation": "Fixed first paired seed. Both arms held human movement and switch accuracy within .5 percentage points of parent, mean held original behavior KL <= .05, ESS >=20%. Report all three final seeds.",
+  "native_release": "After gate and review, three arms each six fresh original credits in balanced order: weighted, uniform and identical parent. Keep unchanged original controls and verified complete credits."
+}
