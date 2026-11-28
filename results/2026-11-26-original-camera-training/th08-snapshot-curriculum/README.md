@@ -1,0 +1,7 @@
+# Whole-VM reset qualification for original TH08 training
+
+TH08 Normal trials repeatedly ended in Stage 1. Returning to rare playable states could increase training exposure to the later parts of that stage. The curriculum adapts the state archive idea from Go-Explore. The qualification and evaluation protocols keep guest snapshot resets confined to training. Final policy comparisons use fresh ordinary Game Starts on the separately qualified original host worker. [First return, then explore](https://www.nature.com/articles/s41586-020-03157-9)
+
+The first Momentum proof used hardware KVM, 2 virtual CPUs, 2 GiB of guest memory, an official signed Ubuntu image and a QCOW2 overlay. It saved a live guest process and restored that state twice. Both restores returned the same in-memory nonce, process ID, boot ID and counter. Two identical branches after restore then produced the same counter value and digest. Saving took 6.670 seconds. Restores took 1.756 and 1.778 seconds. The proof overlay used 519 MB of allocated host disk and the read-only base 621 MB. The QEMU process exited after the proof. [Machine-readable proof](kvm-memory-proof/proof.json) · [QEMU snapshot documentation](https://www.qemu.org/docs/master/system/images)
+
+This completed the platform test with a guest memory fixture. The original game's first resumed decisions, repeatability and cadence have separate gates in the [frozen experiment registration](registration.json).
