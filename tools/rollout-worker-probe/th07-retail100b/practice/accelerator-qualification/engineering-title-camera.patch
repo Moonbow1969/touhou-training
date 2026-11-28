@@ -1,0 +1,28 @@
+--- a/practice_reset.py
++++ b/practice_reset.py
+@@ -80,7 +80,10 @@
+         time.sleep(1.4)
+         for index in range(12):
+             image=grab("title-latest")
+-            if match(image,"practice",(435,262,157,20))>.82:break
++            title_scores = {dx: float(match(image,"practice",(435+dx,262,157,20))) for dx in range(-4,5)}
++            with (out/"engineering-title-scores.jsonl").open("a") as f:
++                print(json.dumps(dict(look=index, scores=title_scores)), file=f)
++            if max(title_scores.values())>.82:break
+             keys("Down")
+             if index==8:keys("Escape")
+         else:raise ValueError("Original Practice Start highlight unavailable")
+--- a/learned-worker.py
++++ b/learned-worker.py
+@@ -56,6 +56,11 @@
+                 if kind in (2,5):break
+                 assert kind in (1,4) and tick%4==0
+                 image=np.frombuffer(exact(112*96),"u1").copy().reshape(112,96)
++                if kind == 1 and i in (0,16,48):
++                    # The existing original actor is already suspended while waiting for a decision.
++                    # Observe the X root independently. The policy and native actor receive identical inputs.
++                    cmd = ["sh","-ec",f'xdotool getwindowgeometry --shell "$(cat /capture/window)" >/capture/readback-window-{i:02d}.txt; scrot -o /capture/readback-root-{i:02d}.png']
++                    subprocess.run([*docker,name,*cmd],check=True,timeout=.40)
+                 x=torch.from_numpy(image).float()/255
+                 heads=model(torch.stack((x,torch.zeros_like(x) if prev is None else (x-prev).abs()))[None])
+                 if kind==4:

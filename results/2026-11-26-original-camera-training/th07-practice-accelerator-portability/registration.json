@@ -1,0 +1,49 @@
+{
+  "role": "engineering",
+  "game_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+  "practice_tool_sha256": "42536217464b3b9ddf27ce9d8f13f07c0a09d510831ead24d19d0882825f7315",
+  "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "actor_sha256": "f457e0da52d5bc810eed729a8f447fe3dec6c6af481faa99f5591bb5cf1b1f34",
+  "driver_sha256": {
+    "practice_reset.py": "fb6718c21047914f63ce13c49413482cec5d9da1672106540ae7bb5f64a80ad0",
+    "learned-worker.py": "1182dc9c8d1ab1c18e3069e4ae8cb6f11eed0d71d268227ec6e1c6b937dcce83",
+    "scenario-glyphs.npz": "89a1484a03aef67ab50bf5fd81badd0a0f76519593e013410682dd37d3d8b251",
+    "start.sh": "c17e858bdae9bcc76aba3d1edf456a6cd0b4a15d8e484a53f2f62ba7ad3b997b"
+  },
+  "rank": "Normal",
+  "native_rank": 1,
+  "shot": "Reimu A",
+  "starting_power": 128,
+  "continues": 0,
+  "cap_native_elapsed": 6000,
+  "terminal_conditions": [
+    "verified native retry after exhaustion",
+    "verified Stage1 practice result",
+    "6000 elapsed native ticks with playable next camera"
+  ],
+  "rows": [
+    {
+      "seed": 2176503,
+      "role": "engineering",
+      "host": "Accelerator",
+      "lane": "practice-portability-only",
+      "scenario": "letty-2-3",
+      "decision_cap": 64
+    }
+  ],
+  "original_registration_sha256": "2413ddbc70630378c9c13679a9bf0383ceb7014753d866b922a22fe46241a514",
+  "reason": "Two independent private X displays and Wine PIDs on the same host. Initial original seeds 01 and 02 retain their existing default two-CPU quota. Remaining seeds keep all original scenes and roles. Two disjoint CPU sets start only after seed 01 passes independent input and terminal qualification.",
+  "source_observer_sha256": "2414b0554cda6b5311381865ba30519ff2d994e15368c6b91bfb95c7e2edbd87",
+  "study": "Single isolated engineering title-menu transport and gameplay camera qualification",
+  "trial_count": 1,
+  "can_retry": false,
+  "image": "sha256:e9bb0cd2e582e8b6f841aff4c37f801c83e367cd3457d012f6c69aef0139a475",
+  "gate": "64 completed four-tick decisions; next genuine playable frame at +256 ticks; independently archived selected and HUD witnesses; same branch probabilities/values and native applied input. For decisions 0,16,48 an independent full X root photo must reduce pixel-for-pixel to the original 96x112 actor camera at crop (32,16,384,448), xdotool must show 640x480 native window, static right-side gameplay HUD must match Gamer's signed original with no translation. No other original or replacement if unsigned. No optimizer.",
+  "source_registration_sha256": "df2a36e554fbbca3b32910318fe9b02e0f1c3247feee8c32d7dd4080411c42e0",
+  "pinned_lane": {
+    "cpu_set": "4,6,8,14",
+    "cpu_quota": 2,
+    "observation": "per-quarter-second cgroup cpu, cpu.pressure, host I/O PSI; read-only observer"
+  },
+  "prelaunch_amendment": "Correct Python indentation in the title-only matcher. Prior invocation exited at parse time, before any container, display, game, or control was created. The same sole reserved physical original remains."
+}
