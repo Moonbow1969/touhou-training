@@ -35,6 +35,7 @@ class Credit:
     hit_tick: np.ndarray
     visual: torch.Tensor
     clocks: torch.Tensor
+    coordinates: np.ndarray
 
 
 def read(path):
@@ -100,11 +101,14 @@ def load_credit(manifest, row, encoder, device):
     since = camera_tick - np.where(prior >= 0, hits[np.maximum(prior, 0)], 0)
     controls = np.column_stack((xy, xy ** 2, spares, bombs, np.log1p(since), prior < 0))
     clocks = torch.from_numpy(np.column_stack((clock_bins, controls)).astype(np.float32))
-    with torch.no_grad():
-        batches = (torch.from_numpy(reconstruct(frames, i, min(i+128, len(tick)), 1))
-                   for i in range(0, len(tick), 128))
-        visual = torch.cat([encoder(batch.to(device).float().div_(255)).cpu() for batch in batches])
-    return Credit(row["seed"], camera_tick, native["vulnerable"], hits, visual, clocks)
+    if encoder is None:
+        visual = torch.from_numpy(frames)
+    else:
+        with torch.no_grad():
+            batches = (torch.from_numpy(reconstruct(frames, i, min(i+128, len(tick)), 1))
+                       for i in range(0, len(tick), 128))
+            visual = torch.cat([encoder(batch.to(device).float().div_(255)).cpu() for batch in batches])
+    return Credit(row["seed"], camera_tick, native["vulnerable"], hits, visual, clocks, xy)
 
 
 def samples(credit, guard, horizon):
@@ -148,10 +152,16 @@ def fit(train, calibration, holdout, visual, seed):
     with torch.no_grad():
         cal = model(normalize(calibration[0])).flatten().cpu().double() - pos_weight.cpu().double().log()
         test = model(normalize(holdout[0])).flatten().cpu().double() - pos_weight.cpu().double().log()
+    test_p, threshold, slope, bias = calibrate(cal, test, calibration[1].cpu().double())
+    params = dict(model=model.cpu().state_dict(), mean=mean.cpu(), scale=scale.cpu(),
+                  slope=slope, bias=bias, weight_correction=pos_weight.cpu().log(), cutoff=threshold)
+    return test_p, threshold, log, params
+
+
+def calibrate(cal, test, target):
     # A separate whole-credit fold calibrates the probability and alarm threshold.
     raw = torch.zeros(2, dtype=torch.float64, requires_grad=True)
     calibrator = torch.optim.LBFGS([raw], max_iter=50, line_search_fn="strong_wolfe")
-    target = calibration[1].cpu().double()
 
     def objective():
         calibrator.zero_grad(set_to_none=True)
@@ -168,9 +178,7 @@ def fit(train, calibration, holdout, visual, seed):
     if not np.isfinite(cal_p).all() or not np.isfinite(test_p).all():
         raise ValueError("Probe calibration produced nonfinite probabilities")
     threshold = float(np.quantile(cal_p[target.numpy() == 0], .95, method="higher"))
-    params = dict(model=model.cpu().state_dict(), mean=mean.cpu(), scale=scale.cpu(),
-                  slope=slope, bias=bias, weight_correction=pos_weight.cpu().log(), cutoff=threshold)
-    return test_p, threshold, log, params
+    return test_p, threshold, slope, bias
 
 
 def evaluate(prob, threshold, packed, guard):

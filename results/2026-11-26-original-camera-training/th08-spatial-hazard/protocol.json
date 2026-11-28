@@ -1,0 +1,73 @@
+{
+  "previous_protocol_sha256": "ce41eaefb2dc5bc7978e2f7566e6c767c35dae28dae6a5cee38f5cfd394e1999",
+  "fold_groups": [
+    [
+      80962005,
+      80962008,
+      80962010,
+      80963001,
+      80963006,
+      80963017,
+      80963027,
+      80963029,
+      80963031
+    ],
+    [
+      80962009,
+      80962013,
+      80962016,
+      80962901,
+      80963005,
+      80963009,
+      80963010,
+      80963019,
+      80963026,
+      80963032
+    ],
+    [
+      80962006,
+      80962007,
+      80962014,
+      80963008,
+      80963011,
+      80963012,
+      80963014,
+      80963015,
+      80963025
+    ],
+    [
+      80962002,
+      80962012,
+      80962015,
+      80963004,
+      80963007,
+      80963013,
+      80963016,
+      80963028,
+      80963030
+    ],
+    [
+      80962003,
+      80962004,
+      80962011,
+      80963002,
+      80963003,
+      80963018,
+      80963020,
+      80963024
+    ]
+  ],
+  "seed": 80963973,
+  "model": "Four original grayscale frames at offsets [-12,-8,-4,0] plus signed adjacent differences. Stride-4 spatial trunk, supervised player heatmap, predicted soft-argmax center, bilinear 7x7 feature sampling, global average, 64-unit MLP.",
+  "controls": "Exactly the frozen probe's privileged logistic features, re-fit and evaluated on the same eligible observations as the spatial model.",
+  "supervision": "0.25 player heatmap cross-entropy plus weighted risk BCE. Native position is a training label and a separate baseline input; future state and privileged variables are never camera-network inputs.",
+  "input_eligibility": "All four cameras occur exactly four native ticks apart. All three intervening vulnerable camera pairs must be individually validated.",
+  "gate": "AP at least 1.5x logistic, at least half of true hits alerted >=20 native ticks early, ECE <=0.02, jointly on at least four score folds. Calibrate the threshold for 5% negative alarms separately.",
+  "window": [
+    8,
+    32
+  ],
+  "updates": 540,
+  "batch": 40,
+  "tf32_convolution": true
+}
