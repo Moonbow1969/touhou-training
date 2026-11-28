@@ -1,0 +1,60 @@
+{
+  "status": "Prospective offline source audit. The physical Spell 1 start and its three-phase telemetry have not yet been qualified. No seeds or policy run are registered here.",
+  "scope": "Original TH07 retail 1.00b, Stage 1, Normal, Reimu A. Official thprac 2.3.1.1 selects the entry once. Survival to the original Stage Clear tally is the possible practice objective.",
+  "original_bytes": {
+    "executable_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+    "data_sha256": "5fe8d772191505bf208f966da8070ee0a9e0d0ee8567a8827ef3a362bcb0c287",
+    "stage_script_sha256": "c443e28b86cb20eeb7613d786c7ff667c2bd39726bf7ffbb38a3c0e354db1b40",
+    "thecl_12_dump_sha256": "8d8f469be67f7e305fa309735fb0c9f4f01512ed248462b0e559d8ba4228eb35",
+    "pinned_thprac_th07_cpp_sha256": "d3966cf77b0cae5010d962f51aadd2781828077e5a01670bd5248ff1fb33c4db",
+    "pinned_thprac_games_def_sha256": "7823984c1d37eb48179ff346751b12b9e022fa3de748b2e421e34132cb712dee"
+  },
+  "menu": {
+    "section": "TH07_ST1_BOSS2",
+    "appearance": [1, 2, 2],
+    "literal_english": "Cold Sign \"Lingering Cold\"",
+    "literal_japanese": "寒符「リンガリングコールド」",
+    "spares": 2,
+    "bombs": 3,
+    "power": 128,
+    "candidate_navigation": "Use the prior End Boss section selector. From its initial Boss Nonspell 1, advance one choice, instead of advancing twice for Nonspell 2. Freeze a genuine literal section image and verify the actual stock rows and native start. The code-defined English name does not establish the exact displayed glyph crop or location of the stock row for this card."
+  },
+  "sequence": [
+    "At Sub38 elapsed 60 the original bytes at 0x4c20 encode call 32 (op41). The BOSS2 warp emits op114 with timer threshold 0 at this point. Sub38 has timer callback 42 and death callback 39. Only the initial phase is selected.",
+    "In the Normal arm of Sub42, op114 sets a fresh 3000 threshold, op133 copies the current death callback 39 into the timer callback, and op90 starts zero-based spell ID3. The 120-tick opening movement is inside the boss phase. Completion by HP depletion and expiry can both lead into Sub39. A clear alone does not identify a captured spell.",
+    "Sub39 ends the first card via op91, resets boss HP to 15000, sets life threshold 2000 and timer threshold 2400. The Normal life callback and timer callback both choose Sub48. Its nonspell is identified by active=0 plus these callback fields; stale spell ID alone is insufficient.",
+    "Normal Sub48 has op114 threshold 3000, op133 using Sub39 death callback 51, and op90 ID7. Its natural end runs Sub51, then the stage script enters the original post-boss message and tally. The three combat phases need no additional manual selection."
+  ],
+  "timing": {
+    "original_terms": {"warp_leadin": 60, "spell1": 3000, "nonspell2": 2400, "spell2": 3000, "despawn": 60, "through_practice_result_gui": 1680},
+    "nominal_to_result": 10200,
+    "loose_envelope": 11100,
+    "loose_derivation": "Give separate time to all original message waits: GUI script 180 + dialogue waits 300 and 900 + tally wait 1200 = 2580. This double-counts shared pause time but avoids depending on that optimization.",
+    "proposed_cap_elapsed_native_ticks": 12500,
+    "decision_cap_at_four_ticks": 3125,
+    "margin_pct_over_nominal": 22.55,
+    "margin_pct_over_loose": 12.61,
+    "alternative_12000_margin_pct_over_loose": 8.11,
+    "limits": "ECL enemy time, GUI updates and the replay-index clock can differ, especially while time is stopped. Native tick 12500 is an engineering cap with margin, not a mathematical upper bound. A live game at the cap is censored and has a boundary observation; a real game over earlier is fully observed."
+  },
+  "smallest_prospective_port": {
+    "new_scenario_name": "letty-lingering-cold-2-3",
+    "action_camera": "Reuse the current 96x112 gray camera and 4-tick sampled movement/focus/shoot/Bomb actor. The chronological spell monitor is independent of policy inputs.",
+    "entry_witness": "Confirm exact menu/HUD and Normal opening on at least two distinct stable native ticks with boss present, active==1, ID3, timer_threshold==3000, callback_sub==39. Preserve original name/banner. Lack of a later phase after verified Game Over remains a physical failure outcome.",
+    "following_witnesses": "In chronological order check ID3, then active==0, life_threshold==2000, timer_threshold==2400, callback_sub==48, then active==1 ID7 threshold==3000. Save original pixels at first transitions as well as the final tally. Score Stage Clear separately from spell capture. Mark missing or truncated phase evidence explicitly.",
+    "monitor": "The production two-phase spell-monitor.c has an unconditional 160-second wall deadline from menu-released and a polling-based nonplay exit. At 60 native ticks/s 160 seconds covers at most about 9600 ticks before stalls or setup. For the prospective new version follow actual worker termination via a distinct atomic closure signal after its final native read and keep the last phase observation plus endpoint image. Retain the 900-second worker wall watchdog as a separately reported technical timeout and a bounded observer shutdown. Verify the new observer survives a synthetic 12500-tick stream to its last sample or true endpoint before original engineering enrollment.",
+    "existing_registration": "No alteration to any prior driver, score, allocation, roster or policy. A new original engineering qualifier and separate registration after the current aggregate gate are needed to test this port."
+  },
+  "sources": [
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_games_def.json#L1796-L1815",
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L781-L790",
+    "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1045-L1060",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.cpp#L1737-L1743",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.cpp#L1898-L1900",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L500-L546",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L897-L938",
+    "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L991-L1034"
+  ],
+  "previous_horizon_receipt": "../th07-letty-final-spell-engineering/nonspell2-horizon-source-audit.json",
+  "standalone_check": "python verify_source.py /path/to/directory/containing/ecldata1.ecl/and/native-ecl.dump"
+}
