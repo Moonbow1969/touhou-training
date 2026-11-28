@@ -17,3 +17,5 @@ The single update completed 534 accepted optimizer steps over two epochs. Joint 
 | 80963023 | 2,960 | 1.014 | 3 | 0 |
 
 All three excluded credits ended in Stage 1 with three deaths and zero continues. The pooled rate was 0.651 deaths per 1,000 native ticks in those credits and 0.849 in the 29 admitted credits. The rates describe the technical exclusion sample and its possible selection bias. [Original cohort evidence](original-collection/)
+
+On the identical 25,627 training camera observations, mean predicted Bomb probability went from 0.935% to 1.054%. For the 480 observations with Bomb stock within eight decisions of a logged death, it went from 1.328% to 1.618%. Mean predicted movement probability across all observations was 46.26% and 46.14%, respectively. These are diagnostic scores on frozen parent observations. Real use and survival are measured in the original held games. [Fixed-observation audit](actor-probability-audit.json)
