@@ -1,0 +1,98 @@
+{
+  "study": "TH07 1.00b prospective Easy curriculum feasibility: four full native Game Starts",
+  "host": "Momentum",
+  "role": "curriculum screening only",
+  "arm": "parent",
+  "game_exe_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+  "lanes": [
+    {
+      "seed": 2174701,
+      "arm": "parent",
+      "role": "engineering",
+      "sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "native_rank": 0
+    },
+    {
+      "seed": 2174702,
+      "arm": "parent",
+      "role": "engineering",
+      "sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "native_rank": 0
+    },
+    {
+      "seed": 2174703,
+      "arm": "parent",
+      "role": "engineering",
+      "sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "native_rank": 0
+    },
+    {
+      "seed": 2174704,
+      "arm": "parent",
+      "role": "engineering",
+      "sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "native_rank": 0
+    }
+  ],
+  "waves": [
+    [
+      2174701,
+      2174702
+    ],
+    [
+      2174703,
+      2174704
+    ]
+  ],
+  "entry": "Clean ordinary Game Start > Easy > Reimu > Homing Amulet, default two spares and three Bombs, all four sampled heads, zero assists and zero continues. Do not stop at Stage 2. Freeze four published new seed IDs before source image inspection.",
+  "quality": {
+    "minimum_valid_credits": 3,
+    "total_attempts": 4,
+    "technical_replacements": 0,
+    "native_observer_p999_ms_strictly_below": 30,
+    "native_observer_max_ms_strictly_below": 100,
+    "exact_four_tick_windows_min": 0.995,
+    "stale_or_unconsumed_retained_masks_max": 0,
+    "rollout_data": "Independent native accepted before/after tick/index/current/previous slot and original saved RPY, contiguous sequence and record CRC, immutable final seal; extra stable samples on decision ticks, each duplicate independently validated.",
+    "score": "Official final score uses two consecutive matching result screen digit reads independently agreeing with the saved original RPY; preserve last sampled live score and difference separately. Missing score evidence does not invalidate physical input by itself; report resource and score validity separately."
+  },
+  "rank": 0,
+  "skill": "Easy",
+  "normal_reference": {
+    "study": "th07-retail-observer-v2-native",
+    "arm": "parent",
+    "qualified_pairs": 5,
+    "stage1_deaths": 15,
+    "stage1_exposure": 31722,
+    "comparison": "Use the offline-frozen baseline; no previous credit counts as new Easy exposure."
+  },
+  "continuation_gate": {
+    "max_stage1_deaths_per_tick": 0.0002364289767353887,
+    "minimum_boss_or_further": 2,
+    "attempts": 4,
+    "technical_replacements": 0,
+    "decision": "Calculate the Stage 1 death rate only from complete credits passing the registered controller checks. Report all four registered attempts and any technical exclusions. Start the 16 Easy + 16 Normal training collection when that measured rate is at most half the previous Normal parent and at least two of the four prospective starts have strictly confirmed main-boss or Stage 2 evidence. No fit or held use before review.",
+    "boss_evidence": "A direct native Stage 2 transition suffices. Otherwise require stable original screenshots showing final boss Letty Whiterock identification or her distinctive dialogue/portrait or a uniquely named main-boss spell and a corroborating neighboring frame. Midboss Cirno, a generic enemy marker/health bar, and a tick threshold alone cannot establish a boss hit."
+  },
+  "source_actor_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e"
+}
