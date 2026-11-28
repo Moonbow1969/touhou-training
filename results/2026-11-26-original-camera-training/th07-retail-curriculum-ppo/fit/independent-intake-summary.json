@@ -1,0 +1,272 @@
+{
+  "cold-normal": {
+    "admitted": 16,
+    "admitted_outcomes": {
+      "game_over": 16
+    },
+    "admitted_scenes": {
+      "normal": 16
+    },
+    "complete_native_windows": 20312,
+    "exact_native_windows": 20312,
+    "index_sha256": "ceef5057826a182b2dcd85abcc673959e8d850c0e112a23425a2d55ab8e9b21e",
+    "max_replay_critic_error": 4.172325134277344e-07,
+    "max_replay_logp_error": 7.867813110351562e-06,
+    "native_elapsed_ticks": 81274,
+    "original_outcomes": {
+      "game_over": 16,
+      "technical_abort": 1
+    },
+    "physical_originals": 17,
+    "policy_eligible_actions": 20324,
+    "pre_game_setup": [],
+    "sampled_actions": 20324,
+    "technical_exclusions": [
+      {
+        "reasons": [
+          {
+            "last_control_idle_seconds": 192.7209370136261,
+            "reason": "Original retail Wine process stopped advancing at Stage 1 tick872 during ordinary unassisted Game Start. Last action retained only as an incomplete capture. Original main thread in R state. Identical screen pair and native manager/clock readings at independent times on disk. Standard SIGCONT did not restore any native movement. No Game Over, no admission, no ordinary replay; no reroll for this registered seed.",
+            "stock_at_stall": [
+              2,
+              1
+            ]
+          }
+        ],
+        "receipt_sha256": "920cb2437ea3d3621c6eafe20f835803d912f947d16de6aec6919fd32cab8dfa",
+        "scene": "normal",
+        "seed": 21749104
+      }
+    ],
+    "unstarted_reserves": [
+      21749118,
+      21749119,
+      21749120
+    ],
+    "validated_playable_boundaries": []
+  },
+  "practice": {
+    "admitted": 13,
+    "admitted_outcomes": {
+      "game_over": 12,
+      "native_tick_cutoff": 1
+    },
+    "admitted_scenes": {
+      "cirno": 4,
+      "letty_full": 5,
+      "letty_low": 4
+    },
+    "complete_native_windows": 11102,
+    "exact_native_windows": 11102,
+    "index_sha256": "d5157b5e555b9c8991a0d5b8458991ae516be32913552266dd140aaed395ea51",
+    "max_replay_critic_error": 2.980232238769531e-07,
+    "max_replay_logp_error": 3.814697265625e-06,
+    "native_elapsed_ticks": 44421,
+    "original_outcomes": {
+      "game_over": 18,
+      "native_tick_cutoff": 2
+    },
+    "physical_originals": 20,
+    "policy_eligible_actions": 11108,
+    "pre_game_setup": [
+      {
+        "archived_failure_sha256": "498f2dbc515c7c642d0ba5f0b4536438839bed9cf92b46d3ab4d98a6c01c1911",
+        "host": "Accelerator",
+        "normalized_setup_receipt_sha256": "1f6a8a9a31403461910fed1cd5657ce498accbc86762d4122578b3bec8b8f219",
+        "physical_original": false,
+        "policy_decisions": 0,
+        "receipt": "pre-game-setup/21749209-accelerator.json",
+        "seed": 21749209
+      }
+    ],
+    "sampled_actions": 11108,
+    "technical_exclusions": [
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 0,
+            "decision": 131,
+            "native_tick": 528,
+            "next_misses": 0,
+            "next_native_tick": 536,
+            "next_spares": 2,
+            "spares": 2,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact original timing outside a witnessed spare loss"
+        ],
+        "receipt_sha256": "a6b4381484e7aa0677b16b2cd62bf4d4c874f83b9305caa01384aa9abda1057a",
+        "scene": "letty_full",
+        "seed": 21749205
+      },
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 1,
+            "decision": 67,
+            "native_tick": 272,
+            "next_misses": 1,
+            "next_native_tick": 276,
+            "next_spares": 2,
+            "spares": 2,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact windows exceeded two or occurred outside an observed spare loss"
+        ],
+        "receipt_sha256": "c4d23b6cecd0a668a981891e89c43e651a5539e5fc5dc3e5ddad2d2f74d6f8b9",
+        "scene": "letty_full",
+        "seed": 21749207
+      },
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 2,
+            "decision": 1242,
+            "native_tick": 4972,
+            "next_misses": 2,
+            "next_native_tick": 4980,
+            "next_spares": 0,
+            "spares": 0,
+            "stage": 1
+          },
+          {
+            "current_misses": 2,
+            "decision": 1318,
+            "native_tick": 5280,
+            "next_misses": 2,
+            "next_native_tick": 5288,
+            "next_spares": 0,
+            "spares": 0,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact original timing outside a witnessed spare loss"
+        ],
+        "receipt_sha256": "de3ce7ffb9687b0bf29a0f4ffe3b3b23e3776e2c7fc15e9821d8ebb75d3c8149",
+        "scene": "letty_full",
+        "seed": 21749213
+      },
+      {
+        "measured_game_outcome": "native_tick_cutoff",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 0,
+            "decision": 39,
+            "native_tick": 160,
+            "next_misses": 0,
+            "next_native_tick": 168,
+            "next_spares": 2,
+            "spares": 2,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact windows exceeded two or occurred outside an observed spare loss"
+        ],
+        "receipt_sha256": "2e695754b50722f06d6cfe5ca61f77287efd34ffb38e2f8b99966c21ea6cadc2",
+        "scene": "cirno",
+        "seed": 21749216
+      },
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 2,
+            "decision": 894,
+            "native_tick": 3580,
+            "next_misses": 2,
+            "next_native_tick": 3584,
+            "next_spares": 0,
+            "spares": 0,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact windows exceeded two or occurred outside an observed spare loss"
+        ],
+        "receipt_sha256": "c5311df39ae85b38818ab80e849f989e9e685cf5685dedebac6d96b9987b6f38",
+        "scene": "letty_full",
+        "seed": 21749217
+      },
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 0,
+            "decision": 38,
+            "native_tick": 156,
+            "next_misses": 0,
+            "next_native_tick": 160,
+            "next_spares": 0,
+            "spares": 0,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact windows exceeded two or occurred outside an observed spare loss"
+        ],
+        "receipt_sha256": "5dc67851206943d5232f9c7702c3fc7395832e30bb511871375f2f6df929fb51",
+        "scene": "letty_low",
+        "seed": 21749218
+      },
+      {
+        "measured_game_outcome": "game_over",
+        "nonexact_native_windows": [
+          {
+            "current_misses": 1,
+            "decision": 602,
+            "native_tick": 2412,
+            "next_misses": 1,
+            "next_native_tick": 2416,
+            "next_spares": 1,
+            "spares": 1,
+            "stage": 1
+          },
+          {
+            "current_misses": 2,
+            "decision": 843,
+            "native_tick": 3376,
+            "next_misses": 2,
+            "next_native_tick": 3384,
+            "next_spares": 0,
+            "spares": 0,
+            "stage": 1
+          }
+        ],
+        "reasons": [
+          "Nonexact windows exceeded two or occurred outside an observed spare loss"
+        ],
+        "receipt_sha256": "7e637bb1e46d1717cc71fcc7abb7d149adc8019441f3e8f9c107101979b7691f",
+        "scene": "letty_full",
+        "seed": 21749219
+      }
+    ],
+    "unstarted_reserves": [],
+    "validated_playable_boundaries": [
+      {
+        "behavior_critic": -0.6157630681991577,
+        "camera_pixels_sha256": "1c21e5a456cc1ec7df398d8eb21310b7e93476b7f5eb56b530d9b2ebf20d4032",
+        "outcome": "native_tick_cutoff",
+        "qualified": false,
+        "seed": 21749216,
+        "verified_native_tick": 6004
+      },
+      {
+        "behavior_critic": -0.5543524026870728,
+        "camera_pixels_sha256": "6a8c38298e51d17797bad7f5c7c71d03ff0e09d4a3587436e9eeb5ffb67690ad",
+        "outcome": "native_tick_cutoff",
+        "qualified": true,
+        "seed": 21749220,
+        "verified_native_tick": 6004
+      }
+    ]
+  }
+}

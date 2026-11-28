@@ -1,0 +1,84 @@
+{
+  "protocol_sha256": "fc10d3cffa59acd1e2ff79ff50048a6bcda3112787d0ee990e31de5db5a3abc1",
+  "policy_sha256": "89fe8aabeeb604ea1c0e948f3456c006ecfe4afa49964b452e115bcd2e06853b",
+  "device": "cuda",
+  "optimizer_epochs": [
+    {
+      "epoch": 1,
+      "joint_kl": 0.0026112595078302547,
+      "optimizer_steps": 232,
+      "accepted": true,
+      "mean_loss": 0.18820807422028746,
+      "critic_rmse": 1.3578983545303345
+    },
+    {
+      "epoch": 2,
+      "joint_kl": 0.0027491243308759294,
+      "optimizer_steps": 232,
+      "accepted": true,
+      "mean_loss": 0.16318010439004113,
+      "critic_rmse": 1.2759343385696411
+    }
+  ],
+  "training_camera_action_diagnostic": {
+    "move": {
+      "joint_kl_component": 0.001420144340954721,
+      "parent_mean_probability": [
+        0.051458828151226044,
+        0.10599514096975327,
+        0.03213735669851303,
+        0.09554246068000793,
+        0.40218496322631836,
+        0.08144880831241608,
+        0.041657187044620514,
+        0.1450384259223938,
+        0.04453684017062187
+      ],
+      "fitted_mean_probability": [
+        0.05142633989453316,
+        0.10484710335731506,
+        0.03136644884943962,
+        0.09712350368499756,
+        0.40618574619293213,
+        0.07885436713695526,
+        0.04023889824748039,
+        0.14683137834072113,
+        0.04312619939446449
+      ]
+    },
+    "focus": {
+      "joint_kl_component": 0.0009666740079410374,
+      "parent_mean_probability": [
+        0.44699251651763916,
+        0.5530074834823608
+      ],
+      "fitted_mean_probability": [
+        0.4505824148654938,
+        0.5494176149368286
+      ]
+    },
+    "shoot": {
+      "joint_kl_component": 0.0002966670726891607,
+      "parent_mean_probability": [
+        0.07991024851799011,
+        0.9200897812843323
+      ],
+      "fitted_mean_probability": [
+        0.07886859029531479,
+        0.921131432056427
+      ]
+    },
+    "bomb": {
+      "joint_kl_component": 6.563721399288625e-05,
+      "parent_mean_probability": [
+        0.9837160110473633,
+        0.016284111887216568
+      ],
+      "fitted_mean_probability": [
+        0.9850572347640991,
+        0.01494273915886879
+      ]
+    }
+  },
+  "accepted_updates": 464
+}
