@@ -157,7 +157,25 @@ def load_registrations(study, actor, registration_hash, keys, scenarios, horizon
     return verified
 
 
-def watch(study, actor, output, registration_hash, first, count, scenario, horizon, low_stock_from, allocations):
+def verify_endpoint_recovery(study, source, seed, digest):
+    path = source / "endpoint-recovery.json"
+    recovery = read(path)
+    original_failure = source / "attempt-failed.json"
+    failure = read(original_failure)
+    files = recovery["source_sha256"]
+    unchanged = ("controls.csv", "applied.csv", "native-input.csv", "policy-trace.npz",
+                 "archive.sealed", "events.bin", "practice-result-state.csv")
+    require(sha(path) == digest and recovery["seed"] == failure["seed"] == seed
+            and recovery["role"] == failure["role"] == "train"
+            and recovery["original_attempt_sha256"] == sha(original_failure)
+            and recovery["format_amendment_sha256"] == sha(study / "endpoint-format-amendment.json")
+            and all(files[name] == sha(source / name) for name in (*unchanged, "finished-game.json", "qualification.json",
+                                                                   "native-practice-result.png", "postterminal-salvage.json"))
+            and all(files[name] == failure["lossless_evidence_files"][name] for name in unchanged),
+            "Recovered terminal package changed its authorized original or physical samples")
+
+
+def watch(study, actor, output, registration_hash, first, count, scenario, horizon, low_stock_from, allocations, recoveries):
     keys = tuple(range(first, first + count))
     scenarios = {seed: LOW_STOCK if low_stock_from is not None and seed >= low_stock_from else scenario for seed in keys}
     plans = load_registrations(study, actor, registration_hash, keys, scenarios, horizon, allocations)
@@ -176,9 +194,11 @@ def watch(study, actor, output, registration_hash, first, count, scenario, horiz
             normalized = normal.with_suffix(".json")
             fault = source / "attempt-failed.json"
             fields = dict(seed=seed, scene=SCENES[selected].label, role="train", source_kind="practice", native_rank=1)
-            if index.is_file():
-                result = read(index)
-            elif fault.is_file():
+            recovered = recoveries.get(seed)
+            existing = read(index) if index.is_file() else None
+            if existing is not None and existing.get("endpoint_recovery_sha256") == recovered:
+                result = existing
+            elif fault.is_file() and recovered is None:
                 result = dict(fields, qualified=False, technical_failure=read(fault), original_failure_sha256=sha(fault))
                 write(index, result)
             elif all((source / marker).is_file() for marker in READY):
@@ -186,6 +206,9 @@ def watch(study, actor, output, registration_hash, first, count, scenario, horiz
                 if spec["outcome"] == "practice_stage_clear" and not (source / "practice-result-visual.json").is_file():
                     continue
                 try:
+                    if recovered is not None:
+                        verify_endpoint_recovery(study, source, seed, recovered)
+                        fields.update(endpoint_recovery_sha256=recovered, original_failure_sha256=sha(fault))
                     digest = spec["registration_sha256"]
                     require(digest in plans, "Source claims a practice allocation not authorized for this roster")
                     item = plans[digest][seed]
@@ -244,10 +267,14 @@ if __name__ == "__main__":
     cli.add_argument("--horizon", type=int, default=6000)
     cli.add_argument("--low-stock-from", type=int)
     cli.add_argument("--allocation", nargs=2, action="append", default=[], metavar=("FILENAME", "SHA256"))
+    cli.add_argument("--endpoint-recovery", nargs=2, action="append", default=[], metavar=("SEED", "SHA256"))
     args = cli.parse_args()
     if args.low_stock_from is not None and (args.scenario != PRECEDING
                                            or not args.first <= args.low_stock_from < args.first + args.count):
         cli.error("--low-stock-from must be a registered seed in a preceding-attack roster")
+    recoveries = {int(seed): digest for seed, digest in args.endpoint_recovery}
+    if not all(args.first <= seed < args.first + args.count for seed in recoveries):
+        cli.error("--endpoint-recovery must only bind registered seeds")
     torch.set_num_threads(1)
     watch(args.study, args.actor, args.output, args.registration_sha256, args.first, args.count, args.scenario,
-          args.horizon, args.low_stock_from, args.allocation)
+          args.horizon, args.low_stock_from, args.allocation, recoveries)
