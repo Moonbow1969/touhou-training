@@ -11,6 +11,7 @@ import torch
 
 from scripts.checkpoint_storage import digest
 from scripts.original_camera_heads import policy_heads
+from scripts.th08_camera_history import CameraHistory
 from scripts.train_five_original_games import freeze
 
 
@@ -85,6 +86,21 @@ def run(args):
               field_xywh=[32,16,384,448],controls='All four heads sampled once per observation. Start when the original score HUD is visible. Stop at the first native continue prompt. No continue, fixed shot, geometric controller or emergency Bomb.',
               cadence='85 ms minimum after confirmed X keyboard application plus native capture, local IPC and CPU inference. Original game runs continuously.',
               timeout_seconds=480)
+    history_states=getattr(args,'history_states',1)
+    history=CameraHistory(history_states)
+    plan['history_states']=history_states
+    native_tick4=getattr(args,'native_tick4',False)
+    cap=getattr(args,'engineering_decisions',None)
+    if cap is not None and (not native_tick4 or args.role!='engineering-zero-shot-original' or cap<1):
+        raise ValueError('A decision cap requires the native engineering role')
+    if native_tick4:
+        if src['trial_files']['th08tr.exe']!='3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1':
+            raise ValueError('The native input/clock observer requires original TH08 trial 0.02')
+        with torch.inference_mode():
+            for _ in range(2):
+                policy_heads(actor(torch.zeros((1,2*history_states,112,96))),1)
+        plan['cadence']='Native recording mode. Absolute stage-local application target every four original ticks after the first qualified policy action. The bridge retains gate misses and all actual sampled masks.'
+        plan['engineering_decision_cap']=cap
     if args.verified_menu:
         plan['observer_revision']='v2 independent structural continue check and original score-card or absent-display technical stop'
         plan['runner_sha256']=digest(Path(__file__))
@@ -109,7 +125,9 @@ def run(args):
                 line=proc.stdout.readline()
                 if not line.startswith(b'RGB '):
                     raise ValueError('Unexpected camera transport response '+repr(line[:100]))
-                when=int(line.split()[1])
+                header=line.split()
+                when=int(header[1])
+                stage,native_tick=(int(header[2]),int(header[3])) if native_tick4 else (None,None)
                 if first_ns is None:first_ns=when
                 rgb=np.frombuffer(read_exact(proc.stdout,640*480*3),np.uint8).reshape(480,640,3)
                 mono=cv2.cvtColor(rgb,cv2.COLOR_RGB2GRAY)
@@ -143,15 +161,23 @@ def run(args):
                     out='unverified_timeout'
                     Image.fromarray(rgb).save(root/'timeout.png')
                     break
+                if cap and began and actions and (lives==1 or len(actions)>=cap):
+                    out='engineering_first_spare_loss_or_decision_cap'
+                    Image.fromarray(rgb).save(root/'engineering-last-camera.png')
+                    break
                 key=0
+                ready=began and (not native_tick4 or native_tick>=0)
                 row=dict(frame=len(logs),monotonic_ns=when,hud=hud_fraction,continue_text=terminal_fraction,
-                         continue_structure=structure,spares=lives,bombs=bombs,phase='policy' if began else 'transition')
-                if began:
+                         continue_structure=structure,spares=lives,bombs=bombs,phase='policy' if ready else 'transition')
+                if native_tick4:
+                    row.update(stage=stage,camera_native_tick=native_tick)
+                    if began and not ready:row['phase']='native_clock_unavailable'
+                if ready:
                     camera=area_camera(rgb)
                     if prev is None:
                         Image.fromarray(rgb).save(root/'first-policy-frame.png')
                         prev=camera
-                    inputs=np.stack([camera,np.abs(camera.astype(np.int16)-prev).astype(np.uint8)])[None]
+                    inputs=history.append(camera)
                     with torch.inference_mode():
                         heads,critic=policy_heads(actor(torch.from_numpy(inputs).float()/255.),1)
                         act=[int(torch.multinomial(logits.softmax(1),1)) for logits in heads]
@@ -159,14 +185,16 @@ def run(args):
                     key=mask_for(act)
                     frames.append(camera);actions.append(act);prob.append(lp);values.append(float(critic.flatten()[0]));prev=camera
                     if len(actions)%120==0:print(args.rank,len(actions),'policy observations',flush=True)
-                proc.stdin.write(f'{key}\n'.encode());proc.stdin.flush()
+                wire=key+(256 if native_tick4 and ready else 0)
+                proc.stdin.write(f'{wire}\n'.encode());proc.stdin.flush()
                 ack=proc.stdout.readline().split()
                 if len(ack)!=3 or ack[0]!=b'KEY' or int(ack[1])!=key:
                     raise ValueError(f'Physical keyboard differed from the policy {ack}')
                 row.update(mask=key,x_applied_ns=int(ack[2]));logs.append(row)
         finally:
             try:
-                proc.stdin.write(b'128\n');proc.stdin.flush();proc.stdin.close()
+                stop=b'129\n' if cap and out=='engineering_first_spare_loss_or_decision_cap' else b'128\n'
+                proc.stdin.write(stop);proc.stdin.flush();proc.stdin.close()
             except (OSError,ValueError):
                 pass
             movie.release()
@@ -192,6 +220,9 @@ if __name__=='__main__':
         p.add_argument('--'+k,type=Path,required=True)
     p.add_argument('--verified-menu',action='store_true')
     p.add_argument('--role',choices=('engineering-zero-shot-original','train','held'),default='engineering-zero-shot-original')
-    p.add_argument('--rank',choices=('Hard','Lunatic'),required=True)
+    p.add_argument('--rank',choices=('Normal','Hard','Lunatic'),required=True)
+    p.add_argument('--history-states',choices=(1,4),type=int,default=1)
+    p.add_argument('--native-tick4',action='store_true')
+    p.add_argument('--engineering-decisions',type=int)
     p.add_argument('--seed',type=int,required=True)
     run(p.parse_args())
