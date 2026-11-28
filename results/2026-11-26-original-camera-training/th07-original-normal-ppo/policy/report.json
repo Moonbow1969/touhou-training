@@ -1,0 +1,332 @@
+{
+  "algorithm": "Joint four-head PPO",
+  "policy_sha256": "1b0b1dbb5b8a4525b5f4f12126c7b5e5cd1d8c89935dafa5ae3a9d5acadaf579",
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "physical_batch": 4,
+  "train_decisions": 3217,
+  "epochs_budget": 2,
+  "accepted_optimizer_steps": 52,
+  "max_initial_logp_error": 9.5367431640625e-06,
+  "max_initial_critic_error": 4.172325134277344e-07,
+  "configuration": {
+    "objective": "Joint 4-head clipped PPO from same trained parent actor and critic",
+    "reward": "-1 per stable confirmed spare loss incl final fatal when native Continue seen. +0.002 per playable 120 ms decision. Unconfirmed spell presses and native score receive no reward.",
+    "gamma": 0.995,
+    "gae_lambda": 0.95,
+    "clip": 0.1,
+    "entropy": 0.002,
+    "value_coef": 0.25,
+    "adam_lr": 1.5e-05,
+    "epochs": 2,
+    "minibatch": 128,
+    "optimizer_seed": 20807,
+    "kl_stop": 0.02
+  },
+  "protocol_sha256": "ae97677d1965375c065bec9ff5b163a5c25faeb730ffac1c73958bfd01eb6307",
+  "credits": [
+    {
+      "seed": 2080701,
+      "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "actions": 797,
+      "duration_s": 95.59054183401167,
+      "directions": [
+        54,
+        96,
+        34,
+        110,
+        221,
+        88,
+        38,
+        115,
+        41
+      ],
+      "button_active": [
+        344,
+        736,
+        11
+      ],
+      "median_step_ms": 120.06817804649472,
+      "first_stage": "Stage 1",
+      "screen_only": true,
+      "role": "train",
+      "arm": "six-ppo",
+      "host": "momentum",
+      "rank": "Normal",
+      "shot": "Reimu A",
+      "original_replay_score": 560840,
+      "stage_checkpoints": [
+        1
+      ],
+      "stage2_reached": false,
+      "native_opening": [
+        2,
+        3
+      ],
+      "last_hud_spares": 0,
+      "last_hud_bombs": 2,
+      "last_visible_continue": "Original prompt; controller released all held keys",
+      "evidence_sha256": {
+        "controls.csv": "f4be08cb9c983531ace8e5d7b667c7adb02b2df78bf354c3ede5dbe96ca7d0b9",
+        "policy-trace.npz": "9d90897130c9304a6f24dfb3df804e9ef57babc658acf336ab9817082b376ae6",
+        "official-policy.rpy": "187ddcdf6d2a49e1ac97ce04b6c98cd76a0982049d155e12aa20d91e14281715",
+        "full-stock-opening.png": "787e4d657866f7642e1cff9a27ef7469f128b55c86a1bd5a179be99ebaa32673",
+        "settled-continue.png": "f49d5318c17ddb7c9368494a7e724bde6ecc24518a1371cdb5306d4137c411a7",
+        "settled-scorecard.png": "c446615bb4622931f822ee704869468afbdddefeb82f83f2f7390d46a65ad922",
+        "ppo-reward.npz": "d2289137ee95a3899b2f6f8ad515157cb1a15e2ec6bc54380b750f605512f4ee"
+      }
+    },
+    {
+      "seed": 2080702,
+      "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "actions": 1015,
+      "duration_s": 121.79578756261617,
+      "directions": [
+        56,
+        111,
+        33,
+        111,
+        360,
+        88,
+        40,
+        165,
+        51
+      ],
+      "button_active": [
+        513,
+        917,
+        10
+      ],
+      "median_step_ms": 120.06660411134362,
+      "first_stage": "Stage 1",
+      "screen_only": true,
+      "role": "train",
+      "arm": "six-ppo",
+      "host": "momentum",
+      "rank": "Normal",
+      "shot": "Reimu A",
+      "original_replay_score": 784200,
+      "stage_checkpoints": [
+        1
+      ],
+      "stage2_reached": false,
+      "native_opening": [
+        2,
+        3
+      ],
+      "last_hud_spares": 0,
+      "last_hud_bombs": 1,
+      "last_visible_continue": "Original prompt; controller released all held keys",
+      "evidence_sha256": {
+        "controls.csv": "5f04d259089c8635514b3ba05a8fbd2cde9f62b542e976b18570955173f913a0",
+        "policy-trace.npz": "0b1a9677fbc2a7c0c781101594dba857b32148ec4cf85ec0cabd1329d37a3b73",
+        "official-policy.rpy": "7b0f6b30866e469e63f9e18e57ce6aab9622afea5724850ffb9deebd3f15560c",
+        "full-stock-opening.png": "0b96b3ec5ec3433491ff9caa19f9370567bef355a93826f430b799c834521fd8",
+        "settled-continue.png": "58181d67f2d83686a84a595ee82ed15a2e19a569a43d271b28892d0c33468582",
+        "settled-scorecard.png": "c6ea03fe64f59e22c2d8378f7f55021438740ffb1a8c0eccbc5e79f9c235ef9d",
+        "ppo-reward.npz": "5cb6988017432502ef33922b1549de6ee6c962b60531a26e6d36097f0ba41a2b"
+      }
+    },
+    {
+      "seed": 2080703,
+      "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "actions": 433,
+      "duration_s": 51.879221498034894,
+      "directions": [
+        34,
+        76,
+        24,
+        39,
+        125,
+        40,
+        14,
+        71,
+        10
+      ],
+      "button_active": [
+        191,
+        403,
+        5
+      ],
+      "median_step_ms": 120.06664788350463,
+      "first_stage": "Stage 1",
+      "screen_only": true,
+      "role": "train",
+      "arm": "six-ppo",
+      "host": "momentum",
+      "rank": "Normal",
+      "shot": "Reimu A",
+      "original_replay_score": 278950,
+      "stage_checkpoints": [
+        1
+      ],
+      "stage2_reached": false,
+      "native_opening": [
+        2,
+        3
+      ],
+      "last_hud_spares": 0,
+      "last_hud_bombs": 3,
+      "last_visible_continue": "Original prompt; controller released all held keys",
+      "evidence_sha256": {
+        "controls.csv": "2ac1a5f5d5ac96a4398a18f6b0390726b30afc0e1156f1f6e3cf7d4dd4fd0330",
+        "policy-trace.npz": "420700f2e8db607564cef0dc02fe217465df0f7480038fa9ff4a20cc66530c75",
+        "official-policy.rpy": "558d31012f99e2e3a57cc1186c8c912ac3729e2b86827d92fb1f29d92406c341",
+        "full-stock-opening.png": "428a9dd8297e0e7c0fadd551da853a26097a266685dc0e6fdb6428066b208808",
+        "settled-continue.png": "a6ff2e18804e2aa2643591b568cbc9ba13fbfd259487593621317074e8a26602",
+        "settled-scorecard.png": "6229cd5c05f694a13530709e9353e9a690d16bf6da5195d96d254a0986ab9689",
+        "ppo-reward.npz": "021ae8c5ad61f83bd2e0606c9fccaaa0170c8502ba8e6f18db14160c4eb8f9e1"
+      }
+    },
+    {
+      "seed": 2080704,
+      "policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+      "actions": 972,
+      "duration_s": 116.60892065055668,
+      "directions": [
+        76,
+        143,
+        33,
+        76,
+        328,
+        73,
+        40,
+        147,
+        56
+      ],
+      "button_active": [
+        408,
+        854,
+        19
+      ],
+      "median_step_ms": 120.06787303835154,
+      "first_stage": "Stage 1",
+      "screen_only": true,
+      "role": "train",
+      "arm": "six-ppo",
+      "host": "momentum",
+      "rank": "Normal",
+      "shot": "Reimu A",
+      "original_replay_score": 694350,
+      "stage_checkpoints": [
+        1
+      ],
+      "stage2_reached": false,
+      "native_opening": [
+        2,
+        3
+      ],
+      "last_hud_spares": 0,
+      "last_hud_bombs": 1,
+      "last_visible_continue": "Original prompt; controller released all held keys",
+      "evidence_sha256": {
+        "controls.csv": "b655c5c31e83daa39b08bee8838da8e41b03dcd9d623ed159340f6f7284e11cd",
+        "policy-trace.npz": "8fd5e881bc2270078238830366825685b4ca2c9fe8d9141fb02b4b07bec10591",
+        "official-policy.rpy": "f578f5003a5e2d0042c5212634d058f559ca1f422512dd2c9bde86be709310b3",
+        "full-stock-opening.png": "c32204f81501bf2884150a0bbc746fc118a87bfab5c7321f28d982580993d704",
+        "settled-continue.png": "36bc80b617d2ffcbce14f90a9308572e9c5328caf8fcb7b4426e1ce1024ee3d4",
+        "settled-scorecard.png": "104fb2508c592039f97390a661e56d489b5c1726a072b1b3a3f4de2e59ef2dbc",
+        "ppo-reward.npz": "6c814a00deebbb0fff60c12d73a6975e3dc217a9885d37506528a1d2b695860f"
+      }
+    }
+  ],
+  "history": [
+    {
+      "epoch": 1,
+      "step": 4,
+      "approx_joint_kl": 0.0009149404359050095,
+      "accepted": true,
+      "loss": 0.17393116652965546
+    },
+    {
+      "epoch": 1,
+      "step": 8,
+      "approx_joint_kl": 0.0014638036955147982,
+      "accepted": true,
+      "loss": 0.06809314340353012
+    },
+    {
+      "epoch": 1,
+      "step": 12,
+      "approx_joint_kl": 0.0015650993445888162,
+      "accepted": true,
+      "loss": 0.01780848205089569
+    },
+    {
+      "epoch": 1,
+      "step": 16,
+      "approx_joint_kl": 0.0013412302359938622,
+      "accepted": true,
+      "loss": -0.07332850247621536
+    },
+    {
+      "epoch": 1,
+      "step": 20,
+      "approx_joint_kl": 0.0010946268448606133,
+      "accepted": true,
+      "loss": -0.062248218804597855
+    },
+    {
+      "epoch": 1,
+      "step": 24,
+      "approx_joint_kl": 0.0015232674777507782,
+      "accepted": true,
+      "loss": 0.141584113240242
+    },
+    {
+      "epoch": 1,
+      "step": 26,
+      "approx_joint_kl": 0.0021472701337188482,
+      "accepted": true,
+      "loss": 0.6533136963844299
+    },
+    {
+      "epoch": 2,
+      "step": 30,
+      "approx_joint_kl": 0.003155898069962859,
+      "accepted": true,
+      "loss": -0.11321530491113663
+    },
+    {
+      "epoch": 2,
+      "step": 34,
+      "approx_joint_kl": 0.0026394776068627834,
+      "accepted": true,
+      "loss": 0.11244160681962967
+    },
+    {
+      "epoch": 2,
+      "step": 38,
+      "approx_joint_kl": 0.0018449672497808933,
+      "accepted": true,
+      "loss": -0.03476614132523537
+    },
+    {
+      "epoch": 2,
+      "step": 42,
+      "approx_joint_kl": 0.0016238689422607422,
+      "accepted": true,
+      "loss": -0.002940117847174406
+    },
+    {
+      "epoch": 2,
+      "step": 46,
+      "approx_joint_kl": 0.0016809809021651745,
+      "accepted": true,
+      "loss": -0.016697727143764496
+    },
+    {
+      "epoch": 2,
+      "step": 50,
+      "approx_joint_kl": 0.0017391752917319536,
+      "accepted": true,
+      "loss": -0.19313353300094604
+    },
+    {
+      "epoch": 2,
+      "step": 52,
+      "approx_joint_kl": 0.001802067388780415,
+      "accepted": true,
+      "loss": 0.09557488560676575
+    }
+  ]
+}

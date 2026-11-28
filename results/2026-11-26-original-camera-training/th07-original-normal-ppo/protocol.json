@@ -1,0 +1,57 @@
+{
+  "game": "TH07 official 0.11 trial",
+  "rank": "Normal",
+  "shot": "Reimu A",
+  "game_sha256": "2ca6b41ce2b07fb2b8a119f9683fc497dd724edcbc130b5076f8d86323b9091f",
+  "parent": "chained-six-game-ppo/policy/policy.ts",
+  "parent_policy_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "parent_actorcritic_sha256": "9cb4a1e180581c50df5a3af535aa26210573f0c9d55af9743a26988f494bd5c4",
+  "host": "momentum",
+  "train": [
+    2080701,
+    2080702,
+    2080703,
+    2080704
+  ],
+  "held": [
+    2080751,
+    2080752
+  ],
+  "held_first": [
+    "six-ppo",
+    "th07-ppo"
+  ],
+  "parent_arm": "six-ppo",
+  "candidate": "th07-ppo",
+  "seed_scope": "Controller draws; original RNG uncontrolled. Each pair uses same original physical host; rank, menus, character, capture and start inventory match.",
+  "initial_inventory": [
+    2,
+    3
+  ],
+  "per_decision": "96x112 grayscale and abs difference; 4 categorical heads; ordinary game physical keys, no assist; 120 ms target.",
+  "endpoint": "Full credit, first original Continue or clear, zero Continue accepted.",
+  "optimizer": {
+    "objective": "Joint 4-head clipped PPO from same trained parent actor and critic",
+    "reward": "-1 per stable confirmed spare loss incl final fatal when native Continue seen. +0.002 per playable 120 ms decision. Unconfirmed spell presses and native score receive no reward.",
+    "gamma": 0.995,
+    "gae_lambda": 0.95,
+    "clip": 0.1,
+    "entropy": 0.002,
+    "value_coef": 0.25,
+    "adam_lr": 1.5e-05,
+    "epochs": 2,
+    "minibatch": 128,
+    "optimizer_seed": 20807,
+    "kl_stop": 0.02
+  },
+  "endpoint_metrics": [
+    "Stage2 reached",
+    "original score",
+    "game progress percent",
+    "confirmed missiles/bombs",
+    "original misses",
+    "zero continues",
+    "last observed bomb inventory"
+  ],
+  "budget": "One four-credit TRAIN increment, two fresh held pairs, monitor 15-minute first-increment physical budget; previously reported qualification credit excluded."
+}
