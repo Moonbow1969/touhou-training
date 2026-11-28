@@ -1,0 +1,98 @@
+{
+  "edition": "TH08 official 0.02 trial",
+  "rank": "Normal",
+  "team": "Ghost",
+  "role": "held",
+  "initial_stock": [
+    2,
+    3
+  ],
+  "continues": 0,
+  "ordinary_story": true,
+  "assists": false,
+  "pairs": [
+    {
+      "seed": 80963551,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 1,
+      "arms": [
+        "lambda1-parent",
+        "lambda1-continuation"
+      ]
+    },
+    {
+      "seed": 80963552,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 1,
+      "arms": [
+        "lambda1-continuation",
+        "lambda1-parent"
+      ]
+    },
+    {
+      "seed": 80963553,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 2,
+      "arms": [
+        "lambda1-parent",
+        "lambda1-continuation"
+      ]
+    },
+    {
+      "seed": 80963554,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 2,
+      "arms": [
+        "lambda1-continuation",
+        "lambda1-parent"
+      ]
+    },
+    {
+      "seed": 80963555,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 3,
+      "arms": [
+        "lambda1-continuation",
+        "lambda1-parent"
+      ]
+    },
+    {
+      "seed": 80963556,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 3,
+      "arms": [
+        "lambda1-parent",
+        "lambda1-continuation"
+      ]
+    }
+  ],
+  "monte_carlo_controller_seeds": [
+    80963551,
+    80963552,
+    80963553,
+    80963554,
+    80963555,
+    80963556
+  ],
+  "order_randomization_seed": 80963550,
+  "parent_policy_sha256": "69c44e2ec484e5c5a915722fb1259a174da67b375cd1d4e786c54bf2589d3089",
+  "source_training_ledger_sha256": "3dbdb0f435cb47e83f93fc7661cca090439dd910312efe47baea94f54024ce56",
+  "original_rng": "Uncontrolled; pairing fixes player sampling seed and physical host/lane.",
+  "primary": "Stage 1 native death hazard per confirmed original tick of exposure, candidate divided by parent. Report both deaths and exposure.",
+  "secondary": [
+    "Stage 2 reached from the genuine complete original, retained Stage 2 entry stock if witnessed",
+    "Original Game Over/clear and last-playable/final spares and Bombs",
+    "Before-loss Bomb stock availability; physical Bomb casts and resource units; first-loss timing"
+  ],
+  "uncertainty": "Report all physical outcomes, all attributable exposures and strict same-seed pairs separately, exact enumeration of matched-seed bootstrap resamples and endpoint unknowns.",
+  "evidence": "Same compact native 56x48 RGB on each original capture; exact 112x96 learned observation, all four learned heads, physical consumption, value/logp, HUD, terminal/rank PNG, clock, asynchronous SHA-verified input archive. No full movie in either arm.",
+  "screening": "Report all played native endpoints in the registered cohort. Strict control requires the frozen native receipt, confirmed real rank/team/ending, every retained control consumed, >=99.5% exact four-tick intervals, source sealing, compact-frame registration and observer max <=100ms. Never replace outcome-selected credits.",
+  "middle_stale_stop": "At every joint dispatch barrier, before another credit may begin, compare every nonterminal four-tick window of each completed credit to the independently recorded original input words. If none equals the changed request and all four equal the previous request, invalidate that seed pair for strict inference, preserve original outcomes, and stop all future dispatch for review. Already-playing originals finish.",
+  "action_gate": "Replicable dry preflight only until the parent explicitly releases both frozen model hashes, local paths and scored study. No held row enters the optimizer."
+}

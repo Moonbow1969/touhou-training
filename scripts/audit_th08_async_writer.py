@@ -54,7 +54,7 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
             frames+=1
         player.release()
         movie_hash=sha(movie)
-    elif role=="train":
+    elif role in ("train","held"):
         path=raw/"compact-rgb.npz"
         with np.load(path,allow_pickle=False) as data:rgb=data["rgb"]
         with np.load(raw/"behavior.npz",allow_pickle=False) as data:gray=data["frames"]
@@ -109,7 +109,7 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     for name in ("raw","receipt","out"):p.add_argument("--"+name,type=Path,required=True)
-    p.add_argument("--role",choices=("train","engineering-zero-shot-original"),default="engineering-zero-shot-original")
+    p.add_argument("--role",choices=("train","held","engineering-zero-shot-original"),default="engineering-zero-shot-original")
     p.add_argument("--minimum-exact",type=float,default=.998)
     a=p.parse_args();result=audit(a.raw,a.receipt,a.role,a.minimum_exact)
     a.out.parent.mkdir(parents=True,exist_ok=True)
