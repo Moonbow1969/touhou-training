@@ -1,0 +1,154 @@
+--- a/record/tool/pairs.py
++++ b/record/tool/pairs.py
+@@ -28,7 +28,7 @@
+     folder=study/f'{seed}-{arm}'
+     try:
+         if not folder.exists() or not any(folder.iterdir()):
+-            boot(dict(seed=seed,arm=arm,sha256=plan['models'][arm],role='held'))
++            boot(dict(seed=seed,arm=arm,sha256=plan['models'][arm],role='held', physical_cpu_ids=plan['assignment_rows'][str(seed)]['physical_cpu_ids']))
+         inflight=folder/'recovery-live.pid'
+         if inflight.exists() and not (folder/'finished-game.json').exists():
+             pid=int(inflight.read_text())
+@@ -40,7 +40,8 @@
+             if not (folder/'finished-game.json').exists():raise RuntimeError('In-flight original did not produce a terminal receipt')
+         if not (folder/'finished-game.json').exists():
+             with (folder/'execution.log').open('a') as log:
+-                subprocess.run([sys.executable,'-u',str(tool/'play_record.py'),str(seed),arm],
++                cpus=','.join(map(str,plan['assignment_rows'][str(seed)]['physical_cpu_ids']))
++                subprocess.run(['taskset','-c',cpus,sys.executable,'-u',str(tool/'play_record.py'),str(seed),arm],
+                                env=dict(os.environ,OMP_NUM_THREADS='1',OPENBLAS_NUM_THREADS='1'),stdout=log,
+                                stderr=subprocess.STDOUT,check=True,timeout=2700)
+         # Endings show the original event/credits and have their own navigation
+@@ -50,7 +51,12 @@
+             while not (folder/'verified.json').is_file():time.sleep(15)
+             return json.loads((folder/'verified.json').read_bytes())
+         if not (folder/'ui-verified.json').exists():post(folder)
+-        return verify(folder,True)
++        checked=verify(folder,True)
++        if checked['terminal_continues'] or any(length<1 for index,length in checked['partial']):
++            checked['passed']=False
++            checked['reason']='Unconsumed requested mask or Continue'
++            write(folder/'verified.json',checked)
++        return checked
+     finally:
+         if folder.exists() and (folder/'ready.json').exists():
+             name=(folder/'actual-container').read_text().strip() if (folder/'actual-container').exists() else f'moonbow-th07-retail-record-{seed}'
+@@ -61,11 +67,9 @@
+                     subprocess.run(['docker','stop','-t','1',name],capture_output=True)
+ 
+ def run_pair(seed):
+-    primary=seed not in plan['technical_reserves']
+-    i=seed-2170751 if primary else seed-2170771
+-    first_parent=(i%4 in (0,3)) if primary else (i%2==1)
+-    arms=['parent','sft-71281'] if first_parent else ['sft-71281','parent']
+-    result=dict(seed=seed,slot=i%2,order=arms,arms={})
++    assignment=plan['assignment_rows'][str(seed)]
++    arms=assignment['order']
++    result=dict(seed=seed,slot=assignment['slot'],order=arms,arms={})
+     destination=study/f'pair-{seed}.json'
+     if destination.exists():return json.loads(destination.read_bytes())
+     for arm in arms:
+@@ -83,8 +87,9 @@
+ 
+ def main():
+     reports=[]
+-    for identity in ('2170701-parent','2170702-sft-71281'):
+-        path=study/identity/'verified.json'
++    for identity in plan['qualification_sha256']:
++        path=root.parent/'phase-engineering/record'/identity/'verified.json'
++        assert digest(path)==plan['qualification_sha256'][identity]
+         q=json.loads(path.read_bytes())
+         assert q['passed'] and not q['stale'] and q['terminal_visually_confirmed'] and q['terminal_continues']==0
+         reports.append(dict(identity=identity,report_sha256=digest(path),exact=q['exact_fraction']))
+--- a/record/tool/play_record.py
++++ b/record/tool/play_record.py
+@@ -19,7 +19,7 @@
+     benchmark=json.loads((root/'record/held-protocol.json').read_bytes())
+     arm=sys.argv[2]
+     assert seed in benchmark['primary_seeds']+benchmark['extension_seeds']+benchmark['technical_reserves']
+-    plan=dict(seed=seed,arm=arm,sha256=benchmark['models'][arm],role='held')
++    plan=dict(seed=seed,arm=arm,sha256=benchmark['models'][arm],role='held',physical_cpu_ids=benchmark['assignment_rows'][str(seed)]['physical_cpu_ids'])
+ else:
+     plan=next(x for x in json.loads((root/'record/protocol.json').read_bytes())['lanes'] if x['seed']==seed)
+ out=root/'record'/f"{seed}-{plan['arm']}"
+--- a/record/tool/score_pairs.py
++++ b/record/tool/score_pairs.py
+@@ -8,7 +8,8 @@
+ def score(root):
+     cohort=json.loads((root/'completed-pairs.json').read_bytes())
+     rows=[]
+-    arms=('parent','sft-71281')
++    plan=json.loads((root/'held-protocol.json').read_bytes())
++    arms=tuple(plan['models'])
+     for p in cohort['pairs']:
+         for arm in arms:
+             folder=root/f"{p['seed']}-{arm}"
+@@ -20,6 +21,21 @@
+                       'actual_bombs','original_saved_score','exact_fraction','deaths','terminal_continues',
+                       'max_synchronous_observer_ms','max_freeze_to_x_ms','p99_freeze_to_x_ms','max_freeze_ms','native_wall_seconds'):
+                 row[k]=r.get(k)
++            if r:
++                import csv
++                with (folder/'controls.csv').open() as handle:
++                    applied = [int(q['requested']) for q in csv.DictReader(handle)]
++                row['focus_decisions'] = sum(bool(mask & 4) for mask in applied)
++                row['action_decisions'] = len(applied)
++                with (folder/'native-input.csv').open() as handle:
++                    active={}
++                    for snapshot in csv.DictReader(handle):
++                        if (int(snapshot['flags']) & 4 and not int(snapshot['retry']) and int(snapshot['tick'])>0
++                                and snapshot['tick']==snapshot['event_index'] and snapshot['word']==snapshot['record_slot']):
++                            k=(int(snapshot['stage']),int(snapshot['tick']))
++                            active[k]=int(snapshot['word'])
++                row['native_focus_ticks']=sum(bool(word & 4) for word in active.values())
++                row['native_input_ticks']=len(active)
+             rows.append(row)
+     summary={}
+     for arm in arms:
+@@ -36,13 +52,24 @@
+                           actual_bombs=sum(r['actual_bombs'] for r in ok),
+                           bomb_positive_deaths=sum(d['prior_bombs']>0 for r in ok for d in r['deaths']),
+                           mean_score=stats.mean(r['original_saved_score'] for r in ok),
++                          native_focus_ticks=sum(r['native_focus_ticks'] for r in ok),native_input_ticks=sum(r['native_input_ticks'] for r in ok),
++                          focus_decisions=sum(r['focus_decisions'] for r in ok),action_decisions=sum(r['action_decisions'] for r in ok),
++                          stage2_entries_with_resources=[r['stage2_resources'] for r in ok if r['stage2']],
+                           min_exact=min(r['exact_fraction']for r in ok))
+     a,b=(summary[k] for k in arms)
+     rr=b['stage1_deaths_per_10000_native_ticks']/a['stage1_deaths_per_10000_native_ticks']
+     exposure=min(a['stage1_ticks'],b['stage1_ticks'])>=30000
+     progress=b['mean_stage1_ticks']>=a['mean_stage1_ticks']
+-    report=dict(rows=rows,summary=summary,ratio=rr,minimum_exposure=exposure,mean_progress_not_worse=progress,
+-                promote=bool(exposure and progress and rr<=.75),stop_intervention=rr>=1,
++    for summary_row in summary.values():
++        summary_row['native_focus_share']=summary_row['native_focus_ticks']/summary_row['native_input_ticks']
++        summary_row['actual_bombs_per_10000_observed_playable_ticks']=summary_row['actual_bombs']*10000/summary_row['native_input_ticks']
++        summary_row['mean_bombs_per_credit']=summary_row['actual_bombs']/summary_row['n']
++        summary_row['focus_decision_share']=summary_row['focus_decisions']/summary_row['action_decisions']
++        summary_row['bombs_per_10000_stage1_ticks']=summary_row['actual_bombs']*10000/summary_row['stage1_ticks'] if not summary_row['stage2'] else None
++    casts=(b['mean_bombs_per_credit']/a['mean_bombs_per_credit']) if a['mean_bombs_per_credit'] else None
++    cast_pass=casts is not None and 0.7<=casts<=1.4
++    report=dict(bomb_mean_ratio=casts,bomb_ratio_pass=cast_pass,rows=rows,summary=summary,ratio=rr,minimum_exposure=exposure,mean_progress_not_worse=progress,
++                promote=bool(cohort['valid_pairs']>=6 and exposure and progress and rr<=.75 and cast_pass),stop_intervention=rr>=1,
+                 inference='Descriptive exposure and inventory comparison. Independent original-game RNG across arms and limited independent seeds.')
+     (root/'result.json').write_text(json.dumps(report,indent=2)+'\n')
+     print(json.dumps({k:v for k,v in report.items()if k!='rows'},indent=2))
+--- a/record/tool/film_pair.py
++++ b/record/tool/film_pair.py
+@@ -18,7 +18,7 @@
+         import imageio_ffmpeg
+         ffmpeg=imageio_ffmpeg.get_ffmpeg_exe()
+     clips=[]
+-    for arm in ('parent','sft-71281'):
++    for arm in ('parent','kl-71281'):
+         p=root/arm
+         with np.load(p/'policy-trace.npz')as z:
+             ts=z['camera_ns'];times=(ts-ts[0])/1e9
+@@ -39,7 +39,7 @@
+         draw=ImageDraw.Draw(canvas)
+         for n,s in enumerate(clips):
+             x=448*n
+-            draw.text((x+10,4),('Zero-shot parent','TH07 retail SFT 71281')[n],fill='white',font=title)
++            draw.text((x+10,4),('Zero-shot parent','Focus/Bomb KL SFT 71281')[n],fill='white',font=title)
+             draw.text((x+10,29),'Retail 1.00b  |  Normal  |  Reimu A  |  1x wall time',fill='#a6c3ce',font=small)
+             end=s['times'][-1]+.07
+             if t<1 or t>=end+1:
