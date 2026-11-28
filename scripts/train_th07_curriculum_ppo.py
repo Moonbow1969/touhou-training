@@ -26,7 +26,8 @@ FOLDS = 4
 CRITIC_REFITS = 2
 LAMBDA = .985
 KL_CAP = .01
-PRACTICE_SCENES = ("letty_full", "letty_low", "cirno", "letty_final")
+LATE_SCENES = {"letty_final": "letty-final-2-3", "letty_nonspell2": "letty-nonspell2-2-3"}
+PRACTICE_SCENES = ("letty_full", "letty_low", "cirno", *LATE_SCENES)
 SCENES = ("easy", "normal", *PRACTICE_SCENES)
 
 
@@ -63,8 +64,8 @@ def load_episode(root, entry, actor):
     endpoints = ("game_over", "practice_stage_clear", "native_tick_cutoff") if practice else ("game_over", "stage2_entry")
     if outcome not in endpoints:
         raise ValueError(f"Unregistered original endpoint: {path}")
-    if scene == "letty_final" and receipt.get("scenario") != "letty-final-2-3":
-        raise ValueError(f"Late practice window lacks the qualified final-spell entrance: {path}")
+    if scene in LATE_SCENES and receipt.get("scenario") != LATE_SCENES[scene]:
+        raise ValueError(f"Late practice window lacks the qualified entrance: {path}")
     native_terminal = outcome in ("game_over", "practice_stage_clear")
     success = outcome in ("stage2_entry", "practice_stage_clear")
     timeout = outcome == "native_tick_cutoff"
@@ -213,7 +214,7 @@ def crossfit(episodes):
 
 def equal_sources(episodes, mode):
     layouts = {"easy-normal": ("easy", "normal"), "normal-practice": ("normal", "practice"),
-               "last-spell": ("letty_final",)}
+               "last-spell": ("letty_final",), "second-nonspell": ("letty_nonspell2",)}
     sources = defaultdict(list)
     for episode in episodes:
         scene = episode["scene"]
@@ -221,8 +222,9 @@ def equal_sources(episodes, mode):
         sources[group].append(tuple(field[episode["active"]] for field in episode["packed"]))
     if set(sources) != set(layouts[mode]):
         raise ValueError("The inputs must match the registered sources before fitting")
-    if mode == "last-spell" and not any(e["audit"]["outcome"] == "practice_stage_clear" for e in episodes):
-        raise ValueError("The final-spell fit requires a witnessed section completion")
+    if mode in ("last-spell", "second-nonspell") and not any(
+            e["audit"]["outcome"] == "practice_stage_clear" for e in episodes):
+        raise ValueError("The late-section fit requires a witnessed completion")
     merged = {key: tuple(torch.cat(part) for part in zip(*rows, strict=True)) for key, rows in sources.items()}
     available = {key: len(value[0]) for key, value in merged.items()}
     quota = min(available.values())
