@@ -1,0 +1,85 @@
+{
+  "encoder": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "fold_groups": [
+    [
+      80962005,
+      80962008,
+      80962010,
+      80963001,
+      80963006,
+      80963017,
+      80963027,
+      80963029,
+      80963031
+    ],
+    [
+      80962009,
+      80962013,
+      80962016,
+      80962901,
+      80963005,
+      80963009,
+      80963010,
+      80963019,
+      80963026,
+      80963032
+    ],
+    [
+      80962006,
+      80962007,
+      80962014,
+      80963008,
+      80963011,
+      80963012,
+      80963014,
+      80963015,
+      80963025
+    ],
+    [
+      80962002,
+      80962012,
+      80962015,
+      80963004,
+      80963007,
+      80963013,
+      80963016,
+      80963028,
+      80963030
+    ],
+    [
+      80962003,
+      80962004,
+      80962011,
+      80963002,
+      80963003,
+      80963018,
+      80963020,
+      80963024
+    ]
+  ],
+  "seed": 80963973,
+  "training_manifest_hashes": {
+    "qualification-diagnostic.json": "3dbdb0f435cb47e83f93fc7661cca090439dd910312efe47baea94f54024ce56",
+    "qualified-train.json": "f2527c059ac38a6adfc7c90c05abc256475a672f2e8926edfddc45bf1e907e1c"
+  },
+  "windows_ticks": [
+    [
+      8,
+      32
+    ],
+    [
+      16,
+      40
+    ]
+  ],
+  "inner_allocation": "Three folds fit, next whole fold calibrates and sets the 5% false alarm threshold; rotating held fold only scores.",
+  "baseline": "Logistic on elapsed game clock, native pre-action x/y and squared terms, current stocks and since-last-hit clock.",
+  "visual": "Frozen deployed 128-dimensional camera trunk; readout is a 64-unit SiLU MLP on raw grayscale and previous-frame absolute difference. No stock, coordinates or actions enter the visual arm.",
+  "label": "Native fatal-hit entry matched to later stock loss or Game Over. Require both camera frames to be in normal player state. This excludes visible hit animations and most post-death immunity.",
+  "weights": "Square-root inverse rare-event odds during both fits, then separate temperature/intercept fits on calibration credits.",
+  "gate": "At least four primary folds satisfy AP >= 1.5x baseline, event coverage >= 0.5 and ECE <= .02. Held false-positive rate is reported. Wider guard is a prespecified sensitivity analysis.",
+  "coverage": "Cutoff set on calibration at 5% controls. Alert must occur at least 12 native ticks before the exclusion guard. Every death remains in denominator.",
+  "independence": "The supervised head is held out by full credit. The deployed trunk has prior PPO exposure to these credits. Before shaping, require a fresh independent native shadow batch.",
+  "updates": 240,
+  "batch": 512
+}

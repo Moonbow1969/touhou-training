@@ -1,0 +1,274 @@
+{
+  "guard": 8,
+  "horizon": 32,
+  "fold": 2,
+  "training": [
+    80962005,
+    80962008,
+    80962010,
+    80963001,
+    80963006,
+    80963017,
+    80963027,
+    80963029,
+    80963031,
+    80962009,
+    80962013,
+    80962016,
+    80962901,
+    80963005,
+    80963009,
+    80963010,
+    80963019,
+    80963026,
+    80963032,
+    80962003,
+    80962004,
+    80962011,
+    80963002,
+    80963003,
+    80963018,
+    80963020,
+    80963024
+  ],
+  "calibration": [
+    80962002,
+    80962012,
+    80962015,
+    80963004,
+    80963007,
+    80963013,
+    80963016,
+    80963028,
+    80963030
+  ],
+  "held": [
+    80962006,
+    80962007,
+    80962014,
+    80963008,
+    80963011,
+    80963012,
+    80963014,
+    80963015,
+    80963025
+  ],
+  "ap_ratio": 0.8735588401586281,
+  "gate_passed": false,
+  "clocks": {
+    "average_precision": 0.15559020353082692,
+    "positive_rate": 0.045970645250623096,
+    "held_false_positive_rate": 0.018867924528301886,
+    "early_events": 4,
+    "total_events": 27,
+    "event_coverage": 0.14814814814814814,
+    "ece_10": 0.0053945029042637305,
+    "brier": 0.04193931428234142,
+    "cutoff": 0.1258511580423225,
+    "by_credit": [
+      {
+        "seed": 80962006,
+        "observations": 309,
+        "positives": 15,
+        "ap": 0.9644257703081233,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80962007,
+        "observations": 363,
+        "positives": 18,
+        "ap": 0.04986753546795094,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80962014,
+        "observations": 459,
+        "positives": 20,
+        "ap": 0.4058927214103584,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963008,
+        "observations": 281,
+        "positives": 19,
+        "ap": 0.0672361188398507,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80963011,
+        "observations": 485,
+        "positives": 20,
+        "ap": 0.0888582212071443,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80963012,
+        "observations": 452,
+        "positives": 19,
+        "ap": 0.04873393943618452,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80963014,
+        "observations": 481,
+        "positives": 19,
+        "ap": 0.3505329461159198,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963015,
+        "observations": 374,
+        "positives": 18,
+        "ap": 0.3719765599720956,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963025,
+        "observations": 407,
+        "positives": 18,
+        "ap": 0.4393598326859871,
+        "detected": 1,
+        "events": 3
+      }
+    ],
+    "optimizer": [
+      {
+        "update": 1,
+        "weighted_bce": 0.8438068628311157
+      },
+      {
+        "update": 60,
+        "weighted_bce": 0.7698644399642944
+      },
+      {
+        "update": 120,
+        "weighted_bce": 0.7582282423973083
+      },
+      {
+        "update": 180,
+        "weighted_bce": 0.7226427793502808
+      },
+      {
+        "update": 240,
+        "weighted_bce": 0.7110392451286316
+      }
+    ],
+    "weights_sha256": "629d37a59978348958e0ffac34773c80476ffc8b9105415a41e366baa446422a"
+  },
+  "visual": {
+    "average_precision": 0.13591719773643404,
+    "positive_rate": 0.045970645250623096,
+    "held_false_positive_rate": 0.03134978229317852,
+    "early_events": 6,
+    "total_events": 27,
+    "event_coverage": 0.2222222222222222,
+    "ece_10": 0.00395474813190765,
+    "brier": 0.04203509910721194,
+    "cutoff": 0.13544101445709533,
+    "by_credit": [
+      {
+        "seed": 80962006,
+        "observations": 309,
+        "positives": 15,
+        "ap": 0.31001996952462574,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80962007,
+        "observations": 363,
+        "positives": 18,
+        "ap": 0.12320275304033748,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80962014,
+        "observations": 459,
+        "positives": 20,
+        "ap": 0.20431018512129845,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963008,
+        "observations": 281,
+        "positives": 19,
+        "ap": 0.28033979168819256,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80963011,
+        "observations": 485,
+        "positives": 20,
+        "ap": 0.06790881447832744,
+        "detected": 0,
+        "events": 3
+      },
+      {
+        "seed": 80963012,
+        "observations": 452,
+        "positives": 19,
+        "ap": 0.22038908027275236,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963014,
+        "observations": 481,
+        "positives": 19,
+        "ap": 0.2821937982531506,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963015,
+        "observations": 374,
+        "positives": 18,
+        "ap": 0.11837537420860984,
+        "detected": 1,
+        "events": 3
+      },
+      {
+        "seed": 80963025,
+        "observations": 407,
+        "positives": 18,
+        "ap": 0.13753986673453827,
+        "detected": 1,
+        "events": 3
+      }
+    ],
+    "optimizer": [
+      {
+        "update": 1,
+        "weighted_bce": 0.7910065650939941
+      },
+      {
+        "update": 60,
+        "weighted_bce": 0.41145241260528564
+      },
+      {
+        "update": 120,
+        "weighted_bce": 0.33442193269729614
+      },
+      {
+        "update": 180,
+        "weighted_bce": 0.26185595989227295
+      },
+      {
+        "update": 240,
+        "weighted_bce": 0.23377740383148193
+      }
+    ],
+    "weights_sha256": "a4bd9269e000542c23f8ddd53e569f9ad8453e26404d919793712b2e701c5d9a"
+  }
+}
