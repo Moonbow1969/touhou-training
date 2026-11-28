@@ -1,0 +1,31 @@
+{
+  "worker": "Entropy; original v0.13 640x480 Wine/Xvfb, one 1.15 vCPU-cap graphics lane; CPU PPO image inference/collector colocated in its own 0.75 vCPU-cap container.",
+  "physical_transport": "All high-volume RGB observations and keys are passed through local FIFOs. Only finished compressed packets are copied to the learner. A deliberate minimum 50 ms key hold applies before the next image; original game native RNG and software-rendering wall rate are uncontrolled.",
+  "interpretation": "Observation-to-echo includes X framebuffer handling, transfer across local FIFOs, sampling, inference and X application. This is not a GPU-only kernel time. Original-frame tick frequency is not directly measured by these wall timestamps.",
+  "credits": [
+    {
+      "credit": "engineering-03",
+      "decisions": 2985,
+      "observation_to_actions_and_X_echo": {
+        "median_ms": 14.71646785736084,
+        "p95_ms": 48.95548858642578,
+        "min_ms": 8.794190406799316,
+        "max_ms": 186.02793312072754
+      },
+      "post_X_echo_to_next_complete_camera": {
+        "median_ms": 85.48034191131592,
+        "p95_ms": 90.38643250465392,
+        "min_ms": 51.05213642120361,
+        "max_ms": 96.65133571624756
+      },
+      "full_decision_gap": {
+        "median_ms": 99.9696102142334,
+        "p95_ms": 136.4989614009857,
+        "min_ms": 60.05527877807617,
+        "max_ms": 238.45370292663574
+      },
+      "realized_hz": 9.99452719497884,
+      "physical_echo_rows": 2985
+    }
+  ]
+}

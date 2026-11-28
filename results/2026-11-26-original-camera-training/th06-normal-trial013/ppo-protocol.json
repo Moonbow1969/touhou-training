@@ -1,0 +1,32 @@
+{
+  "title": 6,
+  "rank": "Normal",
+  "host": "Entropy",
+  "train_seeds": {
+    "6": [
+      606101,
+      606102,
+      606103,
+      606104
+    ]
+  },
+  "held_seeds": [
+    606201,
+    606202,
+    606203,
+    606204
+  ],
+  "held_pair_order": "AB BA BA AB; same four policy sampling seeds, game RNG unseeded",
+  "behavior_sha256": "1057c6a4ef07a06166bea2975d87832305324ba68db9356490ef86dd3d2b6618",
+  "state_dictionary_sha256": "4ee6104ccb2733a692ccd721d21caaf9f77d3e891cdde9c47107e08c131b0004",
+  "learning_rates": [
+    2e-05,
+    1e-05,
+    5e-06,
+    2.5e-06
+  ],
+  "reward": "Owned original HUD shows spare loss -1 including final active life, earned spare +1, same-life confirmed Bomb stock spend -0.03 with preceding real X. Never penalize replenished Bombs on death or count a button without effect.",
+  "algorithm": "Existing full-resolution PPO, gamma .999, lambda .985, 4 epochs, joint KL limit .025. Training only on the four prespecified complete SFT credits. Fully independent held evaluation at original Continue or ending after correction; failure is preserved.",
+  "stage_scoring": "Retain full playfield, stock and Stage title material in ordered original screenshots; no automatic Stage2 positive unless an independently reviewed stage card or equivalent original evidence is present.",
+  "normal_only": true
+}
