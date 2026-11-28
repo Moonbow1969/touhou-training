@@ -1,0 +1,106 @@
+{
+  "totals": {
+    "other": 7282,
+    "other_with_throttle": 6315,
+    "nonexact": 1,
+    "nonexact_with_throttle": 1
+  },
+  "observed_originals": [
+    {
+      "original": "21749303-practice-ppo",
+      "counts": {
+        "other": 1020,
+        "other_with_throttle": 902
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1284,
+      "throttled_periods": 922,
+      "charged_throttle_seconds": 12.870828
+    },
+    {
+      "original": "21749304-practice-ppo",
+      "counts": {
+        "other": 1028,
+        "other_with_throttle": 878
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1553,
+      "throttled_periods": 1130,
+      "charged_throttle_seconds": 16.952918
+    },
+    {
+      "original": "21749305-parent",
+      "counts": {
+        "other": 803,
+        "other_with_throttle": 737
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1461,
+      "throttled_periods": 1014,
+      "charged_throttle_seconds": 15.243362
+    },
+    {
+      "original": "21749305-practice-ppo",
+      "counts": {
+        "other": 1025,
+        "other_with_throttle": 876,
+        "nonexact": 1,
+        "nonexact_with_throttle": 1
+      },
+      "covered_errors": [
+        {
+          "decision": 286,
+          "throttle": true
+        }
+      ],
+      "cpu_quota_periods": 1718,
+      "throttled_periods": 1194,
+      "charged_throttle_seconds": 18.678381
+    },
+    {
+      "original": "21749306-parent",
+      "counts": {
+        "other": 988,
+        "other_with_throttle": 825
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1694,
+      "throttled_periods": 1145,
+      "charged_throttle_seconds": 15.773643
+    },
+    {
+      "original": "21749306-practice-ppo",
+      "counts": {
+        "other": 668,
+        "other_with_throttle": 583
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1318,
+      "throttled_periods": 854,
+      "charged_throttle_seconds": 14.193721
+    },
+    {
+      "original": "21749307-parent",
+      "counts": {
+        "other": 930,
+        "other_with_throttle": 810
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1591,
+      "throttled_periods": 1069,
+      "charged_throttle_seconds": 15.333381
+    },
+    {
+      "original": "21749308-parent",
+      "counts": {
+        "other": 820,
+        "other_with_throttle": 704
+      },
+      "covered_errors": [],
+      "cpu_quota_periods": 1480,
+      "throttled_periods": 926,
+      "charged_throttle_seconds": 13.942972
+    }
+  ],
+  "method": "Each nonfinal command's resume-to-next-camera interval is bracketed by actual cgroup samples. Only complete sample coverage with no gap above 300 ms is compared. A recorded increase in cgroup nr_throttled indicates a nearby quota-throttling period. The bracket (~100 ms) exceeds a 60-Hz game tick and does not identify the delayed thread or establish cause."
+}

@@ -1,0 +1,7 @@
+# CPU quota during two original practice lanes
+
+An independent read-only watcher sampled the active held containers for about ten minutes. It took 5,277 samples on a separate CPU. The held launchers continued with their registered four-CPU affinities and two-CPU bandwidth quota. The recorder and the analysis use the same host monotonic clock as the native gameplay journals.
+
+One independently checked mistimed command lay inside the telemetry coverage. Its resume-to-next-camera interval overlapped a nearby quota-throttling period. The same relationship held for 6,315 of the 7,282 other covered commands, or 86.7%. The 100 ms cgroup sampling interval spans about six original game ticks. The cause of the mistimed command remains unresolved at that resolution. [Matched per-credit counters](cfs-observed.json) · [Raw samples](cfs-samples.jsonl.gz)
+
+The separate twenty-attempt training exercise spent a median 56.70 seconds before its first playable observation and 70.34 seconds acting. The original native clock ran at approximately 56 ticks per second while the policy acted. The independent Accelerator check qualified the unchanged gameplay crop and native keys after compensating for motion of the highlighted menu glyph. [Reset measurement](../../th07-practice-actor-train/reset-timing-breakdown.json) · [Independent Accelerator qualification](../../th07-practice-accelerator-portability)
