@@ -1,0 +1,44 @@
+{
+  "edition": "TH08 original 0.02 replay",
+  "team": "Ghost",
+  "rank": "Normal",
+  "prior": "4255efae6544dedbbd4d7dc7f20e0dc822b367d3cc73b1469b7cd4e68d800a9a",
+  "previous_frames": [
+    -12,
+    -8,
+    -4,
+    0
+  ],
+  "updates": 1200,
+  "batch": 128,
+  "seed": 814089,
+  "comparison": "Frozen base CNN. Train a capacity-matched residual on shared indices and labels. Control repeats current encoding. Treatment takes the four ordered native camera states. Focus reuses base logits because no Normal positive expert focus data exist.",
+  "metrics": "Movement NLL and accuracy on the two frozen held pilots, plus NLL after true direction changes. The same pilots informed previous studies, so these are development checks. Native performance requires separately registered credits.",
+  "archives": {
+    "train": [
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1npa-s1.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1npa-s2.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1npa-s3.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1nta-s1.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1nta-s2.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud1nta-s3.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nka-s1.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nka-s2.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nka-s3.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nwa-s1.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nwa-s2.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nwa-s3.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nyo-s1.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nyo-s2.npz",
+      "th08-trial002-human/qualified/train/th08-002-th8_ud2nyo-s3.npz"
+    ],
+    "held": [
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nho-s1.npz",
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nho-s2.npz",
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nho-s3.npz",
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nro-s1.npz",
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nro-s2.npz",
+      "th08-trial002-human/qualified/held/th08-002-th8_ud1nro-s3.npz"
+    ]
+  }
+}
