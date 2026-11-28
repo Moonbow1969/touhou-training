@@ -23,10 +23,10 @@ def read_tsv(path):
     return {k:int(v) for k,v in rows[0].items()}
 
 
-def audit(raw,receipt):
+def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
     times=[json.loads(s) for s in (raw/"timing.jsonl").read_text().splitlines()]
     credit=json.loads(receipt.read_bytes())
-    if credit["role"]!="engineering-zero-shot-original" or times[-1]["phase"]!="terminal":
+    if credit["role"]!=role or times[-1]["phase"]!="terminal":
         raise ValueError("Engineering original terminal missing")
     start=next(r["monotonic_ns"] for r in times if r["phase"]=="policy")
     end=times[-1]["monotonic_ns"]
@@ -42,15 +42,35 @@ def audit(raw,receipt):
             if (f==4 and n>=old+32) or (f==0 and n>old):
                 at_boundary[j]=True;previous[s]=n
     movie=raw/"original-observations.mp4"
-    player=cv2.VideoCapture(str(movie));frames=0
-    while True:
-        ok,frame=player.read()
-        if not ok:break
-        if frame.shape!=(480,640,3):raise ValueError("Movie frame has wrong camera dimensions")
-        frames+=1
-    player.release()
     recording=json.loads((raw/"movie-pipeline.json").read_bytes())
     source=json.loads((raw/"receipt.json").read_bytes())
+    frames=0;compact=None;movie_hash=None
+    if movie.exists():
+        player=cv2.VideoCapture(str(movie))
+        while True:
+            ok,frame=player.read()
+            if not ok:break
+            if frame.shape!=(480,640,3):raise ValueError("Movie frame has wrong camera dimensions")
+            frames+=1
+        player.release()
+        movie_hash=sha(movie)
+    elif role=="train":
+        path=raw/"compact-rgb.npz"
+        with np.load(path,allow_pickle=False) as data:rgb=data["rgb"]
+        with np.load(raw/"behavior.npz",allow_pickle=False) as data:gray=data["frames"]
+        if rgb.dtype!=np.uint8 or rgb.shape!=(len(times),56,48,3):
+            raise ValueError("Compact native color stream has incorrect shape or datatype")
+        idx=np.array([i for i,r in enumerate(times) if r["phase"]=="policy"])
+        if len(idx)!=len(gray):raise ValueError("Compact observer frame ordering changed")
+        max_error=0
+        for start_row in range(0,len(idx),128):
+            section=slice(start_row,start_row+128)
+            color=rgb[idx[section]].astype(np.int32)
+            luminance=(77*color[:,:,:,0]+150*color[:,:,:,1]+29*color[:,:,:,2]+128)//256
+            expected=(gray[section].reshape(-1,56,2,48,2).sum((2,4)).astype(np.int32)+2)//4
+            max_error=max(max_error,int(np.abs(luminance-expected).max()))
+        compact=dict(sha256=sha(path),rgb_shape=list(rgb.shape),max_luminance_error=max_error,
+            compared_original_policy_frames=len(gray),all_timing_rows=len(times))
     native=read_records(raw)
     writer=read_tsv(raw/"native-archive-sealed.tsv")
     handoff=read_tsv(raw/"native-archive-bracket-status.tsv")
@@ -59,14 +79,18 @@ def audit(raw,receipt):
     duration=(end-start)/1e9
     endpoint=terminal_stage_evidence(raw,credit)
     physical=dict(all_masks=credit["action_masks_with_native_consumption"]==credit["decisions"],
-        strict_native=credit["qualified"],exact_four=credit["exact_four_tick_fraction"]>=.998,
+        strict_native=credit["qualified"],exact_four=credit["exact_four_tick_fraction"]>=minimum_exact,
         observer_tail=interval["p999_ms"]<30 and interval["max_ms"]<=100,
         archive=(counts==[writer[f"stage{s}"] for s in (1,2,3)]==[handoff[f"stage{s}_words"] for s in (1,2,3)]
                  and handoff["reader_exit"]==0 and handoff["ack_ns"]>end and counts[credit["terminal_stage"]-1]==credit["terminal_tick"]+1),
-        color_video=frames==len(times)==recording["encoded_frames"] and recording["backpressure_ns"]==0 and sha(movie)==source["movie_sha256"],
+        color_video=movie_hash is not None and frames==len(times)==recording["encoded_frames"] and recording["backpressure_ns"]==0 and movie_hash==source["movie_sha256"],
         stock_terminal=endpoint["stage"]==credit["terminal_stage"] and credit["first_stock"]==[2,3] and credit["continues"]==0)
     worst=np.flatnonzero(during)[np.argsort(elapsed[during])[-5:][::-1]]
-    return dict(seed=credit["seed"],all_gates_passed=all(physical.values()),gates=physical,actor_sha256=credit["policy_sha256"],
+    if compact is not None:
+        physical["compact_color"]=(compact["sha256"]==source["compact_rgb_sha256"] and compact["max_luminance_error"]<=2 and
+            recording["encoded_frames"]==len(times) and recording["backpressure_ns"]==0 and source["movie_sha256"] is None)
+    required=[v for k,v in physical.items() if compact is None or k!="color_video"]
+    return dict(seed=credit["seed"],all_gates_passed=all(required),gates=physical,actor_sha256=credit["policy_sha256"],
         observer_gameplay=interval,observer_all=latency(elapsed),first_query_rtt_ms=float(elapsed[0]),
         observer_snapshot_boundary=latency(elapsed[during&at_boundary]),observer_off_boundary=latency(elapsed[during&~at_boundary]),
         snapshot_groups="Based on eligible stable stage/cursor and advance of at least 32 active ticks or a new stopped tick. All physical q rows, including invalid rows, stay in the primary latency denominator.",
@@ -75,7 +99,8 @@ def audit(raw,receipt):
         exact_intervals=credit["exact_complete_intervals"],total_intervals=credit["native_intervals"],exact_fraction=credit["exact_four_tick_fraction"],
         all_consumed_retained=credit["action_masks_with_native_consumption"],decisions=credit["decisions"],raw_requested=credit["physical_sampled_requests"],
         native_tick_at_game_over=credit["terminal_tick"],final_stock=credit["terminal_stock"],terminal=endpoint,
-        movie_sha256=sha(movie),full_color_frames=frames,timing_frames=len(times),movie_writer=recording,seal=writer,bracket=handoff,
+        movie_sha256=movie_hash,full_color_frames=frames,timing_frames=len(times),movie_writer=recording,seal=writer,bracket=handoff,
+        **({"compact_rgb":compact} if compact is not None else {}),
         first_action_to_terminal_seconds=duration,native_fps=(credit["terminal_tick"]-credit["first_tick"]+1)/duration,
         native_record_sha256={p.name:sha(p) for p in raw.glob("native-record-*.bin")},
         native_capture_sha256=sha(raw/"clock.tsv"),behavior_sha256=source["behavior_sha256"],credit_sha256=sha(receipt))
@@ -84,6 +109,8 @@ def audit(raw,receipt):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     for name in ("raw","receipt","out"):p.add_argument("--"+name,type=Path,required=True)
-    a=p.parse_args();result=audit(a.raw,a.receipt)
+    p.add_argument("--role",choices=("train","engineering-zero-shot-original"),default="engineering-zero-shot-original")
+    p.add_argument("--minimum-exact",type=float,default=.998)
+    a=p.parse_args();result=audit(a.raw,a.receipt,a.role,a.minimum_exact)
     a.out.parent.mkdir(parents=True,exist_ok=True)
     a.out.write_text(json.dumps(result,indent=2)+"\n",encoding="utf-8")
