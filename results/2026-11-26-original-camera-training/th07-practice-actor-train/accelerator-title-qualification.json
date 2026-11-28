@@ -1,0 +1,102 @@
+{
+  "status": "Pre-game capture excluded. Host mount, actual thprac attachment, menu screenshot and tooltip retained; no policy decisions.",
+  "metric": "Binary channel-minimum >210; fixed Stage1 practice menu template; diagnostic +/-10px only after registered gate had rejected the observation.",
+  "rows": [
+    {
+      "source": "pre-game-setup/accelerator-21749209/title-latest.png",
+      "sha256": "abf1b48b8a860f9bba879f13e5df3717945d463f33f08d6544ea5f988fffd0ce",
+      "signed_rect": [
+        435,
+        262,
+        157,
+        20
+      ],
+      "signed_iou": 0.24002347417840375,
+      "best_offset_xy": [
+        4,
+        0
+      ],
+      "best_iou": 1.0
+    },
+    {
+      "source": "raw/21749201/practice-start.png",
+      "sha256": "ce51aaf0398e6c7784219ec7f04801fe7d455594551946e62d14bf54d9f544da",
+      "signed_rect": [
+        435,
+        262,
+        157,
+        20
+      ],
+      "signed_iou": 1.0,
+      "best_offset_xy": [
+        0,
+        0
+      ],
+      "best_iou": 1.0
+    },
+    {
+      "source": "raw/21749213/practice-start.png",
+      "sha256": "2e47bcda5513cc8f639a5717fb05790e8f18f21a2b3dcea07bf21231dc90fdd6",
+      "signed_rect": [
+        435,
+        262,
+        157,
+        20
+      ],
+      "signed_iou": 1.0,
+      "best_offset_xy": [
+        0,
+        0
+      ],
+      "best_iou": 1.0
+    }
+  ],
+  "existing_image_anchor_audit": {
+    "comparison": "Accelerator source to each of Gamer 21749201 and 21749213, original 800x600 screens",
+    "foreground_box_pixels_inclusive": [
+      0,
+      0,
+      639,
+      479
+    ],
+    "mask": "min(R,G,B)>210; maximum IoU among dx=-6..6 dy=-3..3, native screenshot coordinates",
+    "anchors": [
+      {
+        "name": "main title logo",
+        "x": 21,
+        "y": 56,
+        "w": 368,
+        "h": 86,
+        "on_pixels": 2661
+      },
+      {
+        "name": "subtitle",
+        "x": 12,
+        "y": 140,
+        "w": 379,
+        "h": 18,
+        "on_pixels": 256
+      },
+      {
+        "name": "copyright",
+        "x": 9,
+        "y": 453,
+        "w": 389,
+        "h": 26,
+        "on_pixels": 240
+      }
+    ],
+    "all_anchor_best_offset_xy": [
+      0,
+      0
+    ],
+    "all_anchor_iou": 1.0,
+    "selected_menu_glyph_pixels": 1046,
+    "selected_menu_best_offset_xy": [
+      4,
+      0
+    ],
+    "selected_menu_iou_at_best": 1.0,
+    "interpretation": "These fixed title-screen anchors coincide exactly. The highlighted item itself is displaced; menu animation phase is a plausible explanation. Actual gameplay camera alignment on practice start was not measured on this host."
+  }
+}
