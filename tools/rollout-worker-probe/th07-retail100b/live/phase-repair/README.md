@@ -1,0 +1,7 @@
+# TH07 retail recording-slot handshake
+
+Stage a separate copy of the existing private retail runtime under `phase-engineering`. Use its own `record/tool`, including the compiled independent native observer, and link the licensed read-only game input and shared replay/menu helpers from the original layout. The captured protocol is in `th07-retail-phase-repair/protocol.json` alongside the published result.
+
+From the isolated root, apply `patch -p1 < record-ready.patch`, rebuild `gcc -O2 -o record/tool/record_actor record/tool/record_actor.c -ldl` for the same container libc, place `engineering.py` in `record/tool`, copy the protocol to `record/protocol.json`, and run `python3 -u record/tool/engineering.py`. The reproduced engineering assignment uses six dedicated CPU IDs and two original software instances. Its launch guard checks that the preceding benchmark has finished its predeclared replacements.
+
+At each target tick the actor reads the original record cursor and confirms both current and preceding key words against the independent clock observer. It immediately suspends the original when those fields agree. The same tick and word must still be present after suspension. Both the host inference worker and its corresponding original instance use the same pinned physical CPU set. Kernel CPU bandwidth is unlimited on these two containers. The independent observer checks the native applied masks and the official replay still records them during play.

@@ -1,0 +1,209 @@
+{
+  "study": "TH07 retail 1.00b Normal Reimu A, four-head parent vs action-preserving five-pass human SFT",
+  "prerequisite": "Both original phase-handshake engineering games 2171701 and 2171702 and the preassigned 71281 offline SFT metrics passed. Explicit experiment release before outcomes.",
+  "host": "Momentum only, two isolated CPU Wine/Xvfb slots, default game speed and the same version/build/display",
+  "models": {
+    "parent": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+    "kl-71281": "e0bf6eef17349633ffdf4c727aed9eee419168a3bbd62cf78e2e639f1ae6b1ce"
+  },
+  "mask": "Four independent full action heads (nine directions, focus, fire, Bomb) sampled from raw logits. The frozen original four-tick pause/consume harness applies the sampled physical keys.",
+  "primary_seeds": [
+    2172751,
+    2172752,
+    2172753,
+    2172754,
+    2172755,
+    2172756
+  ],
+  "extension_seeds": [
+    2172757,
+    2172758,
+    2172759,
+    2172760,
+    2172761,
+    2172762
+  ],
+  "technical_reserves": [
+    2172771,
+    2172772
+  ],
+  "assignment": "Use the explicit slots/order in assignment_rows; each seed uses the same physical host, CPU set, build and ordinary original game speed for both policies. Native RNG is independent. First six pairs have three parent-first and three candidate-first.",
+  "stopping": "Start six pairs. Replace technically invalid entire pairs using at most two reserves total and at most two technical-invalid credits per arm. Then add exactly the listed whole fresh pairs sequentially (up to twelve valid pairs) solely until each arm has >=30000 true accumulated Stage 1 native ticks. If exposure or engineering validity fails, report as unqualified.",
+  "endpoints": "Ordinary full original no-Continue Game Start until true Game Over or ending; Stage 1 original deaths per 10000 native ticks, average last Stage 1 progress, Stage 2 entry, stocks at entry/terminal, actual Bomb spends and Bomb-positive deaths. Independent RNG makes between-arm comparison descriptive.",
+  "promotion": "Qualify >=6 valid pairs and >=30000 actual Stage 1 native ticks for each arm. Stage 1 deaths per 10000 native ticks candidate/parent <=0.75, candidate mean Stage 1 ticks >= parent, and actual Bomb uses per completed credit candidate/parent within [0.7,1.4]. If parent never casts the ratio is undefined and gate cannot pass. RR>=1 closes this intervention. Report all arms, technical failures, actual Focus, cast totals and rates, Stage 2 arrivals and resources.",
+  "movie": "First qualified pair in predeclared roster order. Independent private game RNG.",
+  "qualification_sha256": {
+    "2171701-parent": "839b367ef0b3efaea230da58d6ff4c4a503c0faf0a74c4f1c9fddc9a0a2ab31e",
+    "2171702-sft-71281": "65534b2c8d79f42a83d84ce1367c3d4d45dc38428e4fd4bef7b8e248d79c994b"
+  },
+  "assignment_rows": {
+    "2172751": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172752": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172753": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172754": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172755": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172756": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172757": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172758": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172759": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172760": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172761": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172762": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    },
+    "2172771": {
+      "slot": 0,
+      "physical_cpu_ids": [
+        2,
+        3,
+        12
+      ],
+      "order": [
+        "kl-71281",
+        "parent"
+      ]
+    },
+    "2172772": {
+      "slot": 1,
+      "physical_cpu_ids": [
+        6,
+        7,
+        22
+      ],
+      "order": [
+        "parent",
+        "kl-71281"
+      ]
+    }
+  }
+}

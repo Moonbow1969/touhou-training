@@ -42,6 +42,17 @@ def fit(args, cfg, training, device):
     per_stratum = cfg["examples_per_stratum_per_batch"]
     assert n % per_stratum == 0 and cfg["batch"] == len(groups) * per_stratum
     offsets = (torch.arange(len(groups)) * n)[:, None]
+    teacher = {}
+    if "parent_kl_beta" in cfg:
+        frozen = torch.jit.load(str(args.parent), map_location=device).eval()
+        with torch.inference_mode():
+            cached = {1: [], 3: []}
+            for batch in train[0].split(128):
+                logits = frozen(batch.to(device).float() / 255)
+                for h in cached:
+                    cached[h].append(logits[h].softmax(-1).cpu())
+            teacher = {h: torch.cat(rows) for h, rows in cached.items()}
+        del frozen
     for seed in cfg["seeds"]:
         folder = args.out / str(seed)
         folder.mkdir()
@@ -65,13 +76,22 @@ def fit(args, cfg, training, device):
                 head_losses = [F.cross_entropy(logit, targets[:, h]) for h, logit in enumerate(actions)]
                 xy_loss = F.cross_entropy(locator, cell_id(train[2][rows].to(device)))
                 opt.zero_grad(set_to_none=True)
-                (sum(head_losses) + cfg["xy_weight"] * xy_loss).backward()
+                if teacher:
+                    kl = [F.kl_div(actions[h].log_softmax(-1), teacher[h][rows].to(device),
+                                   reduction="batchmean") for h in (1, 3)]
+                    action_objective = head_losses[0] + head_losses[2] + cfg["parent_kl_beta"] * sum(kl)
+                else:
+                    kl = []
+                    action_objective = sum(head_losses)
+                (action_objective + cfg["xy_weight"] * xy_loss).backward()
                 opt.step()
-                epoch_losses.append(torch.stack([v.detach() for v in (*head_losses, xy_loss)]))
+                epoch_losses.append(torch.stack([v.detach() for v in (*head_losses, xy_loss, *kl)]))
             losses = torch.stack(epoch_losses).mean(0).cpu().tolist()
             stats = dict(epoch=epoch, optimizer_steps=len(batches), train_examples=batches.numel(),
                          action_ce=losses[:4], spatial_ce=losses[4], wall_seconds=time.monotonic()-start,
                          ordered_rows_sha256=hashlib.sha256(batches.numpy().astype("<i8").tobytes()).hexdigest())
+            if teacher:
+                stats["kl_focus_bomb"] = losses[5:]
             epochs.append(stats)
             print("EPOCH", seed, json.dumps(stats), flush=True)
         export_parity = compare_export(model, train[0], device)
@@ -115,7 +135,7 @@ def score(args, cfg, device):
     thresholds = cfg["gate"]
     passed = (pooled["delta_move"] >= thresholds["mean_delta_move_accuracy_min"] and
               pooled["delta_switch"] >= thresholds["mean_delta_switch_move_accuracy_min"] and
-              pooled["localization"] <= thresholds["mean_seed_median_xy_error_max"])
+              pooled["localization"] <= thresholds.get("mean_seed_median_xy_error_max", float("inf")))
     write(args.out / "result.json", dict(models=outputs, mean=pooled, passed=passed,
                                          index_sha256=args.index_sha256, protocol_sha256=sha(args.protocol),
                                          gpu_peak_allocated_mb=torch.cuda.max_memory_allocated()/1e6 if device == "cuda" else 0))

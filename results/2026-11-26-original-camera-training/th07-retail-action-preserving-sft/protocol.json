@@ -1,0 +1,16 @@
+{
+  "study":"TH07 retail 1.00b five-pass SFT with parent Focus and Bomb probability targets",
+  "acquisition_protocol_sha256":"2477b7ce207c3a5bfc9541a973ae6a4c67762fae285c7252aa55d4f43ac34315",
+  "index_sha256":"3178f7e13d71e636d01a9a3352bbf50a04bbb39d92231826977a16cc3fd754c3",
+  "parent_sha256":"a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "engineering_cameras_archive_sha256":"ada0ca5d8fdcf14d4e187647388be5579323e13f0d2f2a93162ab9795e275447",
+  "source_ids":{"train":[1,2,3,9],"held":[4,6]},
+  "stages":[1,2],"required_windows_per_player_stage":2000,
+  "seeds":[71281,71282,71283],"epochs":5,"batch":32,"examples_per_stratum_per_batch":4,"lr":0.00003,"xy_weight":1.0,"parent_kl_beta":8.0,
+  "fit":"Reuse the original 8 stratified source permutations at each step. For each of 16,000 human training windows cache the frozen parent's two-class Focus and Bomb softmax distributions. Optimize human direction CE plus human fire CE plus XY spatial CE plus eight times the sum of KL(parent||learner) for Focus and Bomb. Initial policy equals teacher. Scaling is fixed a priori. No teacher gating or confidence filtering. Held human and engineering original frames are used only to evaluate all three frozen final models.",
+  "gate":{"mean_delta_move_accuracy_min":0.02,"mean_delta_switch_move_accuracy_min":-0.005},
+  "candidate_seed":71281,
+  "candidate_release":"Only the fixed lowest seed may be considered for original evaluation. Report pooled and each-seed human held metrics; candidate must gain >=2pp held macro-author movement accuracy vs the parent, lose <=0.5pp on human switch accuracy, and satisfy each of the two original-camera drift checks below. Do not select an alternate seed.",
+  "drift_gate":{"cases":["2170701-parent","2170702-sft-71281"],"mask":"Original HUD Bomb stock >0 on each exact saved camera row","bomb_probability_ratio_min":0.7,"bomb_probability_ratio_max":1.4,"focus_positive_probability_absolute_difference_max":0.05},
+  "scope":"An offline behavior and localization pilot using the frozen six-author bank. Positive stock requirement applies only to the drift audit. Four action heads remain independently sampled by any subsequent ordinary Game Start runtime."
+}

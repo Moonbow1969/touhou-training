@@ -1,0 +1,11 @@
+{
+  "study":"TH07 retail original time-control qualification after the frozen primary roster",
+  "role":"engineering",
+  "lanes":[
+    {"seed":2171701,"arm":"parent","sha256":"a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e","physical_cpu_ids":[2,3,12]},
+    {"seed":2171702,"arm":"sft-71281","sha256":"6d24c7a8076a806f05bb0197f266a0f71a28f79f1f985af5e3a29c3ae5a0e134","physical_cpu_ids":[6,7,22]}
+  ],
+  "start":"After both final technical-reserve arms of the previous original evaluation have finished. Same unmodified private retail original, Game Start, Normal, Reimu A, default stocks. Fresh independent controller seeds and RNG. No original user game settings or KVM changes.",
+  "change":"Replace unconditional 1.5ms target-tick delay with a read-only record-ready check: stage-manager cursor slot index equals original tick, current and previous native inputs equal the current and previous recorded slot. Freeze immediately once ready, confirm tick and mask again across suspension, apply the sampled mask, release. Two disjoint physical CPU sets, no cgroup bandwidth quota. Inference pinned to the same per-game set. Both interventions are evaluated together.",
+  "metrics":"Keep the exact previous strict four-tick statistic including the legacy gap accounting, zero stale completed windows, official saved replay current/previous confirmation, confirmed Game Over/ending and zero continues, real stocks, observer read max <100ms. Count skipped target ticks and wrong physical four-tick windows separately; report freeze→camera, total frozen wall times and cgroup/cpu pressure snapshots. This is an engineering acquisition check; two credits cannot isolate scheduler and handshake effects or establish a gameplay effect."
+}

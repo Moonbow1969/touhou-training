@@ -1,0 +1,24 @@
+--- a/record/tool/boot.py
++++ b/record/tool/boot.py
+@@ -11,7 +11,7 @@
+     out.mkdir(exist_ok=True)
+     if any(out.iterdir()):raise FileExistsError(out)
+     name=f'moonbow-th07-retail-record-{seed}-{arm}'
+-    subprocess.run(['docker','run','-d','--rm','--name',name,'--network','none','--cpus','2','--memory','1700m',
++    subprocess.run(['docker','run','-d','--rm','--name',name,'--network','none','--cpuset-cpus',','.join(map(str,plan['physical_cpu_ids'])),'--memory','1700m',
+                     '--pids-limit','300','--cap-add','SYS_PTRACE','--tmpfs','/tmp:rw,exec,size=1250m',
+                     '-v',f'{root}/input:/input:ro','-v',f'{root}/record/tool:/tool:ro','-v',f'{out}:/capture',
+                     '-e','DISPLAY=:73','--entrypoint','sh','toho-trial:endeavor-native-v6','/tool/start.sh'],check=True)
+--- a/record/tool/record_actor.c
++++ b/record/tool/record_actor.c
+@@ -183,8 +183,8 @@
+         if(!due && !current.retry && now-last_capture<220000000){usleep(450);continue;}
+         long long freeze_ns=0;
+         if(due){
+-            /* Allow this tick to finish its input poll before clamping the next decision. */
+-            usleep(1500);
++            /* The stock retail recorder has committed both masks at this clock. */
++            if(current.pointer-current.block!=44+4*t || current.word!=current.record || current.previous!=current.previous_record) continue;
+             freeze_ns=mono_ns();if(!freeze_game()){fprintf(stderr,"unconfirmed suspend at tick %u, resumed and retrying\n",t);continue;}
+             uint32_t frozen;if(pread(fd,&frozen,4,current.manager)!=4)return 20;
+             if(frozen!=t){resume_game();continue;}
