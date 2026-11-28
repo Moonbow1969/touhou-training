@@ -95,6 +95,11 @@ int main(void) {
 #ifdef TH08_SYNCHRONOUS_ENGINEERING
         if(latched){
             int64_t ack_ns=now_ns();
+#ifdef TH08_QUIET_READS
+            quiet_release();
+            if(!quiet_tick_proof(camera_stage,camera_tick,&post_read_serial)){sync_resume();return 36;}
+            if(is_policy){fprintf(quiet_log,"%d %u %d %u %u %lld\n",index,camera_stage,camera_tick,frozen_proven_serial,post_read_serial,(long long)last_quiet_acquired_ns);fflush(quiet_log);}
+#endif
             if(!frozen_matches(camera_stage,camera_tick)){sync_resume();return 35;}
             sync_resume();int64_t resumed=now_ns();
             if(is_policy){

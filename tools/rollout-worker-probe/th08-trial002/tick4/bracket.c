@@ -13,11 +13,17 @@ static int64_t stamp(void) {
 #include <fcntl.h>
 #include <stdatomic.h>
 #include <sys/mman.h>
+#ifdef TH08_QUIET_READS
+#include "quiet_reads.h"
+#endif
 #ifdef TH08_EXPLICIT_ARCHIVE_SEAL
 #include "archive_seal.h"
 #endif
 typedef struct { _Atomic unsigned serial,stage,tick; _Atomic int64_t upper_ns; } TickShared;
 int main(void) {
+#ifdef TH08_QUIET_READS
+    if(!quiet_open(1))return 9;
+#endif
     int fd=open("/capture/current.tick",O_RDWR|O_CREAT|O_EXCL,0644);
     if(fd<0||ftruncate(fd,sizeof(TickShared)))return 6;
     TickShared *shared=mmap(0,sizeof(*shared),PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
@@ -42,6 +48,9 @@ int main(void) {
     unsigned active_counts[3]={0},stopped_counts[3]={0};
 #endif
     while(stamp()-begin<INT64_C(1800000000000)) {
+#ifdef TH08_QUIET_READS
+        if(!quiet_between_reads())return 10;
+#endif
         int64_t before=stamp();
         if(write(requests[1],"q",1)!=1 || !fgets(line,sizeof(line),from))break;
         int64_t after=stamp();

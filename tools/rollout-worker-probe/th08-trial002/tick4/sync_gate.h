@@ -9,6 +9,12 @@
 #include <sys/syscall.h>
 #include <sys/types.h>
 #include <unistd.h>
+#ifdef TH08_QUIET_READS
+#include "quiet_reads.h"
+static FILE *quiet_log;
+static unsigned post_read_serial;
+static int64_t last_quiet_acquired_ns;
+#endif
 static int sync_gamefd=-1,sync_guard=-1,game_stopped=0;
 static pid_t sync_pid;
 static FILE *freeze_receipt;
@@ -21,10 +27,18 @@ static int stopped(void){
     fclose(f);return hit;
 }
 static void sync_resume(void){
+#ifdef TH08_QUIET_READS
+    quiet_release();
+#endif
     if(game_stopped){sync_signal(SIGCONT);game_stopped=0;if(sync_guard>=0){char off='R';(void)write(sync_guard,&off,1);}}
 }
 static void emergency_resume(int sig){if(sync_gamefd>=0)sync_signal(SIGCONT);_exit(128+sig);}
 static int bind_sync_game(void){
+#ifdef TH08_QUIET_READS
+    if(!quiet_open(0))return 0;
+    quiet_log=fopen("/capture/quiet-clock.tsv","wx");if(!quiet_log)return 0;
+    fprintf(quiet_log,"index stage tick serial_before_camera serial_after_input quiescent_after_input_ns\n");
+#endif
     DIR *d=opendir("/proc");if(!d)return 0;struct dirent *e;int count=0;
     while((e=readdir(d))){
         if(!isdigit((unsigned char)e->d_name[0]))continue;
@@ -55,6 +69,25 @@ static int bind_sync_game(void){
 }
 static unsigned frozen_first_serial,frozen_proven_serial;
 static int64_t freeze_start_ns,freeze_stop_ns,freeze_proof_ns;
+#ifdef TH08_QUIET_READS
+/* The started Wine read may ptrace the target. Observe its completion before checking T. */
+static int quiet_tick_proof(unsigned stage,int tick,unsigned *proven){
+    unsigned begin=tick_source->serial;
+    int64_t deadline=now_ns()+30000000;
+    while(now_ns()<deadline){
+        unsigned a=tick_source->serial,s=tick_source->stage,t=tick_source->tick,b=tick_source->serial;
+        if(a==b && !(a&1) && a>begin){
+            if(s!=stage || (int)t!=tick || !quiet_request())return 0;
+            while(!stopped() && now_ns()<deadline)quiet_nap();
+            if(!stopped() || tick_source->stage!=stage || (int)tick_source->tick!=tick)return 0;
+            *proven=tick_source->serial;
+            last_quiet_acquired_ns=now_ns();return 1;
+        }
+        quiet_nap();
+    }
+    return 0;
+}
+#endif
 static int freeze_at(unsigned stage,int tick){
     frozen_first_serial=tick_source->serial;
     if(write(sync_guard,"S",1)!=1)return 0;
@@ -63,7 +96,11 @@ static int freeze_at(unsigned stage,int tick){
     game_stopped=1;
     while(!stopped()&&now_ns()-freeze_start_ns<30000000)usleep(100);
     if(!stopped()){sync_resume();return 0;}
-    freeze_stop_ns=now_ns();unsigned serial=tick_source->serial;
+    freeze_stop_ns=now_ns();
+#ifdef TH08_QUIET_READS
+    if(quiet_tick_proof(stage,tick,&frozen_proven_serial)){freeze_proof_ns=last_quiet_acquired_ns;return 1;}
+#else
+    unsigned serial=tick_source->serial;
     /* Require a fresh valid process-memory sample from clock.exe after the game stopped. */
     for(int i=0;i<200 && now_ns()-freeze_stop_ns<30000000;i++){
         unsigned a=tick_source->serial;unsigned actual_stage=tick_source->stage,actual_tick=tick_source->tick;
@@ -74,6 +111,7 @@ static int freeze_at(unsigned stage,int tick){
         }
         usleep(150);
     }
+#endif
     sync_resume();return 0;
 }
 static int frozen_matches(unsigned stage,int tick){
