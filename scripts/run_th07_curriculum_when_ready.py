@@ -42,7 +42,9 @@ def wait_for_sources(paths, hours):
     last = None
     while time.monotonic() < deadline:
         data = [read(path) if path.is_file() else {} for path in paths]
-        status = [(d.get("complete", False), d.get("qualified_sources", 0), len(d.get("rows", ()))) for d in data]
+        status = [(d.get("complete", False),
+                   d.get("qualified_sources", sum(r.get("qualified") is True for r in d.get("rows", ()))),
+                   len(d.get("rows", ()))) for d in data]
         if status != last:
             print("Original source ledgers (complete, qualified, total rows):", status, flush=True)
             last = status
