@@ -1,0 +1,32 @@
+{
+  "study": "Original TH07 retail Normal Stage 1, mixed-source camera-only PPO pilot",
+  "game_exe_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+  "parent_sha256": "a6e1dec1625af50e214f141a4e405795fbdae905d78c4b887e423de0bca6a77e",
+  "common_normal_train_seeds": [21749101,21749102,21749103,21749104,21749105,21749106,21749107,21749108,21749109,21749110,21749111,21749112,21749113,21749114,21749115,21749116],
+  "source_release": {
+    "easy-normal": "Use the separately registered four-seed Easy qualification on Accelerator. Require at least three technically qualified original credits, at least two originally corroborated Letty-or-later subjects, and qualified Stage 1 deaths no higher than 15/63444 ticks. Then add sixteen fresh Easy Game Starts with preassigned distinct training seeds.",
+    "normal-practice": "If that separate qualification misses the efficacy or evidence gate, use new independently qualified Normal Stage 1 practice starts alongside the shared Normal Game Starts. Never use either Easy screening cohort as training data."
+  },
+  "practice_scenes": {
+    "letty_full": "Original Normal Reimu A Letty nonspell 1 at 2 spare lives and 3 Bombs.",
+    "letty_low": "Same original Letty section at 0 spare lives and 1 Bomb.",
+    "cirno": "Original Normal Reimu A Cirno midboss nonspell at 2 spares / 3 Bombs. Admit only if separately qualified by original section and native readback before the training roster seals.",
+    "quota": "Approximately twenty independent attempts, 50/25/25 by scenario with qualified Cirno. Otherwise allocate full-stock and low-stock Letty 2:1 by preassigned episodes. Fix the roster before seeing training outcomes. Use the actual original menu section and freeze displayed power and other practice settings in the source protocol.",
+    "cutoff": "Natural Game Over, independently witnessed original practice Stage 1 clear, or 6000 elapsed playable native ticks. The original practice path ends a completed stage at its results screen. A return to menu alone is insufficient evidence of a clear. At a playable timeout retain the genuine next camera and re-forward its parent critic. No stock changes while a policy acts."
+  },
+  "optimizer": {
+    "mixture": "Equal admitted decision counts from ordinary Normal and the selected second source, sampled without replacement after whole-episode targets. Aim for roughly 40000 actions. Publish actual size, qualification failures and any smaller pilot budget.",
+    "model_input": "96 by 112 original grayscale and causal preceding-frame absolute difference. All policies sample direction, Focus, Shoot and Bomb. No rank, stock, phase, aim, avoidance or automatic Bomb enters the export.",
+    "value_diagnostic": "Compare camera-only with camera plus native clock, initial scene/rank identity and current spares/Bombs using ridge and held-whole-training-credit folds. Use the lower out-of-fold squared error for GAE. Technical or efficacy screening credits and final held originals are absent from optimizer and value-model inputs.",
+    "discount": 0.999,
+    "gae_lambda": 0.985,
+    "max_joint_kl": 0.01,
+    "reward": "Playable native tick progress normalized to the median of signed retail human train-stage lengths, +1 on a verified ordinary Stage 2 seam or a verified practice Stage 1 clear, and gamma-corrected potential based on spare lives plus the active life. A true endpoint has zero potential/value. A playable cutoff carries critic bootstrap with the same potential correction. Bomb cost and score reward are zero.",
+    "retail_train_stage_native_tick_medians": {"1": 10694, "2": 15128}
+  },
+  "promotion": {
+    "practice_held": "For the practice branch only, compare fresh independent full-stock Letty entries, 20 allocations each, on matched resources with disjoint controller seeds. Report hazard, time to first death with right censoring, actual boss defeat and any physically confirmed Stage 2. Use nonvulnerable time as an exposure adjustment only where the hit/invulnerability samples are independently qualified. Require death-rate ratio <=0.75 before promoting to the scored Game Start comparison. A ratio >0.90 ends the practice route. Report intermediate outcomes without a promotion.",
+    "primary_normal": "At least six fresh paired independent original Normal Game Starts, each arm at least 30000 playable Stage 1 ticks. Standard executable and default 2 spare lives / 3 Bombs, zero Continue, no practice tool. Record actual original maximum stage, Stage 2 rates, lives and Bombs on entry/end, scores, deaths, actual Bomb consumption and paired intervals. Promote if loss-rate ratio <=0.75, Bombs used ratio in [0.7,1.4] and Stage 1 progress no lower than the parent. Ratio >=1 closes the Easy mixture or, after a successful conditional practice evaluation, permits one 2:1 ordinary/practice retry.",
+    "stage2_milestone": "Require a separate series of twenty fresh ordinary original Normal starts with at least five actually entering Stage 2. This is an interim milestone for a full Normal clear."
+  }
+}
