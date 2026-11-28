@@ -44,7 +44,7 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
     movie=raw/"original-observations.mp4"
     recording=json.loads((raw/"movie-pipeline.json").read_bytes())
     source=json.loads((raw/"receipt.json").read_bytes())
-    frames=0;compact=None;movie_hash=None
+    frames=0;compact=None;highres=None;movie_hash=None
     if movie.exists():
         player=cv2.VideoCapture(str(movie))
         while True:
@@ -54,6 +54,22 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
             frames+=1
         player.release()
         movie_hash=sha(movie)
+    elif role in ("train","engineering-zero-shot-original") and (raw/"highres-gray.npz").is_file():
+        path=raw/"highres-gray.npz"
+        with np.load(path,allow_pickle=False) as data:larger=data["gray"]
+        with np.load(raw/"behavior.npz",allow_pickle=False) as data:small=data["frames"]
+        if larger.dtype!=np.uint8 or larger.shape!=(len(times),224,192):
+            raise ValueError("High-resolution camera extents or dtype differ")
+        idx=np.flatnonzero([r["phase"]=="policy" for r in times])
+        if len(idx)!=len(small):raise ValueError("High-resolution physical camera count differs")
+        worst=0;total=0
+        for start_row in range(0,len(idx),64):
+            subset=slice(start_row,start_row+64)
+            reduced=(larger[idx[subset]].reshape(-1,112,2,96,2).sum((2,4)).astype(np.int32)+2)//4
+            error=np.abs(reduced-small[subset])
+            worst=max(worst,int(error.max()));total+=int(error.sum())
+        highres=dict(sha256=sha(path),shape=list(larger.shape),policy_indices=idx.tolist(),
+                     compared_original_policy_frames=len(small),maximum_luminance_error=worst,mean_absolute_luminance_error=total/small.size)
     elif role in ("train","held"):
         path=raw/"compact-rgb.npz"
         with np.load(path,allow_pickle=False) as data:rgb=data["rgb"]
@@ -89,7 +105,10 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
     if compact is not None:
         physical["compact_color"]=(compact["sha256"]==source["compact_rgb_sha256"] and compact["max_luminance_error"]<=2 and
             recording["encoded_frames"]==len(times) and recording["backpressure_ns"]==0 and source["movie_sha256"] is None)
-    required=[v for k,v in physical.items() if compact is None or k!="color_video"]
+    if highres is not None:
+        physical["highres_gray"]=(highres["sha256"]==source["highres_gray_sha256"] and highres["maximum_luminance_error"]<=2 and
+            recording["encoded_frames"]==len(times) and recording["backpressure_ns"]==0 and source["movie_sha256"] is None)
+    required=[v for k,v in physical.items() if (compact is None and highres is None) or k!="color_video"]
     return dict(seed=credit["seed"],all_gates_passed=all(required),gates=physical,actor_sha256=credit["policy_sha256"],
         observer_gameplay=interval,observer_all=latency(elapsed),first_query_rtt_ms=float(elapsed[0]),
         observer_snapshot_boundary=latency(elapsed[during&at_boundary]),observer_off_boundary=latency(elapsed[during&~at_boundary]),
@@ -101,6 +120,7 @@ def audit(raw,receipt,role="engineering-zero-shot-original",minimum_exact=.998):
         native_tick_at_game_over=credit["terminal_tick"],final_stock=credit["terminal_stock"],terminal=endpoint,
         movie_sha256=movie_hash,full_color_frames=frames,timing_frames=len(times),movie_writer=recording,seal=writer,bracket=handoff,
         **({"compact_rgb":compact} if compact is not None else {}),
+        **({"highres_gray":highres} if highres is not None else {}),
         first_action_to_terminal_seconds=duration,native_fps=(credit["terminal_tick"]-credit["first_tick"]+1)/duration,
         native_record_sha256={p.name:sha(p) for p in raw.glob("native-record-*.bin")},
         native_capture_sha256=sha(raw/"clock.tsv"),behavior_sha256=source["behavior_sha256"],credit_sha256=sha(receipt))

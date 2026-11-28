@@ -1,0 +1,137 @@
+{
+  "seed": 80964010,
+  "role": "train",
+  "policy_sha256": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "source_receipt_sha256": "842873e131495b0ee5363febae83080475c3523fe3fb9171ae2cbf8b3825f5e7",
+  "file": "th08-80964010.npz",
+  "sha256": "9dd60ca6dc6811c17e753abd727872434cd7c5b9ada69473dacebc29748cd4cc",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "e4dc0b7ab79101ae055e0ed48b98dce9bedf4e74167f357114c812ffbc317dde",
+  "timing_sha256": "6e80013cba89f20b3f6b4a6ffbc8a0df98d457d09c20282c223b9faf92864106",
+  "input_gates_sha256": "f39efc0dc54f01a1664e7d4633a8e6b2530e6f703de4df7e4473a39a70cf5b70",
+  "stock_trace_sha256": "d99107775c8df8cdfd7516813d0a531233c5b56e75ee18dd345ceb056804fb1b",
+  "terminal_photo_sha256": "dfe582844e6339f358974edd56abce73115e0e65c1a99008b0bd469df10cf27f",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 565,
+  "physical_sampled_requests": 566,
+  "all_physical_requests_reforwarded": 566,
+  "excluded_terminal_proposal": {
+    "raw_index": 565,
+    "actual_x11_mask": 68,
+    "requested_game_word": 18,
+    "x11_ack_ns": 15903163260107,
+    "native_application_tick": 2342,
+    "nominal_first_consumption_tick": 2343,
+    "earliest_after_application": 2343,
+    "terminal_tick": 2342,
+    "native_exposure": 0,
+    "preceding_index": 564,
+    "preceding_word": 144,
+    "preceding_native_slots": [
+      144,
+      144,
+      144,
+      144
+    ],
+    "source_raw_only_samples": 208,
+    "preserved_policy_action": [
+      1,
+      0,
+      0,
+      1
+    ],
+    "preserved_logp": [
+      -1.1101475954055786,
+      -0.09008103609085083,
+      -0.006438938435167074,
+      -1.6712121963500977
+    ],
+    "preserved_value": -0.23586271703243256,
+    "raw_behavior_sha256": "e82d3ce8838af4ecece3ef1a52c5bcea964bde21f8fdcb14469d336eb23aa241"
+  },
+  "raw_behavior_sha256": "e82d3ce8838af4ecece3ef1a52c5bcea964bde21f8fdcb14469d336eb23aa241",
+  "action_masks_with_native_consumption": 564,
+  "exact_complete_intervals": 562,
+  "native_intervals": 564,
+  "exact_four_tick_fraction": 0.9964539007092199,
+  "exact_x11_gates": 563,
+  "native_edges_verifiable": 390,
+  "exactly_observed_native_edges": 388,
+  "no_input_transition_frames_after_final_decision": 2,
+  "first_tick": 83,
+  "first_stage": 1,
+  "terminal_tick": 2342,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 2343,
+  "active_native_ticks_in_last_action": 4,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    2
+  ],
+  "terminal_stock": [
+    0,
+    2
+  ],
+  "life_events": [
+    {
+      "decision": 133,
+      "stage": 1,
+      "native_tick": 615,
+      "next_tick": 619,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 3,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 271,
+      "stage": 1,
+      "native_tick": 1167,
+      "next_tick": 1171,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 2,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 564,
+      "stage": 1,
+      "native_tick": 2339,
+      "next_tick": 2342,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 2,
+      "next_bombs": 2,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 3.0994415283203125e-06,
+  "max_critic_error": 1.4901161193847656e-07,
+  "normal_rank_samples": 565,
+  "physical_normal_rank_samples": 566,
+  "terminal_glyph": 0.9998035430908203,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.0053028366981855354,
+    "progress_terminal": 0.14962944032711475,
+    "paid_progress": 0.1443266036289292,
+    "positive_same_life_bomb_uses": 2,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.000000000000014,
+    "lambda_life_1_undiscounted_delta": -3.9680000000000155,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "At least one sampled action has no native consumption in its assigned interval"
+  ]
+}

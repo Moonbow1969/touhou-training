@@ -1,0 +1,104 @@
+{
+  "seed": 80964012,
+  "role": "train",
+  "policy_sha256": "8a0e4ff3a8e6f552db9bc5d2cf34f15db9a2c12d41454e90a9e297f99099b0b0",
+  "source_receipt_sha256": "e680addc792565e6e7b21604a6c17bb42f6a7a30490364fe6d24208fd52b9a78",
+  "file": "th08-80964012.npz",
+  "sha256": "b788a429377069a794b144aa6b22e861ec64146334a871d55d0eff9dad4046c3",
+  "game_sha256": "3a6b4a0de24f916e669cf642ffd4f7c22ada1d319d9ce8ca8494fe96a2f5f5c1",
+  "stage_clock_trace_sha256": "f28897773ce20404c61b7acd780288c4a39d465ffc1dc3f3dd9e9f686ba921d7",
+  "timing_sha256": "93e65d4f79119c602c4cf2fd0e9951e38737c29a7fcb9d9b3ea80d4c11143ee5",
+  "input_gates_sha256": "adcd66aad0db1bbff1f60b25a87154bcf935e3cfd94357e871d15ac718b114ce",
+  "stock_trace_sha256": "0328732f1acfef4368cb375a918b7b29b8307d3fc9549b9959eca27ed2cf52b7",
+  "terminal_photo_sha256": "6860dc27bd21a39e7343ce6ffbe54a45905fbd0ad6745c60b3c5ab55b9264e2c",
+  "outcome": "game_over",
+  "continues": 0,
+  "decisions": 1247,
+  "physical_sampled_requests": 1247,
+  "all_physical_requests_reforwarded": 1247,
+  "excluded_terminal_proposal": null,
+  "raw_behavior_sha256": "8886ed53525a3e95ad310c17275a4a2489b9e15e4970a2892c5c8fbbc9aa53ed",
+  "action_masks_with_native_consumption": 1246,
+  "exact_complete_intervals": 1242,
+  "native_intervals": 1246,
+  "exact_four_tick_fraction": 0.9967897271268058,
+  "exact_x11_gates": 1243,
+  "native_edges_verifiable": 855,
+  "exactly_observed_native_edges": 850,
+  "no_input_transition_frames_after_final_decision": 1,
+  "first_tick": 80,
+  "first_stage": 1,
+  "terminal_tick": 5065,
+  "terminal_stage": 1,
+  "terminal_record_exclusive": 5066,
+  "active_native_ticks_in_last_action": 2,
+  "first_stock": [
+    2,
+    3
+  ],
+  "final_stock": [
+    0,
+    0
+  ],
+  "terminal_stock": [
+    0,
+    0
+  ],
+  "life_events": [
+    {
+      "decision": 605,
+      "stage": 1,
+      "native_tick": 2500,
+      "next_tick": 2504,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 0,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 811,
+      "stage": 1,
+      "native_tick": 3324,
+      "next_tick": 3328,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 1,
+      "next_bombs": 3,
+      "event": "spare_lost"
+    },
+    {
+      "decision": 1246,
+      "stage": 1,
+      "native_tick": 5064,
+      "next_tick": 5065,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 0,
+      "next_bombs": 0,
+      "event": "original_game_over"
+    }
+  ],
+  "max_logp_error": 3.814697265625e-06,
+  "max_critic_error": 1.6391277313232422e-07,
+  "normal_rank_samples": 1247,
+  "physical_normal_rank_samples": 1247,
+  "terminal_glyph": 0.9992942214012146,
+  "reward_audit": {
+    "stage1_denominator": 15652,
+    "progress_start": 0.005111167901865576,
+    "progress_terminal": 0.3236008177868643,
+    "paid_progress": 0.3184896498849987,
+    "positive_same_life_bomb_uses": 8,
+    "gamma": 0.999,
+    "lambda_life_0_discounted_delta": 0.0,
+    "lambda_life_1_discounted_delta": -3.0000000000000515,
+    "lambda_life_1_undiscounted_delta": -5.662000000000069,
+    "first_potential": 3.0,
+    "final_absorbing_potential": 0.0
+  },
+  "qualified": false,
+  "issues": [
+    "At least one sampled action has no native consumption in its assigned interval"
+  ]
+}

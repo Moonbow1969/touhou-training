@@ -1,0 +1,99 @@
+{
+  "seed": 80964005,
+  "phase": "train",
+  "native_inputs": 4058,
+  "stage_spans": [
+    {
+      "stage": 1,
+      "first_consumption_window_tick": 81,
+      "last_recorded_input_tick": 4138,
+      "inclusive_input_span_ticks": 4058
+    }
+  ],
+  "native_ticks_matching_requested_mask": 4058,
+  "native_ticks_stale_or_different": 0,
+  "native_record_sha256": {
+    "native-record-stage-1.bin": "25cea0f39b7b5e55f792531f2d883c833ea11c31d441f3893a24f65b3e39b3d2"
+  },
+  "terminal_photo_sha256": "1ea01e99898752d7185f79af8315f0ea0af14e69c5cd20d43ab455f2a6f4f009",
+  "receipt_sha256": "6696d97860bfa190fd087b234974edaa2d35562ae6b010c8c0f6089d942b2a67",
+  "packed_sha256": "d5ad67f274a0824ee3dbe7fa70a3d1e7039f0f3ac2770b9f7b686c0914931da8",
+  "final_native_stage": 1,
+  "final_native_tick": 4138,
+  "original_outcome": "game_over",
+  "first_stock": [
+    2,
+    3
+  ],
+  "last_playable_stock": [
+    0,
+    0
+  ],
+  "terminal_stock": [
+    0,
+    0
+  ],
+  "first_loss_native_interval": [
+    869,
+    873
+  ],
+  "native_ticks_elapsed_to_first_loss_interval_start": 788,
+  "pre_loss_stock_source": "Last pre-action HUD sample before the observed loss transition. Native event time is bounded by the paired stage-local ticks.",
+  "total_lost_lives": 3,
+  "life_loss_events": 3,
+  "losses_with_positive_pre_loss_bomb": 1,
+  "losses_with_known_pre_loss_bomb": 3,
+  "events": [
+    {
+      "decision": 197,
+      "stage": 1,
+      "native_tick": 869,
+      "next_tick": 873,
+      "spares": 2,
+      "next_spares": 1,
+      "bombs": 2,
+      "next_bombs": 3,
+      "event": "spare_lost",
+      "bomb_units_before_loss": 2,
+      "bomb_units_next": 3,
+      "reserve_positive_before_loss": true
+    },
+    {
+      "decision": 734,
+      "stage": 1,
+      "native_tick": 3017,
+      "next_tick": 3021,
+      "spares": 1,
+      "next_spares": 0,
+      "bombs": 0,
+      "next_bombs": 3,
+      "event": "spare_lost",
+      "bomb_units_before_loss": 0,
+      "bomb_units_next": 3,
+      "reserve_positive_before_loss": false
+    },
+    {
+      "decision": 1014,
+      "stage": 1,
+      "native_tick": 4137,
+      "next_tick": 4138,
+      "spares": 0,
+      "next_spares": 0,
+      "bombs": 0,
+      "next_bombs": 0,
+      "event": "original_game_over",
+      "bomb_units_before_loss": 0,
+      "bomb_units_next": 0,
+      "reserve_positive_before_loss": false
+    }
+  ],
+  "same_life_bomb_units_spent": 7,
+  "same_life_stock_decrease_events": 6,
+  "sampled_x_decisions": 16,
+  "sampled_x_onsets": 14,
+  "actual_recorded_x_ticks": 64,
+  "actual_recorded_x_onsets": 14,
+  "physical_requests": 1015,
+  "retained_decisions": 1015,
+  "exact_four_tick_fraction": 1.0
+}
