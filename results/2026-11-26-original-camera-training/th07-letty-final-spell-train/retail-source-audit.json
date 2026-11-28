@@ -1,0 +1,71 @@
+{
+  "scope": "Offline source and byte audit. Original retail TH07 1.00b, Normal, Reimu A, final Letty spell started by thprac 2.3.1.1. No gameplay or policy measurement in this audit.",
+  "original": {
+    "exe_sha256": "35467eaf8dc7fc85f024f16fb2037255f151cefda33cf4867bc9122aaa2e80ca",
+    "dat_sha256": "5fe8d772191505bf208f966da8070ee0a9e0d0ee8567a8827ef3a362bcb0c287",
+    "stage_script": "ecldata1.ecl",
+    "stage_script_bytes": 44920,
+    "stage_script_sha256": "c443e28b86cb20eeb7613d786c7ff667c2bd39726bf7ffbb38a3c0e354db1b40",
+    "reproduction": ["thdat -x7 th07.dat ecldata1.ecl", "thecl -d7 ecldata1.ecl native-ecl.dump"],
+    "decoder": "thtk-bin-12. Decode output names using CP932.",
+    "thdat_exe_sha256": "d49471473286c3460eb8214a3c94317655074b26a164148bfbc78398a5b9101c",
+    "thecl_exe_sha256": "3533986771d918101170f208c383d7857e8db42329183178c9877354da951f64",
+    "decode_sha256": "8d8f469be67f7e305fa309735fb0c9f4f01512ed248462b0e559d8ba4228eb35",
+    "decoded_observations": {
+      "thprac_section": "TH07_ST1_BOSS4",
+      "spell_native_id_zero_based": 7,
+      "easy_native_id_zero_based": 6,
+      "normal_title": "冬符「フラワーウィザラウェイ」",
+      "normal_sub": 48,
+      "normal_timer_callback_threshold_ticks": 3000,
+      "normal_timer_set_opcode": 114,
+      "normal_spell_start_opcode": 90,
+      "stage1_survival_set_opcode_135_count": 0,
+      "countdown_caveat": "The 3000-tick timeout is in the boss callback clock. A sampler's tick zero, a stage tick, an interrupt, and a watchdog are different clocks."
+    }
+  },
+  "evidence_levels": {
+    "section_clear": "Identify the armed Normal final spell by native active/id=7 and the original card/section title. Then collect original Stage Clear tally with Normal Rank and stage-one base 1000000, or independently qualified message/flag plus matching original image. Preserve terminal and stock after clearing. Stage 2 is not visited on this practice path.",
+    "spell_capture": "Positive original Spell Card Bonus! with nonzero displayed award and a +1 change in per-run captured-spell count across the identified target. A direct damage clear can also finish with ineligible capture. Section clear, capture and continuation use separate columns.",
+    "survived_timeout": "Stage 1 uses no survival-mode instruction. On expiry the normal timer callback sets captureScore=0, isCapturing=0, increments a nonzero isActive and clears bullets. If Stage Clear follows, record section clear. Call the cause timeout only with witnessed expired native boss clock/branch; without that evidence leave cause unknown. Missing bonus imagery alone does not establish timeout.",
+    "negative_or_ambiguous": "Practice exhaustion and practice stage-clear both select RESULTSCREEN_FROM_GAME. Return to main menu, a vanished boss, active flag 0, score movement or expired step cap alone do not identify a clear. Archives lacking the clear discriminator are unresolved unless independently witnessed Game Over or another protocol terminal."
+  },
+  "native_readonly_candidates_static_only": {
+    "original_executable_va": {
+      "spell_id_u32": "0x12fe0d8",
+      "spell_active_u32": "0x12fe0c8",
+      "capture_eligible_u32": "0x12fe0c4",
+      "captured_count_i32": "[u32(0x626278)+0x1c]",
+      "gui_finished_stage_i32": "[u32(0x49fbf8)+0x209b4]",
+      "original_practice_bit": "u32(0x62f648)&1"
+    },
+    "pe_readback": "Original Gui::OnDraw at 0x427f42 loads Gui.impl, 0x427f45 tests +0x209b4, 0x427f73 checks currentStage<6 and 0x427f7c loads Stage Clear. FinishSpellcard tests active and eligibility, then increments the per-run counter at 0x410479..0x41048c. Result-register tests the practice mode bit at 0x44a363..0x44a385 and assigns result state 0x12.",
+    "qualification": "Collect stable, tick-tagged reads and an independently visible original positive and negative before declaring these field values a deployed scoring rule. Do not poll a destroyed GuiImpl or score-state pointer."
+  },
+  "replay_export": {
+    "stock_practice_stage_end": "MSG_NEXT_LEVEL takes the practice results path. ResultRegister selects PRACTICE_END, which immediately targets MAINMENU. The ordinary named Save Replay prompt is on a different result path. SaveReplay(NULL,NULL) on main-menu cleanup frees memory without writing a named file.",
+    "thprac": "The tag hooks an existing game save call to append its practice configuration when a named replay is actually written. That hook alone provides no practice results export. This source check did not exercise a menu, an optional hotkey or a third-party export utility. A runtime file, if found, needs an independently observed named save and verified original decoded keys.",
+    "fallback": "Preserve exact consumed native record words, applied four-head decisions, original frames and genuine endpoint with hashes. Identify this as an observer archive unless an actual original .rpy is acquired and decoded."
+  },
+  "pinned_sources": {
+    "retail_build": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/README.md#target",
+    "thprac_section": "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_games_def.json#L1808-L1815",
+    "thprac_stage1_warp": "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1055-L1061",
+    "thprac_replay_hook": "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1989-L1994",
+    "thprac_replay_metadata_function": "https://github.com/touhouworldcup/thprac/blob/55e6ed1336621e3099e7df1138acc360cf0500fa/thprac/src/thprac/thprac_th07.cpp#L1760-L1763",
+    "script_opcodes": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EclManager.hpp#L210-L254",
+    "enemy_initial_state": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L15-L78",
+    "timeout": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/EnemyManager.cpp#L499-L550",
+    "spell_lifecycle": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/legacy/SpellLifecycle.cpp#L373-L496",
+    "spell_observer_fields": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/legacy/SpellLifecycle.cpp#L129-L169",
+    "stage_clear_tally": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L159-L218",
+    "stage_clear_message_and_practice_exit": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L991-L1035",
+    "original_bonus_display": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Gui.cpp#L316-L332",
+    "practice_game_over": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/AsciiManager.cpp#L823-L846",
+    "result_registration": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/ResultRegister.cpp#L20-L30",
+    "practice_result_exit": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/ResultScreen.cpp#L767-L774",
+    "normal_named_save": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/ResultScreen.cpp#L1597-L1610",
+    "mainmenu_cleanup": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/Supervisor.cpp#L258-L270",
+    "replay_file_guard": "https://github.com/N0zoM1z0/th07/blob/2694946d17ea0fd1c219ffc255292ef9b79c4ade/src/ReplayManager.cpp#L565-L588"
+  }
+}
