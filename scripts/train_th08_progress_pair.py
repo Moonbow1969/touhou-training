@@ -26,13 +26,15 @@ def trajectory(manifest, row, model, device):
     path = manifest.parent / row["file"]
     evidence_path = manifest.parent / row["receipt"]
     if (row["role"] != "train" or row["policy_sha256"] != EXPECTED_ACTOR or
+            row["rank"] != "Normal" or row["team"] != "Ghost" or
             digest(path) != row["sha256"] or digest(evidence_path) != row["receipt_sha256"]):
         raise ValueError(f"Training provenance changed for {row['seed']}")
     receipt = json.loads(evidence_path.read_bytes())
-    if (receipt["seed"] != row["seed"] or receipt["original_exe_sha256"] != ORIGINAL_EXE or
-            receipt["outcome"] != "game_over" or receipt["exact_four_fraction"] < .99 or
-            receipt["consumed_mask_agreement"] != 1. or receipt["zero_continue"] is not True or
-            receipt["rank"] != "Normal" or receipt["team"] != "Ghost" or receipt["stage_trace_complete"] is not True):
+    if (receipt["seed"] != row["seed"] or receipt["game_sha256"] != ORIGINAL_EXE or
+            receipt["policy_sha256"] != EXPECTED_ACTOR or receipt["sha256"] != row["sha256"] or
+            receipt["outcome"] != "game_over" or receipt["exact_four_tick_fraction"] < .99 or
+            receipt["action_masks_with_native_consumption"] != receipt["decisions"] or receipt["continues"] != 0 or
+            receipt["normal_rank_samples"] < .97*receipt["decisions"] or receipt["qualified"] is not True):
         raise ValueError(f"Original lifecycle evidence failed for {row['seed']}")
     with np.load(path, allow_pickle=False) as data:
         observations = data["frames"]
@@ -42,7 +44,7 @@ def trajectory(manifest, row, model, device):
         next_stage, next_tick, next_spares, next_bombs = (data[key] for key in ("native_next_stage", "native_next_tick", "next_spares", "next_bombs"))
         fatalities, casts = data["life_loss"], data["bomb_spent"]
     n = len(action)
-    if (n < 2 or observations.dtype != np.uint8 or observations.shape != (n,112,96) or
+    if (n < 2 or n != receipt["decisions"] or observations.dtype != np.uint8 or observations.shape != (n,112,96) or
             action.shape != (n,4) or np.any((action < 0) | (action >= np.asarray(WIDTHS))) or
             old_logp.shape != (n,4) or not np.isfinite(old_logp).all() or value.shape != (n,) or
             done.shape != (n,) or done.dtype != np.bool_ or done[:-1].any() or not done[-1] or np.any(value != 0)):
@@ -50,8 +52,9 @@ def trajectory(manifest, row, model, device):
     for prior, later in ((stage, next_stage), (tick, next_tick), (spares, next_spares), (bombs, next_bombs)):
         if prior.shape != (n,) or later.shape != (n,) or not np.array_equal(prior[1:], later[:-1]):
             raise ValueError(f"Discontinuous original gameplay state for {path.name}")
-    if (spares[0] != 2 or bombs[0] != 3 or next_spares[-1] not in (0,-1) or casts.shape != (n,) or
-            fatalities.shape != (n,) or np.any((casts < 0) | (casts > 1)) or np.any((fatalities < 0) | (fatalities > 1))):
+    if (stage[0] != 1 or spares[0] != 2 or bombs[0] != 3 or next_spares[-1] not in (0,-1) or casts.shape != (n,) or
+            fatalities.shape != (n,) or np.any((casts < 0) | (casts > np.maximum(bombs-next_bombs,0))) or
+            np.any((fatalities < 0) | (fatalities > 1))):
         raise ValueError(f"Changed original stock or event ledger for {path.name}")
     spare_delta = np.maximum(next_spares,0)-np.maximum(spares,0)
     verified_losses = (spare_delta < 0) | done
@@ -77,9 +80,9 @@ def trajectory(manifest, row, model, device):
         raise ValueError(f"New PPO data are not from the frozen behavior actor {path.name}")
     common = (frames, actions, torch.from_numpy(old_logp.sum(1)), torch.cat(heads, dim=1))
     return common, rewards, dict(seed=row["seed"], decisions=n, last_stage=int(next_stage[-1]),
-                                 actual_casts=int(casts.sum()), confirmed_deaths=int(fatalities.sum()),
-                                 native_ticks_per_stage={str(k):int((next_tick[stage == k]-tick[stage == k]).clip(min=0).sum())
-                                                         for k in set(stage.tolist())},
+                                 confirmed_bomb_stock_events=int(np.count_nonzero(casts)), bombs_spent=int(casts.sum()),
+                                 confirmed_deaths=int(fatalities.sum()),
+                                 exact_four=receipt["exact_four_tick_fraction"],
                                  max_logp_error=error, summed_r_base=float(rewards[0].reward.sum()),
                                  summed_r_shaped=float(rewards[1].reward.sum()))
 
@@ -121,7 +124,9 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     if digest(args.behavior) != EXPECTED_ACTOR:
         raise ValueError("Expected the frozen 1%-calibrated parent policy")
-    by_seed = sorted(json.loads(args.manifest.read_bytes()), key=lambda row: row["seed"])
+    manifest = json.loads(args.manifest.read_bytes())
+    rows = manifest["rows"] if isinstance(manifest, dict) else manifest
+    by_seed = sorted(rows, key=lambda row: row["seed"])
     if tuple(row["seed"] for row in by_seed) != PAIR_SEEDS:
         raise ValueError("Expected all 16 preassigned independent native TRAIN seeds")
     state = torch.load(args.state, map_location="cpu", weights_only=True)
