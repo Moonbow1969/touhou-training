@@ -1,0 +1,23 @@
+{
+  "branch": "normal-practice",
+  "qualification": {
+    "source": "../th07-retail-easy-quiet-qualification/summary.json",
+    "strict_credits": 4,
+    "letty_reached": 4,
+    "native_stage2_reached": 0,
+    "deaths": 12,
+    "playable_stage1_ticks": 31572,
+    "failed_target": "Observed Easy Stage 1 deaths per tick exceed 15/63444."
+  },
+  "practices": ["letty_full", "letty_low", "letty_full", "cirno"],
+  "roster": {"first_train_seed": 21749201, "last_train_seed": 21749220, "selector": "Repeat the ordered practices list five times."},
+  "practice_environment": {"original_power": 128, "difficulty": "Normal", "shot": "Reimu A", "cap_elapsed_native_ticks": 6000},
+  "held_seed_reservations": {"practice": [21749301, 21749320], "ordinary": [21749401, 21749420]},
+  "terminal_amendment": {
+    "effective": "Before learned practice optimizer intake and before the new roster starts.",
+    "practice_stage_clear": "Witness the actual original Stage 1 result and preserve last playable native resources. Flag a Stage 1 objective terminal.",
+    "ordinary_stage2_entry": "Retain the first confirmed playable Stage 2 state in the source trace. For this Stage 1 objective, end the learner trajectory at that state.",
+    "same_completion_return": "Add one objective reward and gamma times the verified remaining active plus spare lives at either successful boundary. Previous potential applies in the usual way. Completion and Game Over have zero post-objective critic value.",
+    "actual_timeout": "The registered environment cap alone yields censoring. In-game attack timers keep their game progression semantics. Preserve the actual next camera. Start return fitting from the archived behavior value and run two value refits on the applicable trainer fold. GAE at that cap uses the current out-of-fold critic's estimate of the actual next state. Critic RMSE compares truly observed endpoints with the same targets for both models."
+  }
+}
