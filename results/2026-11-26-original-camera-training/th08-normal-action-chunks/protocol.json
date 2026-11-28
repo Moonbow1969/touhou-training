@@ -1,0 +1,12 @@
+{
+  "seed": 814099,
+  "steps": 1200,
+  "batch": 128,
+  "prior": "4255efae6544dedbbd4d7dc7f20e0dc822b367d3cc73b1469b7cd4e68d800a9a",
+  "sources": {
+    "train": "c066e647508681556e366a3cb3a50b05047cbcf024f175d79fa2d7f35683a8fd",
+    "held": "2ae099d26bb8418808339ba287367184aa04ac01cbdab3494a200595078aecaf"
+  },
+  "contrast": "Both arms freeze the same encoder and receive the last four original observations and preceding direction. Both use the same 36 logits, exact sample indices and independent 20% preceding-direction replacement during training. The control marginalizes duration. The treatment trains the joint direction and up-to-four consecutive decision duration.",
+  "scoring": "Simulate each policy on the fixed held human frames using its own previous direction and actual chunk commitment. Reset control history at native discontinuities. Require at least 5pp more correct directions on human change windows and at least 80% correct stay decisions. This is a repeated development set, not original online performance."
+}
