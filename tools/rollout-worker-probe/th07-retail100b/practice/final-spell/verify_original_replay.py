@@ -3,7 +3,8 @@ import sys,time,subprocess,hashlib,csv,json,struct
 import numpy as np
 def sha(p):return hashlib.file_digest(p.open('rb'),'sha256').hexdigest()
 def words(source):
- sys.path.insert(0,'work/th14-rl/replays')
+ repo=next(parent for parent in Path(__file__).resolve().parents if (parent/'replays/inspect_rpy.py').is_file())
+ sys.path.insert(0,str(repo/'replays'))
  from inspect_rpy import decompress
  blob=source.read_bytes();assert blob[:6]==bytes.fromhex('543752500011') and blob[-4:]==b'PRAC'
  s=bytearray(blob);s[16:84]=bytes((v-s[13]-7*i)%256 for i,v in enumerate(s[16:84]));c,d=struct.unpack_from('<II',s,20)
@@ -25,3 +26,4 @@ def score(base,source):
 if __name__=='__main__':
  for item in sys.argv[1:]:
   b=Path(item);src=next(b.glob('official-replays/*.rpy'));res=score(b,src);print(b.name,res['phase_by_offset']);(b/'official-replay-verified.json').write_text(json.dumps(res,indent=2)+'\n')
+
