@@ -16,15 +16,16 @@ done
 wineboot --init >/capture/boot.log 2>&1
 wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /t REG_SZ /d pulse /f
 wine explorer /desktop=practice,800x600 th07.exe >/capture/game.log 2>&1 &
-for i in $(seq 1 150); do
-    window=$(xdotool search --class '^th07.exe$' 2>/dev/null | while read -r id; do
+for i in $(seq 1 350); do
+    window=$(xdotool search --onlyvisible --class '^th07.exe$' 2>/dev/null | while read -r id; do
         case "$(xdotool getwindowgeometry "$id")" in *640x480*) echo "$id";; esac
     done | tail -1)
-    [ -n "$window" ] && break
+    if [ -n "$window" ] && xdotool windowfocus "$window" 2>/dev/null; then break; fi
+    window=""
     sleep .2
 done
 test -n "$window"
-xdotool windowfocus "$window"
+echo "$window" >/capture/window
 pid=$(xdotool getwindowpid "$window")
 grep -qx th07.exe "/proc/$pid/comm"
 wine winedbg --command 'info proc' >/capture/wine-procs.txt 2>&1
