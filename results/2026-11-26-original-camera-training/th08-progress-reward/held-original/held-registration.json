@@ -1,0 +1,108 @@
+{
+  "study": "TH08 0.02 Ghost Normal paired online reward comparison",
+  "phase": "held",
+  "planned_pairs": 6,
+  "planned_complete_originals": 12,
+  "team": "Ghost",
+  "rank": "Normal",
+  "ordinary_initial_stock": [
+    2,
+    3
+  ],
+  "continues": 0,
+  "monte_carlo_controller_seeds": [
+    80962551,
+    80962552,
+    80962553,
+    80962554,
+    80962555,
+    80962556
+  ],
+  "simulator_rng": "Original game RNG uncontrolled.",
+  "parent_actor_sha256": "ef5f34532a1c986f10088ee202ada14a9a8d2083499648772233d0218cca42a9",
+  "pairs": [
+    {
+      "seed": 80962551,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 1,
+      "affinity": "game 4,6,8; inference 10; video 17",
+      "arms": [
+        "progress",
+        "progress-plus-spares"
+      ]
+    },
+    {
+      "seed": 80962552,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 1,
+      "affinity": "game 0,2,12; inference 14; video 18",
+      "arms": [
+        "progress",
+        "progress-plus-spares"
+      ]
+    },
+    {
+      "seed": 80962553,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 2,
+      "affinity": "game 4,6,8; inference 10; video 17",
+      "arms": [
+        "progress",
+        "progress-plus-spares"
+      ]
+    },
+    {
+      "seed": 80962554,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 2,
+      "affinity": "game 0,2,12; inference 14; video 18",
+      "arms": [
+        "progress-plus-spares",
+        "progress"
+      ]
+    },
+    {
+      "seed": 80962555,
+      "lane": "A",
+      "host": "Accelerator",
+      "within_lane_pair": 3,
+      "affinity": "game 4,6,8; inference 10; video 17",
+      "arms": [
+        "progress-plus-spares",
+        "progress"
+      ]
+    },
+    {
+      "seed": 80962556,
+      "lane": "B",
+      "host": "Accelerator",
+      "within_lane_pair": 3,
+      "affinity": "game 0,2,12; inference 14; video 18",
+      "arms": [
+        "progress-plus-spares",
+        "progress"
+      ]
+    }
+  ],
+  "order_seed": 80962550,
+  "primary": "Original Stage 2 arrival fraction over all six assigned full games per arm.",
+  "secondaries": [
+    "Absolute original terminal stage and tick, plus playable native ticks and ticks under confirmed control.",
+    "First spare loss and native ticks preceding it; each lost active life and available Bomb units just before it, including real final Game Over.",
+    "Number of loss events with positive pre-loss Bomb stock and all known pre-loss stocks/unknown denominators.",
+    "Same-life Bomb stock units spent and number of distinct stock-decrease events; original X-positive native ticks and edges; requested X-positive decisions and edges.",
+    "Starting, last playable and terminal spare/Bomb stock, clean native full-stage transition and stage-local stock at entry if available.",
+    "Physical X11 requests, accepted native decisions, post-terminal proposals, retained masks and original transition fraction. Source re-forward for all four actions."
+  ],
+  "screening": "Archive every physical attempt and all genuine native endpoints. Separate original intention-to-evaluate endpoints from strict continuous control. Never exclude a credit for an early death or change its assignment. Require native word matching for all retained actions, >=99% full four-tick intervals, normal rank/ghost team, native terminal and zero continue. Signed zero-exposure terminal-only exclusions require the fixed consumed-view witness.",
+  "order": "Three pairs per physical lane, same lane for both arms of each seed, contiguous AB/BA within pair. Three first positions per arm globally; each odd-size lane block has the opposite one-credit first-arm imbalance to the other. Both lanes concurrently when available.",
+  "release_condition": "Inactive until both updated checkpoints have sealed reports, safe actual actor hashes and a post-update Claude review authorizes original testing. Record reviewed hashes in a separate prelaunch held-review-release.json. No held sample may train either model.",
+  "qualifying_sources": {
+    "first": "consumed-terminal-engineering/sealed/80974006.json",
+    "second": "second-pipeline-engineering/overlap-qualified.json"
+  }
+}
