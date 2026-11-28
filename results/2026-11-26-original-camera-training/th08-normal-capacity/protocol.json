@@ -1,0 +1,58 @@
+{
+  "train": "c066e647508681556e366a3cb3a50b05047cbcf024f175d79fa2d7f35683a8fd",
+  "held": "2ae099d26bb8418808339ba287367184aa04ac01cbdab3494a200595078aecaf",
+  "focus_teacher": "a75ce901423c76bb2db1d58a46cda7a06d0c2474d0c234eef41093e00140c1b5",
+  "designs": {
+    "baseline": {
+      "channels": [
+        20,
+        24
+      ],
+      "latent": 128,
+      "spatial": false,
+      "estimated_macs": 251338624,
+      "params": 233804
+    },
+    "spatial": {
+      "channels": [
+        20,
+        24
+      ],
+      "latent": 128,
+      "spatial": true,
+      "estimated_macs": 368013632,
+      "params": 234566
+    },
+    "pooled-match": {
+      "channels": [
+        28,
+        28
+      ],
+      "latent": 224,
+      "spatial": false,
+      "estimated_macs": 355654432,
+      "params": 520608
+    },
+    "pooled-wide": {
+      "channels": [
+        40,
+        48
+      ],
+      "latent": 256,
+      "spatial": false,
+      "estimated_macs": 983842560,
+      "params": 922936
+    }
+  },
+  "unique_train": 58696,
+  "unique_held": 15558,
+  "seeds": [
+    280801,
+    280802,
+    280803
+  ],
+  "batch": 24,
+  "updates": 500,
+  "supervised_location_weight": 0.2,
+  "scope": "All arms train the complete candidate network from matched seed-specific initialization recipes. Four ordered original camera pairs; same sampled rows per seed. Parent teaches Focus; no positive native Focus samples. Busy subset per held stage. Approximate MACs count convolution/dense/coordinate projections; latency is a separate live gate."
+}
