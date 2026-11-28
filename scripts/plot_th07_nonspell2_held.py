@@ -46,7 +46,10 @@ def plot(source, target):
         difference.scatter(center, y, color="#184B62", s=37, zorder=3)
     missing = result["missing_endpoint_sensitivity"]["candidate_minus_parent_bounds"]
     limits.extend(missing)
-    difference.hlines(.23, *missing, color="#AE4D31", linewidth=2.2)
+    if missing[0] == missing[1]:
+        difference.scatter(missing[0], .23, color="#AE4D31", marker="|", s=90, linewidth=2)
+    else:
+        difference.hlines(.23, *missing, color="#AE4D31", linewidth=2.2)
     difference.axvline(0., color="#677989", linewidth=1., linestyle="--")
     difference.axvline(.20, color="#AE4D31", linewidth=.9, linestyle=":")
     difference.xaxis.set_major_formatter(PercentFormatter(1.0))
