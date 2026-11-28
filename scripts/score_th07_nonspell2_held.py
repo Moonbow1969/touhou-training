@@ -116,6 +116,41 @@ def timing_sensitivity(rows):
     return partial_exposure, fully_observed, stopped_without_exposure
 
 
+def exclusion_diagnostics(rows):
+    table = [[sum(row["arm"] == arm and row["qualified"] is status for row in rows) for status in (True, False)]
+             for arm in ARMS]
+    [[observed, parent_failure], [candidate_pass, candidate_failure]] = table
+    parent_total = observed + parent_failure
+    total = parent_total + candidate_pass + candidate_failure
+    passes = observed + candidate_pass
+    denominator = math.comb(total, parent_total)
+
+    def conditional_probability(parent_pass):
+        return math.comb(passes, parent_pass) * math.comb(total - passes, parent_total - parent_pass) / denominator
+
+    minimum = max(0, passes - (total - parent_total))
+    maximum = min(parent_total, passes)
+    observed_probability = conditional_probability(observed)
+    two_sided_p = min(1., sum(p for n in range(minimum, maximum + 1)
+                             if (p := conditional_probability(n)) <= observed_probability + 1e-15))
+    summaries = {}
+    for arm in ARMS:
+        summaries[arm] = {}
+        for status in (True, False):
+            group = [r for r in rows if r["arm"] == arm and r["qualified"] is status]
+            known = [r for r in group if r["physical_endpoint_verified"]]
+            label = "strict_passed" if status else "strict_excluded"
+            summaries[arm][label] = dict(
+                **arm_clear(sum(true_clear(r) for r in known), len(known)),
+                assigned=len(group), unresolved=len(group)-len(known),
+            )
+    return dict(row_order=list(ARMS), column_order=["strict_passed", "strict_excluded"],
+                arm_by_strict_control_table=table, two_sided_fisher_exact_p=two_sided_p,
+                within_arm_known_endpoint_clear_fractions=summaries,
+                interpretation=("These descriptive comparisons check whether technical exclusion follows arm or physical clear. "
+                                "Eligibility occurs after assignment and may depend on length or game outcome."))
+
+
 def final_results(rows, registration_sha256, release_sha256, index_sha256):
     physical = [r for r in rows if r["physical_endpoint_verified"]]
     strict = [r for r in physical if r["qualified"]]
@@ -133,6 +168,7 @@ def final_results(rows, registration_sha256, release_sha256, index_sha256):
         release_sha256=release_sha256, intake_index_sha256=index_sha256,
         primary_all_assigned=matched_clear(physical, assign_unverified_as_no_evidence=True),
         missing_endpoint_sensitivity=bounds,
+        exploratory_informative_exclusion=exclusion_diagnostics(rows),
         strict_matching_sensitivity=strict_estimate,
         known_physical_pairs_sensitivity=physical_estimate,
         known_physical_arms_descriptive={arm: arm_clear(sum(true_clear(r) for r in physical if r["arm"] == arm),
