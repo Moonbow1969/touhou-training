@@ -1,0 +1,20 @@
+{
+  "approved": true,
+  "registration_sha256": "5a398c90b8481293183c79adcea6bc922adda76a9d6124aa63d19833d4ade666",
+  "review_reference": "https://claude.ai/chat/7bf1d0e4-51c9-4d43-94d2-81d6c510dda9",
+  "review_message": "Completed major update check",
+  "arms": {
+    "progress": "44d7ca214423d57184293c1c681aef6628bd5af3a2732985d6ebec0965a8e14a",
+    "progress-plus-spares": "69c44e2ec484e5c5a915722fb1259a174da67b375cd1d4e786c54bf2589d3089"
+  },
+  "decision_gate": {
+    "denominator": "Sum of native decision-window exposure ticks from first real sampled action to last live tick. Count lost active lives including terminal death.",
+    "ratio": "(deaths per native tick with spare potential)/(deaths per native tick with progress alone)",
+    "advance_max_ratio": 0.75,
+    "advance_max_share_of_deaths_with_positive_pre_loss_bomb": 0.6,
+    "stop_current_scale_min_ratio": 1.0,
+    "intermediate": "Review before another update.",
+    "admission": "Report six assigned original endpoints per arm. A formal physical-rate decision requires six matched strict pairs in both arms. No additional gradient before review."
+  },
+  "registration_note": "The original pre-update Stage 2 endpoint is preserved. This additional operational decision rule was released after fitting and before any held input."
+}
