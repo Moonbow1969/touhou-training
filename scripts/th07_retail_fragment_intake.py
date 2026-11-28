@@ -8,6 +8,7 @@ from pathlib import Path
 from runpy import run_path
 
 import numpy as np
+from PIL import Image
 import torch
 
 
@@ -139,7 +140,7 @@ def playable_boundary(folder, native, endpoint):
     return native_boundary_row(native, endpoint), frame, endpoint.get("boundary_value"), path
 
 
-def practice_result_boundary(folder, native, endpoint):
+def practice_native_result(folder, native, endpoint):
     path = folder / "practice-result-state.csv"
     screen = folder / "native-practice-result.png"
     visual = json.loads((folder / "practice-result-visual.json").read_bytes())
@@ -164,7 +165,36 @@ def practice_result_boundary(folder, native, endpoint):
                "consumed_word": "word", "record_word": "record_slot"}
     require(all(int(source[name]) == row[field] for name, field in mapping.items()),
             "The reported practice result disagrees with the original final playable stock or slots")
-    return row, path
+    return row, path, visual
+
+
+def verify_stage_clear_tally(folder, visual, row):
+    require(visual.get("stage_clear_verified") is True, "Original result screen does not prove Stage Clear")
+    trace = folder / "policy-trace.npz"
+    tick = visual["tally_native_tick"]
+    index = visual["tally_frame_index"]
+    picture = folder / f"stage-clear-tally-{tick}.png"
+    require(visual["tally_source_npz_sha256"] == sha(trace) and visual["tally_sha256"] == sha(picture)
+            and visual["native_result_record_sha256"] == sha(folder / "practice-result-state.csv")
+            and 0 < tick <= row["tick"], "Stage Clear evidence changed or followed the actual original endpoint")
+    with np.load(trace, allow_pickle=False) as source:
+        require(0 <= index < len(source["native_tick"]) and source["native_tick"][index] == tick
+                and visual["tally_pixels_sha256"] == digest_camera(source["frames"][index]),
+                "Stage Clear tally does not bind an exact camera from this original")
+        with Image.open(picture) as tally:
+            width, height = tally.size
+            scale = width // FRAME[1]
+            require(scale > 0 and (height, width) == (FRAME[0] * scale, FRAME[1] * scale)
+                    and np.array_equal(np.asarray(tally.convert("L")),
+                                       np.repeat(np.repeat(source["frames"][index], scale, axis=0), scale, axis=1)),
+                    "Stage Clear image is not an unfiltered enlargement of its original camera")
+    return picture
+
+
+def practice_result_boundary(folder, native, endpoint):
+    row, source, visual = practice_native_result(folder, native, endpoint)
+    verify_stage_clear_tally(folder, visual, row)
+    return row, source
 
 
 def game_over_boundary(native, spec, first_tick, target):
@@ -199,10 +229,19 @@ def select_endpoint(folder, native, trace, camera, spec, start, horizon):
         return len(camera), spec["outcome"], row, frame, value, source
     if spec.get("outcome") == "practice_stage_clear":
         require(spec.get("source_kind") == "practice", "A Stage 1 practice result cannot close Game Start")
-        row, source = practice_result_boundary(folder, native, spec)
+        row, source, visual = practice_native_result(folder, native, spec)
         require(row["tick"] > first_tick and (target is None or row["tick"] <= target),
                 "Practice result arrived after the registered playable timeout")
-        return len(camera), "practice_stage_clear", row, np.zeros(FRAME, dtype=np.uint8), 0., source
+        outcome = "practice_stage_clear"
+        if visual.get("exhaustion_verified") is True:
+            initial = native[(native["stage"] == 1) & ((native["flags"] & 4) != 0)][0]
+            require(visual.get("stage_clear_verified") is False and row["lives"] == 0
+                    and row["misses"] >= initial["misses"] + initial["lives"] + 1,
+                    "Practice exhaustion requires distinct result evidence and the original last-stock loss")
+            outcome = "game_over"
+        else:
+            verify_stage_clear_tally(folder, visual, row)
+        return len(camera), outcome, row, np.zeros(FRAME, dtype=np.uint8), 0., source
     require(spec.get("outcome") in ("game-over", "game_over"), "Missing a true Game Over or playable next boundary")
     row = game_over_boundary(native, spec, first_tick, target)
     return len(camera), "game_over", row, np.zeros(FRAME, dtype=np.uint8), 0., None
@@ -372,7 +411,8 @@ def intake_fragment(folder, checkpoint, output, *, endpoint=None, start_index=0,
             np.savez_compressed(target, **arrays)
     sources = {name: sha(folder / name) for name in (
         "archive.sealed", "events.bin", "native-input.csv", "applied.csv", "controls.csv", "policy-trace.npz", "build.sha256")}
-    for path in (*sorted(folder.glob("record-stage*.bin")), folder / "official-policy.rpy",
+    for path in (*sorted(folder.glob("record-stage*.bin")), *sorted(folder.glob("stage-clear-tally-*.png")),
+                 folder / "official-policy.rpy",
                  folder / "native-continue.png", folder / "native-practice-result.png", folder / "native-cutoff.csv",
                  folder / "practice-result-visual.json", folder / "qualification.json",
                  folder / "ui-verified.json", verification_path, boundary_source):
